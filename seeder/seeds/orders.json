@@ -1,0 +1,16 @@
+[{
+    "customer_id": "58152d8bb22d21700cb8d85f",
+    "pet_id": "58152eddb1d4c67466686b7c",
+    "scheduleAt": "2016-10-05T07:00:00.000Z",
+    "checkInAt": "2016-10-05T07:00:00.000Z",
+    "checkOutAt": "2016-10-05T07:00:00.000Z",
+    "services": [],
+    "inhouseOrders": [],
+    "waivers": [],
+    "pictures": {
+        "checkIn": "url",
+        "checkOut": "url"
+    },
+    "total": "",
+    "createdAt": "2016-10-05T07:00:00.000Z"
+}]

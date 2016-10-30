@@ -1,0 +1,19 @@
+{
+    "name": "front-end",
+    "version": "1.0.0",
+    "description": "package for front end",
+    "main": "index.js",
+    "dependencies": {
+        "angular": "^1.5.8",
+        "angular-animate": "^1.5.8",
+        "angular-aria": "^1.5.8",
+        "angular-local-storage": "^0.2.7",
+        "angular-material": "^1.1.0-rc.5",
+        "angular-material-data-table": "^0.10.9",
+        "angular-material-icons": "^0.7.1",
+        "angular-mocks": "^1.5.0",
+        "angular-sanitize": "^1.5.8",
+        "angular-smart-table": "^2.1.8",
+        "angular-ui-router": "^1.0.0-beta.1"
+    }
+}

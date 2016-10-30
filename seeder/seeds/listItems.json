@@ -1,0 +1,67 @@
+[{
+    "type": "services",
+    "items": [{
+        "name": "Wash(large)",
+        "description": "wash large dog",
+        "zhName": "洗澡(大)",
+        "zhDescription": "中文",
+        "price": "30",
+        "selfService": false
+    }, {
+        "name": "Wash(small)",
+        "description": "wash small dog",
+        "zhName": "洗澡(小)",
+        "zhDescription": "中文",
+        "price": "20",
+        "selfService": false
+    }, {
+        "name": "Wash",
+        "description": "wash",
+        "zhName": "洗澡",
+        "zhDescription": "中文",
+        "price": "15",
+        "selfService": true
+    }]
+}, {
+    "type": "waiver",
+    "items": [{
+        "name": "matted",
+        "description": "asldajsdl;fa",
+        "zhName": "毛髮打結",
+        "zhDescription": "中文"
+    }, {
+        "name": "Aged Pet",
+        "description": "asldajsdl;fa",
+        "zhName": "歲數已高",
+        "zhDescription": "中文"
+    }, {
+        "name": "Special condition",
+        "description": "asldajsdl;fa",
+        "zhName": "特殊情況",
+        "zhDescription": "中文"
+    }]
+}, {
+    "type": "breeds",
+    "itmes": [{
+        "name": "mix",
+        "zhName": "米克斯"
+    }, {
+        "name": "Afghan",
+        "zhName": "阿富汗"
+    }]
+}, {
+    "type": "colors",
+    "items": [{
+        "name": "black",
+        "zhName": "黑"
+    }, {
+        "name": "brown",
+        "zhName": "咖啡"
+    }]
+}, {
+    "type": "vaccinations",
+    "items": [{
+        "name": "rabbit",
+        "zhName": "狂犬病"
+    }]
+}]

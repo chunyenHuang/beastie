@@ -1,0 +1,47 @@
+[{
+    "_id": "ObjectId('58152d8bb22d21700cb8d85f')",
+    "firstname": "Yuju",
+    "lastname": "Yen",
+    "address": {
+        "street": "999 Quail Hill",
+        "city": "Irvine",
+        "state": "CA",
+        "zipCode": "92603"
+    },
+    "phone": [
+        "6263805163",
+        "6263212768"
+    ],
+    "emergencyContact": [{
+        "name": "John Huang",
+        "relationship": "husband",
+        "phone": [
+            "6263212768"
+        ]
+    }],
+    "createdAt": "2016-10-05T07:00:00.000Z",
+    "lastLoginAt": "2016-10-05T07:00:00.000Z",
+    "isDeleted": false
+},{
+    "firstname": "Jean",
+    "lastname": "Huang",
+    "address": {
+        "street": "999 Landau",
+        "city": "Hacienda Heights",
+        "state": "CA",
+        "zipCode": "91745"
+    },
+    "phone": [
+        "8903780923"
+    ],
+    "emergencyContact": [{
+        "name": "Steven Chao",
+        "relationship": "husband",
+        "phone": [
+            "6263212768"
+        ]
+    }],
+    "createdAt": "2016-10-05T07:00:00.000Z",
+    "lastLoginAt": "2016-10-05T07:00:00.000Z",
+    "isDeleted": false
+}]

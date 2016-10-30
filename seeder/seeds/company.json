@@ -1,0 +1,24 @@
+[{
+    "name": "A+ Pet & Grooming",
+    "zhName": "A+ 寵物生活館",
+    "description": "美容 住宿 寵物用品 犬類買賣",
+    "phone": [
+        "6268101098"
+    ],
+    "address": {
+        "street": "18246 Gale Ave, #A",
+        "city": "City of Industry",
+        "state": "CA",
+        "zipCode": "91748"
+    },
+    "EIN": "0901-123-090",
+    "openHours":{
+        "Monday": {},
+        "Tuesday": {},
+        "Wednesday": {},
+        "Thursday": {},
+        "Friday": {},
+        "Saturday": {},
+        "Sunday": {}
+    }
+}]

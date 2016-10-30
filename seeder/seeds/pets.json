@@ -1,0 +1,34 @@
+[{
+    "_id": "ObjectId('58152eddb1d4c67466686b7c')",
+    "customer_id": "58152d8bb22d21700cb8d85f",
+    "name": "Beastie",
+    "species": "dog",
+    "birthday": "2015-08-02T23:09:29.898Z",
+    "breed": "mix",
+    "color": "brown",
+    "weight": "10",
+    "sex": "male",
+    "previousHistory": [
+        "Other pet hospital"
+    ],
+    "vaccinations": [
+        {
+            "name": "rabbit",
+            "date": "2013-10-05T07:00:00.000Z"
+        }
+    ],
+    "specialConditions": [
+        {
+            "description": "120983fu for specialConditions",
+            "createdAt": "2015-10-05T07:00:00.000Z"
+        }
+    ],
+    "additionalInstructions": [
+        {
+            "description": "alsdfjalsdkf for additionalInstructions",
+            "createdAt": "2015-10-05T07:00:00.000Z"
+        }
+    ],
+    "createdAt": "2016-10-05T07:00:00.000Z",
+    "isDeleted": false
+    }]

@@ -1,0 +1,15 @@
+[{
+    "name": "John",
+    "role": "superAdmin",
+    "password": "123",
+    "createdAt": "2016-10-01T07:00:00.000Z",
+    "lastLoginAt": "2016-10-29T23:09:29.898Z",
+    "isDeleted": false
+}, {
+    "name": "Lilian",
+    "role": "admin",
+    "password": "123",
+    "createdAt": "2016-10-05T07:00:00.000Z",
+    "lastLoginAt": "2016-10-20T23:09:29.898Z",
+    "isDeleted": false
+}]
