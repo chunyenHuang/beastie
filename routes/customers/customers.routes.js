@@ -1,16 +1,16 @@
-const UsersController = require('./users.controller');
-const Users = new UsersController;
-const dbCollectionName = 'users';
+const CustomersController = require('./customers.controller');
+const Customers = new CustomersController;
+const dbCollectionName = 'customers';
 
 module.exports = (app) => {
-    app.route('/users')
+    app.route('/customers')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Users.query);
+        .get(Customers.query);
 
-    app.route('/users/:id')
+    app.route('/customers/:id')
         .all((req, res, next) => {
             const id = req.params['id'];
             const hex = /[0-9A-Fa-f]{6}/g;
@@ -20,8 +20,8 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Users.get)
-        .put(Users.put)
-        .post(Users.post)
-        .delete(Users.delete);
+        .get(Customers.get)
+        .put(Customers.put)
+        .post(Customers.post)
+        .delete(Customers.delete);
 };
