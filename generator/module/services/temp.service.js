@@ -1,6 +1,11 @@
 /* @ngInject */
 class <%= name %>Service {
-    constructor() {
+    static get $inject() {
+        return ['$resource'];
+    }
+    constructor($resource) {
+        const <%= upCaseName %> = $resource('/<%= name %>/:id', {id:'@id'});
+        return <%= upCaseName %>;
     }
 }
 

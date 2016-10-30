@@ -73,19 +73,19 @@ if (process.env.NODE_ENV == 'development') {
     config.entry.app = [
         'webpack-hot-middleware/client?reload=true',
         'babel-polyfill',
-        path.join(__dirname, './client/src/index.js')
+        path.join(__dirname, 'client/src/index.js')
     ];
     const compiler = webpack(config);
     // compiler.apply(new DashboardPlugin(dashboard.setData));
     const webpackMiddleware = webpackDevMiddleware(compiler, {
         // path: 'http://localhost:'+port,
         publicPath: config.output.publicPath,
-        contentBase: path.join(__dirname, './client/src/'),
+        contentBase: path.join(__dirname, 'client/src/'),
         quiet: true,
         noInfo: true,
-        headers: {
-            'X-Custom-Header': 'yes'
-        },
+        // headers: {
+        //     'X-Custom-Header': 'yes'
+        // },
         stats: {
             colors: true,
             hash: false,
@@ -105,6 +105,11 @@ if (process.env.NODE_ENV == 'development') {
     }));
 }
 
+app.get('/*', (req, res, next) => {
+    res.setHeader('Last-Modified', (new Date()).toUTCString());
+    next();
+});
+
 // Auths
 const authRoutes = path.join(__dirname, '/routes/auths');
 fs.readdirSync(authRoutes).forEach((file) => {
@@ -114,7 +119,7 @@ fs.readdirSync(authRoutes).forEach((file) => {
 
 // Middlewares
 // app.use(require('./middlewares/deviceAuth'));
-app.use(require('./routes/middlewares/userAuth'));
+// app.use(require('./routes/middlewares/userAuth'));
 
 // Resources
 const routes = path.join(__dirname, '/routes/resources');

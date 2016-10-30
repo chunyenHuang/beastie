@@ -1,9 +1,9 @@
-import './app.styl';
-import template from './app.html';
+import './core.styl';
+import template from './core.html';
 
-const appComponent = {
+const coreComponent = {
     template,
-    controller: /* @ngInject */ class AppController {
+    controller: /* @ngInject */ class CoreController {
         static get $inject() {
             return ['$timeout', 'METADATA'];
         }
@@ -17,7 +17,7 @@ const appComponent = {
                 this.message += 'World';
             },1500);
         }
-    },
+    }
 };
 
-export default appComponent;
+export default coreComponent;

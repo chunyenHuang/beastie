@@ -8,6 +8,7 @@ module.exports = class AbstractController {
         );
         query.toArray((err, results) => {
             if (!err) {
+                res.statusCode = 200;
                 res.json(results);
             } else {
                 res.json(results);
@@ -22,6 +23,7 @@ module.exports = class AbstractController {
         query.toArray((err, results) => {
             if (!err) {
                 if (results.length > 0) {
+                    res.statusCode = 200;
                     res.json(results[0]);
                 } else {
                     res.send('No Results');

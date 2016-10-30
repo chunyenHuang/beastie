@@ -1,13 +1,10 @@
-import uiRouter from 'angular-ui-router';
 import <%= name %>Component from './<%= name %>.component';
 import <%= name %>Service from './services/<%= name %>.service';
 
 const <%= name %>Module = angular
-    .module('app.core.<%= name %>', [
-        uiRouter
-    ])
+    .module('beastie.<%= name %>', [])
     .component('<%= name %>', <%= name %>Component)
-    .service('<%= name %>Service', <%= name %>Service)
+    .service('<%= upCaseName %>', <%= name %>Service)
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider

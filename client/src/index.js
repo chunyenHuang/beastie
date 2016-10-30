@@ -4,32 +4,40 @@ import uiRouter from 'client/node_modules/angular-ui-router';
 import ngAria from 'client/node_modules/angular-aria';
 import ngMaterial from 'client/node_modules/angular-material';
 import 'client/node_modules/angular-material/angular-material.css';
-import 'client/node_modules/angular-local-storage';
-import 'client/node_modules/angular-smart-table';
-import ngMdIcons from 'client/node_modules/angular-material-icons';
 import ngAnimate from 'client/node_modules/angular-animate';
+import 'client/node_modules/angular-translate';
+import 'client/node_modules/angular-translate-loader-partial';
+import ngResource from 'client/node_modules/angular-resource';
+import ngSanitize from 'client/node_modules/angular-sanitize';
 
 // configs
 import themeConfig from './themeConfig';
+import resourceConfig from './resourceConfig';
+import languageConfig from './languageConfig';
+import iconConfig from './iconConfig';
 import METADATA from './METADATA';
 
 // entry modules
-import app from './app';
+import core from './core';
 
 angular
-    .module('app', [
+    .module('beastie', [
         uiRouter,
+        ngResource,
+        ngSanitize,
         ngAnimate,
         ngAria,
         ngMaterial,
-        ngMdIcons,
-        'LocalStorageModule',
-        'smart-table',
-        app
+        'pascalprecht.translate',
+        core
     ])
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
         $urlRouterProvider.otherwise('/');
     })
     .config(themeConfig)
-    .constant('METADATA', METADATA);
+    // .config(resourceConfig)
+    .config(languageConfig)
+    .config(iconConfig)
+    .constant('METADATA', METADATA)
+;

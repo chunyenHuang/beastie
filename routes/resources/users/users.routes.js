@@ -3,14 +3,14 @@ const Users = new UsersController;
 const dbCollectionName = 'users';
 
 module.exports = (app) => {
-    app.route('/users')
+    app.route('/users?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
         .get(Users.query);
 
-    app.route('/users/:id')
+    app.route('/users?/:id')
         .all((req, res, next) => {
             // const id = req.params['id'];
             // const hex = /[0-9A-Fa-f]{6}/g;

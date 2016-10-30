@@ -62,12 +62,12 @@ module.exports = {
         // }),
         new CopyWebpackPlugin([
             {
-                from: path.join(__dirname, './client/src/assets'),
+                from: path.join(__dirname, 'client/src/assets'),
                 to: 'assets'
             }
         ]),
         new HtmlWebpackPlugin({
-            template: path.join(__dirname, './client/src/index.tpl.ejs'),
+            template: path.join(__dirname, 'client/src/index.tpl.ejs'),
             inject: 'body',
             hash: true,
             title: METADATA.webTitle,
