@@ -12,5 +12,9 @@
         "checkOut": "url"
     },
     "total": "",
-    "createdAt": "2016-10-05T07:00:00.000Z"
+    "isPaid": "cash",
+    "notes": "",
+
+    "createdAt": "2016-10-05T07:00:00.000Z",
+    "createdBy": ""
 }]

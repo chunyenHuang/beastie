@@ -16,7 +16,6 @@ module.exports = class AbstractController {
     }
 
     get(req, res) {
-        console.log(req.params.id);
         const query = req.collection.find({
             _id: ObjectId(req.params.id)
         });
@@ -45,10 +44,12 @@ module.exports = class AbstractController {
             upsert: true
         }, (err) => {
             if (!err) {
+                console.log(Object.assign(req.body, {
+                    _id: req.params.id
+                }));
                 res.statusCode = 201;
                 res.send();
             } else {
-                console.log(err);
                 res.statusCode = 500;
                 res.send('Can not update');
             }
@@ -59,6 +60,7 @@ module.exports = class AbstractController {
         const data = req.body;
         req.collection.insert(data, (err, docsInserted) => {
             if (!err) {
+                console.log(docsInserted);
                 res.statusCode = 201;
                 res.json(docsInserted.ops[0]);
             } else {

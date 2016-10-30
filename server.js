@@ -1,19 +1,19 @@
 // Modules
 const express = require('express');
 const compression = require('compression');
-const session = require('express-session');
-const MongoStore = require('connect-mongo')(session);
+// const session = require('express-session');
+// const MongoStore = require('connect-mongo')(session);
 const mongodb = require('mongodb');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const errorHandler = require('errorhandler');
-const lusca = require('lusca');
+// const lusca = require('lusca');
 const dotenv = require('dotenv');
-const flash = require('express-flash');
+// const flash = require('express-flash');
 const path = require('path');
-const multer = require('multer');
+// const multer = require('multer');
 const fs = require('fs');
 dotenv.load({
     path: '.env.file'
@@ -24,7 +24,14 @@ const port = process.env.PORT || 3000;
 const app = express();
 app.set('port', port);
 app.use(compression());
-app.use(logger('dev'));
+// app.use(logger('dev'));
+const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {flags: 'a'});
+if (process.env.NODE_ENV =='development') {
+    app.use(logger('dev'));
+} else {
+    app.use(logger('combined', {'stream': accessLogStream}));
+}
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -44,7 +51,7 @@ app.use(expressValidator());
 // }));
 
 const dbClient = mongodb.MongoClient;
-const ObjectId = mongodb.ObjectId;
+// const ObjectId = mongodb.ObjectId;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
 app.use((req, res, next) => {
@@ -62,7 +69,7 @@ if (process.env.NODE_ENV == 'development') {
     config.entry.app = [
         'webpack-hot-middleware/client?reload=true',
         'babel-polyfill',
-        path.join(__dirname, './client/src/index.js'),
+        path.join(__dirname, './client/src/index.js')
     ];
     const compiler = webpack(config);
     // compiler.apply(new DashboardPlugin(dashboard.setData));
@@ -94,14 +101,22 @@ if (process.env.NODE_ENV == 'development') {
     }));
 }
 
+// Pre auth
+const authRoutes = path.join(__dirname, '/authRoutes');
+fs.readdirSync(authRoutes).forEach((file) => {
+    const route = path.join(authRoutes, file);
+    require(route)(app);
+});
+
 // Middlewares
-app.use(require('./middlewares/auth'));
+// app.use(require('./middlewares/deviceAuth'));
+app.use(require('./middlewares/userAuth'));
 
 // Load Routes
-const routePath = path.join(__dirname, '/routes');
-fs.readdirSync(routePath).forEach((file) => {
+const routes = path.join(__dirname, '/routes');
+fs.readdirSync(routes).forEach((file) => {
     // console.log(file);
-    const route = path.join(routePath, file);
+    const route = path.join(routes, file);
     // require(route)(app);
     // app.use('/'+file, require(route));
     require(route)(app);

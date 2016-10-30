@@ -1,15 +1,19 @@
 [{
     "name": "John",
     "role": "superAdmin",
+    "loginId": "123",
     "password": "123",
     "createdAt": "2016-10-01T07:00:00.000Z",
+    "beastieUserToken": "a903aldkfj",
     "lastLoginAt": "2016-10-29T23:09:29.898Z",
     "isDeleted": false
 }, {
     "name": "Lilian",
     "role": "admin",
+    "loginId": "lilian123",
     "password": "123",
     "createdAt": "2016-10-05T07:00:00.000Z",
+    "beastieUserToken": "a903aldkfj",
     "lastLoginAt": "2016-10-20T23:09:29.898Z",
     "isDeleted": false
 }]
