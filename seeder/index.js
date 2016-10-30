@@ -21,17 +21,23 @@ fs.readdirSync(routePath).forEach((file) => {
 for (var prop in initDatas) {
     const collection = prop;
     dbClient.connect(dbUrl, (err, db) => {
-        db.collection(collection).remove({}, (err, results) => {
+        db.collection(collection).remove({}, (err) => {
             if (!err) {
                 initDatas[collection].forEach((data) => {
                     if (data._id) {
                         data._id = ObjectId(data._id);
                     }
-                    db.collection(collection).insert(data, (err, results) => {
-                        db.close();
-                        console.log('Init Data is inserted into ' + collection);
+                    db.collection(collection).insert(data, (err) => {
+                        if(!err){
+                            db.close();
+                            console.log('Init Data is inserted into ' + collection);
+                        } else {
+                            console.log(err);
+                        }
                     });
                 });
+            } else {
+                console.log(err);
             }
         });
     });

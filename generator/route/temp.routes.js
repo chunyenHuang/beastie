@@ -12,11 +12,6 @@ module.exports = (app) => {
 
     app.route('/<%= name %>/:id')
         .all((req, res, next) => {
-            const id = req.params['id'];
-            const hex = /[0-9A-Fa-f]{6}/g;
-            if (!hex.test(id) || id.length < 24) {
-                return res.status(403).send('wrong id format');
-            }
             req.collection = req.db.collection(dbCollectionName);
             next();
         })

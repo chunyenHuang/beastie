@@ -8,10 +8,8 @@
         "state": "CA",
         "zipCode": "92603"
     },
-    "phone": [
-        "6263805163",
-        "6263212768"
-    ],
+    "phone": "6263805163",
+    "phones": [],
     "emergencyContact": [{
         "name": "John Huang",
         "relationship": "husband",
@@ -31,9 +29,8 @@
         "state": "CA",
         "zipCode": "91745"
     },
-    "phone": [
-        "8903780923"
-    ],
+    "phone": "1239853023",
+    "phones": [],
     "emergencyContact": [{
         "name": "Steven Chao",
         "relationship": "husband",

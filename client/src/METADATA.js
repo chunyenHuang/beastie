@@ -9,14 +9,7 @@ const METADATA = {
     webAuthor: 'John Huang',
     webDescription: '',
     baseUrl: '/',
-    iconUrl: './assets/img/',
-    // company info
-    company: {
-        name: 'A+ Pet shop',
-        address: null,
-        telephon: null,
-        website: null,
-    }
+    iconUrl: './assets/img/'
 };
 
 module.exports = METADATA;

@@ -25,11 +25,15 @@ const app = express();
 app.set('port', port);
 app.use(compression());
 // app.use(logger('dev'));
-const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {flags: 'a'});
-if (process.env.NODE_ENV =='development') {
+const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
+    flags: 'a'
+});
+if (process.env.NODE_ENV == 'development') {
     app.use(logger('dev'));
 } else {
-    app.use(logger('combined', {'stream': accessLogStream}));
+    app.use(logger('combined', {
+        'stream': accessLogStream
+    }));
 }
 
 app.use(cookieParser());
@@ -101,8 +105,8 @@ if (process.env.NODE_ENV == 'development') {
     }));
 }
 
-// Pre auth
-const authRoutes = path.join(__dirname, '/authRoutes');
+// Auths
+const authRoutes = path.join(__dirname, '/routes/auths');
 fs.readdirSync(authRoutes).forEach((file) => {
     const route = path.join(authRoutes, file);
     require(route)(app);
@@ -110,10 +114,10 @@ fs.readdirSync(authRoutes).forEach((file) => {
 
 // Middlewares
 // app.use(require('./middlewares/deviceAuth'));
-app.use(require('./middlewares/userAuth'));
+app.use(require('./routes/middlewares/userAuth'));
 
-// Load Routes
-const routes = path.join(__dirname, '/routes');
+// Resources
+const routes = path.join(__dirname, '/routes/resources');
 fs.readdirSync(routes).forEach((file) => {
     // console.log(file);
     const route = path.join(routes, file);
