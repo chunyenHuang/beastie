@@ -5,17 +5,21 @@ const coreComponent = {
     template,
     controller: /* @ngInject */ class CoreController {
         static get $inject() {
-            return ['$timeout', 'METADATA'];
+            return ['$timeout', '$state', 'METADATA'];
         }
-        constructor($timeout, METADATA) {
+        constructor($timeout, $state, METADATA) {
             this.$timeout = $timeout;
+            this.$state = $state
             this.METADATA = METADATA;
         }
-        $onInit(){
+        $onInit() {
             this.message = 'Hello~';
-            this.$timeout(()=>{
+            this.$timeout(() => {
                 this.message += 'World';
-            },1500);
+            }, 1500);
+        }
+        goToClient() {
+            this.$state.go('client');
         }
     }
 };

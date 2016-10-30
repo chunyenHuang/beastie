@@ -1,3 +1,6 @@
 {
-    "core": "Core"
+    "core": {
+        "core": "Core",
+        "hello": "Hello"
+    }
 }

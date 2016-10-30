@@ -19,6 +19,7 @@ import METADATA from './METADATA';
 
 // entry modules
 import core from './core';
+import client from './client';
 
 angular
     .module('beastie', [
@@ -29,7 +30,8 @@ angular
         ngAria,
         ngMaterial,
         'pascalprecht.translate',
-        core
+        core,
+        client
     ])
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
@@ -39,5 +41,4 @@ angular
     // .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
-    .constant('METADATA', METADATA)
-;
+    .constant('METADATA', METADATA);

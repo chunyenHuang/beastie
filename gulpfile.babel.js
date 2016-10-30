@@ -12,10 +12,10 @@ let resolveToRoutes = (glob = '') => {
 };
 
 let resolveToComponents = (glob = '') => {
-    return path.join(__dirname, 'client/src/app', glob); // app/components/{glob}
+    return path.join(__dirname, 'client/src', glob); // app/components/{glob}
 };
 let resolveToModules = (glob = '') => {
-    return path.join(__dirname, 'client/src/app', glob); // app/components/{glob}
+    return path.join(__dirname, 'client/src', glob); // app/components/{glob}
 };
 
 
