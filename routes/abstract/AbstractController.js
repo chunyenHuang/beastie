@@ -3,6 +3,9 @@ const ObjectId = require('mongodb').ObjectID;
 module.exports = class AbstractController {
 
     query(req, res) {
+        Object.assign(req.query, {
+            isDeleted: false
+        });
         const query = req.collection.find(
             req.query
         );
@@ -18,7 +21,8 @@ module.exports = class AbstractController {
 
     get(req, res) {
         const query = req.collection.find({
-            _id: ObjectId(req.params.id)
+            _id: ObjectId(req.params.id),
+            isDeleted: false
         });
         query.toArray((err, results) => {
             if (!err) {
@@ -35,6 +39,9 @@ module.exports = class AbstractController {
     }
 
     put(req, res) {
+        req.body.updatedAt = new Date();
+        req.body.updatedBy = req.currentUser._id;
+
         if (req.body._id) {
             delete req.body._id;
         }
@@ -59,10 +66,11 @@ module.exports = class AbstractController {
     }
 
     post(req, res) {
-        const data = req.body;
-        req.collection.insert(data, (err, docsInserted) => {
+        req.body.createdAt = new Date();
+        req.body.createdBy = req.currentUser._id;
+
+        req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
-                console.log(docsInserted);
                 res.statusCode = 201;
                 res.json(docsInserted.ops[0]);
             } else {
@@ -72,5 +80,29 @@ module.exports = class AbstractController {
         });
     }
 
-    delete(req, res) {}
+    delete(req, res) {
+        // soft delete
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        req.collection.update({
+            _id: ObjectId(req.params.id)
+        }, {
+            $set: {
+                isDeleted: true,
+                deletedAt: new Date(),
+                deletedBy: req.currentUser._id
+            }
+        }, {
+            upsert: true
+        }, (err) => {
+            if (!err) {
+                res.statusCode = 201;
+                res.send('Soft Delete successfully.');
+            } else {
+                res.statusCode = 500;
+                res.send('Can not delete');
+            }
+        });
+    }
 };

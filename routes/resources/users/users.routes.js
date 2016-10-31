@@ -8,20 +8,19 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Users.query);
+        .get(Users.query)
+        .post(Users.validate, Users.post);
 
     app.route('/users?/:id')
         .all((req, res, next) => {
-            // const id = req.params['id'];
-            // const hex = /[0-9A-Fa-f]{6}/g;
-            // if (!hex.test(id) || id.length < 24) {
-            //     return res.status(403).send('wrong id format');
-            // }
-            req.collection = req.db.collection(dbCollectionName);
-            next();
+            if(req.params.id == 'template'){
+                Users.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
         })
         .get(Users.get)
-        .put(Users.put)
-        .post(Users.post)
+        .put(Users.validate, Users.put)
         .delete(Users.delete);
 };

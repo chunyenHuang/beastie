@@ -1,4 +1,16 @@
 [{
+    "type": "roles",
+    "itmes": [{
+        "name": "admin",
+        "description": "can do anything yo"
+    }, {
+        "name": "manager",
+        "description": "maybe can do anything yo"
+    }, {
+        "name": "clerk",
+        "description": "can not do anything yo"
+    }]
+}, {
     "type": "services",
     "items": [{
         "name": "Wash(large)",
@@ -44,19 +56,23 @@
     "type": "breeds",
     "itmes": [{
         "name": "mix",
-        "zhName": "米克斯"
+        "zhName": "米克斯",
+        "img": "url"
     }, {
         "name": "Afghan",
-        "zhName": "阿富汗"
+        "zhName": "阿富汗",
+        "img": "url"
     }]
 }, {
     "type": "colors",
     "items": [{
         "name": "black",
-        "zhName": "黑"
+        "zhName": "黑",
+        "value": "#000000"
     }, {
         "name": "brown",
-        "zhName": "咖啡"
+        "zhName": "咖啡",
+        "value": "#593800"
     }]
 }, {
     "type": "vaccinations",

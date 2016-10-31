@@ -12,8 +12,12 @@ module.exports = (app) => {
 
     app.route('/customers/:id')
         .all((req, res, next) => {
-            req.collection = req.db.collection(dbCollectionName);
-            next();
+            if(req.params.id == 'template'){
+                Customers.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
         })
         .get(Customers.get)
         .put(Customers.put)

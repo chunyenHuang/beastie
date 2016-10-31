@@ -1,8 +1,9 @@
 [{
+    "type": "company",
     "name": "A+ Pet & Grooming",
     "zhName": "A+ 寵物生活館",
     "description": "美容 住宿 寵物用品 犬類買賣",
-    "phone": [
+    "phones": [
         "6268101098"
     ],
     "address": {
@@ -12,7 +13,7 @@
         "zipCode": "91748"
     },
     "EIN": "0901-123-090",
-    "openHours":{
+    "openHours": {
         "Monday": {},
         "Tuesday": {},
         "Wednesday": {},
@@ -21,4 +22,16 @@
         "Saturday": {},
         "Sunday": {}
     }
+}, {
+    "type": "theme",
+    "color": {
+        "primary": "#e95400",
+        "accent": "#009f66",
+        "warning": "#ffcf00",
+        "danger": "##fb002d"
+    }
+}, {
+    "type": "message",
+    "welcome": "Welcome to here yo!",
+    "thank you": "Thanks so much la"
 }]

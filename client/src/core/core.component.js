@@ -5,11 +5,12 @@ const coreComponent = {
     template,
     controller: /* @ngInject */ class CoreController {
         static get $inject() {
-            return ['$timeout', '$state', 'METADATA'];
+            return ['$timeout', '$state', '$translate', 'METADATA'];
         }
-        constructor($timeout, $state, METADATA) {
+        constructor($timeout, $state, $translate, METADATA) {
             this.$timeout = $timeout;
-            this.$state = $state
+            this.$state = $state;
+            this.$translate = $translate;
             this.METADATA = METADATA;
         }
         $onInit() {
@@ -20,6 +21,9 @@ const coreComponent = {
         }
         goToClient() {
             this.$state.go('client');
+        }
+        switchLanguage(key) {
+            this.$translate.use(key);
         }
     }
 };

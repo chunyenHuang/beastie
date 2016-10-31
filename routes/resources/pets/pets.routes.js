@@ -12,8 +12,12 @@ module.exports = (app) => {
 
     app.route('/pets/:id')
         .all((req, res, next) => {
-            req.collection = req.db.collection(dbCollectionName);
-            next();
+            if(req.params.id == 'template'){
+                Pets.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
         })
         .get(Pets.get)
         .put(Pets.put)

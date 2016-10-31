@@ -119,7 +119,7 @@ fs.readdirSync(authRoutes).forEach((file) => {
 
 // Middlewares
 // app.use(require('./middlewares/deviceAuth'));
-// app.use(require('./routes/middlewares/userAuth'));
+app.use(require('./routes/middlewares/userAuth'));
 
 // Resources
 const routes = path.join(__dirname, '/routes/resources');

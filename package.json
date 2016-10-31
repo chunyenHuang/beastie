@@ -10,23 +10,22 @@
     "NodeJS"
   ],
   "scripts": {
-    "----------": "-----Installation-----",
+    "----------Installation-----------": "",
+    "install:all":"npm i && npm run global && node seeder",
     "preinstall": "",
     "postinstall": "cd client && npm i",
     "reinstall": "npm cache clean && rm -rf node_modules && npm run global && npm install",
-    "global": "npm install -g gulp webpack eslint morgan",
-    "----------": "-----Development-----",
+    "global": "npm install -g gulp webpack eslint",
+    "----------Development----------": "",
     "seeder": "node seeder",
     "dev:front": "NODE_ENV=development node server.js",
     "dev:back": "nodemon server.js",
+    "----------Production----------": "",
+    "beastie": "npm install --production && npm run build && npm start",
+    "build": "webpack --config webpack.dist.config.js",
     "start": "nodemon server.js",
-    "----------": "-----Production-----",
-    "build:front": "webpack --config webpack.dist.config.js",
-    "beastie": "npm install --production",
-    "----------": "-----other-----",
-    "eslint": "eslint --init",
-    "new-component": "gulp component --name [componentName]",
-    "new-module": "gulp odule --name [moduleName]"
+    "----------other----------": "",
+    "eslint": "eslint --init"
   },
   "dependencies": {
     "body-parser": "^1.15.2",

@@ -13,7 +13,7 @@
     "emergencyContact": [{
         "name": "John Huang",
         "relationship": "husband",
-        "phone": [
+        "phones": [
             "6263212768"
         ]
     }],
@@ -34,7 +34,7 @@
     "emergencyContact": [{
         "name": "Steven Chao",
         "relationship": "husband",
-        "phone": [
+        "phones": [
             "6263212768"
         ]
     }],
