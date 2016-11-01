@@ -30,7 +30,7 @@ function resourceConfig(
     };
 
     function transformResponse(data) {
-        return angular.fromJson(data).data;
+        return;
     }
 }
 

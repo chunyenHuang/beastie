@@ -136,7 +136,7 @@ app.use(errorHandler());
 
 // Start Server
 app.listen(app.get('port'), () => {
-    let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
+    const mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 });
 
