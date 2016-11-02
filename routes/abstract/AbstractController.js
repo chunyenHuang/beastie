@@ -40,7 +40,7 @@ module.exports = class AbstractController {
 
     put(req, res) {
         req.body.updatedAt = new Date();
-        req.body.updatedBy = req.currentUser._id;
+        req.body.updatedBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
 
         if (req.body._id) {
             delete req.body._id;
@@ -67,7 +67,7 @@ module.exports = class AbstractController {
 
     post(req, res) {
         req.body.createdAt = new Date();
-        req.body.createdBy = req.currentUser._id;
+        req.body.updatedBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
@@ -91,7 +91,7 @@ module.exports = class AbstractController {
             $set: {
                 isDeleted: true,
                 deletedAt: new Date(),
-                deletedBy: req.currentUser._id
+                deletedBy: (req.currentUser) ? req.currentUser._id : 'dev-test'
             }
         }, {
             upsert: true
