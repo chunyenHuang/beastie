@@ -10,11 +10,15 @@ module.exports = class AbstractController {
             req.query
         );
         query.toArray((err, results) => {
-            if (!err) {
-                res.statusCode = 200;
-                res.json(results);
+            if (!err && results.length > 0) {
+                if (results.length > 0) {
+                    res.statusCode = 200;
+                    res.json(results);
+                } else {
+                    res.sendStatus(404);
+                }
             } else {
-                res.json(results);
+                res.sendStatus(500);
             }
         });
     }
@@ -30,10 +34,10 @@ module.exports = class AbstractController {
                     res.statusCode = 200;
                     res.json(results[0]);
                 } else {
-                    res.send('No Results');
+                    res.sendStatus(404);
                 }
             } else {
-                res.send('No Results');
+                res.sendStatus(500);
             }
         });
     }
@@ -56,26 +60,24 @@ module.exports = class AbstractController {
                 console.log(Object.assign(req.body, {
                     _id: req.params.id
                 }));
-                res.statusCode = 201;
-                res.send();
+                res.sendStatus(204);
             } else {
-                res.statusCode = 500;
-                res.send('Can not update');
+                res.sendStatus(500);
             }
         });
     }
 
     post(req, res) {
         req.body.createdAt = new Date();
-        req.body.updatedBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
+        req.body.createdBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
+        req.body.isDeleted = false;
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
                 res.statusCode = 201;
                 res.json(docsInserted.ops[0]);
             } else {
-                res.statusCode = 500;
-                res.send('Can not update');
+                res.sendStatus(500);
             }
         });
     }
@@ -97,11 +99,9 @@ module.exports = class AbstractController {
             upsert: true
         }, (err) => {
             if (!err) {
-                res.statusCode = 201;
-                res.send('Soft Delete successfully.');
+                res.sendStatus(204);
             } else {
-                res.statusCode = 500;
-                res.send('Can not delete');
+                res.sendStatus(500);
             }
         });
     }

@@ -28,9 +28,9 @@ class PetsController extends AbstractController {
                     description: null,
                     createdAt: null
                 }
-            ],
-            createdAt: null,
-            isDeleted: false
+            ]
+            // createdAt: null,
+            // isDeleted: false
         };
         res.json(template);
     }

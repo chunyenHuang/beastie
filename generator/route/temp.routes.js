@@ -3,20 +3,24 @@ const <%= upCaseName %> = new <%= upCaseName %>Controller;
 const dbCollectionName = '<%= name %>';
 
 module.exports = (app) => {
-    app.route('/<%= name %>')
+    app.route('/<%= name %>?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(<%= upCaseName %>.query);
+        .get(<%= upCaseName %>.query)
+        .post(<%= upCaseName %>.post);
 
-    app.route('/<%= name %>/:id')
+    app.route('/<%= name %>?/:id')
         .all((req, res, next) => {
-            req.collection = req.db.collection(dbCollectionName);
-            next();
+            if(req.params.id == 'template'){
+                <%= upCaseName %>.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
         })
         .get(<%= upCaseName %>.get)
         .put(<%= upCaseName %>.put)
-        .post(<%= upCaseName %>.post)
         .delete(<%= upCaseName %>.delete);
 };

@@ -3,14 +3,15 @@ const Customers = new CustomersController;
 const dbCollectionName = 'customers';
 
 module.exports = (app) => {
-    app.route('/customers')
+    app.route('/customers?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Customers.query);
+        .get(Customers.query)
+        .post(Customers.post);
 
-    app.route('/customers/:id')
+    app.route('/customers?/:id')
         .all((req, res, next) => {
             if(req.params.id == 'template'){
                 Customers.getTemplate(req, res);
@@ -21,6 +22,5 @@ module.exports = (app) => {
         })
         .get(Customers.get)
         .put(Customers.put)
-        .post(Customers.post)
         .delete(Customers.delete);
 };

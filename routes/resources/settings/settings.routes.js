@@ -3,20 +3,20 @@ const Settings = new SettingsController;
 const dbCollectionName = 'settings';
 
 module.exports = (app) => {
-    app.route('/settings')
+    app.route('/settings?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Settings.query);
+        .get(Settings.query)
+        .post(Settings.post);
 
-    app.route('/settings/:id')
+    app.route('/settings?/:id')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
         .get(Settings.get)
         .put(Settings.put)
-        .post(Settings.post)
         .delete(Settings.delete);
 };

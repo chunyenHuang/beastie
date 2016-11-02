@@ -17,7 +17,7 @@
         "----------Development----------": "",
         "seeder": "node seeder",
         "dev:front": "NODE_ENV=development node server.js",
-        "dev:back": "nodemon server.js",
+        "dev:back": "NODE_ENV=dev nodemon server.js",
         "----------Production----------": "",
         "beastie": "npm install --production && npm run build && npm start",
         "build": "webpack --config webpack.dist.config.js",

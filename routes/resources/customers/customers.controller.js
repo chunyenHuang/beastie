@@ -16,13 +16,12 @@ class CustomersController extends AbstractController {
                 name: null,
                 relationship: null,
                 phones: []
-            }],
-            createdAt: null,
-            lastLoginAt: null,
-            isDeleted: false
+            }]
+            // createdAt: null,
+            // lastLoginAt: null,
+            // isDeleted: false
         };
         res.send(template);
-
     }
 }
 

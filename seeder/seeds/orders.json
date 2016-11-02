@@ -9,14 +9,8 @@
     "services": [],
     "inhouseOrders": [],
     "waivers": [],
-    "pictures": {
-        "checkIn": "url",
-        "checkOut": "url"
-    },
     "total": null,
     "isPaid": "cash",
     "notes": null,
-
-    "createdAt": "2016-10-05T07:00:00.000Z",
-    "createdBy": "user_id"
+    "isDeleted": false
 }]
