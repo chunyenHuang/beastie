@@ -118,7 +118,6 @@ fs.readdirSync(authRoutes).forEach((file) => {
 });
 
 // Middlewares
-// app.use(require('./middlewares/deviceAuth'));
 // app.use(require('./routes/middlewares/userAuth'));
 
 // Resources
@@ -136,7 +135,7 @@ app.use(errorHandler());
 
 // Start Server
 app.listen(app.get('port'), () => {
-    const mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
+    let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 });
 
