@@ -18,7 +18,7 @@
 304 Not Modified
 305 Use Proxy
 306 Unused
-307 Temporary Redirect `This is temporarly moved, don't update your bookmarks.`
+307 Temporary Redirect `This is temporary moved, don't update your bookmarks.`
 ## Client Error
 400 Bad Request `Server didn't understand the URL you gave it.`
 401 Unauthorized `Must be authenticated`
@@ -31,9 +31,9 @@
 408 Request Timeout `Browser took too long to request something`
 409 Conflict
 410 Gone
-411 Lengh Required
+411 Length Required
 412 Precondition Failed
-413 Reqeust Entity Too Large
+413 Request Entity Too Large
 415 Unsupported Media Type
 416 Request Range Not Satisfiable
 417 Expectation Failed
