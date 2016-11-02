@@ -43,8 +43,10 @@ module.exports = class AbstractController {
     }
 
     put(req, res) {
-        req.body.updatedAt = new Date();
-        req.body.updatedBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
+        Object.assign(req.body,{
+            updatedAt: new Date(),
+            updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
+        });
 
         if (req.body._id) {
             delete req.body._id;
@@ -57,9 +59,6 @@ module.exports = class AbstractController {
             upsert: true
         }, (err) => {
             if (!err) {
-                console.log(Object.assign(req.body, {
-                    _id: req.params.id
-                }));
                 res.sendStatus(204);
             } else {
                 res.sendStatus(500);
@@ -68,9 +67,11 @@ module.exports = class AbstractController {
     }
 
     post(req, res) {
-        req.body.createdAt = new Date();
-        req.body.createdBy = (req.currentUser) ? req.currentUser._id : 'dev-test';
-        req.body.isDeleted = false;
+        Object.assign(req.body,{
+            isDeleted: false,
+            createdAt: new Date(),
+            createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
+        });
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
