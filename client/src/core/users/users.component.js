@@ -33,7 +33,7 @@ const usersComponent = {
             }, (user) => {
                 console.info(user);
                 user.name = 'ChangedName';
-                user.$update();
+                // user.$update();
             });
         }
     }

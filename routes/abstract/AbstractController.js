@@ -39,6 +39,7 @@ module.exports = class AbstractController {
     }
 
     put(req, res) {
+        console.log(req.body);
         req.body.updatedAt = new Date();
         req.body.updatedBy = req.currentUser._id;
 

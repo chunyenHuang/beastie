@@ -1,9 +1,10 @@
 import coreComponent from './core.component';
 import users from './users';
 
+
 const coreModule = angular
     .module('beastie.core', [
-        users
+        users,
     ])
     .component('core', coreComponent)
     .config(($stateProvider) => {
