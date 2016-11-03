@@ -21,16 +21,20 @@ function resourceConfig(
         },
         save: {
             method: 'POST',
-            transformResponse
+            transformSend
         },
         update: {
             method: 'PUT',
-            transformResponse
+            transformSend
         }
     };
 
+    function transformSend(data){
+        return angular.toJson(data);
+    }
+
     function transformResponse(data) {
-        return angular.fromJson(data).data;
+        return angular.fromJson(data);
     }
 }
 

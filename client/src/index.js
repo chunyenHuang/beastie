@@ -38,7 +38,7 @@ angular
         $urlRouterProvider.otherwise('/');
     })
     .config(themeConfig)
-    // .config(resourceConfig)
+    .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
     .constant('METADATA', METADATA);

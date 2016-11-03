@@ -13,10 +13,10 @@ class OrdersController extends AbstractController {
             // customer checkin in client device
             checkInAt: null,
             // select services
-            services: [],
+            services: null,
             total: null,
             // select inhouseOrders
-            inhouseOrders: [],
+            inhouseOrders: null,
             // special conditions
             waivers: [],
             // customer pay and admin manual closes order.

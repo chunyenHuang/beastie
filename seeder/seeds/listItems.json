@@ -90,6 +90,7 @@
     "type": "inhouseOrders",
     "items": [{
         "type": "",
+        "multiple": false,
         "name": "schedule",
         "zhName": "工作時間",
         "subItems": [{
@@ -101,6 +102,7 @@
         }]
     }, {
         "type": "cut",
+        "multiple": false,
         "name": "tool",
         "zhName": "工具",
         "subItems": [{
@@ -112,6 +114,7 @@
         }]
     }, {
         "type": "cut",
+        "multiple": false,
         "name": "ear",
         "zhName": "耳朵",
         "subItems": [{
@@ -135,6 +138,7 @@
         }]
     }, {
         "type": "cut",
+        "multiple": false,
         "name": "tail",
         "zhName": "尾巴",
         "subItems": [{
@@ -149,6 +153,7 @@
         }]
     }, {
         "type": "wash",
+        "multiple": false,
         "name": "wash",
         "zhName": "洗澡",
         "subItems": [{
@@ -163,12 +168,16 @@
         }]
     }, {
         "type": "extra",
-        "name": "drop-medicine",
-        "zhName": "點藥"
-    }, {
-        "type": "extra",
-        "name": "tooth brush",
-        "zhName": "刷牙"
+        "multiple": true,
+        "name": "extra",
+        "zhName": "其他",
+        "subItems": [{
+            "name": "drop-medicine",
+            "zhName": "點藥"
+        }, {
+            "name": "tooth brush",
+            "zhName": "刷牙"
+        }]
     }],
     "isDeleted": false
 }]
