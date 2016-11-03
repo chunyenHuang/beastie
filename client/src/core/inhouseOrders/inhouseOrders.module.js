@@ -11,10 +11,6 @@ const inhouseOrdersModule = angular
             .state('inhouseOrders', {
                 url: '/inhouseOrders?order_id',
                 component: 'inhouseOrders'
-            })
-            .state('inhouseOrdersEdit', {
-                url: '/inhouseOrdersEdit',
-                component: 'inhouseOrdersEdit'
             });
     })
     .name;

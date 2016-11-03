@@ -22,6 +22,21 @@ const listItemsComponent = {
             this.$stateParams = $stateParams;
             this.ListItems = ListItems;
         }
+
+        $onInit(){
+            this.ListItems.query({}, (listItems)=>{
+                this.listItems = listItems;
+                console.log(this.listItems);
+            });
+        }
+
+        save(list){
+            list.$update({
+                id: list._id
+            }, (res)=>{
+                console.log(res);
+            });
+        }
     }
 };
 export default listItemsComponent;

@@ -1,6 +1,6 @@
 [{
     "type": "roles",
-    "itmes": [{
+    "items": [{
         "name": "admin",
         "description": "can do anything yo"
     }, {
@@ -57,7 +57,7 @@
     "isDeleted": false
 }, {
     "type": "breeds",
-    "itmes": [{
+    "items": [{
         "name": "mix",
         "zhName": "米克斯",
         "img": "url"
@@ -89,7 +89,7 @@
 }, {
     "type": "inhouseOrders",
     "items": [{
-        "type": "",
+        "type": "time",
         "multiple": false,
         "name": "schedule",
         "zhName": "工作時間",

@@ -10,7 +10,7 @@ const listItemsModule = angular
         $stateProvider
             .state('listItems', {
                 url: '/listItems',
-                component: 'listItems'
+                template: '<list-items layour="column" flex></list-items>'
             });
     })
     .name;
