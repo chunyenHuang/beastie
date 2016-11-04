@@ -12,7 +12,7 @@ function resourceConfig(
         query: {
             method: 'GET',
             isArray: true,
-            cache: true,
+            cache: false,
             transformResponse
         },
         delete: {

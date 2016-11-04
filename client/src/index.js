@@ -17,6 +17,8 @@ import languageConfig from './languageConfig';
 import iconConfig from './iconConfig';
 import METADATA from './METADATA';
 
+// Shared
+
 // entry modules
 import core from './core';
 import client from './client';
@@ -33,6 +35,7 @@ angular
         core,
         client
     ])
+    .constant('METADATA', METADATA)
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
         $urlRouterProvider.otherwise('/');
@@ -41,4 +44,19 @@ angular
     .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
-    .constant('METADATA', METADATA);
+
+    .filter('orderObjectBy', () => {
+        return (items, field, reverse) => {
+            const filtered = [];
+            angular.forEach(items, (item) => {
+                filtered.push(item);
+            });
+            filtered.sort((a, b) => {
+                return (a[field] > b[field] ? 1 : -1);
+            });
+            if (reverse) {
+                filtered.reverse();
+            }
+            return filtered;
+        };
+    });

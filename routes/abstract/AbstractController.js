@@ -78,6 +78,7 @@ module.exports = class AbstractController {
                 res.statusCode = 201;
                 res.json(docsInserted.ops[0]);
             } else {
+                console.log(err);
                 res.sendStatus(500);
             }
         });

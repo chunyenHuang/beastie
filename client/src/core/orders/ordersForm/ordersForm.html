@@ -1,0 +1,76 @@
+<div layout="column" flex id="orders">
+    <div layout="row" class="md-padding" flex="none">
+        <h1>Orders</h1>
+        <div flex></div>
+        <h1 ng-show="$ctrl.order.scheduleAt">
+            <!-- {{$ctrl.getDayName($ctrl.order.scheduleAt)}},
+            {{$ctrl.order.scheduleAt.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}}
+            @
+            {{$ctrl.order.scheduleAt.toLocaleDateString()}} -->
+            {{$ctrl.order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}
+        </h1>
+        <div flex></div>
+        <!-- <md-button ng-click="$ctrl.order.isCanceled =! $ctrl.order.isCanceled" class="md-warn md-raised">
+            <span ng-show="$ctrl.order.isCanceled">
+                re-open order
+            </span>
+            <span ng-show="!$ctrl.order.isCanceled">
+                cancel order
+            </span>
+        </md-button> -->
+        <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
+        <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">submit</md-button>
+    </div>
+    <div layout="row" class="md-padding" layout-align="start start">
+        <div layout="column" flex>
+            <md-calendar ng-model="$ctrl.order.scheduleAt" md-min-date="$ctrl.scheduleDate.min" md-max-date="$ctrl.scheduleDate.max" md-date-filter="$ctrl.noTuesday" ng-change="$ctrl.setNewHour()"></md-calendar>
+        </div>
+        <div layout="column" flex>
+            <!-- <span>Schedule At:</span>
+            <md-datepicker ng-model="$ctrl.order.scheduleAt" md-min-date="$ctrl.scheduleDate.min" md-max-date="$ctrl.scheduleDate.max" md-date-filter="$ctrl.noTuesday" md-placeholder="Schedule At:" ng-change="$ctrl.setNewHour()"></md-datepicker> -->
+            <div layout="row" id="time-picker">
+                <div layout="column">
+                    <md-icon md-svg-src="arrow-up-drop-circle-outline" ng-click="$ctrl.changeTime('hour',1)"></md-icon>
+                    <h3>{{$ctrl.scheduleTime[0]}}</h3>
+                    <md-icon md-svg-src="arrow-down-drop-circle-outline" ng-click="$ctrl.changeTime('hour',-1)"></md-icon>
+                </div>
+                <div layout="column">
+                    <md-icon md-svg-src="arrow-up-drop-circle-outline" ng-click="$ctrl.changeTime('minute',15)"></md-icon>
+                    <h3>{{$ctrl.displayWithZero($ctrl.scheduleTime[1])}}</h3>
+                    <md-icon md-svg-src="arrow-down-drop-circle-outline" ng-click="$ctrl.changeTime('minute',-15)"></md-icon>
+                </div>
+                <div layout="column">
+                    <md-button ng-click="$ctrl.scheduleTimeIsAm = !$ctrl.scheduleTimeIsAm; $ctrl.setNewHour()">
+                        <span ng-show="$ctrl.scheduleTimeIsAm">AM</span>
+                        <span ng-show="!$ctrl.scheduleTimeIsAm">PM</span>
+                    </md-button>
+                </div>
+            </div>
+        </div>
+        <div layout="column" flex>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Services</label>
+                <md-select ng-model="$ctrl.order.services">
+                    <md-option ng-repeat="serivce in $ctrl.services" ng-value="serivce">
+                        {{serivce.name}} {{serivce.zhName}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex>
+                <label>Notes</label>
+                <textarea ng-model="$ctrl.order.notes" md-maxlength="300" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+        </div>
+    </div>
+    <md-content layout="column" class="orders-showpet" flex>
+        <div layout="row" class="md-padding" ng-repeat="pet in $ctrl.pets" ng-click="$ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]" flex="none">
+            <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}"></md-checkbox>
+            <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/>
+            {{pet.name}}
+            {{pet.sex}}
+            {{pet.breed}}
+            {{pet.color}}
+        </div>
+    </md-content>
+</div>

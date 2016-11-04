@@ -11,6 +11,8 @@ const <%= name %>Module = angular
             .state('<%= name %>', {
                 url: '/<%= name %>',
                 component: '<%= name %>'
+                // template: ''
+
             });
     })
     .name;

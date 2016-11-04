@@ -95,10 +95,14 @@
         "zhName": "工作時間",
         "subItems": [{
             "name": "normal",
-            "zhName": "正常"
+            "zhName": "正常",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "rush",
-            "zhName": "加急"
+            "zhName": "加急",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }, {
         "type": "cut",
@@ -106,11 +110,20 @@
         "name": "tool",
         "zhName": "工具",
         "subItems": [{
-            "name": "4FC"
+            "name": "4FC",
+            "zhName": "4FC",
+            "isDeleted": false,
+            "isActivated": true
         }, {
-            "name": "5FC"
+            "name": "5FC",
+            "zhName": "5FC",
+            "isDeleted": false,
+            "isActivated": true
         }, {
-            "name": "7FC"
+            "name": "7FC",
+            "zhName": "7FC",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }, {
         "type": "cut",
@@ -119,22 +132,34 @@
         "zhName": "耳朵",
         "subItems": [{
             "name": "long",
-            "zhName": "長"
+            "zhName": "長",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "mid-long",
-            "zhName": "中長"
+            "zhName": "中長",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "short",
-            "zhName": "短"
+            "zhName": "短",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "flat",
-            "zhName": "平"
+            "zhName": "平",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "round",
-            "zhName": "圓"
+            "zhName": "圓",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "trim",
-            "zhName": "修"
+            "zhName": "修",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }, {
         "type": "cut",
@@ -143,13 +168,19 @@
         "zhName": "尾巴",
         "subItems": [{
             "name": "short",
-            "zhName": "短"
+            "zhName": "短",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "half",
-            "zhName": "半"
+            "zhName": "半",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "trim",
-            "zhName": "修"
+            "zhName": "修",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }, {
         "type": "wash",
@@ -158,13 +189,19 @@
         "zhName": "洗澡",
         "subItems": [{
             "name": "tea shampoo",
-            "zhName": "茶樹精油"
+            "zhName": "茶樹精油",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "oatmeal shampoo",
-            "zhName": "桂格燕麥"
+            "zhName": "桂格燕麥",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "white shampoo",
-            "zhName": "白膠"
+            "zhName": "白膠",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }, {
         "type": "extra",
@@ -173,10 +210,14 @@
         "zhName": "其他",
         "subItems": [{
             "name": "drop-medicine",
-            "zhName": "點藥"
+            "zhName": "點藥",
+            "isDeleted": false,
+            "isActivated": true
         }, {
             "name": "tooth brush",
-            "zhName": "刷牙"
+            "zhName": "刷牙",
+            "isDeleted": false,
+            "isActivated": true
         }]
     }],
     "isDeleted": false

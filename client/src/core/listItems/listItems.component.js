@@ -15,7 +15,7 @@ const listItemsComponent = {
         constructor(
             $log, $timeout, $state, $stateParams,
             ListItems
-         ) {
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
@@ -23,19 +23,14 @@ const listItemsComponent = {
             this.ListItems = ListItems;
         }
 
-        $onInit(){
-            this.ListItems.query({}, (listItems)=>{
+        $onInit() {
+            this.ListItems.query({}, (listItems) => {
                 this.listItems = listItems;
                 console.log(this.listItems);
             });
         }
-
-        save(list){
-            list.$update({
-                id: list._id
-            }, (res)=>{
-                console.log(res);
-            });
+        go(list) {
+            this.$state.go(this.$state.current.name + '.' + list.type);
         }
     }
 };

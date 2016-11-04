@@ -1,90 +1,12 @@
 <div layout="column" flex layout-fill id="list-items">
-    <!-- <div layout="row">
-        <h1>List Items</h1>
-        <div flex></div>
-    </div> -->
     <div layout="row" flex>
         <md-content flex="15">
             <md-list flex>
-                <!-- <md-subheader class="md-no-sticky">3 line item (with hover)</md-subheader> -->
-                <md-list-item class="md-1-line" ng-repeat="list in $ctrl.listItems" ng-click="$ctrl.selectedList = list; $ctrl.selectedItem = null">
-                    <!-- <img ng-src="{{item.face}}?{{$index}}" class="md-avatar" alt="{{item.who}}"/>
-                    <div class="md-list-item-text" layout="column">
-                        <h3>{{ item.who }}</h3>
-                        <h4>{{ item.what }}</h4>
-                        <p>{{ item.notes }}</p>
-                    </div> -->
+                <md-list-item class="md-1-line" ng-repeat="list in $ctrl.listItems" ng-click="$ctrl.go(list)">
                     {{list.type}}
                 </md-list-item>
             </md-list>
         </md-content>
-        <div layout="column" flex>
-            <div layout="row" layout-align="center center" layout-padding ng-show="$ctrl.selectedList">
-                <div class="">
-                    {{$ctrl.selectedList.type}}
-                </div>
-                <div flex></div>
-                <md-button ng-click="$ctrl.save($ctrl.selectedList)" class="md-primary md-raised">
-                    save
-                </md-buttom>
-            </div>
-            <div layout="row" flex>
-                <md-content layout="column" ng-show="$ctrl.selectedList.type == 'inhouseOrders'" flex layout-padding>
-                    <div layout="row"
-                        ng-click="$ctrl.selectedItem = item"
-                        ng-class="{
-                            'list-item': $ctrl.selectedItem != item,
-                            'hightlight': $ctrl.selectedItem == item
-                        }"
-                        ng-repeat="item in $ctrl.selectedList.items" layout-align="space-between start" flex="none">
-                        <md-input-container class="md-block">
-                            <label>{{item.type}}</label>
-                            <md-select ng-model="item.type" ng-disabled="$ctrl.selectedItem != item">
-                                <md-option value="time">
-                                    time
-                                </md-option>
-                                <md-option value="cut">
-                                    cut
-                                </md-option>
-                                <md-option value="wash">
-                                    wash
-                                </md-option>
-                                <md-option value="extra">
-                                    extra
-                                </md-option>
-                                <md-option value="other">
-                                    other
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>name</label>
-                            <input type="text" ng-disabled="$ctrl.selectedItem != item" ng-model="item.name" aria-label="{{list.type}}-{{item.type}}-name">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>zhName</label>
-                            <input type="text" ng-disabled="$ctrl.selectedItem != item" ng-model="item.zhName" aria-label="{{list.type}}-{{item.type}}-zhName">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <md-checkbox ng-disabled="$ctrl.selectedItem != item" ng-model="item.multiple" aria-label="{{list.type}}-{{item.type}}-multiple">
-                                allow multiple
-                            </md-checkbox>
-                        </md-input-container>
-                    </div>
-                </md-content>
-                <md-content layout="column" flex="50" layout-padding >
-                    <div layout="row" class="sub-items" ng-repeat="subItem in $ctrl.selectedItem.subItems">
-                        <md-input-container class="md-block">
-                            <label>name</label>
-                            <input type="text" ng-model="subItem.name" aria-label="{{list.type}}-{{item.type}}-{{subItem.name}}-name">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>zhName</label>
-                            <input type="text" ng-model="subItem.zhName" aria-label="{{list.type}}-{{item.type}}-{{subItem.name}}-zhName">
-                        </md-input-container>
-                    </div>
-                </md-content>
-            </div>
-        </div>
+        <div ui-view layout="column" flex>Select list to edit</div>
     </div>
 </div>

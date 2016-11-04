@@ -8,12 +8,17 @@ const <%= name %>Component = {
     },
     controller: /* @ngInject */ class <%= upCaseName %>Controller {
         static get $inject() {
-            return ['$log', '$timeout', '$scope'];
+            return [
+                '$log', '$timeout', '$state', '$stateParams'
+            ];
         }
-        constructor($log, $timeout, $scope) {
+        constructor(
+            $log, $timeout, $state, $stateParams
+         ) {
             this.$log = $log;
             this.$timeout = $timeout;
-            this.$scope = $scope;
+            this.$state = $state;
+            this.$stateParams = $stateParams;
         }
     }
 };

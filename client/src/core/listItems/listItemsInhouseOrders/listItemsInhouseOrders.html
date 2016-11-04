@@ -1,0 +1,120 @@
+<div layout="column" flex>
+    <div layout="row" layout-align="center center" layout-padding class="listItems-header">
+        <div class="">
+            <h3>
+                In-House Orders
+            </h3>
+        </div>
+        <div flex></div>
+        <md-button ng-click="$ctrl.reset()" class="md-raised">
+            reset
+        </md-button>
+        <md-button ng-click="$ctrl.update()" class="md-primary md-raised">
+            update
+        </md-button>
+    </div>
+    <div layout="row" flex>
+        <md-content layout="column" flex layout-padding>
+            <md-button ng-click="$ctrl.addNewItem()">
+                <md-icon md-svg-src="plus"></md-icon>
+                <span>
+                    Add a new Item
+                </span>
+                <md-icon md-svg-src="plus"></md-icon>
+                <md-tooltip>
+                    <span>
+                        Add a new Item
+                    </span>
+                </md-tooltip>
+            </md-button>
+            <div
+                layout="row"
+                ng-click="$ctrl.selectedItem = item"
+                ng-class="{
+                            'list-item': $ctrl.selectedItem != item,
+                            'hightlight': $ctrl.selectedItem == item
+                        }"
+                ng-repeat="item in $ctrl.listItem.items"
+                layout-align="space-between start"
+                flex="none">
+                <md-input-container class="md-block">
+                    <label>Type</label>
+                    <md-select ng-model="item.type" ng-disabled="$ctrl.selectedItem != item">
+                        <md-option value="time">
+                            time
+                        </md-option>
+                        <md-option value="cut">
+                            cut
+                        </md-option>
+                        <md-option value="wash">
+                            wash
+                        </md-option>
+                        <md-option value="extra">
+                            extra
+                        </md-option>
+                        <md-option value="other">
+                            other
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>name</label>
+                    <input type="text" ng-disabled="$ctrl.selectedItem != item" ng-model="item.name" aria-label="{{list.type}}-{{item.type}}-name">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>zhName</label>
+                    <input type="text" ng-disabled="$ctrl.selectedItem != item" ng-model="item.zhName" aria-label="{{list.type}}-{{item.type}}-zhName">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <md-checkbox ng-disabled="$ctrl.selectedItem != item" ng-model="item.multiple" aria-label="{{list.type}}-{{item.type}}-multiple">
+                        <span>
+                            multiple?
+                        </span>
+                    </md-checkbox>
+                </md-input-container>
+            </div>
+        </md-content>
+        <md-content layout="column" flex="50" layout-padding>
+            <md-button ng-click="$ctrl.addNewSubItem()" class="" ng-show="$ctrl.selectedItem">
+                <md-icon md-svg-src="plus"></md-icon>
+                <span>
+                    Add a new SubItem
+                </span>
+                <md-icon md-svg-src="plus"></md-icon>
+                <md-tooltip>
+                    <span>
+                        Add subitem
+                    </span>
+                </md-tooltip>
+            </md-button>
+            <div layout="row" class="sub-items" ng-repeat="subItem in $ctrl.selectedItem.subItems" ng-show="!subItem.isDeleted" flex="none">
+                <md-input-container class="md-block">
+                    <label>name</label>
+                    <input type="text" ng-model="subItem.name" aria-label="{{list.type}}-{{item.type}}-{{subItem.name}}-name">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>zhName</label>
+                    <input type="text" ng-model="subItem.zhName" aria-label="{{list.type}}-{{item.type}}-{{subItem.name}}-zhName">
+                </md-input-container>
+                <div layout="column" flex>
+                    <md-switch ng-model="subItem.isActivated" aria-label="isActivated" ng-true-value="true" ng-false-value="false">
+                        <md-tooltip>
+                            <span>
+                                Activate
+                            </span>
+                        </md-tooltip>
+                    </md-switch>
+                </div>
+                <md-button ng-click="subItem.isDeleted = true" class="md-icon-button md-warn md-raised md-hue-2" aria-label="delete">
+                    <md-icon md-svg-src="delete">
+                        <md-tooltip>
+                            <span>
+                                Delete
+                            </span>
+                        </md-tooltip>
+                    </md-switch>
+                </md-button>
+            </div>
+        </md-content>
+    </div>
+</div>

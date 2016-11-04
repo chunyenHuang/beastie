@@ -1,0 +1,34 @@
+<div id="order-list">
+    <div ng-repeat="order in $ctrl.orders | orderObjectBy:'scheduleAt'">
+        <md-card>
+            <md-card-title>
+                <md-card-title-media>
+                    <div class="md-media-lg card-media">
+                        <img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" alt="Washed Out">
+                    </div>
+                </md-card-title-media>
+                <md-card-title-text>
+                    <span class="md-headline">
+                        {{order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}
+                    </span>
+                    <span class="md-subhead">
+                        {{$ctrl.pets[order.pet_id].name}}, {{order.services.name}} {{order.services.zhName}}, price: ${{order.services.price}}
+                    </span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="end center">
+                <div flex></div>
+                <md-button ng-click="$ctrl.waivers()">waivers</md-button>
+                <md-button ng-click="$ctrl.edit(order._id)">Edit</md-button>
+                <md-button ng-click="$ctrl.cancel()">cancel</md-button>
+                <md-button ng-click="$ctrl.notShowup()">not Showup</md-button>
+                <md-button ng-click="$ctrl.checkIn(order)">checkIn</md-button>
+                <md-button ng-disabled="!order.checkIn" ng-click="$ctrl.inhouseOdrer(order._id)">Inhouse Order</md-button>
+                <md-button ng-disabled="!order.checkIn" ng-click="$ctrl.paid()">paid</md-button>
+                <md-button ng-disabled="!order.checkIn && !order.isPaid" ng-click="$ctrl.checkout()">checkout</md-button>
+                <div flex></div>
+            </md-card-actions>
+        </md-card>
+    </div>
+
+</div>

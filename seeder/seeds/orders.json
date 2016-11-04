@@ -10,7 +10,7 @@
     "inhouseOrders": [],
     "waivers": [],
     "total": null,
-    "isPaid": "cash",
+    "isPaid": null,
     "notes": null,
     "isDeleted": false
 }]

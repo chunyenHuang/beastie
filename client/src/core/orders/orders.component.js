@@ -9,18 +9,20 @@ const ordersComponent = {
     controller: /* @ngInject */ class OrdersController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
-                'Orders'];
+                '$log', '$timeout', '$state', '$stateParams'
+            ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
-            Orders
-         ) {
+            $log, $timeout, $state, $stateParams
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.Orders = Orders;
+        }
+
+        $onInit() {
+            this.$state.go('orders.list');
         }
     }
 };
