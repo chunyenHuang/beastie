@@ -1,19 +1,14 @@
 // Modules
 const express = require('express');
 const compression = require('compression');
-// const session = require('express-session');
-// const MongoStore = require('connect-mongo')(session);
 const mongodb = require('mongodb');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const errorHandler = require('errorhandler');
-// const lusca = require('lusca');
 const dotenv = require('dotenv');
-// const flash = require('express-flash');
 const path = require('path');
-// const multer = require('multer');
 const fs = require('fs');
 dotenv.load({
     path: '.env.file'
@@ -24,11 +19,10 @@ const port = process.env.PORT || 3000;
 const app = express();
 app.set('port', port);
 app.use(compression());
-// app.use(logger('dev'));
 const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
     flags: 'a'
 });
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'dev') {
     app.use(logger('dev'));
 } else {
     app.use(logger('combined', {
@@ -43,19 +37,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(expressValidator());
 
-// MongoDB
-// app.use(session({
-//     resave: true,
-//     saveUninitialized: true,
-//     secret: process.env.SESSION_SECRET,
-//     store: new MongoStore({
-//         url: process.env.MONGODB_URI || process.env.MONGOLAB_URI,
-//         autoReconnect: true
-//     })
-// }));
-
 const dbClient = mongodb.MongoClient;
-// const ObjectId = mongodb.ObjectId;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
 app.use((req, res, next) => {
@@ -83,9 +65,6 @@ if (process.env.NODE_ENV == 'development') {
         contentBase: path.join(__dirname, 'client/src/'),
         quiet: true,
         noInfo: true,
-        // headers: {
-        //     'X-Custom-Header': 'yes'
-        // },
         stats: {
             colors: true,
             hash: false,
@@ -123,10 +102,7 @@ fs.readdirSync(authRoutes).forEach((file) => {
 // Resources
 const routes = path.join(__dirname, '/routes/resources');
 fs.readdirSync(routes).forEach((file) => {
-    // console.log(file);
     const route = path.join(routes, file);
-    // require(route)(app);
-    // app.use('/'+file, require(route));
     require(route)(app);
 });
 

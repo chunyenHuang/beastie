@@ -22,7 +22,5 @@
     "isPaid": "cash",
     "checkOutAt": null,
     "notes": null,
-
-    "createdAt": "2016-10-05T07:00:00.000Z",
-    "createdBy": "user_id"
+    "isDeleted": false
 }]

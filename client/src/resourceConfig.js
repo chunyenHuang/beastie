@@ -16,12 +16,22 @@ function resourceConfig(
             method: 'DELETE'
         },
         save: {
-            method: 'POST'
+            method: 'POST',
+            transformSend
         },
         update: {
-            method: 'PUT'
+            method: 'PUT',
+            transformSend
         }
     };
+
+    function transformSend(data){
+        return angular.toJson(data);
+    }
+
+    function transformResponse(data) {
+        return angular.fromJson(data);
+    }
 }
 
 export default resourceConfig;

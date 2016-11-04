@@ -19,32 +19,32 @@ fs.readdirSync(routePath).forEach((file) => {
     initDatas[filename] = require(route);
     routes.push(filename);
 });
-console.log(routes);
 
 dbClient.connect(dbUrl, (err, db) => {
-    (function insert(index){
-        if(index==routes.length){
+    (function insert(index) {
+        if (index == routes.length) {
             return db.close();
         }
         const collection = routes[index];
-        console.log(collection)
-        var count=0;
+        var count = 0;
         db.collection(collection).remove({}, (err) => {
             if (!err) {
                 initDatas[collection].forEach((data) => {
                     if (data._id) {
                         data._id = ObjectId(data._id);
                     }
-                    db.collection(collection).update(data,data,{upsert:true}, (err) => {
+                    db.collection(collection).update(data, data, {
+                        upsert: true
+                    }, (err) => {
                         count++;
-                        if(err){
+                        if (err) {
                             console.log(err);
                         }
-                        
-                        if(count == initDatas[collection].length){
-                            index++
+
+                        if (count == initDatas[collection].length) {
+                            index++;
                             insert(index);
-                        }              
+                        }
                     });
                 });
             } else {

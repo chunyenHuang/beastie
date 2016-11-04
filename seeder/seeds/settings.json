@@ -21,7 +21,8 @@
         "Friday": {},
         "Saturday": {},
         "Sunday": {}
-    }
+    },
+    "isDeleted": false
 }, {
     "type": "theme",
     "color": {
@@ -29,9 +30,11 @@
         "accent": "#009f66",
         "warning": "#ffcf00",
         "danger": "##fb002d"
-    }
+    },
+    "isDeleted": false
 }, {
     "type": "message",
     "welcome": "Welcome to here yo!",
-    "thank you": "Thanks so much la"
+    "thank you": "Thanks so much la",
+    "isDeleted": false
 }]

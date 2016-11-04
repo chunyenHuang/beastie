@@ -1,12 +1,13 @@
 [{
     "customer_id": "58152d8bb22d21700cb8d85f",
-    "signatures": [{
-        "type": "registration",
-        "path": "path url to registration",
-        "createdAt": "2016-10-05T07:00:00.000Z"
-    }, {
-        "type": "Matted",
-        "path": "path url to Matted",
-        "createdAt": "2016-10-05T07:00:00.000Z"
-    }]
+    "order_id": null,
+    "type": "registration",
+    "signatures": "dataUrl",
+    "isDeleted": false
+}, {
+    "customer_id": "58152d8bb22d21700cb8d85f",
+    "order_id": null,
+    "type": "matted",
+    "signatures": "dataUrl",
+    "isDeleted": false
 }]

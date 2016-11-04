@@ -1,0 +1,39 @@
+<md-content layout="column" id="inhouse-orders">
+    <h1>Inhouse Orders</h1>
+    <md-divider></md-divider>
+    <div ng-repeat="type in $ctrl.list" >
+         {{type.zhName}} {{type.name}}
+        <div layout="row">
+            <md-button
+                ng-repeat="item in type.subItems"
+                ng-click="$ctrl.assignToOrder(type.name, item)"
+                ng-class="{
+                    'md-primary': $ctrl.isInOrder(type.name, item),
+                    'md-raised': $ctrl.isInOrder(type.name, item)
+                }">
+                {{item.zhName}} {{item.name}}
+            </md-button>
+        </div>
+    </div>
+    <div layout="row">
+        <md-button ng-click="$ctrl.submit()">submit</md-button>
+        <md-button ng-click="$ctrl.reset()">reset</md-button>
+    </div>
+
+    <md-card>
+        <div>
+            order
+        </div>
+        <div class="">
+            <div ng-repeat="(key, items) in $ctrl.format">
+                {{key}}:
+                <span ng-repeat="item in items">
+                    {{item.name}} {{item.zhName}}
+                    <span ng-hide="$index==(items.length-1)">
+                        ,
+                    </span>
+                </span>
+            </div>
+        </div>
+    </md-card>
+</md-content>

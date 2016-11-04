@@ -9,7 +9,8 @@ class CustomerCheckInController extends AbstractController {
         });
         query.toArray((err, results) => {
             if (err || results.length === 0) {
-                res.sendStatus(403);
+                res.statusCode = 500;
+                res.send('Can not find Customer');
             } else {
                 customer = results[0];
                 req.collection.update({

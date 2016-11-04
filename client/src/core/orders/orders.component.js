@@ -1,27 +1,27 @@
-import template from './<%= name %>.html';
-import './<%= name %>.styl';
+import template from './orders.html';
+import './orders.styl';
 
-const <%= name %>Component = {
+const ordersComponent = {
     template,
     bindings: {
 
     },
-    controller: /* @ngInject */ class <%= upCaseName %>Controller {
+    controller: /* @ngInject */ class OrdersController {
         static get $inject() {
             return [
                 '$log', '$timeout', '$state', '$stateParams',
-                '<%= upCaseName %>'];
+                'Orders'];
         }
         constructor(
             $log, $timeout, $state, $stateParams,
-            <%= upCaseName %>
+            Orders
          ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.<%= upCaseName %> = <%= upCaseName %>;
+            this.Orders = Orders;
         }
     }
 };
-export default <%= name %>Component;
+export default ordersComponent;
