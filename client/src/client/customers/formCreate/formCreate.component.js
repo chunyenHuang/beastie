@@ -19,22 +19,26 @@ const formCreateComponent = {
         }
         
         $onInit(){
+            this.Customers.get({
+                id: 'template'
+            }, (template)=>{
+               this.inputForm = template;
+               console.log(this.inputForm);
+            });
+            
+            
             const test_id = '58152d8bb22d21700cb8d85f';
             this.Customers.get({
                 id: test_id
             }, (customer)=>{
                // execute 
                console.log(customer);
-               Object.assign(customer, {
-                   firstname: 'John',
-                   lastname: 'Huang'
-               });
-               console.log(this.Customers)
+
+               
                this.Customers.update({
                    id: test_id
                }, customer, ()=>{
-                    this.Customers.query({
-                    }, (customers)=>{
+                    this.Customers.query({}, (customers)=>{
                        // execute 
                        console.log(customers);
                     });
