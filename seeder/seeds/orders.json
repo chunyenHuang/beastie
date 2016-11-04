@@ -2,15 +2,30 @@
     "customer_id": "58152d8bb22d21700cb8d85f",
     "pet_id": "58152eddb1d4c67466686b7c",
     "scheduleAt": "2016-10-05T07:00:00.000Z",
+    
     "isCanceled": false,
     "notShowup": false,
+    
     "checkInAt": null,
-    "checkOutAt": null,
+    
     "services": [],
+    "total": null,
+
     "inhouseOrders": [],
     "waivers": [],
+<<<<<<< HEAD
     "total": null,
     "isPaid": null,
+=======
+    
+    "pictures": {
+        "checkIn": "url",
+        "checkOut": "url"
+    },
+    
+    "isPaid": "cash",
+    "checkOutAt": null,
+>>>>>>> 753f5b293f7b2e00cd2e4fc0bf5215f79173c5e9
     "notes": null,
     "isDeleted": false
 }]

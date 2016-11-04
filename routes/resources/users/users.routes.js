@@ -13,6 +13,7 @@ module.exports = (app) => {
 
     app.route('/users?/:id')
         .all((req, res, next) => {
+            // /users/template
             if(req.params.id == 'template'){
                 Users.getTemplate(req, res);
             } else {

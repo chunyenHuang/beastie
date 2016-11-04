@@ -3,11 +3,10 @@ function resourceConfig(
 ) {
     'ngInject';
     // Configure default resource actions.
-    $resourceProvider.defaults.stripTrailingSlashes = true;
+    // $resourceProvider.defaults.stripTrailingSlashes = true;
     $resourceProvider.defaults.actions = {
         get: {
-            method: 'GET',
-            transformResponse
+            method: 'GET'
         },
         query: {
             method: 'GET',
@@ -16,8 +15,7 @@ function resourceConfig(
             transformResponse
         },
         delete: {
-            method: 'DELETE',
-            transformResponse
+            method: 'DELETE'
         },
         save: {
             method: 'POST',

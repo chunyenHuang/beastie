@@ -1,0 +1,15 @@
+<table class="keypad">
+    <tr ng-repeat="item in $ctrl.keypadItems">
+        <td ng-repeat="num in item">
+            <md-button
+                md-no-ink
+                ng-disabled="$ctrl.isLimit()"
+                class="md-fab"
+                aria-label="{{num}}"
+                md-ripple-size="full"
+                ng-click='$ctrl.keyPress(num)'>
+                {{num}}
+            </md-button>
+        </td>
+    </tr>
+</table>
