@@ -10,6 +10,7 @@ class PetsController extends AbstractController {
             color: null,
             weight: null,
             sex: null,
+            isAllowPhoto: true,
             previousHistory: [],
             vaccinations: [
                 {

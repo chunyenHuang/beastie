@@ -1,17 +1,4 @@
 [{
-    "type": "roles",
-    "items": [{
-        "name": "admin",
-        "description": "can do anything yo"
-    }, {
-        "name": "manager",
-        "description": "maybe can do anything yo"
-    }, {
-        "name": "client",
-        "description": "Client device login"
-    }],
-    "isDeleted": false
-}, {
     "type": "services",
     "items": [{
         "name": "Wash(large)",
@@ -82,8 +69,13 @@
 }, {
     "type": "vaccinations",
     "items": [{
-        "name": "rabbit",
-        "zhName": "狂犬病"
+        "name": "Rabbit",
+        "zhName": "狂犬病",
+        "description": "",
+        "period": [1,0],
+        "allowance": 1,
+        "isActivated": true,
+        "isDeleted": false
     }],
     "isDeleted": false
 }, {

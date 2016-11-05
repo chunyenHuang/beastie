@@ -52,13 +52,13 @@ const ordersListComponent = {
         }
 
         edit(order_id) {
-            this.$state.go('orders.form', {
+            this.$state.go('core.orders.form', {
                 order_id: order_id
             });
         }
 
         inhouseOdrer(order_id) {
-            this.$state.go('inhouseOrders', {
+            this.$state.go('core.inhouseOrders', {
                 order_id: order_id
             });
         }

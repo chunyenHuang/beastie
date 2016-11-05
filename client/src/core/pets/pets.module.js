@@ -8,10 +8,10 @@ const petsModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-            .state('pets', {
+            .state('core.pets', {
                 url: '/pets',
-                component: 'pets'
-                // template: ''
+                // component: 'pets'
+                template: '<pets flex layout="column"></pets>'
 
             });
     })

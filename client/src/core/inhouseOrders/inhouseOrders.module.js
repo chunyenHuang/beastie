@@ -8,7 +8,7 @@ const inhouseOrdersModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-            .state('inhouseOrders', {
+            .state('core.inhouseOrders', {
                 url: '/inhouseOrders?order_id',
                 component: 'inhouseOrders'
             });

@@ -1,0 +1,7 @@
+[{
+    "order_id": "123",
+    "pet_id": "123",
+    "before": ["picture1"],
+    "after": ["pictureA"],
+    "isDeleted": false
+}]

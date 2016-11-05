@@ -11,11 +11,11 @@ const listItemsModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-        .state('listItems', {
+        .state('core.listItems', {
             url: '/listItems',
             template: '<list-items layour="column" flex></list-items>'
         })
-        .state('listItems.inhouseOrders', {
+        .state('core.listItems.inhouseOrders', {
             url: '/inhouseOrders',
             template: '<list-items-inhouse-orders layout="column" flex></list-items-inhouse-orders>'
         });

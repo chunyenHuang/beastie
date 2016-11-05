@@ -21,8 +21,9 @@ const coreModule = angular
         'ngInject';
         $stateProvider
             .state('core', {
-                url: '/',
-                component: 'core'
+                url: '/core',
+                template: '<core layout="column" flex></core>'
+                // component: 'core'
             });
     })
     .config(($translatePartialLoaderProvider) => {

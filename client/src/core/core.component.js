@@ -19,8 +19,8 @@ const coreComponent = {
                 this.message += 'World';
             }, 1500);
         }
-        goToClient() {
-            this.$state.go('client');
+        go(state) {
+            this.$state.go(state);
         }
         switchLanguage(key) {
             this.$translate.use(key);

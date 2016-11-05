@@ -38,7 +38,7 @@ angular
     .constant('METADATA', METADATA)
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/core');
     })
     .config(themeConfig)
     .config(resourceConfig)

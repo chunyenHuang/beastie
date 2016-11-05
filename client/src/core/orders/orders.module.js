@@ -14,17 +14,17 @@ const ordersModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-            .state('orders', {
+            .state('core.orders', {
                 url: '/orders',
                 // component: 'orders'
                 template: '<orders layout="column" flex></orders>'
             })
-            .state('orders.list', {
+            .state('core.orders.list', {
                 url: '/list',
                 // component: 'orders'
                 template: '<orders-list layout="column" flex></orders-list>'
             })
-            .state('orders.form', {
+            .state('core.orders.form', {
                 url: '/form?customer_id&order_id',
                 // component: 'orders'
                 template: '<orders-form layout="column" flex></orders-form>'

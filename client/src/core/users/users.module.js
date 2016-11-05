@@ -8,9 +8,10 @@ const usersModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-            .state('users', {
+            .state('core.users', {
                 url: '/users',
-                component: 'users'
+                // component: 'users'
+                template: '<users layout="column" flex></users>'
             });
     })
     .name;

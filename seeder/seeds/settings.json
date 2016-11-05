@@ -37,4 +37,17 @@
     "welcome": "Welcome to here yo!",
     "thank you": "Thanks so much la",
     "isDeleted": false
+}, {
+    "type": "roles",
+    "items": [{
+        "name": "admin",
+        "description": "can do anything yo"
+    }, {
+        "name": "manager",
+        "description": "maybe can do anything yo"
+    }, {
+        "name": "client",
+        "description": "Client device login"
+    }],
+    "isDeleted": false
 }]

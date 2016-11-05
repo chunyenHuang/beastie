@@ -45,7 +45,7 @@ const ordersFormComponent = {
             if (!this.$stateParams.order_id &&
                 !this.$stateParams.customer_id
             ) {
-                return this.$state.go('orders');
+                return this.$state.go('core.orders');
             }
             this.getServicesListItems();
             this.setOrder();
@@ -190,7 +190,7 @@ const ordersFormComponent = {
                     });
                 }
             } else {
-                this.$state.go('orders.list');
+                this.$state.go('core.orders.list');
             }
         }
     }
