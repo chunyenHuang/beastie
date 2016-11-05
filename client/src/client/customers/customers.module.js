@@ -13,11 +13,17 @@ const customersModule = angular
             .state('customers', {
                 // abstract: true,
                 url: '/customers',
-                component: 'customers'
+                component: 'customers',
+                params: {
+                    phoneNumber: '',
+                }
             })
             .state('customers.customersForm', {
                 url: '/customers-form?customer_id',
-                component: 'customersForm'
+                component: 'customersForm',
+                params: {
+                    phoneNumber: '',
+                }
             })
             ;
     })

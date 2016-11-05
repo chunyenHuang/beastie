@@ -6,15 +6,16 @@ const customersFormComponent = {
     bindings: {
         customerId: '<'
     },
-    controller: /* @ngInject */ class customersFormController {
+    controller: /* @ngInject */ 
+    class customersFormController {
         static get $inject() {
             return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope'];
         }
-        constructor($log, $timeout, $state, $stataParams, Customers, $scope) {
+        constructor($log, $timeout, $state, $stateParams, Customers, $scope) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
-            this.$stataParams = $stataParams;
+            this.$stateParams = $stateParams;
             this.Customers = Customers;
             this.currentFormState = "name";
             this.$scope = $scope;
@@ -22,6 +23,9 @@ const customersFormComponent = {
         
         $onInit(){
             this.progressValue = 0;
+            console.info(this.$stateParams);
+            // this.nubmerTest = this.$stateParams.phoneNumber;
+            
             this.Customers.get({
                 id: 'template'
             }, (template)=>{
@@ -64,7 +68,7 @@ const customersFormComponent = {
                 // execute
             }
         }
-        test() {
+        updateProgressVal() {
             let formModelCounts = 0;
             let validFormModelCounts = 0;
             // console.log(this.customers_form);
@@ -75,25 +79,10 @@ const customersFormComponent = {
                         validFormModelCounts += 1;
                     }
                 }
-                
             }
             this.progressValue = validFormModelCounts/formModelCounts*100;
             // console.log("formModelCounts" + formModelCounts);
             // console.log("validFormModelCounts" + validFormModelCounts);
-        }
-        updateProgressVal(status, valid) {
-            if (status == 'focus') {
-                if (valid) {
-                    this.progressValue -= 10;
-                    console.log(this.progressValue);
-                }    
-            } 
-            if (status == 'blur') {
-                if (valid) {
-                    this.progressValue += 10;
-                    console.log(this.progressValue);
-                }
-            }
         }
         navigateForm(click) {
             const formStates = ["name", "address", "emergencyContact"];

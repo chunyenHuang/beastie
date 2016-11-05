@@ -22,6 +22,7 @@ const customersComponent = {
         test(str) {
             console.log(str);
             if (str.length == 10) {
+                this.phoneNumber = str;
                 console.info("gonna get data from db");
                 this.Customers.query({
                     phone: str
@@ -38,7 +39,8 @@ const customersComponent = {
                     // console.log(customers['0']);
                     // if customers.resource
                 }, () => {
-                    this.$state.go('customers.customersForm');
+                    console.log(this.phoneNumber);
+                    this.$state.go('customers.customersForm', { phoneNumber: this.phoneNumber });
                 })
             }
         }
