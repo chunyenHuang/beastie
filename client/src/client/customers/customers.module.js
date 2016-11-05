@@ -1,13 +1,11 @@
 import customersComponent from './customers.component';
-import formCreateComponent from './formCreate';
-import formReviewComponent from './formReview';
+import customersFormComponent from './customersForm';
 import customersService from './services/customers.service';
 
 const customersModule = angular
     .module('beastie.client.customers', [])
     .component('customers', customersComponent)
-    .component('formCreate', formCreateComponent)
-    .component('formReview', formReviewComponent)
+    .component('customersForm', customersFormComponent)
     .service('Customers', customersService)
     .config(($stateProvider) => {
         'ngInject';
@@ -17,14 +15,11 @@ const customersModule = angular
                 url: '/customers',
                 component: 'customers'
             })
-            .state('customers.formCreate', {
-                url: '/form-create?customer_id',
-                component: 'formCreate'
+            .state('customers.customersForm', {
+                url: '/customers-form?customer_id',
+                component: 'customersForm'
             })
-            .state('customers.formReview', {
-                url: '/form-review',
-                component: 'formReview'
-            });
+            ;
     })
     .name;
 

@@ -10,12 +10,14 @@ module.exports = class AbstractController {
             req.query
         );
         query.toArray((err, results) => {
-            if (!err && results.length > 0) {
+            // fix wrong condition
+            if (!err) {
                 if (results.length > 0) {
                     res.statusCode = 200;
                     res.json(results);
                 } else {
-                    res.sendStatus(404);
+                    // res.sendStatus(404);
+                    res.status(404).send({error:'Sorry, we cannot find that!'});
                 }
             } else {
                 res.sendStatus(500);

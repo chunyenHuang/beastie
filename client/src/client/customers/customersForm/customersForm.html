@@ -1,0 +1,119 @@
+<div layout-fill layout="column">
+
+<div layout="row" layout-align="center" layout-padding layout-wrap style="background-color:beige;">
+    <!--<h1 class="md-display-1">Human</h1>-->
+    <div flex="100"  layout="row" layout-align="center">
+            <img src="./assets/img/human_avatar_example.png"
+                style="height:100px;" layout-padding></img>
+    </div>
+    
+    <div class="md-subhead" style="padding-top:0px  ">Tap to change avatar</div>
+</div>
+<md-progress-linear md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
+
+<div flex="4"></div>
+<md-content>
+    <form name="$ctrl.customers_form" novalidate>
+        <section layout="row" ng-show="$ctrl.currentFormState=='name'">
+            <div flex="20"></div>
+            <div layout="column" flex>
+                <h2 class="md-headline">Let's start with your information</h2>
+                <md-input-container class="md-subhead">
+                    <label>First Name</label>
+                    <input required md-no-asterisk type="text" name="firstName"
+                        ng-model="$ctrl.form.firstname"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <div ng-show="customers_form.firstName.$valid">hhhhhh</div>
+                <md-input-container class="md-subhead">
+                    <label>Last Name</label>
+                    <input required type="text" name="last name" 
+                        ng-model="$ctrl.form.lastname"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Phone Number</label>
+                    <input required type="text" name="phone number" 
+                        ng-model="$ctrl.form.phone"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+            </div>
+            <div flex="20"></div>
+        </section>
+        
+        
+        <section layout="row" ng-show="$ctrl.currentFormState=='address'">
+            <div flex="20"></div>
+            <div layout="column" flex>
+                <h2 class="md-headline">And your address</h2>
+                <md-input-container class="md-subhead">
+                    <label>Address</label>
+                    <input required type="text" name="Address" 
+                        ng-model="$ctrl.form.address.street"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>City</label>
+                    <input required type="text" name="city" 
+                        ng-model="$ctrl.form.address.city"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <div layout="row">
+                <md-input-container class="md-subhead">
+                    <label>State</label>
+                    <input required type="text" name="state" 
+                        ng-model="$ctrl.form.address.state"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Zip Code</label>
+                    <input required type="text" name="zip code" 
+                        ng-model="$ctrl.form.address.zipCode"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                </div>
+            </div>
+            <div flex="20"></div>
+        </section>
+        
+        <section layout="row" ng-show="$ctrl.currentFormState=='emergencyContact'">
+            <div flex="20"></div>
+            <div layout="column" flex>
+                <h2 class="md-headline">Who to contact if we can't reach you?</h2>
+                <md-input-container class="md-subhead">
+                    <label>Name</label>
+                    <input required type="text" name="emergency contact name" 
+                        ng-model="$ctrl.form.emergencyContact[0].name"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Relationship</label>
+                    <input required type="text" name="emergency contact relationship" 
+                        ng-model="$ctrl.form.emergencyContact[0].relationship"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Phone Number</label>
+                    <input required type="text" name="emergency contact phone number" 
+                        ng-model="$ctrl.form.emergencyContact[0].phone"
+                        ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
+            </div>
+            <div flex="20"></div>
+        </section>
+    </form>
+    
+    <div layout="row" layout-fill layout-align="center">
+        <md-button class="md-subhead"
+            ng-click="$ctrl.navigateForm('back')">
+            back
+        </md-button>
+        <md-button class="md-subhead"
+            ng-click="$ctrl.navigateForm('next')">
+            next
+        </md-button>
+    </div>
+    
+</md-content>
+
+</div>

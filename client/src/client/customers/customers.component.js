@@ -28,15 +28,17 @@ const customersComponent = {
                 }, (customers) => {
                     if (customers['0']) {
                         console.log('customer checked in');
-                        this.$state.go('customers.formReview');
+                        this.$state.go('customers.customersForm');
                     } else {
                         console.log('new customer');
-                        this.$state.go('customers.formCreate');
+                        this.$state.go('customers.customersForm');
                     }
                     // console.log(customers);
                     // console.log(typeof customers);
                     // console.log(customers['0']);
                     // if customers.resource
+                }, () => {
+                    this.$state.go('customers.customersForm');
                 })
             }
         }
@@ -46,6 +48,13 @@ const customersComponent = {
                 phone: '6263805163'
             }, (users) => {
                 console.log(users);
+            });
+            this.Customers.query({
+                phone: '1111111111'
+            }, (users) => {
+                console.log(users);
+            }, (err)=>{
+                console.log(err);
             });
             // this.Customers.query({}, (users) => {
             //     console.warn(users);

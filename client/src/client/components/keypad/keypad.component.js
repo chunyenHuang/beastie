@@ -21,6 +21,7 @@ const keypadComponent = {
                     <md-button
                         md-no-ink
                         class="md-fab md-primary"
+                        ng-class="{'keypad-keys': $ctrl.isNumber(val)}"
                         aria-label="{{num}}"
                         md-ripple-size="full"
                         ng-click='$ctrl.keyPress(val)'>
@@ -99,6 +100,9 @@ const keypadComponent = {
         }
         isLimit() {
             return (this.pressed.length == parseInt(this.limit));
+        }
+        isNumber(input) {
+            return Number.isInteger(input);
         }
 
     }

@@ -32,7 +32,15 @@ function resourceConfig(
     }
 
     function transformResponse(data) {
-        return angular.fromJson(data);
+        // console.log('transformResponse');
+        // console.log(typeof data);
+        // console.log(data);
+        if (data) {
+            return angular.fromJson(data);
+        }
+        else return;
+        // return angular.fromJson(data);
+        // return [data];
     }
 }
 
