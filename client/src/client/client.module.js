@@ -1,14 +1,13 @@
 import clientComponent from './client.component';
 import clientService from './services/client.service';
-import customers from './customers';
-import components from './components';
-import filters from './filters';
+// import customers from './customers';
+// import components from './components';
+// import filters from './filters';
 
 const clientModule = angular
     .module('beastie.client', [
-        customers,
-        components,
-        filters,
+        // customers,
+
         ])
     .component('client', clientComponent)
     .service('Client', clientService)

@@ -3,7 +3,7 @@ import customersFormComponent from './customersForm';
 import customersService from './services/customers.service';
 
 const customersModule = angular
-    .module('beastie.client.customers', [])
+    .module('beastie.core.customers', [])
     .component('customers', customersComponent)
     .component('customersForm', customersFormComponent)
     .service('Customers', customersService)
@@ -13,14 +13,16 @@ const customersModule = angular
             .state('customers', {
                 // abstract: true,
                 url: '/customers',
-                component: 'customers',
+                // component: 'customers',
+                template: '<customers layout="column" flex></customers>',
                 params: {
                     phoneNumber: '',
                 }
             })
             .state('customers.customersForm', {
                 url: '/customers-form?customer_id',
-                component: 'customersForm',
+                template: '<customers-form layout="column" flex></customers-form>',
+                // component: 'customersForm',
                 params: {
                     phoneNumber: '',
                 }
