@@ -1,33 +1,21 @@
-<md-content layout="row" flex id="core">
+<div layout="row" flex id="core">
     <div layout="column" layout-align="start center" class="sidenav">
-        <md-icon md-svg-src="file-document-box" ng-click="$ctrl.go('core.orders')"></md-icon>
+        <md-icon md-svg-src="calendar-plus" ng-click="$ctrl.newOrder()"></md-icon>
+        <md-icon md-svg-src="book-open-page-variant" ng-click="$ctrl.go('core.orders.list')"></md-icon>
         <md-icon md-svg-src="account-multiple" ng-click="$ctrl.go('core.customers')"></md-icon>
-        <md-icon md-svg-src="paw" ng-click="$ctrl.go('core.pets')"></md-icon>
-        <br><br><br>
+        <md-icon md-svg-src="paw" ng-click="$ctrl.go('core.pets.list')"></md-icon>
+        <div flex></div>
         <md-icon md-svg-src="format-list-bulleted-type" ng-click="$ctrl.go('core.listItems')"></md-icon>
         <md-icon md-svg-src="settings" ng-click="$ctrl.go('core.settings')"></md-icon>
         <md-icon md-svg-src="account-settings-variant" ng-click="$ctrl.go('core.users')"></md-icon>
         <div flex></div>
+        <md-icon md-svg-src="translate" ng-click="$ctrl.toggleLanguage()"></md-icon>
+
+        <div flex></div>
     </div>
-    <md-content ui-view layout="column" flex>core content here</md-content>
-</md-content>
-
-
-<!-- <h1 translate="core.core"></h1>
-<h1 translate="core.hello"></h1>
-
-<h3 translate="users.yo"></h3>
-
-<users></users>
-
-<md-button ng-click="$ctrl.goToClient()">
-    <md-icon md-svg-src="navigation"></md-icon>
-    go to client device
-</md-button>
-
-<md-button ng-click="$ctrl.switchLanguage('zh')">
-    Chinese
-</md-button>
-<md-button ng-click="$ctrl.switchLanguage('en')">
-    English
-</md-button> -->
+    <md-content ui-view layout="column" flex>
+        core content goes here
+        <h1 translate="core.hello"></h1>
+        <h3 translate="users.yo"></h3>
+    </md-content>
+</div>

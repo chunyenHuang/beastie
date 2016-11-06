@@ -1,9 +1,13 @@
 import petsComponent from './pets.component';
+import petsListComponent from './petsList';
+
+
 import petsService from './services/pets.service';
 
 const petsModule = angular
     .module('beastie.pets', [])
     .component('pets', petsComponent)
+    .component('petsList', petsListComponent)
     .service('Pets', petsService)
     .config(($stateProvider) => {
         'ngInject';
@@ -12,8 +16,13 @@ const petsModule = angular
                 url: '/pets',
                 // component: 'pets'
                 template: '<pets flex layout="column"></pets>'
-
-            });
+            })
+            .state('core.pets.list', {
+                url: '/list',
+                // component: 'pets'
+                template: '<pets-list flex layout="column"></pets-list>'
+            })
+            ;
     })
     .name;
 

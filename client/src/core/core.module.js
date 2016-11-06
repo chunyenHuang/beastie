@@ -5,6 +5,8 @@ import listItems from './listItems';
 import pets from './pets';
 import orders from './orders';
 import inhouseOrders from './inhouseOrders';
+import settings from './settings';
+
 import components from './components';
 import filters from './filters';
 
@@ -18,8 +20,10 @@ const coreModule = angular
         pets,
         orders,
         inhouseOrders,
+        settings,
+
         components,
-        filters,
+        filters
     ])
     .component('core', coreComponent)
     .service('SharedUtil', SharedUtil)
@@ -29,7 +33,7 @@ const coreModule = angular
             .state('core', {
                 url: '/core',
                 template: '<core layout="column" flex></core>'
-                // component: 'core'
+                    // component: 'core'
             });
     })
     .config(($translatePartialLoaderProvider) => {

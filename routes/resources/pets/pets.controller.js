@@ -13,22 +13,22 @@ class PetsController extends AbstractController {
             isAllowPhoto: true,
             previousHistory: [],
             vaccinations: [
-                {
-                    name: null,
-                    date: null
-                }
+                // {
+                //     name: null,
+                //     date: null
+                // }
             ],
             specialConditions: [
-                {
-                    description: null,
-                    createdAt: null
-                }
+                // {
+                //     description: null,
+                //     createdAt: null
+                // }
             ],
             additionalInstructions: [
-                {
-                    description: null,
-                    createdAt: null
-                }
+                // {
+                //     description: null,
+                //     createdAt: null
+                // }
             ]
             // createdAt: null,
             // isDeleted: false

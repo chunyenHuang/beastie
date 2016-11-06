@@ -3,24 +3,23 @@ import './pets.styl';
 
 const petsComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class PetsController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
-                'Pets'];
+                '$log', '$timeout', '$state', '$stateParams'
+            ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
-            Pets
+            $log, $timeout, $state, $stateParams
          ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.Pets = Pets;
+        }
+        $onInit(){
+            this.$state.go('core.pets.list');
         }
     }
 };

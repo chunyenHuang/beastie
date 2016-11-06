@@ -24,6 +24,15 @@
     },
     "isDeleted": false
 }, {
+    "type": "app",
+    "vaccinations": {
+        "allowWithinMonths": 1,
+        "rejectOrderWithinMonths": 1,
+        "remindCustomerWithinMonths": 3
+    },
+    "isDeleted": false
+},
+{
     "type": "theme",
     "color": {
         "primary": "#e95400",
