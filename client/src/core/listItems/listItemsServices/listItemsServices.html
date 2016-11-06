@@ -64,25 +64,25 @@
                             <input type="number" step="0.01" ng-model="item.price" aria-label="{{item.price}}">
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-align="start center" flex>
-                        <md-switch ng-model="item.isActivated" aria-label="isActivated" ng-true-value="true" ng-false-value="false">
+                </div>
+                <div layout="column" flex="10" layout-align="start center">
+                    <md-switch ng-model="item.isActivated" aria-label="isActivated" ng-true-value="true" ng-false-value="false">
+                        <md-tooltip>
+                            <span>
+                                Activate
+                            </span>
+                        </md-tooltip>
+                    </md-switch>
+                    <div flex></div>
+                    <md-button ng-click="item.isDeleted = true" class="md-icon-button md-warn md-raised md-hue-2" aria-label="delete">
+                        <md-icon md-svg-src="delete">
                             <md-tooltip>
                                 <span>
-                                    Activate
+                                    Delete
                                 </span>
                             </md-tooltip>
                         </md-switch>
-                        <div flex></div>
-                        <md-button ng-click="item.isDeleted = true" class="md-icon-button md-warn md-raised md-hue-2" aria-label="delete">
-                            <md-icon md-svg-src="delete">
-                                <md-tooltip>
-                                    <span>
-                                        Delete
-                                    </span>
-                                </md-tooltip>
-                            </md-switch>
-                        </md-button>
-                    </div>
+                    </md-button>
                 </div>
             </div>
         </md-content>
