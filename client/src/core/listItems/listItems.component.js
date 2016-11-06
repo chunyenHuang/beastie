@@ -30,7 +30,8 @@ const listItemsComponent = {
             });
         }
         go(list) {
-            this.$state.go(this.$state.current.name + '.' + list.type);
+            // this.$state.current.name
+            this.$state.go('core.listItems.' + list.type);
         }
     }
 };

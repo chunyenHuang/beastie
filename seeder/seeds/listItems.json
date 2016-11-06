@@ -1,49 +1,96 @@
 [{
+    "type": "selfServices",
+    "hasSubItems": true,
+    "items": [{
+        "type": "basic",
+        "subItems": [{
+            "name": "Wash(large)",
+            "description": "wash large dog",
+            "zhName": "洗澡(大)",
+            "zhDescription": "中文",
+            "price": 30,
+            "isDeleted": false,
+            "isActivated": true
+        }, {
+            "name": "Wash(small)",
+            "description": "wash small dog",
+            "zhName": "洗澡(小)",
+            "zhDescription": "中文",
+            "price": 20,
+            "isDeleted": false,
+            "isActivated": true
+        }]
+    }, {
+        "type": "addon",
+        "subItems": [{
+            "name": "shampooA",
+            "description": "a nice shampoo",
+            "zhName": "洗髮精A",
+            "zhDescription": "洗髮精～Ａ",
+            "price": 10,
+            "isDeleted": false,
+            "isActivated": true
+        }]
+    }],
+    "isDeleted": false
+}, {
     "type": "services",
+    "hasSubItems": false,
     "items": [{
         "name": "Wash(large)",
         "description": "wash large dog",
         "zhName": "洗澡(大)",
         "zhDescription": "中文",
-        "price": "30",
-        "selfService": false
+        "price": 30,
+        "isDeleted": false,
+        "isActivated": true
     }, {
         "name": "Wash(small)",
         "description": "wash small dog",
         "zhName": "洗澡(小)",
         "zhDescription": "中文",
-        "price": "20",
-        "selfService": false
+        "price": 20,
+        "isDeleted": false,
+        "isActivated": true
     }, {
         "name": "Wash",
         "description": "wash",
         "zhName": "洗澡",
         "zhDescription": "中文",
-        "price": "15",
-        "selfService": true
+        "price": 15,
+        "isDeleted": false,
+        "isActivated": true
     }],
     "isDeleted": false
 }, {
-    "type": "waiver",
+    "type": "waivers",
+    "hasSubItems": false,
     "items": [{
         "name": "matted",
         "description": "asldajsdl;fa",
         "zhName": "毛髮打結",
-        "zhDescription": "中文"
+        "zhDescription": "中文",
+        "isDeleted": false,
+        "isActivated": true
     }, {
         "name": "Aged Pet",
         "description": "asldajsdl;fa",
         "zhName": "歲數已高",
-        "zhDescription": "中文"
+        "zhDescription": "中文",
+        "isDeleted": false,
+        "isActivated": true
     }, {
         "name": "Special condition",
         "description": "asldajsdl;fa",
         "zhName": "特殊情況",
-        "zhDescription": "中文"
+        "zhDescription": "中文",
+        "isDeleted": false,
+        "isActivated": true
     }],
     "isDeleted": false
 }, {
     "type": "breeds",
+    "hasSubItems": false,
     "items": [{
         "name": "mix",
         "zhName": "米克斯",
@@ -56,6 +103,7 @@
     "isDeleted": false
 }, {
     "type": "colors",
+    "hasSubItems": false,
     "items": [{
         "name": "black",
         "zhName": "黑",
@@ -68,18 +116,44 @@
     "isDeleted": false
 }, {
     "type": "vaccinations",
+    "hasSubItems": false,
     "items": [{
-        "name": "Rabbit",
+        "name": "Rabies",
         "zhName": "狂犬病",
-        "description": "",
-        "period": [1,0],
-        "allowance": 1,
+        "description": "asldajsdl;fa",
+        "zhDescription": "中文",
+        "rejectOrderWithinDays": 30,
+        "rejectOrderIfIsExpired": true,
+        "remindCustomerWithinDays": 60,
+        "isActivated": true,
+        "isDeleted": false
+    },
+    {
+        "name": "Parvo",
+        "zhName": "犬细小病毒",
+        "description": "asldajsdl;fa",
+        "zhDescription": "中文",
+        "rejectOrderWithinDays": 14,
+        "rejectOrderIfIsExpired": false,
+        "remindCustomerWithinDays": 60,
+        "isActivated": true,
+        "isDeleted": false
+    },
+    {
+        "name": "DHPP (4in1)",
+        "zhName": "4合1疫苗",
+        "description": "asldajsdl;fa",
+        "zhDescription": "中文",
+        "rejectOrderWithinDays": 7,
+        "rejectOrderIfIsExpired": false,
+        "remindCustomerWithinDays": 60,
         "isActivated": true,
         "isDeleted": false
     }],
     "isDeleted": false
 }, {
     "type": "inhouseOrders",
+    "hasSubItems": true,
     "items": [{
         "type": "time",
         "multiple": false,
