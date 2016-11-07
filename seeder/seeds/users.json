@@ -1,6 +1,8 @@
 [{
+    "_id": "581fdc340408eb2def1487c6",
     "name": "John",
-    "role": "superAdmin",
+    "role": "admin",
+    "avatar":"",
     "loginId": "123",
     "password": "123",
     "createdAt": "2016-10-01T07:00:00.000Z",
@@ -8,8 +10,10 @@
     "lastLoginAt": "2016-10-29T23:09:29.898Z",
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487c7",
     "name": "Lilian",
     "role": "admin",
+    "avatar":"",
     "loginId": "lilian123",
     "password": "123",
     "createdAt": "2016-10-05T07:00:00.000Z",

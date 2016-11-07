@@ -4,6 +4,7 @@ class UsersController extends AbstractController {
         const template = {
             name: null,
             role: null,
+            avatar:null,
             loginId: null,
             password: null
         };

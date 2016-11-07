@@ -9,29 +9,35 @@ class PetsController extends AbstractController {
             breed: null,
             color: null,
             weight: null,
-            sex: null,
+            gender: null,
             isAllowPhoto: true,
-            previousHistory: [],
+            picture: null,
+            previousHistory: [{
+                description: null,
+                createdAt: new Date()
+            }],
             vaccinations: [
-                // {
-                //     name: null,
-                //     date: null
-                // }
+                {
+                    name: null,
+                    issuedAt: null,
+                    expiredAt: null,
+                    createdAt: new Date()
+                }
             ],
             specialConditions: [
-                // {
-                //     description: null,
-                //     createdAt: null
-                // }
+                {
+                    description: null,
+                    createdAt: new Date()
+                }
             ],
             additionalInstructions: [
-                // {
-                //     description: null,
-                //     createdAt: null
-                // }
-            ]
-            // createdAt: null,
-            // isDeleted: false
+                {
+                    description: null,
+                    createdAt: new Date()
+                }
+            ],
+            createdAt: new Date(),
+            isDeleted: false
         };
         res.json(template);
     }

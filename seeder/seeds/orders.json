@@ -1,19 +1,15 @@
 [{
+    "_id": "581fdc340408eb2def1487bc",
     "customer_id": "58152d8bb22d21700cb8d85f",
     "pet_id": "58152eddb1d4c67466686b7c",
     "scheduleAt": "2016-10-05T07:00:00.000Z",
-
     "isCanceled": false,
     "notShowup": false,
-
     "checkInAt": null,
-
     "services": [],
     "total": null,
-
     "inhouseOrders": [],
     "waivers": [],
-    "total": null,
     "isPaid": null,
     "notes": null,
     "isDeleted": false

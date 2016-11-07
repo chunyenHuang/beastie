@@ -1,4 +1,5 @@
 [{
+    "_id": "581fdc340408eb2def1487b4",
     "type": "selfServices",
     "hasSubItems": true,
     "items": [{
@@ -34,6 +35,7 @@
     }],
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487b5",
     "type": "services",
     "hasSubItems": false,
     "items": [{
@@ -63,32 +65,36 @@
     }],
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487b6",
     "type": "waivers",
     "hasSubItems": false,
     "items": [{
-        "name": "matted",
-        "description": "asldajsdl;fa",
+        "name": "Matted",
+        "description": "I am aware that my pet is heavily matted and authorized A+ Pet Shop...",
         "zhName": "毛髮打結",
-        "zhDescription": "中文",
+        "zhDescription": "我意識到我的寵物的毛髮有很大程度上的打結...",
         "isDeleted": false,
         "isActivated": true
     }, {
         "name": "Aged Pet",
-        "description": "asldajsdl;fa",
+        "description": "I am fully aware that my pet is older...",
         "zhName": "歲數已高",
-        "zhDescription": "中文",
+        "zhDescription": "我完全知道我的寵物老了，美容以及清洗的過程...",
         "isDeleted": false,
         "isActivated": true
     }, {
         "name": "Special condition",
-        "description": "asldajsdl;fa",
+        "description": "I am fully aware that my pet has \"special condition\" and that...",
         "zhName": "特殊情況",
-        "zhDescription": "中文",
+        "zhDescription": "我完全知道我的寵物有”特殊情況“...",
         "isDeleted": false,
         "isActivated": true
     }],
-    "isDeleted": false
+    "isDeleted": false,
+    "updatedAt": "2016-11-07T01:49:51.334Z",
+    "updatedBy": "dev-test"
 }, {
+    "_id": "581fdc340408eb2def1487b7",
     "type": "breeds",
     "hasSubItems": false,
     "items": [{
@@ -102,6 +108,7 @@
     }],
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487b8",
     "type": "colors",
     "hasSubItems": false,
     "items": [{
@@ -112,9 +119,18 @@
         "name": "brown",
         "zhName": "咖啡",
         "value": "#593800"
+    }, {
+        "name": "white",
+        "zhName": "白",
+        "value": "#ffffff"
+    }, {
+        "name": "gray",
+        "zhName": "灰",
+        "value": "#8b8b8b"
     }],
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487b9",
     "type": "vaccinations",
     "hasSubItems": false,
     "items": [{
@@ -127,8 +143,7 @@
         "remindCustomerWithinDays": 60,
         "isActivated": true,
         "isDeleted": false
-    },
-    {
+    }, {
         "name": "Parvo",
         "zhName": "犬细小病毒",
         "description": "asldajsdl;fa",
@@ -138,8 +153,7 @@
         "remindCustomerWithinDays": 60,
         "isActivated": true,
         "isDeleted": false
-    },
-    {
+    }, {
         "name": "DHPP (4in1)",
         "zhName": "4合1疫苗",
         "description": "asldajsdl;fa",
@@ -152,9 +166,26 @@
     }],
     "isDeleted": false
 }, {
+    "_id": "581fdc340408eb2def1487ba",
     "type": "inhouseOrders",
     "hasSubItems": true,
     "items": [{
+        "type": "cut",
+        "multiple": false,
+        "name": "head",
+        "zhName": "頭頂",
+        "subItems": [{
+            "name": "trim",
+            "zhName": "修",
+            "isActivated": true,
+            "isDeleted": false
+        }, {
+            "name": "short",
+            "zhName": "短",
+            "isActivated": true,
+            "isDeleted": false
+        }]
+    }, {
         "type": "time",
         "multiple": false,
         "name": "schedule",
@@ -286,5 +317,7 @@
             "isActivated": true
         }]
     }],
-    "isDeleted": false
+    "isDeleted": false,
+    "updatedAt": "2016-11-07T01:46:46.426Z",
+    "updatedBy": "dev-test"
 }]

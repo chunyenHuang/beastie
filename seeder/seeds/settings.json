@@ -1,11 +1,10 @@
 [{
+    "_id": "581fdfca0408eb2def1487c8",
     "type": "company",
     "name": "A+ Pet & Grooming",
     "zhName": "A+ 寵物生活館",
     "description": "美容 住宿 寵物用品 犬類買賣",
-    "phones": [
-        "6268101098"
-    ],
+    "phones": ["6268101098"],
     "address": {
         "street": "18246 Gale Ave, #A",
         "city": "City of Industry",
@@ -24,15 +23,7 @@
     },
     "isDeleted": false
 }, {
-    "type": "app",
-    "vaccinations": {
-        "allowWithinMonths": 1,
-        "rejectOrderWithinMonths": 1,
-        "remindCustomerWithinMonths": 3
-    },
-    "isDeleted": false
-},
-{
+    "_id": "581fdfca0408eb2def1487ca",
     "type": "theme",
     "color": {
         "primary": "#e95400",
@@ -42,11 +33,13 @@
     },
     "isDeleted": false
 }, {
+    "_id": "581fdfca0408eb2def1487cb",
     "type": "message",
     "welcome": "Welcome to here yo!",
     "thank you": "Thanks so much la",
     "isDeleted": false
 }, {
+    "_id": "581fdfca0408eb2def1487cc",
     "type": "roles",
     "items": [{
         "name": "admin",
@@ -55,8 +48,16 @@
         "name": "manager",
         "description": "maybe can do anything yo"
     }, {
-        "name": "client",
-        "description": "Client device login"
+        "name": "deviceClient",
+        "description": "Client device"
+    },
+    {
+        "name": "deviceClerk",
+        "description": "Clerk device"
+    },
+    {
+        "name": "employee",
+        "description": "Employee"
     }],
     "isDeleted": false
 }]
