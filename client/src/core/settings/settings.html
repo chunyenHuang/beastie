@@ -1,2 +1,25 @@
-<h1>settings</h1>
-{{$ctrl.settings}}
+
+<md-content layout="column" flex>
+    <h1>settings</h1>
+    <div class="" layout="column">
+        <h3>company information</h3>
+        <md-input-container class="md-block">
+            <label>name</label>
+            <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>zh name</label>
+            <input type="text" ng-model="$ctrl.company.zhName" aria-label="company-zhName">
+        </md-input-container>
+        <div ng-repeat="phone in $ctrl.company.phones">
+            <md-input-container class="md-block">
+                <label>phone</label>
+                <input type="text" ng-model="phone" aria-label="company-phone {{$index}}">
+            </md-input-container>
+        </div>
+        <md-input-container class="md-block">
+            <label>EIN</label>
+            <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
+        </md-input-container>
+    </div>
+</md-content>

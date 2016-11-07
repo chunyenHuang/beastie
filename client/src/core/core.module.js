@@ -6,6 +6,7 @@ import pets from './pets';
 import orders from './orders';
 import inhouseOrders from './inhouseOrders';
 import settings from './settings';
+import services from './services';
 
 import components from './components';
 import filters from './filters';
@@ -21,6 +22,7 @@ const coreModule = angular
         orders,
         inhouseOrders,
         settings,
+        services,
 
         components,
         filters

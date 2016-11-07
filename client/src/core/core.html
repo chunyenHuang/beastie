@@ -4,14 +4,15 @@
         <md-icon md-svg-src="book-open-page-variant" ng-click="$ctrl.go('core.orders.list')"></md-icon>
         <md-icon md-svg-src="account-multiple" ng-click="$ctrl.go('core.customers')"></md-icon>
         <md-icon md-svg-src="paw" ng-click="$ctrl.go('core.pets.list')"></md-icon>
-        <div flex></div>
+        <!-- <div flex></div> -->
         <md-icon md-svg-src="format-list-bulleted-type" ng-click="$ctrl.go('core.listItems')"></md-icon>
         <md-icon md-svg-src="settings" ng-click="$ctrl.go('core.settings')"></md-icon>
         <md-icon md-svg-src="account-settings-variant" ng-click="$ctrl.go('core.users')"></md-icon>
-        <div flex></div>
-        <md-icon md-svg-src="translate" ng-click="$ctrl.toggleLanguage()"></md-icon>
+        <!-- <div flex></div> -->
+        <md-icon md-svg-src="swap-horizontal" ng-click="toggleIcons = !toggleIcons"></md-icon>
 
-        <div flex></div>
+        <md-icon md-svg-src="translate" ng-click="$ctrl.toggleLanguage()"></md-icon>
+        <!-- <div flex></div> -->
     </div>
     <md-content ui-view layout="column" flex>
         core content goes here

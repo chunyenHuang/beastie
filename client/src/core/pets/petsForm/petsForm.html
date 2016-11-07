@@ -1,0 +1,66 @@
+<md-content layout="column" flex>
+    <md-tabs md-border-bottom md-swipe-content=true flex>
+        <md-tab label="Basic">
+            <md-content class="md-padding" flex layout="column">
+                <div layout="row" flex>
+                    <div flex></div>
+                    <md-button ng-click="$ctrl.update()" class="md-raised md-primary">Update</md-button>
+                </div>
+                <div class="">
+                    customer_id:
+                    {{$ctrl.pet.customer_id}}
+                </div>
+                <md-button ng-click="$ctrl.takeSnapshot()">take a picture</md-button>
+                <img ng-src="{{$ctrl.pet.picture}}" style="width:300px"/>
+                <md-input-container class="md-block">
+                    <label>name</label>
+                    <input type="text" ng-model="$ctrl.pet.name" aria-label="pet-name">
+                </md-input-container>
+                <md-datepicker ng-model="$ctrl.pet.birthday" md-max-date="$ctrl.birthdayLimit.max" md-placeholder="birthday"></md-datepicker>
+
+                <md-input-container class="md-block">
+                    <label>weight</label>
+                    <input type="text" ng-model="$ctrl.pet.weight" aria-label="pet-name">
+                </md-input-container>
+
+                <md-radio-group ng-model="$ctrl.pet.gender">
+                    <md-radio-button value="male" aria-label="gender-male">
+                        <md-icon md-svg-src="gender-male"></md-icon>
+                    </md-radio-button>
+                    <md-radio-button value="female" aria-label="gender-male">
+                        <md-icon md-svg-src="gender-female"></md-icon>
+                    </md-radio-button>
+                </md-radio-group>
+
+                <md-radio-group ng-model="$ctrl.pet.color">
+                    <md-radio-button value="{{color.name}}" aria-label="gender-male" ng-repeat="color in $ctrl.colors">
+                        <md-icon style="color:{{color.value}}" md-svg-src="checkbox-blank-circle"></md-icon>
+                    </md-radio-button>
+                </md-radio-group>
+
+                <md-input-container class="md-block">
+                    <label>species</label>
+                    <md-select ng-model="$ctrl.pet.species">
+                        <md-option ng-repeat="item in $ctrl.species" value="{{item}}">
+                            {{ item }}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </md-content>
+        </md-tab>
+        <md-tab label="Vaccinations">
+            <md-content class="md-padding">
+                <div ng-repeat="vaccination in $ctrl.pet.vaccinations">
+                    {{vaccination.name}}
+                    {{vaccination.issuedAt}}
+                    {{vaccination.expiredAt}}
+                </div>
+            </md-content>
+        </md-tab>
+        <md-tab label="Gallery">
+            <md-content class="md-padding">
+                gallery
+            </md-content>
+        </md-tab>
+    </md-tabs>
+</md-content>

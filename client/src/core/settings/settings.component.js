@@ -23,10 +23,21 @@ const settingsComponent = {
             this.$stateParams = $stateParams;
             this.Settings = Settings;
         }
+
         $onInit() {
             this.Settings.query({}, (settings) => {
                 this.settings = settings;
+                this.company = this.findInArray(this.settings, 'type', 'company');
             });
+        }
+
+        findInArray(array, key, value) {
+            for (var i = 0; i < array.length; i++) {
+                if (array[i][key] == value) {
+                    return array[i];
+                }
+            }
+            return null;
         }
     }
 };

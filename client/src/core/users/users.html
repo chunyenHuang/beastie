@@ -1,2 +1,23 @@
-<h2>user component</h2>
-{{$ctrl.users}}
+<md-content layout="column" flex>
+    <h2>users</h2>
+    <md-button ng-click="$ctrl.addUser()">Add new user</md-button>
+    <div class="" layout="row" flex="none" ng-repeat="user in $ctrl.users" layout-align="space-between center">
+        <img ng-src="{{user.avatar}}" alt="avatar"/>
+        <div class="">
+            {{user.name}}
+        </div>
+        <div class="">
+            {{user.loginId}}
+        </div>
+        <div class="">
+            {{user.role}}
+        </div>
+
+        <!-- <div flex></div> -->
+        <!-- <md-select ng-model="user.role" aria-label="user-role {{$index}}">
+            <md-option ng-value="{{role.name}}" ng-repeat="role in $ctrl.roles">
+                {{role.name}}
+            </md-option>
+        </md-select> -->
+    </div>
+</md-content>

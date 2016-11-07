@@ -1,0 +1,19 @@
+    <canvas class="hide" id="snapshot"></canvas>
+    <div class="button-group" layout="row" layout-align="space-between center" ng-show="!isTaken">
+        <div flex></div>
+        <span>click anywhre to take snapshot</span>
+        <div flex></div>
+    </div>
+    <div class="button-group" layout="row" layout-align="space-between center" ng-show="isTaken">
+        <md-button ng-click="$ctrl.retake(); isTaken=false">Retake</md-button>
+        <md-button ng-click="$ctrl.finish()">Finish</md-button>
+    </div>
+    <video
+        flex
+        autoplay="true"
+        id="camera"
+        ng-click="
+            $ctrl.takePhoto();
+            isTaken=true
+        ">
+    </video>

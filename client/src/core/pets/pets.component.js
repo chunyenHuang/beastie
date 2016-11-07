@@ -12,14 +12,15 @@ const petsComponent = {
         }
         constructor(
             $log, $timeout, $state, $stateParams
-         ) {
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
         }
-        $onInit(){
-            this.$state.go('core.pets.list');
+
+        $onInit() {
+            this.$state.go('core.pets.form');
         }
     }
 };

@@ -2,7 +2,7 @@ import settingsComponent from './settings.component';
 import settingsService from './services/settings.service';
 
 const settingsModule = angular
-    .module('beastie.settings', [])
+    .module('beastie.core.settings', [])
     .component('settings', settingsComponent)
     .service('Settings', settingsService)
     .config(($stateProvider) => {
