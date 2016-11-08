@@ -10,7 +10,7 @@ const customersModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-            .state('customers', {
+            .state('core.customers', {
                 // abstract: true,
                 url: '/customers',
                 // component: 'customers',
@@ -19,7 +19,7 @@ const customersModule = angular
                     phoneNumber: '',
                 }
             })
-            .state('customers.customersForm', {
+            .state('core.customers.customersForm', {
                 url: '/customers-form?customer_id',
                 template: '<customers-form layout="column" flex></customers-form>',
                 // component: 'customersForm',

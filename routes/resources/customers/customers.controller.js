@@ -15,7 +15,7 @@ class CustomersController extends AbstractController {
             emergencyContact: [{
                 name: null,
                 relationship: null,
-                phones: []
+                phones: [null]
             }]
             // createdAt: null,
             // lastLoginAt: null,

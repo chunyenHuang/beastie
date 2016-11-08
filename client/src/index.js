@@ -10,8 +10,6 @@ import 'client/node_modules/angular-translate-loader-partial';
 import ngResource from 'client/node_modules/angular-resource';
 import ngSanitize from 'client/node_modules/angular-sanitize';
 
-import 'client/node_modules/webcam-directive';
-
 // configs
 import themeConfig from './themeConfig';
 import resourceConfig from './resourceConfig';
@@ -34,7 +32,6 @@ angular
         ngAria,
         ngMaterial,
         'pascalprecht.translate',
-        'webcam',
         core,
         client
     ])

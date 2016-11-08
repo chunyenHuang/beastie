@@ -17,22 +17,27 @@ const customersComponent = {
             this.$state = $state;
         }
         $onInit() {
-            this.resourceTest();
+            // this.resourceTest();
         }
         test(str) {
             console.log(str);
             if (str.length == 10) {
                 this.phoneNumber = str;
                 console.info("gonna get data from db");
+                // for query, should add dialog to select one customer
                 this.Customers.query({
-                    phone: str
+                    phone: this.phoneNumber
                 }, (customers) => {
                     if (customers['0']) {
                         console.log('customer checked in');
-                        this.$state.go('customers.customersForm');
+                        this.$state.go('core.customers.customersForm',
+                        { 
+                            customer_id: customers['0']._id, 
+                            phoneNumber: this.phoneNumber
+                        });
                     } else {
                         console.log('new customer');
-                        this.$state.go('customers.customersForm');
+                        this.$state.go('core.customers.customersForm');
                     }
                     // console.log(customers);
                     // console.log(typeof customers);
@@ -40,7 +45,8 @@ const customersComponent = {
                     // if customers.resource
                 }, () => {
                     console.log(this.phoneNumber);
-                    this.$state.go('customers.customersForm', { phoneNumber: this.phoneNumber });
+                    this.$state.go('core.customers.customersForm',
+                        { phoneNumber: this.phoneNumber });
                 })
             }
         }

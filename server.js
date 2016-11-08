@@ -110,42 +110,42 @@ fs.readdirSync(routes).forEach((file) => {
 app.use(errorHandler());
 
 // Start Server
-// app.listen(app.get('port'), () => {
-//     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
-//     console.log('Listening on port %d in %s mode', app.get('port'), mode);
-// });
+app.listen(app.get('port'), () => {
+    let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
+    console.log('Listening on port %d in %s mode', app.get('port'), mode);
+});
 
 // Running w/ https
-const http = require('http');
-const https = require('https');
-const sslport = parseInt(port) + 1;
-https
-    .createServer({
-        key: fs.readFileSync('./ssl/server.key'),
-        cert: fs.readFileSync('./ssl/server.crt')
-    }, app)
-    .listen(sslport, () => {
-        // eslint-disable-next-line no-console
-        console.log('Running HTTPS on port ' + sslport);
-    });
+// const http = require('http');
+// const https = require('https');
+// const sslport = parseInt(port) + 1;
+// https
+//     .createServer({
+//         key: fs.readFileSync('./ssl/server.key'),
+//         cert: fs.readFileSync('./ssl/server.crt')
+//     }, app)
+//     .listen(sslport, () => {
+//         // eslint-disable-next-line no-console
+//         console.log('Running HTTPS on port ' + sslport);
+//     });
 
-http
-    .createServer(
-        (request, response) => {
-            const correctedHost = request.headers['host'].replace(port, sslport);
-            const httpsURI = correctedHost + request.url;
-            // eslint-disable-next-line no-console
-            console.log('Redirecting to: ' + httpsURI);
-            response.writeHead(301, {
-                Location: 'https://' + httpsURI
-            });
-            response.end();
-        }
-    )
-    .listen(port, () => {
-        // eslint-disable-next-line no-console
-        console.log('Running HTTP on port ' + port);
-    });
+// http
+//     .createServer(
+//         (request, response) => {
+//             const correctedHost = request.headers['host'].replace(port, sslport);
+//             const httpsURI = correctedHost + request.url;
+//             // eslint-disable-next-line no-console
+//             console.log('Redirecting to: ' + httpsURI);
+//             response.writeHead(301, {
+//                 Location: 'https://' + httpsURI
+//             });
+//             response.end();
+//         }
+//     )
+//     .listen(port, () => {
+//         // eslint-disable-next-line no-console
+//         console.log('Running HTTP on port ' + port);
+//     });
 
 
 module.exports = app;
