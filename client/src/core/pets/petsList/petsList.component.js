@@ -3,9 +3,7 @@ import './petsList.styl';
 
 const petsListComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class PetsListController {
         static get $inject() {
             return [
@@ -24,8 +22,8 @@ const petsListComponent = {
         }
         $onInit() {
             this.Pets.query({}, (results) => {
-                this.pets = results
-            })
+                this.pets = results;
+            });
         }
     }
 };
