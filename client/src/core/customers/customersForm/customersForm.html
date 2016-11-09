@@ -10,7 +10,7 @@
 </div>
 
 <md-progress-linear ng-show="$ctrl.customer" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
-
+<div layout="row" flex>
 <md-content layout="row" flex="grow">
     <div flex="10"></div>
     <form name="$ctrl.customers_form" novalidate flex ng-hide="$ctrl.currentFormState=='review'">
@@ -158,10 +158,10 @@
             Secondary Contacts
         </div>
         
-        <div flex="50" ng-repeat="person in $ctrl.customer.emergencyContact"
+        <div flex="50" ng-repeat="person in $ctrl.customer.emergencyContact track by $index"
             style="padding-top:0px;">
             <p>{{person.name}} ({{person.relationship}})</p>
-            <p ng-repeat="num in person.phones">
+            <p ng-repeat="num in person.phones track by $index">
                 {{num | tel}}
             </p>
         </div>
@@ -170,19 +170,39 @@
     
     <div flex="5"></div>
     
-    <div flex="15" layout="column">
-        <md-button flex layout-fill aria-label="back"
-            style="min-width:initial"
-            ng-click="$ctrl.navigateForm('back')">
-            <md-icon md-svg-src="chevron-left"></md-icon>
-        </md-button>
-        <md-button flex layout-fill class="md-raised md-primary" aria-label="next"
-            style="min-width:initial"
-            ng-click="$ctrl.navigateForm('next')">
-            <md-icon md-svg-src="chevron-right"></md-icon>
-        </md-button>
-    </div>
-    
+    <!--<div flex="15" layout="column">-->
+        
+    <!--    <md-button  layout-fill aria-label="back"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('back')">-->
+    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
+    <!--    </md-button>-->
+        
+    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('next')">-->
+    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
+    <!--    </md-button>-->
+    <!--</div>-->
+    <!--<md-sidenav-->
+    <!--    class="md-sidenav-right"-->
+    <!--    md-component-id="left"-->
+    <!--    md-is-locked-open="true"-->
+    <!--    md-whiteframe="4"-->
+    <!--    flex="15" layout="column">-->
+        
+    <!--    <md-button  layout-fill aria-label="back"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('back')">-->
+    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
+    <!--    </md-button>-->
+        
+    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('next')">-->
+    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
+    <!--    </md-button>-->
+    <!--</md-sidenav>-->
     <!--<div layout="row" layout-fill layout-align="center">-->
     <!--    <md-button class="md-subhead"-->
     <!--        ng-click="$ctrl.navigateForm('back')">-->
@@ -195,5 +215,36 @@
     <!--</div>-->
     
 </md-content>
-
+    <!--<md-sidenav-->
+    <!--    class="md-sidenav-right"-->
+    <!--    md-component-id="left"-->
+    <!--    md-is-locked-open="true"-->
+    <!--    md-whiteframe="4"-->
+    <!--    flex="15" layout="column">-->
+        
+    <!--    <md-button  layout-fill aria-label="back"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('back')">-->
+    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
+    <!--    </md-button>-->
+        
+    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
+    <!--        style="min-width:initial"-->
+    <!--        ng-click="$ctrl.navigateForm('next')">-->
+    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
+    <!--    </md-button>-->
+    <!--</md-sidenav>-->
+    <div layout="column" flex="20">
+        <md-button flex layout-fill class="md-raised md-primary" aria-label="next"
+            style="min-width:initial"
+            ng-click="$ctrl.navigateForm('next')">
+            <md-icon md-svg-src="chevron-right"></md-icon>
+        </md-button>
+        <md-button flex layout-fill aria-label="back"
+            style="min-width:initial"
+            ng-click="$ctrl.navigateForm('back')">
+            <md-icon flex md-svg-src="chevron-left"></md-icon>
+        </md-button>
+    </div>
+</div>
 </div>

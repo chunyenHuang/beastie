@@ -9,9 +9,9 @@ const customersFormComponent = {
     controller: /* @ngInject */ 
     class customersFormController {
         static get $inject() {
-            return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope'];
+            return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope', 'Pets'];
         }
-        constructor($log, $timeout, $state, $stateParams, Customers, $scope) {
+        constructor($log, $timeout, $state, $stateParams, Customers, $scope, Pets) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
@@ -19,10 +19,12 @@ const customersFormComponent = {
             this.Customers = Customers;
             this.currentFormState = "name";
             this.$scope = $scope;
+            this.Pets = Pets;
         }
         
         $onInit(){
             this.getForm();
+            this.getTemplate();
             // this.customerForm = null;
             // this.currentFormState = 'emergencyContact';
             // this.progressValue = 0;
@@ -45,16 +47,16 @@ const customersFormComponent = {
             //     // execute
             // }
         }
-        // getTemplate() {
-        //     this.Customers.get({
-        //         id: 'template'
-        //     }, (template) => {
-        //         this.customerTemplate = template;
-        //         this.emergencyContactTemplate = angular.copy(
-        //             this.customerTemplate.emergencyContact[0]
-        //         );
-        //     })
-        // }
+        getTemplate() {
+            this.Customers.get({
+                id: 'template'
+            }, (template) => {
+                this.customerTemplate = template;
+                this.emergencyContactTemplate = angular.copy(
+                    this.customerTemplate.emergencyContact[0]
+                );
+            })
+        }
         _refresh(value){
             this.$timeout(()=>{
                value = value; 
@@ -140,6 +142,13 @@ const customersFormComponent = {
             this.customer.emergencyContact
                 .push(newContact);
         }
+        // there is some problem form data binding with this method....
+        // addPerson2() {
+        //     let newContact = angular.copy(this.customerTemplate.emergencyContact)
+        //     console.log(newContact);
+        //     this.customer.emergencyContact
+        //         .push(newContact);
+        // }
         removePerson(index) {
             this.customer.emergencyContact.splice(index, 1);
         }
@@ -157,6 +166,13 @@ const customersFormComponent = {
                     id: this.customer._id
                 }, this.customer, (res)=>{
                     console.log(res);
+                    this.Pets.query({
+                        customer_id: this.customer._id,
+                    }, (results)=>{
+                        console.info(results[0]);
+                        this.$state.go('core.pets.form', 
+                            { pet_id: results[0]._id })
+                    })
                 });
             } else{
                 console.log('new customer');
