@@ -102,6 +102,12 @@ const petsFormComponent = {
                 });
             }
         }
+
+        changeTab(val) {
+            this.selectedTab += val;
+            this.selectedTab = (this.selectedTab < 0) ? 0 : this.selectedTab;
+            this.selectedTab = (this.selectedTab > 4) ? 4 : this.selectedTab;
+        }
     }
 };
 export default petsFormComponent;
