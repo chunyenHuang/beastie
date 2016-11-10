@@ -54,6 +54,7 @@ const petsFormComponent = {
                 type: 'colors'
             }, (results) => {
                 this.colors = results[0].items;
+                console.log(this.colors);
             });
             this.ListItems.query({
                 type: 'breeds'
