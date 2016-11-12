@@ -9,11 +9,32 @@ const signatureModule = angular
         'ngInject';
         $stateProvider
             .state('client.signature', {
-                url: '/signature',
+                url: '/signature?waiverName',
                 component: 'signature'
-                // template: ''
+                    // template: ''
             });
     })
+    .config(($touchProvider) => {
+        $touchProvider.ngClickOverrideEnabled(true);
+    })
+    .directive('ngTouchstart', [() => {
+        return (scope, element, attr) => {
+            element.on('touchstart', () => {
+                scope.$apply(() => {
+                    scope.$eval(attr.ngTouchstart);
+                });
+            });
+        };
+    }])
+    .directive('ngTouchend', [() => {
+        return (scope, element, attr) => {
+            element.on('touchend', () => {
+                scope.$apply(() => {
+                    scope.$eval(attr.ngTouchend);
+                });
+            });
+        };
+    }])
     .name;
 
 export default signatureModule;

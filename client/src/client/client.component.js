@@ -20,11 +20,14 @@ const clientComponent = {
 
             this.Socket.on('signaturesInit', (res) => {
                 console.log(res);
-                this.$state.go('client.signature');
+                this.$state.go('client.signature', {
+                    waiverName: res.waiverName
+                });
             });
         }
         $onInit() {
-            this.$state.go('client.customersCheckIn');
+            // this.$state.go('client.customersCheckIn');
+            this.$state.go('client.signature');
         }
     }
 };

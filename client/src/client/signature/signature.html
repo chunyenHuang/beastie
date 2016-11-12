@@ -1,3 +1,29 @@
 <h1>signature here</h1>
-{{$ctrl.waivers}}
-<canvas id="canvas" width="500" height="200"></canvas>
+<div layout="column" flex ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.name == $ctrl.waiverName">
+    <div class="">
+        {{waiver.name}} {{waiver.zhName}}
+    </div>
+    <div class="">
+        {{waiver.description}}
+    </div>
+    <div class="">
+        {{waiver.zhDescription}}
+    </div>
+</div>
+<div class="">
+    <md-button ng-click="$ctrl.erase()">Erase</md-button>
+    <md-button ng-click="$ctrl.save()">save</md-button>
+
+    <!-- <canvas
+        id="signature-canvas"
+        ng-mousemove="$ctrl.draw($event)"
+        ng-mousedown="$ctrl.startDrawing($event)"
+        ng-mouseup="$ctrl.stopDrawing($event)"
+        width="500" height="200"></canvas> -->
+    <canvas
+        id="signature-canvas"
+        width="800" height="400"></canvas>
+        {{$ctrl.clickX[$ctrl.clickX.length-1]}}
+        {{$ctrl.clickY[$ctrl.clickY.length-1]}}
+    <img ng-src="{{$ctrl.signature}}" alt="" />
+</div>
