@@ -3,6 +3,13 @@ const Signatures = new SignaturesController;
 const dbCollectionName = 'signatures';
 
 module.exports = (app) => {
+    app.route('/signaturesInit/:id')
+        .all((req, res, next) => {
+            req.collection = req.db.collection(dbCollectionName);
+            next();
+        })
+        .get(Signatures.init);
+
     app.route('/signatures?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);

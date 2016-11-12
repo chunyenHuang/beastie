@@ -1,0 +1,15 @@
+<md-button
+    ng-show="$ctrl.style!='icon'"
+    class="md-warn"
+    type="submit"
+    ng-disabled="!$ctrl.isLogged"
+    ng-click=$ctrl.logout()>
+    <md-icon md-svg-src="logout-variant"> </md-icon>
+    Logout
+</md-button>
+<md-icon
+    ng-show="$ctrl.style=='icon'"
+    md-svg-src="logout-variant"
+    ng-disabled="!$ctrl.isLogged"
+    ng-click=$ctrl.logout()>
+</md-icon>

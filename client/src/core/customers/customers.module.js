@@ -1,10 +1,12 @@
 import customersComponent from './customers.component';
 import customersFormComponent from './customersForm';
+import customersCheckInComponent from './customersCheckIn';
 import customersService from './services/customers.service';
 
 const customersModule = angular
     .module('beastie.core.customers', [])
     .component('customers', customersComponent)
+    .component('customersCheckIn', customersCheckInComponent)
     .component('customersForm', customersFormComponent)
     .service('Customers', customersService)
     .config(($stateProvider) => {

@@ -17,9 +17,11 @@ import languageConfig from './languageConfig';
 import iconConfig from './iconConfig';
 import METADATA from './METADATA';
 
+import Socket from './services/socket.service';
 // Shared
 
 // entry modules
+import userAuth from './userAuth';
 import core from './core';
 import client from './client';
 
@@ -32,13 +34,15 @@ angular
         ngAria,
         ngMaterial,
         'pascalprecht.translate',
+        userAuth,
         core,
         client
     ])
     .constant('METADATA', METADATA)
+    .service('Socket', Socket)
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
-        $urlRouterProvider.otherwise('/core');
+        $urlRouterProvider.otherwise('/userAuth');
     })
     .config(themeConfig)
     .config(resourceConfig)

@@ -1,0 +1,23 @@
+<div class="" layout="row" flex layout-align="start center">
+    <div flex></div>
+    <form flex layout="column" ng-submit="$ctrl.login()">
+        <h2 class="md-headline">Welcome to Beastie</h2>
+        <md-input-container class="md-subhead">
+            <label>Login ID</label>
+            <input required md-no-asterisk type="text" name="loginId"
+                ng-model="$ctrl.user.loginId"
+                ></input>
+        </md-input-container>
+        <md-input-container class="md-subhead">
+            <label>Password</label>
+            <input required md-no-asterisk type="password" name="password"
+                ng-model="$ctrl.user.password"
+                ></input>
+        </md-input-container>
+        <md-button class="md-primary md-raised" type="submit">
+            Login
+        </md-button>
+        <!-- <user-auth-logout style="icon"></user-auth-logout> -->
+    </form>
+    <div flex></div>
+</div>

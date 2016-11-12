@@ -8,6 +8,24 @@ function getSessionToken(length) {
 }
 
 class UserAuthController {
+    getCurrentUser(req, res) {
+        if (req.cookies.beastieUserToken) {
+            req.db.collection('users')
+                .find({
+                    // role: 'admin',
+                    beastieUserToken: req.cookies.beastieUserToken
+                }).toArray((err, results) => {
+                    if (results.length > 0) {
+                        res.send(results[0]);
+                    } else {
+                        res.sendStatus(401);
+                    }
+                });
+        } else {
+            res.sendStatus(401);
+        }
+    }
+
     login(req, res) {
         req.collection.find({
             'loginId': req.body.loginId,
@@ -15,7 +33,7 @@ class UserAuthController {
         }).toArray((err, results) => {
             if (!err) {
                 if (results.length > 0) {
-                    const newToken = getSessionToken(50);
+                    const newToken = getSessionToken(80);
                     const timeNow = new Date();
                     req.collection.update({
                         'loginId': req.body.loginId

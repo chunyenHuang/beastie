@@ -44,7 +44,8 @@
     "mkdirp": "^0.5.1",
     "mongodb": "^2.2.5",
     "morgan": "^1.7.0",
-    "multer": "^1.2.0"
+    "multer": "^1.2.0",
+    "socket-io": "0.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.7.7",

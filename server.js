@@ -17,6 +17,17 @@ dotenv.load({
 // Setup Express Server
 const port = process.env.PORT || 3000;
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+/*
+    const io = req.app.get('socket-io');
+    io.sockets.emit('socket-name', {
+        message: 'something',
+        data: data
+        ....
+    });
+*/
+app.set('socket-io', io);
 app.set('port', port);
 app.use(compression());
 const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
@@ -102,15 +113,21 @@ fs.readdirSync(authRoutes).forEach((file) => {
 // Resources
 const routes = path.join(__dirname, '/routes/resources');
 fs.readdirSync(routes).forEach((file) => {
-    const route = path.join(routes, file);
-    require(route)(app);
+    if (file != '.DS_Store') {
+        const route = path.join(routes, file);
+        require(route)(app);
+    }
 });
 
 // Errors
 app.use(errorHandler());
 
 // Start Server
-app.listen(app.get('port'), () => {
+// app.listen(app.get('port'), () => {
+//     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
+//     console.log('Listening on port %d in %s mode', app.get('port'), mode);
+// });
+server.listen(app.get('port'), () => {
     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 });
