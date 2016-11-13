@@ -31,61 +31,67 @@ const DirPaths = [
     backups, backupImages, backupDB, backupFiles,
     uploads, images, inhouseOrders
 ];
-DirPaths.forEach((dirPath) => {
-    fs.access(dirPath, (err) => {
-        if (err) {
-            mkdirp(dirPath, (err) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log('created: ' + dirPath);
-                }
-            });
-        }
-    });
-});
 
-/*
-    mongodb
-*/
-const collections = [];
-fs.readdirSync(seedsPath).forEach((file) => {
-    let collection = file.split('.');
-    collection = collection[0];
-    collections.push(collection);
-});
-
-const today = new Date();
-const timestamp = today.getTime();
-const backupLocation = path.join(backupDB, timestamp.toString());
-mkdirp(backupLocation, (err) => {
-    if (err) {
-        return console.log(err);
-    }
-    (function writeDBtoFile(index) {
-        if (index == collections.length) {
-            console.log('DB backup is finished.');
-            return process.exit();
-        }
-        dbClient.connect(dbUrl, (err, db) => {
-            db.collection(collections[index]).find({}).toArray((err, results) => {
-                if (err) {
-                    return console.log(err);
-                } else {
-                    const filename = collections[index] + '.json';
-                    const filePath = path.join(backupLocation, filename);
-                    index += 1;
-                    fs.writeFile(filePath, JSON.stringify(results), (err) => {
-                        if (err) {
-                            return console.log(err);
-                        }
-                        if (!err) {
-                            console.log('Complete backup: ' + collections[index]);
-                            return writeDBtoFile(index);
-                        }
-                    });
-                }
-            });
+const Backup = ()=>{
+    DirPaths.forEach((dirPath) => {
+        fs.access(dirPath, (err) => {
+            if (err) {
+                mkdirp(dirPath, (err) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log('created: ' + dirPath);
+                    }
+                });
+            }
         });
-    })(0);
-});
+    });
+
+    /*
+        mongodb
+    */
+    const collections = [];
+    fs.readdirSync(seedsPath).forEach((file) => {
+        let collection = file.split('.');
+        collection = collection[0];
+        collections.push(collection);
+    });
+    // console.log(collections);
+
+    const today = new Date();
+    const timestamp = today.getTime();
+    const backupLocation = path.join(backupDB, timestamp.toString());
+    mkdirp(backupLocation, (err) => {
+        if (err) {
+            return console.log(err);
+        }
+        (function writeDBtoFile(index) {
+            if (index == collections.length) {
+                return console.log('DB backup is finished.');
+                // return process.exit();
+            }
+            dbClient.connect(dbUrl, (err, db) => {
+                db.collection(collections[index]).find({}).toArray((err, results) => {
+                    if (err) {
+                        return console.log(err);
+                    } else {
+                        const filename = collections[index] + '.json';
+                        const filePath = path.join(backupLocation, filename);
+                        index += 1;
+                        fs.writeFile(filePath, JSON.stringify(results), (err) => {
+                            if (err) {
+                                return console.log(err);
+                            }
+                            if (!err) {
+                                console.log('Complete backup: ' + collections[index]);
+                                return writeDBtoFile(index);
+                            }
+                        });
+                    }
+                });
+            });
+        })(0);
+    });
+};
+// Backup();
+module.exports = Backup;
