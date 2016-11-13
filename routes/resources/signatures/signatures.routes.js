@@ -3,7 +3,7 @@ const Signatures = new SignaturesController;
 const dbCollectionName = 'signatures';
 
 module.exports = (app) => {
-    app.route('/signaturesInit/:id')
+    app.route('/signaturesInit/:waiverName')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();

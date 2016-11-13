@@ -13,6 +13,26 @@ const fs = require('fs');
 dotenv.load({
     path: '.env.file'
 });
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './uploads');
+    },
+    filename: (req, file, callback) => {
+        const newName = file.fieldname + '-' + Date.now();
+        callback(
+            null,
+            newName
+        );
+    }
+});
+const upload = multer({
+    storage: storage
+}).single('file');
+
+// global path
+global.uploads = path.join(__dirname, 'uploads');
+global.images = path.join(__dirname, 'images');
 
 // Setup Express Server
 const port = process.env.PORT || 3000;
@@ -29,7 +49,6 @@ const io = require('socket.io')(server);
 */
 app.set('socket-io', io);
 app.set('port', port);
-app.use(compression());
 const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
     flags: 'a'
 });
@@ -40,12 +59,13 @@ if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'dev') {
         'stream': accessLogStream
     }));
 }
-
+app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(bodyParser.json());
+app.use(upload);
 app.use(expressValidator());
 
 const dbClient = mongodb.MongoClient;
