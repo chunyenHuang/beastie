@@ -117,8 +117,8 @@ const inhouseOrdersComponent = {
             for (let type in this.inhouseOrders) {
                 if (this.inhouseOrders[type].value.length > 0) {
                     angular.forEach(this.inhouseOrders[type].value, (value) => {
-                        const text = value.name + ' ' +
-                            ((value.name != value.zhName) ? value.zhName : '');
+                        const text = type + ': ' + value.name +
+                            ' ' + ((value.name != value.zhName) ? value.zhName : '');
                         texts.push(text);
                     });
                 }
@@ -129,16 +129,17 @@ const inhouseOrdersComponent = {
             canvas.height = 500;
             const ctx = canvas.getContext('2d');
             const margin = {
-                top: 50,
-                left: 20
+                top: -40,
+                left: 20,
+                bottom: 20
             };
-            const lineHeight = 60;
+            const lineHeight = 80;
             canvas.width = 500;
-            canvas.height = margin.top * 2 + lineHeight * texts.length;
+            canvas.height = margin.top + lineHeight * texts.length + margin.bottom;
 
             let nextY = margin.top;
             ctx.font = '40px Georgia';
-            ctx.fillText('*', margin.left, nextY);
+            ctx.fillText(' ', margin.left, nextY);
             for (var x = 0; x < texts.length; x++) {
                 nextY += lineHeight;
                 ctx.fillText(texts[x], margin.left, nextY);
@@ -147,7 +148,7 @@ const inhouseOrdersComponent = {
             // const image = ctx.getImageData(
             //     0, 0, canvas.width, canvas.height
             // );
-            canvas.toBlob((blob)=> {
+            canvas.toBlob((blob) => {
                 // const url = URL.createObjectURL(blob);
                 callback(blob);
             });
