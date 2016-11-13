@@ -144,7 +144,7 @@ gulp.task('init', () => {
             //     choices: ['patch', 'minor', 'major']
             // }
         ], (res) => {
-            gulp.src(['init-template/.env.file'])
+            gulp.src(['generator/.env.file'])
                 .pipe(replace('env_port', res.env_port))
                 .pipe(replace('env_static_ip', res.env_static_ip))
                 .pipe(replace('env_BACKUP_PATH', res.env_BACKUP_PATH))
@@ -156,7 +156,7 @@ gulp.task('init', () => {
                 // .pipe(replace('env_TWILIO_AUTH_TOKEN', res.env_TWILIO_AUTH_TOKEN))
                 // .pipe(replace('env_TWILIO_PHONE_NUMBER', res.env_TWILIO_PHONE_NUMBER))
                 .pipe(gulp.dest('./'));
-            gulp.src(['init-template/main.js'])
+            gulp.src(['generator/main.js'])
                 .pipe(replace('env_port', res.env_port))
                 .pipe(replace('env_static_ip', res.env_static_ip))
                 .pipe(gulp.dest('./app'));
