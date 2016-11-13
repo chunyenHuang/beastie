@@ -1,7 +1,7 @@
 .git
 .DS_Store
 *.log
-.env.file
+/.env.file
 
 node_modules/
 dist/
