@@ -12,13 +12,23 @@ class InhouseOrdersController extends AbstractController {
     }
 
     getTemplate(req, res) {
-        const template = {};
+        const template = {
+            file: null,
+            filename: null,
+            order_id: null
+        };
         res.send(template);
     }
 
     print(req, res) {
+        if(!req.file || !req.body.filename || !req.body.order_id){
+            res.sendStatus(400);
+            return;
+        }
         // console.log(req.file);
-        const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
+        // console.log(req.body.filename);
+        // const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
+        const newName = req.body.filename;
         req.oldPath = path.join(global.uploads, req.file.filename);
         req.newPath = path.join(global.images, 'inhouseOrders', newName);
         this._moveFile(req, res, () => {

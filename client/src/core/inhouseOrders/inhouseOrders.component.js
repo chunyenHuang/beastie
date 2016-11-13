@@ -7,13 +7,15 @@ const inhouseOrdersComponent = {
     controller: /* @ngInject */ class InhouseOrdersController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
+                '$log', '$timeout', '$document', '$http', '$state', '$stateParams',
                 'InhouseOrders', 'ListItems', 'Orders'
             ];
         }
-        constructor($log, $timeout, $state, $stateParams, InhouseOrders, ListItems, Orders) {
+        constructor($log, $timeout, $document, $http, $state, $stateParams, InhouseOrders, ListItems, Orders) {
             this.$log = $log;
             this.$timeout = $timeout;
+            this.$document = $document;
+            this.$http = $http;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.InhouseOrders = InhouseOrders;
@@ -104,8 +106,77 @@ const inhouseOrdersComponent = {
             }, (res) => {
                 console.info(res);
                 this.formatOrderForm();
+                this.print();
             }, (err) => {
                 console.error(err);
+            });
+        }
+
+        drawImage(callback) {
+            const texts = [];
+            for (let type in this.inhouseOrders) {
+                if (this.inhouseOrders[type].value.length > 0) {
+                    angular.forEach(this.inhouseOrders[type].value, (value) => {
+                        const text = value.name + ' ' +
+                            ((value.name != value.zhName) ? value.zhName : '');
+                        texts.push(text);
+                    });
+                }
+            }
+
+            const canvas = this.$document[0].getElementById('inhouse-orders-canvas');
+            canvas.width = 500;
+            canvas.height = 500;
+            const ctx = canvas.getContext('2d');
+            const margin = {
+                top: 50,
+                left: 20
+            };
+            const lineHeight = 60;
+            canvas.width = 500;
+            canvas.height = margin.top * 2 + lineHeight * texts.length;
+
+            let nextY = margin.top;
+            ctx.font = '40px Georgia';
+            ctx.fillText('*', margin.left, nextY);
+            for (var x = 0; x < texts.length; x++) {
+                nextY += lineHeight;
+                ctx.fillText(texts[x], margin.left, nextY);
+            }
+            // const dataUrl = canvas.toDataURL('image/png', 0.5);
+            // const image = ctx.getImageData(
+            //     0, 0, canvas.width, canvas.height
+            // );
+            canvas.toBlob((blob)=> {
+                // const url = URL.createObjectURL(blob);
+                callback(blob);
+            });
+
+
+        }
+
+        print() {
+            this.drawImage((blob) => {
+                const formData = new FormData();
+                formData.append('file', blob);
+                formData.append('filename', this.order_id + '.png');
+                formData.append('order_id', this.order_id);
+                this.$http.post(
+                    '/inhouseOrders',
+                    formData, {
+                        headers: {
+                            'Content-Type': undefined
+                        },
+                        eventHandlers: {
+                            progress: () => {}
+                        },
+                        uploadEventHandlers: {
+                            progress: (event) => {
+                                console.log(event.loaded / event.total);
+                            }
+                        }
+                    }
+                );
             });
         }
 
