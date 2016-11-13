@@ -16,7 +16,7 @@ dotenv.load({
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, './uploads');
+        callback(null, './files/uploads');
     },
     filename: (req, file, callback) => {
         const newName = file.fieldname + '-' + Date.now();
@@ -31,8 +31,8 @@ const upload = multer({
 }).single('file');
 
 // global path
-global.uploads = path.join(__dirname, 'uploads');
-global.images = path.join(__dirname, 'images');
+global.uploads = path.join(__dirname, 'files/uploads');
+global.images = path.join(__dirname, 'files/images');
 
 // Setup Express Server
 const port = process.env.PORT || 3000;

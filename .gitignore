@@ -7,8 +7,13 @@ node_modules/
 dist/
 data/
 ssl/
+
 uploads/
-images/inhouseOrders/*
+images/
+backups/
 dropbox/
+tmp/
+files/
+app/
 
 test*

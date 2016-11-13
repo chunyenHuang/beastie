@@ -12,7 +12,8 @@ const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 // Load Datas
 const initDatas = {};
 const routes = [];
-const routePath = path.join(__dirname, '/seeds');
+const root = path.join(__dirname, '../');
+const routePath = path.join(root, 'seeds');
 fs.readdirSync(routePath).forEach((file) => {
     const filename = file.split('.')[0];
     const route = path.join(routePath, file);
@@ -42,6 +43,7 @@ dbClient.connect(dbUrl, (err, db) => {
                         }
 
                         if (count == initDatas[collection].length) {
+                            console.log('Inserted Collection: ' + collection);
                             index++;
                             insert(index);
                         }
