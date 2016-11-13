@@ -1,9 +1,16 @@
 const path = require('path');
 const fs = require('fs');
 const escpos = require('escpos');
-const device = new escpos.USB();
-const printer = new escpos.Printer(device);
-// const mkdirp = require('mkdirp');
+let device;
+let printer;
+try {
+    device = new escpos.USB();
+    printer = new escpos.Printer(device);
+} catch (err) {
+    console.log('-----------------------------------');
+    console.log('Please Connect the Receipt Printer.');
+    console.log('-----------------------------------');
+}
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class InhouseOrdersController extends AbstractController {
@@ -21,7 +28,7 @@ class InhouseOrdersController extends AbstractController {
     }
 
     print(req, res) {
-        if(!req.file || !req.body.filename || !req.body.order_id){
+        if (!req.file || !req.body.filename || !req.body.order_id) {
             res.sendStatus(400);
             return;
         }
@@ -32,13 +39,17 @@ class InhouseOrdersController extends AbstractController {
         req.oldPath = path.join(global.uploads, req.file.filename);
         req.newPath = path.join(global.images, 'inhouseOrders', newName);
         this._moveFile(req, res, () => {
-            this._print(req, res, ()=>{
+            this._print(req, res, () => {
                 res.sendStatus(200);
             });
         });
     }
 
     _print(req, res, next) {
+        if (!device) {
+            next();
+            return;
+        }
         // const barcode = req.body.order_id;
         escpos.Image.load(req.newPath, (image) => {
             device.open(() => {
@@ -65,18 +76,18 @@ class InhouseOrdersController extends AbstractController {
                     .text(' ')
                     .text(' ')
                     .cut();
-                    // .text('中文測試到底可不可以', 'Big5')
-                    // .barcode(barcode, 'EAN13')
-                    // .image(image, 's8')
-                    // .image(image, 'd8')
-                    // .image(image, 's24')
-                    // .image(image, 'd24')
-                    // .raster(image, 'dw')
-                    // .raster(image, 'dh')
-                    // .raster(image, 'dwdh')
-                    // .qrimage('https://github.com/song940/node-escpos', function(err){
-                    //   this.cut();
-                    // });
+                // .text('中文測試到底可不可以', 'Big5')
+                // .barcode(barcode, 'EAN13')
+                // .image(image, 's8')
+                // .image(image, 'd8')
+                // .image(image, 's24')
+                // .image(image, 'd24')
+                // .raster(image, 'dw')
+                // .raster(image, 'dh')
+                // .raster(image, 'dwdh')
+                // .qrimage('https://github.com/song940/node-escpos', function(err){
+                //   this.cut();
+                // });
 
                 next();
             });
