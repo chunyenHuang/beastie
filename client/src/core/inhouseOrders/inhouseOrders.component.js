@@ -105,7 +105,7 @@ const inhouseOrdersComponent = {
                 id: this.order_id
             }, (res) => {
                 console.info(res);
-                this.formatOrderForm();
+                // this.formatOrderForm();
                 this.print();
             }, (err) => {
                 console.error(err);
@@ -180,14 +180,14 @@ const inhouseOrdersComponent = {
             });
         }
 
-        formatOrderForm() {
-            this.format = {};
-            for (var prop in this.inhouseOrders) {
-                if (this.inhouseOrders[prop].value.length > 0) {
-                    this.format[prop] = this.inhouseOrders[prop].value;
-                }
-            }
-        }
+        // formatOrderForm() {
+        //     this.format = {};
+        //     for (var prop in this.inhouseOrders) {
+        //         if (this.inhouseOrders[prop].value.length > 0) {
+        //             this.format[prop] = this.inhouseOrders[prop].value;
+        //         }
+        //     }
+        // }
     }
 };
 export default inhouseOrdersComponent;
