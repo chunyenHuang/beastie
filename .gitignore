@@ -1,13 +1,21 @@
 .git
 .DS_Store
 *.log
-.env.file
+/.env.file
 
 node_modules/
 dist/
 data/
 ssl/
 test_practice/
+
+uploads/
+images/
+backups/
+dropbox/
+tmp/
+files/
+app/
 
 uploads/
 images/

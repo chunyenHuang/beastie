@@ -1,4 +1,6 @@
-// Modules
+/*
+    Modules
+*/
 const express = require('express');
 const compression = require('compression');
 const mongodb = require('mongodb');
@@ -10,15 +12,53 @@ const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
+const CronJob = require('cron').CronJob;
+const multer = require('multer');
+
+/*
+    Configuration
+*/
 dotenv.load({
     path: '.env.file'
 });
-
-// Setup Express Server
 const port = process.env.PORT || 3000;
+const dbClient = mongodb.MongoClient;
+const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, './files/uploads');
+    },
+    filename: (req, file, callback) => {
+        const newName = file.fieldname + '-' + Date.now();
+        callback(
+            null,
+            newName
+        );
+    }
+});
+
+const upload = multer({
+    storage: storage
+}).single('file');
+
+/*
+    global
+*/
+
+global.uploads = path.join(__dirname, 'files/uploads');
+global.images = path.join(__dirname, 'files/images');
+
+/*
+    Setup Express Server
+*/
+
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+app.set('socket-io', io);
+app.set('port', port);
+
 /*
     const io = req.app.get('socket-io');
     io.sockets.emit('socket-name', {
@@ -27,30 +67,28 @@ const io = require('socket.io')(server);
         ....
     });
 */
-app.set('socket-io', io);
-app.set('port', port);
-app.use(compression());
-const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
-    flags: 'a'
-});
+
+/*
+    Express Configuration
+*/
 if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'dev') {
     app.use(logger('dev'));
 } else {
+    const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
+        flags: 'a'
+    });
     app.use(logger('combined', {
         'stream': accessLogStream
     }));
 }
-
+app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(bodyParser.json());
+app.use(upload);
 app.use(expressValidator());
-
-const dbClient = mongodb.MongoClient;
-const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
-
 app.use((req, res, next) => {
     dbClient.connect(dbUrl, (err, db) => {
         req.db = db;
@@ -95,6 +133,10 @@ if (process.env.NODE_ENV == 'development') {
     }));
 }
 
+/*
+    Routes
+*/
+
 app.get('/*', (req, res, next) => {
     res.setHeader('Last-Modified', (new Date()).toUTCString());
     next();
@@ -118,6 +160,42 @@ fs.readdirSync(routes).forEach((file) => {
         require(route)(app);
     }
 });
+
+/*
+ * Schedule Backup
+ * '* * * * * *'
+ * You will see this message every second
+ *
+ * '00 30 11 * * 1-5'
+ * Runs every weekday (Monday through Friday)
+ * at 11:30:00 AM. It does not run on Saturday
+ * or Sunday.
+ */
+
+const backupTime = [
+    '00 00 10 * * 0-7',
+    '00 00 12 * * 0-7',
+    '00 00 14 * * 0-7',
+    '00 00 18 * * 0-7',
+    '00 00 20 * * 0-7'
+];
+
+for (var i = 0; i < backupTime.length; i++) {
+    const job = new CronJob({
+        cronTime: backupTime[i],
+        onTick: () => {
+            const Backup = require('./scripts/backup');
+            const today = new Date();
+            console.log('----------------------------')
+            console.log(today);
+            console.log('----------------------------')
+            Backup();
+        },
+        start: false,
+        timeZone: 'America/Los_Angeles'
+    });
+    job.start();
+}
 
 // Errors
 app.use(errorHandler());

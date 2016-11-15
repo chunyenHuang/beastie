@@ -1,14 +1,16 @@
-<md-content layout="column" id="inhouse-orders">
-    <h1>Inhouse Orders</h1>
-    <md-divider></md-divider>
-    <div ng-repeat="type in $ctrl.list" >
-         {{type.zhName}} {{type.name}}
+<md-content layout="column" id="inhouse-orders" layout-align="start center">
+    <!-- <h1>Inhouse Orders</h1>
+    <md-divider></md-divider> -->
+    <div class="padding-box" ng-repeat="type in $ctrl.list" layout="column" layout-align="start center">
+        <h3>
+            {{type.zhName}} {{type.name}}
+        </h3>
         <div layout="row">
             <md-button
                 ng-repeat="item in type.subItems"
                 ng-click="$ctrl.assignToOrder(type.name, item)"
                 ng-class="{
-                    'md-primary': $ctrl.isInOrder(type.name, item),
+                    'md-accent': $ctrl.isInOrder(type.name, item),
                     'md-raised': $ctrl.isInOrder(type.name, item)
                 }">
                 {{item.zhName}} {{item.name}}
@@ -16,24 +18,8 @@
         </div>
     </div>
     <div layout="row">
-        <md-button ng-click="$ctrl.submit()">submit</md-button>
-        <md-button ng-click="$ctrl.reset()">reset</md-button>
+        <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">submit</md-button>
+        <md-button ng-click="$ctrl.reset()" class="md-warn">reset</md-button>
     </div>
-
-    <md-card>
-        <div>
-            order
-        </div>
-        <div class="">
-            <div ng-repeat="(key, items) in $ctrl.format">
-                {{key}}:
-                <span ng-repeat="item in items">
-                    {{item.name}} {{item.zhName}}
-                    <span ng-hide="$index==(items.length-1)">
-                        ,
-                    </span>
-                </span>
-            </div>
-        </div>
-    </md-card>
+    <canvas id="inhouse-orders-canvas" class="hide"></canvas>
 </md-content>
