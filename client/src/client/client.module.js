@@ -26,6 +26,7 @@ const clientModule = angular
             .state('client.customersForm', {
                 url: '/customersForm',
                 component: 'customersForm'
+                // <customers-form customer_id=""/>
             })
             ;
     })

@@ -248,8 +248,8 @@
     "items": [{
         "name": "Rabies",
         "zhName": "狂犬病",
-        "description": "asldajsdl;fa",
-        "zhDescription": "中文",
+        "description": "The first rabies vaccine should be given after the dog/cat is three months of age, with a second vaccination 12 months later. Dogs should receive a booster vaccination every three years there after. Cats should receive a booster vaccine every year or every three years thereafter, depending on the type of vaccine used.",
+        "zhDescription": "加州法律規定年齡大於四個月的狗必須施打狂犬病疫苗，第二劑疫苗應於第一劑注射後 12 個月施打，之後則是每三年注射一次；大於四個月的貓建議接種狂犬病疫苗，於第一劑後的 12 個月接種第二劑，之後則根據劑型每年或每三年接種一次。",
         "rejectOrderWithinDays": 30,
         "rejectOrderIfIsExpired": true,
         "remindCustomerWithinDays": 60,
