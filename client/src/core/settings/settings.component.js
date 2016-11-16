@@ -9,19 +9,28 @@ const settingsComponent = {
     controller: /* @ngInject */ class SettingsController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
+                '$log', '$scope', '$timeout', '$state', '$stateParams',
                 'Settings'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
+            $log, $scope, $timeout, $state, $stateParams,
             Settings
         ) {
             this.$log = $log;
+            this.$scope = $scope;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Settings = Settings;
+
+            this.$scope.$watch('$ctrl.syncDir',(dir)=>{
+                console.log(dir);
+            });
+        }
+
+        print(dir){
+            console.log(dir);
         }
 
         $onInit() {
