@@ -12,6 +12,7 @@ import ngResource from 'client/node_modules/angular-resource';
 import ngSanitize from 'client/node_modules/angular-sanitize';
 import 'client/node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module';
 import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
+import 'client/node_modules/angular-smart-table';
 
 // configs
 import themeConfig from './themeConfig';
@@ -39,6 +40,7 @@ angular
         ngMaterial,
         'pascalprecht.translate',
         'colorpicker.module',
+        'smart-table',
         userAuth,
         core,
         client

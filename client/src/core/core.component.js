@@ -17,10 +17,11 @@ const coreComponent = {
         }
 
         $onInit() {
-            this.message = 'Hello~';
-            this.$timeout(() => {
-                this.message += 'World';
-            }, 1500);
+            this.$state.go('core.orders');
+            // this.message = 'Hello~';
+            // this.$timeout(() => {
+            //     this.message += 'World';
+            // }, 1500);
         }
 
         go(state) {

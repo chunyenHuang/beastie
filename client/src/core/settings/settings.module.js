@@ -9,7 +9,7 @@ const settingsModule = angular
         'ngInject';
         $stateProvider
             .state('core.settings', {
-                url: '/core.settings',
+                url: '/settings',
                 template: '<settings layout="column" flex></settings>'
             });
     })

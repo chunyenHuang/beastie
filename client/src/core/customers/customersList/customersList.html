@@ -1,0 +1,110 @@
+<div class="" id="customers-list" layout="row" flex>
+    <md-content layout="column" flex="50">
+        <table flex st-table="displayedCollection" st-safe-src="$ctrl.customers" class="table table-striped">
+            <thead>
+                <tr>
+                    <th colspan="4">
+                        <md-icon md-svg-src="magnify"></md-icon>
+                        <md-input-container class="md-block">
+                            <input st-search="" class="form-control" placeholder="" type="text"/>
+                        </md-input-container>
+                    </th>
+                </tr>
+
+                <tr>
+                    <th st-sort="firstName">first name</th>
+                    <th st-sort="lastName">last name</th>
+                    <th st-sort="birthDate">phone</th>
+                    <th st-sort="visits">visits</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="row in displayedCollection" ng-click="$ctrl.selected = row">
+                    <td>{{row.firstname}}</td>
+                    <td>{{row.lastname}}</td>
+                    <td>{{row.phone | tel}}</td>
+                    <td>{{row.visits}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </md-content>
+    <div layout="column" flex class="customer-detail">
+        <div layout="row" flex="none">
+            <div flex></div>
+            <md-button ng-show="$ctrl.selected" ng-click="$ctrl.update($ctrl.selected)" class="md-raised md-primary">Update user</md-button>
+        </div>
+        <md-content layout="column" flex ng-show="$ctrl.selected" class="md-padding">
+            <md-subheader class="md-no-sticky">
+                Information
+            </md-subheader>
+            <div layout="row" flex="none" class="md-padding">
+                <md-input-container class="md-block">
+                    <label>First Name</label>
+                    <input type="text" ng-model="$ctrl.selected.firstname"/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Last Name</label>
+                    <input type="text" ng-model="$ctrl.selected.lastname"/>
+                </md-input-container>
+            </div>
+            <div layout="column" flex="none" class="md-padding">
+                <md-input-container class="md-block">
+                    <label>Primary Phone (for login)</label>
+                    <input type="text" ng-model="$ctrl.selected.phone"/>
+                </md-input-container>
+                <md-input-container class="md-block" ng-repeat="phone in $ctrl.selected.phones">
+                    <label>Phone {{$index+2}}</label>
+                    <input type="text" ng-model="phone"/>
+                </md-input-container>
+
+            </div>
+            <md-subheader class="md-no-sticky">
+                Address
+            </md-subheader>
+            <div layout="column" flex="none" class="md-padding">
+                <md-input-container class="md-block">
+                    <label>Street</label>
+                    <input type="text" ng-model="$ctrl.selected.address.street"/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>City</label>
+                    <input type="text" ng-model="$ctrl.selected.address.city"/>
+                </md-input-container>
+                <div layout="row">
+                    <md-input-container class="md-block">
+                        <label>state</label>
+                        <input type="text" ng-model="$ctrl.selected.address.state"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>zipCode</label>
+                        <input type="text" ng-model="$ctrl.selected.address.zipCode"/>
+                    </md-input-container>
+                </div>
+            </div>
+            <md-subheader class="md-no-sticky">
+                Emergency Contacts
+            </md-subheader>
+            <div layout="column" flex="none" class="md-padding" ng-repeat="contact in $ctrl.selected.emergencyContact">
+                <md-input-container class="md-block">
+                    <label>name</label>
+                    <input type="text" ng-model="contact.name"/>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Relationship</label>
+                    <input type="text" ng-model="contact.relationship"/>
+                </md-input-container>
+                <md-input-container class="md-block" ng-repeat="phone in contact.phones">
+                    <label>phone {{$index+1}}</label>
+                    <input type="text" ng-model="phone"/>
+                </md-input-container>
+            </div>
+            <md-divider></md-divider>
+            <div layout="column" flex="none" class="md-padding">
+                <!-- <label>Last Login At</label>
+                {{$ctrl.selected.lastLoginAt | date:'EEEE h:mma @ MMMM d, y'}}
+                <label>Created At</label> -->
+                {{$ctrl.selected.updatedAt | date:'EEEE h:mma @ MMMM d, y'}}
+            </div>
+        </md-content>
+    </div>
+</div>

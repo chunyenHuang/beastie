@@ -17,6 +17,7 @@ const customersComponent = {
             this.$state = $state;
         }
         $onInit() {
+            this.$state.go('core.customers.list');
             // this.resourceTest();
         }
     }
