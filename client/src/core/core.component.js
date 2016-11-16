@@ -55,6 +55,7 @@ const coreComponent = {
             this.isChineseNow = !this.isChineseNow;
             this.$translate.use(key);
         }
+
     }
 };
 
