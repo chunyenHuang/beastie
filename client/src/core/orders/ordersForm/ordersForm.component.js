@@ -58,7 +58,6 @@ const ordersFormComponent = {
                 this.services = results[0].items;
             });
         }
-
         setOrder() {
             if (this.$stateParams.order_id) {
                 // edit order

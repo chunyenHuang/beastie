@@ -50,7 +50,7 @@
         <div layout="column" flex>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Services</label>
-                <md-select ng-model="$ctrl.order.services">
+                <md-select ng-model="$ctrl.order.services" ng-model-options="{trackBy: '$value.name'}">
                     <md-option ng-repeat="serivce in $ctrl.services" ng-value="serivce">
                         {{serivce.name}} {{serivce.zhName}}
                     </md-option>

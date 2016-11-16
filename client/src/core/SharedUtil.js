@@ -32,6 +32,16 @@ class SharedUtil {
             default:
         }
     }
+    daysBetween(pastDate, otherDate ){
+        // 1 day = 8.64e+7 milliseconds
+        if(otherDate) {
+            let diff = pastDate.valueOf() - otherDate.valueOf();
+            return diff/8.64e+7;
+        } else {
+            let diffNow = pastDate.valueOf() - Date.now();
+            return diffNow/8.64e+7;
+        }
+    }
 }
 
 export default SharedUtil;
