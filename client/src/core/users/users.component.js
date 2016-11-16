@@ -26,17 +26,37 @@ const usersComponent = {
             });
             this.Users.query({}, (users) => {
                 this.users = users;
+                console.log(users);
             });
         }
 
         addUser() {
             if (!this.users[0].name || !this.users[0].role) {
+                this.selected = this.users[0];
                 return;
             }
             this.getTemplate((template) => {
                 console.log(template);
                 this.users.unshift(template);
-            })
+                this.selected = this.users[0];
+            });
+        }
+
+        update(user) {
+            if (!user._id) {
+                this.create(user);
+            }
+            user.$update({
+                id: user._id
+            }, (res) => {
+                console.log(res);
+            });
+        }
+
+        create(user) {
+            this.Users.save(user, (res) => {
+                console.log(res);
+            });
         }
 
         getTemplate(callback) {

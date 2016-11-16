@@ -1,23 +1,82 @@
-<md-content layout="column" flex>
-    <h2>users</h2>
-    <md-button ng-click="$ctrl.addUser()">Add new user</md-button>
-    <div class="" layout="row" flex="none" ng-repeat="user in $ctrl.users" layout-align="space-between center">
-        <img ng-src="{{user.avatar}}" alt="avatar"/>
+<div layout="column" flex id="users">
+    <div layout="row" layout-align="center center" layout-padding class="listItems-header">
         <div class="">
-            {{user.name}}
+            <h3>
+                users
+            </h3>
         </div>
-        <div class="">
-            {{user.loginId}}
-        </div>
-        <div class="">
-            {{user.role}}
-        </div>
-
-        <!-- <div flex></div> -->
-        <!-- <md-select ng-model="user.role" aria-label="user-role {{$index}}">
-            <md-option ng-value="{{role.name}}" ng-repeat="role in $ctrl.roles">
-                {{role.name}}
-            </md-option>
-        </md-select> -->
+        <div flex></div>
+        <md-button ng-click="$ctrl.addUser()">Add new user</md-button>
     </div>
-</md-content>
+    <div layout="row" flex>
+        <md-content layout="column" flex="50" layout-padding>
+            <div layout="row" layout-align="space-between start" flex="none">
+                <div layout="column" flex="20">
+                    Avatar
+                </div>
+                <div layout="column" flex="20">
+                    Name
+                </div>
+                <div layout="column" flex="20">
+                    Login Id
+                </div>
+                <div layout="column" flex="20">
+                    Role
+                </div>
+            </div>
+            <md-divider></md-divider>
+            <div layout="row" ng-repeat="user in $ctrl.users" ng-click="$ctrl.selected = user" ng-show="!user.isDeleted" layout-align="space-between start" flex="none">
+                <div layout="column" flex="20">
+                    <img ng-src="{{user.avatar}}" alt="avatar"/>
+                </div>
+                <div layout="column" flex="20">
+                    {{user.name}}
+                </div>
+                <div layout="column" flex="20">
+                    {{user.loginId}}
+                </div>
+                <div layout="column" flex="20">
+                    {{user.role}}
+                </div>
+            </div>
+        </md-content>
+        <md-content layout="column" flex="50" layout-padding>
+            <md-content layout="column" flex ng-show="$ctrl.selected">
+                <div layout="row" flex="none">
+                    <div flex></div>
+                    <md-button ng-click="$ctrl.update($ctrl.selected)" class="md-raised md-primary">Update user</md-button>
+                </div>
+                <div layout="column" flex="none">
+                    <img ng-src="{{$ctrl.selected.avatar}}" alt="avatar"/>
+                </div>
+                <div layout="column" flex="none">
+                    <md-input-container class="md-block">
+                        <label>Name</label>
+                        <input type="text" ng-model="$ctrl.selected.name"/>
+                    </md-input-container>
+                </div>
+                <div layout="column" flex="none">
+                    <md-input-container class="md-block">
+                        <label>Login Id</label>
+                        <input type="text" ng-model="$ctrl.selected.loginId"/>
+                    </md-input-container>
+                </div>
+                <div layout="column" flex="none">
+                    <md-input-container class="md-block">
+                        <label>Password</label>
+                        <input type="password" ng-model="$ctrl.selected.password"/>
+                    </md-input-container>
+                </div>
+
+                <md-input-container flex="20">
+                    <label>Role</label>
+                    <md-select ng-model="$ctrl.selected.role">
+                        <md-option ng-repeat="role in $ctrl.roles" value="{{role.name}}">
+                            {{role.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </md-content>
+        </md-content>
+    </div>
+</div>
