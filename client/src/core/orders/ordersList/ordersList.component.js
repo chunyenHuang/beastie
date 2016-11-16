@@ -10,12 +10,12 @@ const ordersListComponent = {
         static get $inject() {
             return [
                 '$log', '$timeout', '$state', '$stateParams',
-                'Orders', 'Pets', 'SharedUtil'
+                'Orders', 'Pets', 'SharedUtil', 'Customers'
             ];
         }
         constructor(
             $log, $timeout, $state, $stateParams,
-            Orders, Pets, SharedUtil
+            Orders, Pets, SharedUtil, Customers
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -24,8 +24,34 @@ const ordersListComponent = {
             this.Orders = Orders;
             this.Pets = Pets;
             this.getDayName = SharedUtil.getDayName;
+            this.Customers = Customers;
 
             this.pets = {};
+            this.customers = {};
+        }
+        
+        setOrdersList(){
+            const orders ={
+                // checkedIn: [],
+                checkedIn: {
+                    'order_id1': {　/* resource entity */ },
+                    'order_id2': {}
+                },
+                open: {
+                    
+                },
+                close: {
+                    
+                },
+                cancelled: {
+                    
+                }
+            }
+            
+            orders['checkedIn'][order_id];
+            
+            orders['cancelled'][order_id] = orders['checkedIn'][order_id];
+            delete orders['checkedIn'][order_id];
         }
 
         $onInit() {
@@ -33,6 +59,7 @@ const ordersListComponent = {
                 console.log('oninit');
                 this.orders = orders;
                 this.getPets();
+                this.getCustomers();
                 this.$timeout(() => {
                     this.orders = this.orders;
                 }, 20);
@@ -46,6 +73,20 @@ const ordersListComponent = {
                         id: order.pet_id
                     }, (pet) => {
                         this.pets[order.pet_id] = pet;
+                        console.log(this.pets);
+                    });
+                }
+            });
+        }
+        
+        getCustomers() {
+            angular.forEach(this.orders, (order) => {
+                if (!this.customers[order.customer_id]) {
+                    this.Customers.get({
+                        id: order.customer_id
+                    }, (customer) => {
+                        this.customers[order.customer_id] = customer;
+                        console.log(this.customers);
                     });
                 }
             });
@@ -64,7 +105,7 @@ const ordersListComponent = {
         }
 
         checkIn(order){
-            order.checkIn = new Date();
+            order.checkInAt = new Date();
             this.update(order);
         }
 

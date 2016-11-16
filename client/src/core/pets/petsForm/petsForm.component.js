@@ -95,7 +95,6 @@ const petsFormComponent = {
                 this.isNewPet = true;
                 this.pet = template;
                 this.pet.species = 'dog';
-                this._setVaccinations();
             });
         }
         _genVaccinationsNameList(vaccinations) {
@@ -128,7 +127,11 @@ const petsFormComponent = {
             // item.daysBeforeExpire = Math.floor(dateDiff/8.64e+7) + 1;
             
         }
-        
+        addTextarea(name) {
+            this.pet[name].push(
+                { description: 'Please describe.', createdAt: new Date() }
+                );
+        }
         // _setVaccinations() {
         //     if (this.pet && this.vaccinations) {
         //         this.pet.vaccinations = 
@@ -136,7 +139,26 @@ const petsFormComponent = {
         //             console.info(this.pet.vaccinations);
         //     } else { console.log('_setVaccinations not ready'); }
         // }
+        _clearTextarea() {
+            const cleanSpCond = []
+            for (let i=0;i<this.pet.specialConditions.length;i++) {
+                if (this.pet.specialConditions[i].description
+                    && this.pet.specialConditions[i].description !== 'Please describe.') {
+                    cleanSpCond.push(this.pet.specialConditions[i])
+                }
+            }
+            const cleanAdInstruct = []
+            for (let i=0;i<this.pet.additionalInstructions.length;i++) {
+                if (this.pet.additionalInstructions[i].description
+                    && this.pet.additionalInstructions[i].description !== 'Please describe.') {
+                    cleanAdInstruct.push(this.pet.additionalInstructions[i])
+                }
+            }
+            this.pet.specialConditions = cleanSpCond;
+            this.pet.additionalInstructions = cleanAdInstruct;
+        }
         update() {
+            this._clearTextarea();
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);

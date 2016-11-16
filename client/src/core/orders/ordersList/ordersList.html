@@ -1,10 +1,51 @@
 <div id="order-list">
+    <h1>
+        
+    </h1>
+    <div layout class="md-whiteframe-1dp" layout-margin 
+        ng-repeat="order in $ctrl.orders | orderObjectBy:'scheduleAt'">
+        
+        <div layout="column" flex="nogrow" layout-align="center center" layout-padding>
+            <img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" alt="Washed Out">
+            <div>{{$ctrl.pets[order.pet_id].name}}</div>
+        </div>
+            
+        <div layout="column" flex>
+            <span flex="nogrow" class="md-headline">{{order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}</span>
+            <div layout flex>
+            <div flex="33" layout="column" layout-wrap>
+                <div flex="nogrow">{{$ctrl.customers[order.customer_id].firstname}} {{$ctrl.customers[order.customer_id].lastname}}</div>
+                <md-button flex layout-column layout-fill ng-click="$ctrl.checkIn(order)">checkIn</md-button>
+                <md-button flex layout-column layout-fill ng-click="$ctrl.checkIn(order)">checkIn</md-button>
+                    
+                <!--<md-button flex="50" layout-fill ng-click="$ctrl.edit(order._id)">Edit</md-button>-->
+            </div>
+            <div flex="33">
+                <span class="md-subhead">
+                    {{order.services.name}} {{order.services.zhName}}, price: ${{order.services.price}}
+                </span>
+            </div>
+            <div flex="33">
+                3
+            </div>
+            </div>
+        </div>
+        <!--<div layout="column" flex>-->
+            
+        <!--</div>-->
+        <!--<div layout="column" flex>-->
+            
+        <!--</div>-->
+    </div>
+    
+    
     <div ng-repeat="order in $ctrl.orders | orderObjectBy:'scheduleAt'">
         <md-card>
             <md-card-title>
                 <md-card-title-media>
                     <div class="md-media-lg card-media">
                         <img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" alt="Washed Out">
+                        <div>can some text</div>
                     </div>
                 </md-card-title-media>
                 <md-card-title-text>
@@ -22,12 +63,48 @@
                 <md-button ng-click="$ctrl.edit(order._id)">Edit</md-button>
                 <md-button ng-click="$ctrl.cancel()">cancel</md-button>
                 <md-button ng-click="$ctrl.notShowup()">not Showup</md-button>
-                <md-button ng-click="$ctrl.checkIn(order)">checkIn</md-button>
-                <md-button ng-disabled="!order.checkIn" ng-click="$ctrl.inhouseOdrer(order._id)">Inhouse Order</md-button>
-                <md-button ng-disabled="!order.checkIn" ng-click="$ctrl.paid()">paid</md-button>
-                <md-button ng-disabled="!order.checkIn && !order.isPaid" ng-click="$ctrl.checkout()">checkout</md-button>
+                <md-button ng-disabled="order.checkInAt" ng-click="$ctrl.checkIn(order)">checkIn</md-button>
+                <md-button ng-disabled="!order.checkInAt" ng-click="$ctrl.inhouseOdrer(order._id)">Inhouse Order</md-button>
+                <md-button ng-disabled="!order.checkInAt" ng-click="$ctrl.paid()">paid</md-button>
+                <md-button ng-disabled="!order.checkInAt && !order.isPaid" ng-click="$ctrl.checkout()">checkout</md-button>
                 <div flex></div>
             </md-card-actions>
+        </md-card>
+        
+        <md-card>
+          <!--<md-card-header>-->
+          <!--  <md-card-avatar>-->
+          <!--    <img class="md-user-avatar" ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}">-->
+          <!--  </md-card-avatar>-->
+          <!--  <md-card-header-text>-->
+          <!--    <span class="md-title">Title</span>-->
+          <!--    <span class="md-subhead">Sub header</span>-->
+          <!--  </md-card-header-text>-->
+          <!--</md-card-header>-->
+          <!--<img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" class="md-card-image" alt="image caption">-->
+          <!--<md-card-title>-->
+          <!--  <md-card-title-text>-->
+          <!--    <span class="md-headline">Card headline</span>-->
+          <!--    <span class="md-subhead">Card subheader</span>-->
+          <!--  </md-card-title-text>-->
+          <!--</md-card-title>-->
+          
+          
+          <md-card-content>
+                  <img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" alt="Washed Out">
+            <p>
+             Card content
+            </p>
+          </md-card-content>
+          <md-card-actions layout="row" layout-align="start center">
+            <md-button>Action 1</md-button>
+            <md-button>Action 2</md-button>
+            <md-card-icon-actions>
+              <md-button class="md-icon-button" aria-label="icon">
+                <md-icon md-svg-icon="icon"></md-icon>
+              </md-button>
+            </md-card-icon-actions>
+          </md-card-actions>
         </md-card>
     </div>
 

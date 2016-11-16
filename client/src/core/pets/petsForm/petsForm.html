@@ -160,11 +160,25 @@
                         <label>Condition {{$index+1}} ({{conditions.createdAt | date: 'mediumDate'}})</label>
                         <textarea ng-model="conditions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
                     </md-input-container>
+                    <div flex="100" layout layout-align="end center">
+                        <md-button class="md-fab md-mini"aria-label="add condition"
+                            ng-click="$ctrl.addTextarea('specialConditions')"
+                            >
+                            <md-icon md-svg-src="plus"></md-icon>
+                        </md-button>
+                    </div>
                     <h2 class="md-headline">Additional Instructions</h2>
                     <md-input-container flex="100" ng-repeat="instructions in $ctrl.pet.additionalInstructions">
                         <label>Instruction {{$index+1}} ({{instructions.createdAt | date: 'mediumDate'}})</label>
                         <textarea ng-model="instructions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
                     </md-input-container>
+                    <div flex="100" layout layout-align="end center">
+                        <md-button class="md-fab md-mini"aria-label="add Instruction"
+                            ng-click="$ctrl.addTextarea('additionalInstructions')"
+                            >
+                            <md-icon md-svg-src="plus"></md-icon>
+                        </md-button>
+                    </div>
                 </md-content>
             </md-tab>
             
