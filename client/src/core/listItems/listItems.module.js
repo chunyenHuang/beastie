@@ -5,6 +5,8 @@ import listItemsInhouseOrdersComponent from './listItemsInhouseOrders';
 import listItemsServicesComponent from './listItemsServices';
 import listItemsWaiversComponent from './listItemsWaivers';
 import listItemsVaccinationsComponent from './listItemsVaccinations';
+import listItemsBreedsComponent from './listItemsBreeds';
+import listItemsColorsComponent from './listItemsColors';
 
 const listItemsModule = angular
     .module('beastie.listItems', [])
@@ -14,6 +16,8 @@ const listItemsModule = angular
     .component('listItemsServices', listItemsServicesComponent)
     .component('listItemsWaivers', listItemsWaiversComponent)
     .component('listItemsVaccinations', listItemsVaccinationsComponent)
+    .component('listItemsBreeds', listItemsBreedsComponent)
+    .component('listItemsColors', listItemsColorsComponent)
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
@@ -37,8 +41,14 @@ const listItemsModule = angular
             url: '/vaccinations',
             template: '<list-items-vaccinations layout="column" flex></list-items-vaccinations>'
         })
-
-
+        .state('core.listItems.breeds', {
+            url: '/breeds',
+            template: '<list-items-breeds layout="column" flex></list-items-breeds>'
+        })
+        .state('core.listItems.colors', {
+            url: '/colors',
+            template: '<list-items-colors layout="column" flex></list-items-colors>'
+        })
         ;
 
     })

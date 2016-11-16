@@ -1,0 +1,78 @@
+<div layout="column" flex id="list-items-colors">
+    <div layout="row" layout-align="center center" layout-padding class="listItems-header">
+        <div class="">
+            <h3>
+                {{$ctrl.type}}
+            </h3>
+        </div>
+        <div flex></div>
+        <md-button ng-click="$ctrl.reset()" class="md-raised">
+            reset
+        </md-button>
+        <md-button ng-click="$ctrl.update()" class="md-primary md-raised">
+            update
+        </md-button>
+    </div>
+    <div layout="row" flex>
+        <md-content layout="column" flex layout-padding>
+            <md-button ng-click="$ctrl.addNewItem()" flex="none">
+                <md-icon md-svg-src="plus"></md-icon>
+                <span>
+                    Add a new
+                    {{$ctrl.type}}
+                </span>
+                <md-icon md-svg-src="plus"></md-icon>
+                <md-tooltip>
+                    <span>
+                        Add a new
+                        {{$ctrl.type}}~~~
+                    </span>
+                </md-tooltip>
+            </md-button>
+            <form
+                layout="row"
+                ng-repeat="item in $ctrl.list.items"
+                ng-click="$ctrl.selectedItem = item"
+                ng-show="!item.isDeleted"
+                ng-class="{
+                            'list-item': $ctrl.selectedItem != item,
+                            'hightlight': $ctrl.selectedItem == item
+                        }"
+                layout-align="space-between start"
+                flex="none">
+                <div layout="column" flex="10">
+                    <div flex class="color-preview" style="background-color:{{item.value}}">
+
+                    </div>
+                </div>
+                <div layout="column">
+                    <md-input-container class="md-block">
+                        <label>color</label>
+                        <input colorpicker="hex" type="text" ng-model="item.value" />
+                    </md-input-container>
+                </div>
+                <div layout="column" flex>
+                    <md-input-container class="md-block">
+                        <label>name</label>
+                        <input type="text" ng-model="item.name" aria-label="{{item.name}}">
+                    </md-input-container>
+                </div>
+                <div layout="column" flex>
+                    <md-input-container class="md-block">
+                        <label>zhName</label>
+                        <input type="text" ng-model="item.zhName" aria-label="{{item.zhName}}">
+                    </md-input-container>
+                </div>
+                <md-button ng-click="item.isDeleted = true" class="md-icon-button md-warn md-raised md-hue-2" aria-label="delete">
+                    <md-icon md-svg-src="delete">
+                        <md-tooltip>
+                            <span>
+                                Delete
+                            </span>
+                        </md-tooltip>
+                    </md-switch>
+                </md-button>
+            </form>
+        </md-content>
+    </div>
+</div>

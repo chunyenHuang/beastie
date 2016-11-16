@@ -10,6 +10,8 @@ import 'client/node_modules/angular-translate';
 import 'client/node_modules/angular-translate-loader-partial';
 import ngResource from 'client/node_modules/angular-resource';
 import ngSanitize from 'client/node_modules/angular-sanitize';
+import 'client/node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module';
+import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
 
 // configs
 import themeConfig from './themeConfig';
@@ -36,6 +38,7 @@ angular
         ngAria,
         ngMaterial,
         'pascalprecht.translate',
+        'colorpicker.module',
         userAuth,
         core,
         client
