@@ -49,6 +49,7 @@ module.exports = class AbstractController {
             updatedAt: new Date(),
             updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
+        console.log(res.body);
 
         if (req.body._id) {
             delete req.body._id;
