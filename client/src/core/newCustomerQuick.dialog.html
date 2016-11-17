@@ -1,0 +1,52 @@
+<div id="new-customer-quick-dialog" class="" layout="column" flex layout-fill>
+    <md-toolbar class="md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
+        Quick Create a New Customer
+    </md-toolbar>
+    <md-content layout="column" flex class="md-padding">
+        <form layout="column" flex>
+            <div class="" flex="none">
+                Sorry, Beastie can not find any customer with the phone number. <br>
+                Please create a new customer with pets and then proceed to the appointment.
+            </div>
+            <div layout="column" flex="none" class="md-padding">
+                <md-subheader class="md-no-sticky">Customer</md-subheader>
+                <md-input-container class="md-block">
+                    <label>phone</label>
+                    <input type="text" ng-model="$ctrl.customer.phone" aria-label="customer-phone">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>firstname</label>
+                    <input type="text" ng-model="$ctrl.customer.firstname" aria-label="customer-firstname">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>lastname</label>
+                    <input type="text" ng-model="$ctrl.customer.lastname" aria-label="customer-lastname">
+                </md-input-container>
+            </div>
+            <div layout="column" flex="none" class="md-padding">
+                <div class="" layout="row" flex="none">
+                    <md-subheader class="md-no-sticky">Pet</md-subheader>
+                    <md-button ng-click="$ctrl.addPet()" aria-label="add-pet">
+                        <md-icon md-svg-src="plus-box"></md-icon>
+                    </md-button>
+                </div>
+                <md-input-container class="md-block" ng-repeat="pet in $ctrl.pets">
+                    <label>name</label>
+                    <input type="text" ng-model="pet.name" aria-label="pet-name-{{$index}}">
+                </md-input-container>
+            </div>
+        </form>
+    </md-content>
+    <md-divider></md-divider>
+    <div class="" layout="row" flex="none" class="md-padding">
+        <md-button ng-click="$ctrl.cancel()" class="md-warn" aria-label="cancel">
+            <md-icon md-svg-src="delete"></md-icon>
+            <span>Cancel</span>
+        </md-button>
+        <div flex></div>
+        <md-button ng-click="$ctrl.create()" class="md-primary md-raised" ng-disabled="!$ctrl.validate() || $ctrl.isBusy" aria-label="create">
+            <md-icon md-svg-src="arrow-right-bold-hexagon-outline"></md-icon>
+            <span>Create</span>
+        </md-button>
+    </div>
+</div>

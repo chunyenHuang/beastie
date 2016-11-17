@@ -20,7 +20,7 @@ const petsComponent = {
         }
 
         $onInit() {
-            this.$state.go('core.pets.form');
+            // this.$state.go('core.pets.form');
         }
     }
 };

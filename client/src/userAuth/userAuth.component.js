@@ -43,7 +43,8 @@ const userAuthComponent = {
         goStateByRole(role) {
             switch (role) {
                 case 'admin':
-                    this.$state.go('core');
+                    console.log('core.orders.list');
+                    this.$state.go('core.orders.list');
                     break;
                 case 'deviceClient':
                     this.$state.go('client');

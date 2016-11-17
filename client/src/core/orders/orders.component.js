@@ -22,7 +22,7 @@ const ordersComponent = {
         }
 
         $onInit() {
-            this.$state.go('core.orders.list');
+            // this.$state.go('core.orders.list');
         }
     }
 };
