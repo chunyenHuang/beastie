@@ -1,4 +1,6 @@
 const AbstractController = require('../../abstract/AbstractController.js');
+const ObjectId = require('mongodb').ObjectID;
+
 class PetsController extends AbstractController {
     getTemplate(req, res) {
         const template = {
@@ -41,6 +43,47 @@ class PetsController extends AbstractController {
         };
         res.json(template);
     }
+
+    query(req, res) {
+        Object.assign(req.query, {
+            isDeleted: false
+        });
+
+        const query = req.collection.aggregate([
+            {
+                $match: req.query
+            },
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'owner'
+                }
+            }
+        ]);
+
+        // const query = req.collection.find(
+        //     req.query
+        // );
+        query.toArray((err, results) => {
+            // fix wrong condition
+            if (!err) {
+                if (results.length > 0) {
+                    res.statusCode = 200;
+                    res.json(results);
+                } else {
+                    // res.sendStatus(404);
+                    res.status(404).send({
+                        error: 'Sorry, we cannot find that!'
+                    });
+                }
+            } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
 }
 
 module.exports = PetsController;

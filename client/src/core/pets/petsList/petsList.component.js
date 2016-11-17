@@ -8,21 +8,23 @@ const petsListComponent = {
         static get $inject() {
             return [
                 '$log', '$timeout', '$state', '$stateParams',
-                'Pets'
+                'Pets', 'Customers'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Pets
+            $log, $timeout, $state, $stateParams, Pets, Customers
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Pets = Pets;
+            this.Customers = Customers;
         }
         $onInit() {
             this.Pets.query({}, (results) => {
                 this.pets = results;
+                console.log(this.pets);
             });
         }
     }
