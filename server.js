@@ -100,7 +100,22 @@ app.use((req, res, next) => {
                 }
             }
         }
-
+        if(req.query){
+            const ObjectId = require('mongodb').ObjectID;
+            for(let prop in req.query){
+                if(prop.indexOf('_id')>-1){
+                    req.query[prop] = ObjectId(req.query[prop]);
+                }
+            }
+        }
+        if(req.params){
+            const ObjectId = require('mongodb').ObjectID;
+            for(let prop in req.params){
+                if(prop.indexOf('_id')>-1){
+                    req.params[prop] = ObjectId(req.params[prop]);
+                }
+            }
+        }
         next();
     });
 });
