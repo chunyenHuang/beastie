@@ -1,16 +1,20 @@
 const path = require('path');
 const fs = require('fs');
-const escpos = require('escpos');
-let device;
-let printer;
-try {
-    device = new escpos.USB();
-    printer = new escpos.Printer(device);
-} catch (err) {
-    console.log('-----------------------------------');
-    console.log('Please Connect the Receipt Printer.');
-    console.log('-----------------------------------');
-}
+// const escpos = require('escpos');
+// let device;
+// let printer;
+// try {
+//     device = new escpos.USB();
+//     printer = new escpos.Printer(device);
+// } catch (err) {
+//     console.log('-----------------------------------');
+//     console.log('Please Connect the Receipt Printer.');
+//     console.log('-----------------------------------');
+// }
+const PrinterController = require('../printer/printer.controller.js');
+const escpos = PrinterController.escpos;
+const device = PrinterController.device;
+const printer = PrinterController.printer;
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class InhouseOrdersController extends AbstractController {

@@ -1,0 +1,15 @@
+<div class="" id="printer" layour="column" flex>
+    <div class="" layout="row">
+        <div class="staus" layout="row">
+            <div
+                id="status-light"
+                ng-class="($ctrl.isConnected) ? 'connected' : 'disconnected'"
+                >
+            </div>
+            <div class="status-message">
+                {{$ctrl.message}}
+            </div>
+        </div>
+        <md-button ng-click="$ctrl.test()" class="md-raised" ng-disabled="!$ctrl.isConnected">Test Print</md-button>
+    </div>
+</div>
