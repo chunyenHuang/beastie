@@ -26,19 +26,21 @@ const ordersFormComponent = {
             this.getDayName = SharedUtil.getDayName;
             this.ListItems = ListItems;
             this.scheduleTime = [9, 0];
-            const today = new Date();
+            this.today = new Date();
             this.scheduleDate = {
                 min: new Date(
-                    today.getFullYear(),
-                    today.getMonth(),
-                    today.getDate()
+                    this.today.getFullYear(),
+                    this.today.getMonth(),
+                    this.today.getDate()
                 ),
                 max: new Date(
-                    today.getFullYear(),
-                    today.getMonth() + 3,
-                    today.getDate()
+                    this.today.getFullYear(),
+                    this.today.getMonth() + 3,
+                    this.today.getDate()
                 )
             };
+            this.yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+            this.tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
         }
 
         $onInit() {
@@ -58,12 +60,14 @@ const ordersFormComponent = {
                 this.services = results[0].items;
             });
         }
+
         setOrder() {
             if (this.$stateParams.order_id) {
                 // edit order
                 this.Orders.get({
                     id: this.$stateParams.order_id
                 }, (order) => {
+                    order.scheduleAt = new Date(order.scheduleAt);
                     this.order = order;
                     this.customer_id = this.order.customer_id;
                     this.getPet(this.order.pet_id);
@@ -141,6 +145,29 @@ const ordersFormComponent = {
             return this.setNewHour();
         }
 
+        changeDate(){
+            this.setNewHour();
+            console.log(this.order.scheduleAt);
+            this.getOrderForDate(this.order.scheduleAt);
+        }
+
+        getOrderForDate(date){
+            date = new Date(date);
+            date = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+            )
+            console.log(date);
+
+            this.Orders.getByDate({
+                from: this.yesterday,
+                to: this.tomorrow
+            },(res)=>{
+                console.log(res);
+            });
+        }
+
         setNewHour() {
             if (!this.order) {
                 return;
@@ -154,7 +181,6 @@ const ordersFormComponent = {
                 hour, minute, 0
             );
         }
-
 
         submit() {
             this.isSubmitting = true;
@@ -181,7 +207,8 @@ const ordersFormComponent = {
                         console.log(err);
                     });
                 } else {
-                    this.Orders.save(newOrder, () => {
+                    this.Orders.save(newOrder, (res) => {
+                        console.log(res);
                         this.candidates[newOrder.pet_id] = false;
                         return this.submit();
                     }, (err) => {
