@@ -92,6 +92,15 @@ app.use(expressValidator());
 app.use((req, res, next) => {
     dbClient.connect(dbUrl, (err, db) => {
         req.db = db;
+        if(req.body){
+            const ObjectId = require('mongodb').ObjectID;
+            for(let prop in req.body){
+                if(prop.indexOf('_id')>-1){
+                    req.body[prop] = ObjectId(req.body[prop]);
+                }
+            }
+        }
+
         next();
     });
 });

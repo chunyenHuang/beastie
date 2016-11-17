@@ -31,9 +31,15 @@ dbClient.connect(dbUrl, (err, db) => {
         db.collection(collection).remove({}, (err) => {
             if (!err) {
                 initDatas[collection].forEach((data) => {
-                    if (data._id) {
-                        data._id = ObjectId(data._id);
+                    // if (data._id) {
+                    //     data._id = ObjectId(data._id);
+                    // }
+                    for(let prop in data){
+                        if(prop.indexOf('_id')>-1){
+                            data[prop] = ObjectId(data[prop]);
+                        }
                     }
+
                     db.collection(collection).update(data, data, {
                         upsert: true
                     }, (err) => {
