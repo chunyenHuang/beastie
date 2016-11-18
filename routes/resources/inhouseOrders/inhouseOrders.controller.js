@@ -12,12 +12,12 @@ const fs = require('fs');
 //     console.log('-----------------------------------');
 // }
 const PrinterController = require('../printer/printer.controller.js');
-const escpos = PrinterController.escpos;
-const device = PrinterController.device;
-const printer = PrinterController.printer;
+// const escpos = PrinterController.escpos;
+// const device = PrinterController.device;
+// const printer = PrinterController.printer;
 
-const AbstractController = require('../../abstract/AbstractController.js');
-class InhouseOrdersController extends AbstractController {
+// const AbstractController = require('../../abstract/AbstractController.js');
+class InhouseOrdersController extends PrinterController {
     constructor() {
         super();
     }
@@ -32,10 +32,11 @@ class InhouseOrdersController extends AbstractController {
     }
 
     print(req, res) {
-        if (!req.file || !req.body.filename || !req.body.order_id) {
+        if (!req.file || !req.body.filename) {
             res.sendStatus(400);
             return;
         }
+        req.body.order_id = req.body.order_id || 'no order_id';
         // console.log(req.file);
         // console.log(req.body.filename);
         // const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
@@ -50,15 +51,15 @@ class InhouseOrdersController extends AbstractController {
     }
 
     _print(req, res, next) {
-        if (!device) {
+        if (!this.device) {
             next();
             return;
         }
         // const barcode = req.body.order_id;
-        escpos.Image.load(req.newPath, (image) => {
-            device.open(() => {
+        this.escpos.Image.load(req.newPath, (image) => {
+            this.device.open(() => {
                 const today = new Date();
-                printer
+                this.printer
                     .font('A')
                     .align('ct')
                     .style('b')

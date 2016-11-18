@@ -10,7 +10,7 @@ const inhouseOrdersModule = angular
         $stateProvider
             .state('core.inhouseOrders', {
                 url: '/inhouseOrders?order_id',
-                component: 'inhouseOrders'
+                template: '<inhouse-orders layout="column" flex></inhouse-orders>'
             });
     })
     .name;

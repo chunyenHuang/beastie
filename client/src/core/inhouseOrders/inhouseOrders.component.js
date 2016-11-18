@@ -25,19 +25,33 @@ const inhouseOrdersComponent = {
 
         $onInit() {
             this.inhouseOrders = {};
-            this.order_id = this.$stateParams.order_id;
 
-            this.Orders.get({
-                id: this.order_id
-            }, (order) => {
-                this.order = order;
+            if (this.$stateParams.order_id) {
+                this.order_id = this.$stateParams.order_id;
+                this.Orders.get({
+                    id: this.order_id
+                }, (order) => {
+                    this.order = order;
+                    this.message = 'order id: ' + this.order_id;
+                    this.ListItems.query({
+                        type: 'inhouseOrders'
+                    }, (datas) => {
+                        this.list = datas[0].items;
+                        this.populateInhouseOrders();
+                    });
+                });
+            } else {
+                this.order = {
+                    inhouseOrders: []
+                };
+                this.message = 'no order id';
                 this.ListItems.query({
                     type: 'inhouseOrders'
                 }, (datas) => {
                     this.list = datas[0].items;
                     this.populateInhouseOrders();
                 });
-            });
+            }
         }
 
         reset() {
@@ -100,16 +114,24 @@ const inhouseOrdersComponent = {
         }
 
         submit() {
-            this.order.inhouseOrders = this.inhouseOrders;
-            this.order.$update({
-                id: this.order_id
-            }, (res) => {
-                console.info(res);
-                // this.formatOrderForm();
-                this.print();
-            }, (err) => {
-                console.error(err);
-            });
+            if (this.$stateParams.order_id) {
+                this.order.inhouseOrders = this.inhouseOrders;
+                this.order.$update({
+                    id: this.order_id
+                }, (res) => {
+                    console.info(res);
+                    // this.formatOrderForm();
+                    this.print(() => {
+                        this.$state.go('core.orders.list');
+                    });
+                }, (err) => {
+                    console.error(err);
+                });
+            } else {
+                this.print(() => {
+                    this.$state.go('core.orders.list');
+                });
+            }
         }
 
         drawImage(callback) {
@@ -156,12 +178,16 @@ const inhouseOrdersComponent = {
 
         }
 
-        print() {
+        print(callback) {
             this.drawImage((blob) => {
                 const formData = new FormData();
                 formData.append('file', blob);
-                formData.append('filename', this.order_id + '.png');
-                formData.append('order_id', this.order_id);
+                if (this.order_id) {
+                    formData.append('filename', this.order_id + '.png');
+                    formData.append('order_id', this.order_id);
+                } else {
+                    formData.append('filename', 'inhouseOrders.png');
+                }
                 this.$http.post(
                     '/inhouseOrders',
                     formData, {
@@ -177,7 +203,13 @@ const inhouseOrdersComponent = {
                             }
                         }
                     }
-                );
+                ).then((res) => {
+                    console.log(res);
+                    callback();
+                }, (err) => {
+                    console.log(err);
+                    callback();
+                });
             });
         }
 
