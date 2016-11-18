@@ -57,32 +57,43 @@ class OrdersController extends AbstractController {
         return dateString;
     }
 
-    _getDateFromToday(num) {
+    _getDateFromToday(num, startDate) {
         num = num || 0;
         parseInt(num);
+        startDate = (startDate) ? new Date(startDate) : new Date();
         /*
             yesterday num = -1,
             tomorrow num = 1
         */
         return this._parseDate(
-            new Date(new Date().getTime() +
+            new Date(startDate.getTime() +
                 parseInt(num) * 24 * 60 * 60 * 1000)
         );
     }
 
     getByDate(req, res) {
         /*
+            date= specific date only
             from= date
             to= date
             last= num
             next= num
         */
-        let today = this._getDateFromToday();
-        const from = (req.query.from) ? this._parseDate(req.query.from) :
-            ((req.query.last) ? this._getDateFromToday(req.query.last) : today);
-        const to = (req.query.to) ? this._parseDate(req.query.to) :
-            ((req.query.next) ? this._getDateFromToday(req.query.next) : this._getDateFromToday(1));
-
+        let from;
+        let to;
+        if (req.query.date) {
+            from = this._parseDate(req.query.date);
+            to = this._getDateFromToday(1, req.query.date);
+        } else {
+            let today = this._getDateFromToday();
+            from = (req.query.from) ? this._parseDate(req.query.from) :
+                ((req.query.last) ? this._getDateFromToday(req.query.last) : today);
+            to = (req.query.to) ? this._parseDate(req.query.to) :
+                ((req.query.next) ? this._getDateFromToday(req.query.next) : this._getDateFromToday(1));
+        }
+        console.log(req.query);
+        console.log('from:', from);
+        console.log('to:', to);
         const query = req.collection.find({
             isDeleted: false,
             scheduleAt: {
