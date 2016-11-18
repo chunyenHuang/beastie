@@ -29,37 +29,65 @@ class OrdersController extends AbstractController {
         res.json(template);
     }
 
-    transformDates(req, res, next) {
-        if (req.body) {
-            for (let prop in req.body) {
-                if (
-                    prop == 'scheduleAt' ||
-                    prop == 'checkInAt' ||
-                    prop == 'updatedAt'
-                ) {
-                    if (typeof (req.body[prop]) == 'string') {
-                        console.log(new Date(req.body[prop]));
-                        req.body[prop] = new Date(req.body[prop]);
-                    }
-                }
-            }
-        }
-        next();
+    // transformDates(req, res, next) {
+    //     if (req.body) {
+    //         for (let prop in req.body) {
+    //             if (
+    //                 prop == 'scheduleAt' ||
+    //                 prop == 'checkInAt' ||
+    //                 prop == 'updatedAt'
+    //             ) {
+    //                 if (typeof (req.body[prop]) == 'string') {
+    //                     console.log(new Date(req.body[prop]));
+    //                     req.body[prop] = new Date(req.body[prop]);
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     next();
+    // }
+
+    _parseDate(dateString) {
+        dateString = new Date(dateString);
+        dateString = new Date(
+            dateString.getFullYear(),
+            dateString.getMonth(),
+            dateString.getDate()
+        );
+        return dateString;
+    }
+
+    _getDateFromToday(num) {
+        num = num || 0;
+        parseInt(num);
+        /*
+            yesterday num = -1,
+            tomorrow num = 1
+        */
+        return this._parseDate(
+            new Date(new Date().getTime() +
+                parseInt(num) * 24 * 60 * 60 * 1000)
+        );
     }
 
     getByDate(req, res) {
-        // const yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
-        // const tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+        /*
+            from= date
+            to= date
+            last= num
+            next= num
+        */
+        let today = this._getDateFromToday();
+        const from = (req.query.from) ? this._parseDate(req.query.from) :
+            ((req.query.last) ? this._getDateFromToday(req.query.last) : today);
+        const to = (req.query.to) ? this._parseDate(req.query.to) :
+            ((req.query.next) ? this._getDateFromToday(req.query.next) : this._getDateFromToday(1));
 
-        const past = new Date(new Date().getTime() - 1 * 24 * 60 * 60 * 1000);
-        const today = new Date();
-        const from = (req.query.from) ? req.query.from : past;
-        const to = (req.query.to) ? req.query.to : today;
         const query = req.collection.find({
             isDeleted: false,
             scheduleAt: {
-                $gte: new Date(from),
-                $lt: new Date(to)
+                $gte: from,
+                $lt: to
             }
         });
         query.toArray((err, results) => {
@@ -84,17 +112,19 @@ class OrdersController extends AbstractController {
 
     }
 }
-        // quick fix for date range query
-        // for(let prop in req.query){
-        //     if (prop.search(/At$/)>-1) {
-        //         req.query[prop] = JSON.parse(req.query[prop]);
-        //         for (let innerProp in req.query[prop]) {
-        //             // mongodb compare stuff...
-        //             let re = /^\$eq|^\$gt|^\$gte|^\$lt|^\$lte|^\$ne|^\$in|^\$nin/;
-        //             if (innerProp.search(re)>-1) {
-        //                 req.query[prop][innerProp] = new Date(req.query[prop][innerProp])
-        //             }
-        //         } 
-        //     }
-        // }
+
+// quick fix for date range query
+// for(let prop in req.query){
+//     if (prop.search(/At$/)>-1) {
+//         req.query[prop] = JSON.parse(req.query[prop]);
+//         for (let innerProp in req.query[prop]) {
+//             // mongodb compare stuff...
+//             let re = /^\$eq|^\$gt|^\$gte|^\$lt|^\$lte|^\$ne|^\$in|^\$nin/;
+//             if (innerProp.search(re)>-1) {
+//                 req.query[prop][innerProp] = new Date(req.query[prop][innerProp])
+//             }
+//         }
+//     }
+// }
+
 module.exports = OrdersController;

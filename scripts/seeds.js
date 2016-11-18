@@ -34,12 +34,16 @@ dbClient.connect(dbUrl, (err, db) => {
                     // if (data._id) {
                     //     data._id = ObjectId(data._id);
                     // }
-                    for(let prop in data){
-                        if(prop.indexOf('_id')>-1){
+                    for (let prop in data) {
+                        if (prop.indexOf('_id') > -1) {
                             data[prop] = ObjectId(data[prop]);
                         }
-                        if(prop.search(/At$/) > -1){
-                            data[prop] = new Date(data[prop]);
+                        if (prop.search(/At$/) > -1) {
+                            if (data[prop]) {
+                                console.log(prop);
+                                console.log(data[prop]);
+                                data[prop] = new Date(data[prop]);
+                            }
                         }
                     }
 

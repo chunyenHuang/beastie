@@ -8,29 +8,25 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Orders.getByDate);
+        .get(Orders.getByDate.bind(Orders));
 
     app.route('/orders?')
-        .all(
-            Orders.transformDates,
-            (req, res, next) => {
-                req.collection = req.db.collection(dbCollectionName);
-                next();
-            })
+        .all((req, res, next) => {
+            req.collection = req.db.collection(dbCollectionName);
+            next();
+        })
         .get(Orders.query)
         .post(Orders.post);
 
     app.route('/orders?/:id')
-        .all(
-            Orders.transformDates,
-            (req, res, next) => {
-                if (req.params.id == 'template') {
-                    Orders.getTemplate(req, res);
-                } else {
-                    req.collection = req.db.collection(dbCollectionName);
-                    next();
-                }
-            })
+        .all((req, res, next) => {
+            if (req.params.id == 'template') {
+                Orders.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
+        })
         .get(Orders.get)
         .put(Orders.put)
         .delete(Orders.delete);

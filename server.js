@@ -92,6 +92,9 @@ app.use(expressValidator());
 app.use((req, res, next) => {
     dbClient.connect(dbUrl, (err, db) => {
         req.db = db;
+        /*
+            transform request
+        */
         if(req.body){
             const ObjectId = require('mongodb').ObjectID;
             for(let prop in req.body){
@@ -99,7 +102,9 @@ app.use((req, res, next) => {
                     req.body[prop] = ObjectId(req.body[prop]);
                 }
                 if(prop.search(/At$/)>-1){
-                    req.body[prop] = new Date(req.body[prop]);
+                    if(req.body[prop]){
+                        req.body[prop] = new Date(req.body[prop]);
+                    }
                 }
             }
         }
@@ -108,6 +113,11 @@ app.use((req, res, next) => {
             for(let prop in req.query){
                 if(prop.indexOf('_id')>-1){
                     req.query[prop] = ObjectId(req.query[prop]);
+                }
+                if(prop.search(/At$/)>-1){
+                    if(req.body[prop]){
+                        req.body[prop] = new Date(req.body[prop]);
+                    }
                 }
             }
         }
