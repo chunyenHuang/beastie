@@ -33,13 +33,26 @@ class CustomerCheckInController extends AbstractController {
                             $set: {
                                 checkInAt: new Date()
                             }
-                        }, (err)=>{
-                            if (err) {
-                                res.statusCode = 500;
-                                res.send('Can not update Order checkInAt');
-                            } else {
-                                res.sendStatus(200);
-                            }
+                        }, ()=>{
+                            res.statusCode = 200;
+                            res.json({
+                                _id: customer._id
+                            });
+                            //
+                            // if (err) {
+                            //     res.statusCode = 500;
+                            //     res.send('Can not update Order checkInAt');
+                            //     res.statusCode = 200;
+                            //     res.json({
+                            //         _id: customer._id
+                            //     });
+                            //
+                            // } else {
+                            //     res.statusCode = 200;
+                            //     res.json({
+                            //         _id: customer._id
+                            //     });
+                            // }
                         });
                     }
                 });

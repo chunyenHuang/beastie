@@ -174,14 +174,18 @@ const petsFormComponent = {
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard');
+                    this.$state.go('client.dashboard',{
+                        customer_id: this.$stateParams.customer_id
+                    });
                 });
             } else {
                 this.Pets.update({
                     id: this.pet._id
                 }, this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard');
+                    this.$state.go('client.dashboard',{
+                        customer_id: this.$stateParams.customer_id
+                    });
                 });
             }
         }

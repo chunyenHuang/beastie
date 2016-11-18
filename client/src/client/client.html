@@ -1,8 +1,14 @@
 <md-toolbar class="md-padding header" layout="row" layout-align="start center">
-    <h5 ng-click="$ctrl.$state.go('client.customersCheckIn')">customer device</h5>
+    <h5 ng-click="$ctrl.$state.go('client.customersCheckIn')">
+        A+ Pet and Grooming
+    </h5>
+    <p>
+        <small> | powered by Beastie </small>
+    </p>
+
     <div class="" flex></div>
     <user-auth-logout style="icon"></user-auth-logout>
 </md-toolbar>
-<div ui-view>
+<div ui-view layout="column" flex>
     client content
 </div>

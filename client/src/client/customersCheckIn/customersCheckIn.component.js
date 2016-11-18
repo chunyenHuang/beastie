@@ -29,23 +29,32 @@ const customersCheckInComponent = {
         checkIn(number) {
             console.log(number);
             if (number.length == 10) {
-                this.Customers.query({
+                this.Customers.checkIn({
                     phone: number
-                }, (customers) => {
-                    if (customers.length > 0) {
-                        this.$state.go('client.dashboard',{
-                            customer_id: customers[0]._id
-                        });
-                    } else {
-                        this.$state.go(this.nextState, {
-                            phoneNumber: number
-                        });
-                    }
+                }, (res) => {
+                    console.log(res);
+                    this.$state.go('client.dashboard', {
+                        customer_id: res._id
+                    });
                 }, () => {
                     this.$state.go(this.nextState, {
                         phoneNumber: number
                     });
                 });
+                // this.Customers.query({
+                //     phone: number
+                // }, (customers) => {
+                //     if (customers.length > 0) {
+                //         this.$state.go('client.dashboard',{
+                //             customer_id: customers[0]._id
+                //         });
+                //     } else {
+                //     }
+                // }, () => {
+                //     this.$state.go(this.nextState, {
+                //         phoneNumber: number
+                //     });
+                // });
             }
         }
     }

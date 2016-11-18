@@ -4,7 +4,9 @@ class usersService {
     }
     constructor($resource, $cacheFactory) {
         'ngInject';
-        const Users = $resource('/users/:id', {id:'@id'});
+        const Users = $resource('/users/:id', {
+            id: '@id'
+        });
         // Users.$cacheFactory = $cacheFactory;
         return Users;
     }

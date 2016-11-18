@@ -23,4 +23,14 @@ module.exports = (app) => {
         .get(Customers.get)
         .put(Customers.put)
         .delete(Customers.delete);
+    app.route('/customers?/:id/pets')
+        .all((req, res, next) => {
+            if(req.params.id == 'template'){
+                Customers.getTemplate(req, res);
+            } else {
+                req.collection = req.db.collection(dbCollectionName);
+                next();
+            }
+        })
+        .get(Customers.getWithPets);
 };

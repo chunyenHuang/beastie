@@ -8,5 +8,5 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(CustomerCheckIn.checkIn);
+        .get(CustomerCheckIn.checkIn.bind(CustomerCheckIn));
 };

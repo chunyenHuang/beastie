@@ -166,13 +166,16 @@ const customersFormComponent = {
                     id: this.customer._id
                 }, this.customer, (res)=>{
                     console.log(res);
-                    this.Pets.query({
-                        customer_id: this.customer._id,
-                    }, (results)=>{
-                        console.info(results[0]);
-                        this.$state.go('client.petsForm',
-                            { pet_id: results[0]._id })
-                    })
+                    this.$state.go('client.dashboard',{
+                        customer_id: this.customer._id
+                    });
+                    // this.Pets.query({
+                    //     customer_id: this.customer._id,
+                    // }, (results)=>{
+                    //     console.info(results[0]);
+                    //     this.$state.go('client.petsForm',
+                    //         { pet_id: results[0]._id })
+                    // })
                 });
             } else{
                 console.log('new customer');
