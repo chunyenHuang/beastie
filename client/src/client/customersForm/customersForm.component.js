@@ -6,7 +6,7 @@ const customersFormComponent = {
     bindings: {
         customerId: '<'
     },
-    controller: /* @ngInject */ 
+    controller: /* @ngInject */
     class customersFormController {
         static get $inject() {
             return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope', 'Pets'];
@@ -21,23 +21,23 @@ const customersFormComponent = {
             this.$scope = $scope;
             this.Pets = Pets;
         }
-        
+
         $onInit(){
             this.getForm();
             this.getTemplate();
             // this.customerForm = null;
             // this.currentFormState = 'emergencyContact';
             // this.progressValue = 0;
-            
+
             //   this.Customers.update({
             //       id: test_id
             //   }, customer, ()=>{
             //         this.Customers.query({}, (customers)=>{
-            //           // execute 
+            //           // execute
             //           console.log(customers);
             //         });
             //   });
-              
+
             // });
 
         }
@@ -59,32 +59,32 @@ const customersFormComponent = {
         }
         _refresh(value){
             this.$timeout(()=>{
-               value = value; 
+               value = value;
             });
         }
         getForm(){
             const createCustomerForm = new Promise(
                 (resolve, reject) => {
-                    // this.$stateParams.customer_id ? let 
+                    // this.$stateParams.customer_id ? let
                     this.Customers.get({
-                        id: this.$stateParams.customer_id ? 
+                        id: this.$stateParams.customer_id ?
                             this.$stateParams.customer_id : 'template'
                     }, (customer) => {
                         // sync from here
                         this.customer = customer;
                         // this.customer = template;
-                        this.customer.phone = this.customer.phone ? 
+                        this.customer.phone = this.customer.phone ?
                             this.customer.phone : this.$stateParams.phoneNumber;
                         console.log(this.$stateParams);
                         console.log(this.customer.phone);
-                        this.currentFormState = this.$stateParams.customer_id ? 
+                        this.currentFormState = this.$stateParams.customer_id ?
                             'review' : 'name';
                         // this.currentFormState = 'emergencyContact';
                         this.updateProgressVal();
                         resolve();
                     })
                 })
-            
+
             createCustomerForm
                 .then(() => {
                     console.log('inside .then');
@@ -99,7 +99,7 @@ const customersFormComponent = {
             let validFormModelCounts = 0;
             // console.log(this.customers_form);
             for (let val in this.customers_form) {
-                if(!(/\$/).test(val)) { 
+                if(!(/\$/).test(val)) {
                     formModelCounts += 1;
                     if(this.customers_form[val].$valid) {
                         validFormModelCounts += 1;
@@ -126,7 +126,7 @@ const customersFormComponent = {
             }
             else if (click == "back") {
                 if (index == 0) {
-                    this.$state.go('core.customers');
+                    // this.$state.go('core.customers');
                 } else {
                     this.currentFormState = formStates[index + -1];
                 }
@@ -158,8 +158,8 @@ const customersFormComponent = {
         removePhone(person, phone) {
             this.customer.emergencyContact[person].phones.splice(phone, 1);
         }
-        
-        
+
+
         update() {
             if (this.customer._id) {
                  this.Customers.update({
@@ -170,7 +170,7 @@ const customersFormComponent = {
                         customer_id: this.customer._id,
                     }, (results)=>{
                         console.info(results[0]);
-                        this.$state.go('core.pets.form', 
+                        this.$state.go('client.petsForm',
                             { pet_id: results[0]._id })
                     })
                 });
@@ -178,7 +178,10 @@ const customersFormComponent = {
                 console.log('new customer');
                 this.Customers.save(this.customer, (res)=>{
                     console.log(res);
-                })
+                    this.$state.go('client.petsForm',{
+                        customer_id: res._id
+                    });
+                });
             }
         }
         // _findProp(obj, str, isTemplate) {
@@ -192,12 +195,12 @@ const customersFormComponent = {
         //         target = target[path[0]];
         //         path.shift();
         //     }
-            
+
         //     return target;
         // }
         // pushArray(val) {
         //     // this.customerForm.emergencyContact[0].phones.push('123');
-            
+
         //     this._findProp(this, val, false)
         //         .push(this._findProp(this, val, true)[0]);
         //     console.log(this._findProp(this, val, true)[0]);
@@ -210,8 +213,8 @@ const customersFormComponent = {
         //         .splice(index, 1);
         //     // this.customerForm.emergencyContact[0].phones.splice(index,1)
         // }
-        
-        
+
+
     }
 };
 export default customersFormComponent;

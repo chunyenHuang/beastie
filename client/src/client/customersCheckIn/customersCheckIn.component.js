@@ -3,8 +3,7 @@ import './customersCheckIn.styl';
 
 const customersCheckInComponent = {
     template,
-    bindings: {
-    },
+    bindings: {},
     controller: /* @ngInject */ class CustomersCheckInController {
         static get $inject() {
             return [
@@ -22,23 +21,29 @@ const customersCheckInComponent = {
             this.nextState = $state.current.name.replace('customersCheckIn', 'customersForm');
             // console.log(this.nextState);
         }
-        test(str) {
-            if (str.length == 10) {
-                this.phoneNumber = str;
+
+        $onInit() {
+            console.log('customer check in');
+        }
+
+        checkIn(number) {
+            console.log(number);
+            if (number.length == 10) {
                 this.Customers.query({
-                    phone: this.phoneNumber
+                    phone: number
                 }, (customers) => {
-                    if (customers['0']) {
-                        this.$state.go(this.nextState, {
-                            customer_id: customers['0']._id,
-                            phoneNumber: this.phoneNumber
+                    if (customers.length > 0) {
+                        this.$state.go('client.dashboard',{
+                            customer_id: customers[0]._id
                         });
                     } else {
-                        this.$state.go(this.nextState);
+                        this.$state.go(this.nextState, {
+                            phoneNumber: number
+                        });
                     }
                 }, () => {
                     this.$state.go(this.nextState, {
-                        phoneNumber: this.phoneNumber
+                        phoneNumber: number
                     });
                 });
             }

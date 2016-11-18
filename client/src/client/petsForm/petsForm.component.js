@@ -94,80 +94,94 @@ const petsFormComponent = {
             }, (template) => {
                 this.isNewPet = true;
                 this.pet = template;
+                this.pet.customer_id = this.$stateParams.customer_id
                 this.pet.species = 'dog';
             });
         }
         _genVaccinationsNameList(vaccinations) {
-            for (let i=0; i<vaccinations.length; i++) {
+            for (let i = 0; i < vaccinations.length; i++) {
                 this.VaccinationsNameList.push(vaccinations[i].name);
             }
             console.info(this.VaccinationsNameList)
         }
         _parseVaccinationDate() {
-            for (let i=0; i<this.pet.vaccinations.length; i++) {
-                this.pet.vaccinations[0].issuedAt = 
-                    new Date(this.pet.vaccinations[0].issuedAt);
-                this.pet.vaccinations[0].expiredAt = 
-                    new Date(this.pet.vaccinations[0].expiredAt)
+                for (let i = 0; i < this.pet.vaccinations.length; i++) {
+                    this.pet.vaccinations[0].issuedAt =
+                        new Date(this.pet.vaccinations[0].issuedAt);
+                    this.pet.vaccinations[0].expiredAt =
+                        new Date(this.pet.vaccinations[0].expiredAt)
+                }
             }
-        }
-        // daysBetween(pasdate, otherdate || now )
+            // daysBetween(pasdate, otherdate || now )
         setDaysBeforeExpire(item) {
             let copyIssuedAt = angular.copy(item.issuedAt);
-            let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() 
-                + Number(item.effectiveDuration));
+            let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() +
+                Number(item.effectiveDuration));
             let effectiveDate = new Date(effectiveYear)
                 .setDate(item.issuedAt.getDate() - 1);
             item.expiredAt = new Date(effectiveDate);
-            
+
             item.daysBeforeDue = Math.ceil(this.SharedUtil.daysBetween(item.expiredAt));
             // this.dateToday = Date.now();
             // let dateDiff = effectiveTill - this.dateToday;
             // // 1 day = 8.64e+7 milliseconds
             // item.daysBeforeExpire = Math.floor(dateDiff/8.64e+7) + 1;
-            
+
         }
         addTextarea(name) {
-            this.pet[name].push(
-                { description: 'Please describe.', createdAt: new Date() }
-                );
-        }
-        // _setVaccinations() {
-        //     if (this.pet && this.vaccinations) {
-        //         this.pet.vaccinations = 
-        //             Object.assign({}, this.vaccinations, this.pet.vaccinations);
-        //             console.info(this.pet.vaccinations);
-        //     } else { console.log('_setVaccinations not ready'); }
-        // }
+                this.pet[name].push({
+                    description: 'Please describe.',
+                    createdAt: new Date()
+                });
+            }
+            // _setVaccinations() {
+            //     if (this.pet && this.vaccinations) {
+            //         this.pet.vaccinations =
+            //             Object.assign({}, this.vaccinations, this.pet.vaccinations);
+            //             console.info(this.pet.vaccinations);
+            //     } else { console.log('_setVaccinations not ready'); }
+            // }
         _clearTextarea() {
             const cleanSpCond = []
-            for (let i=0;i<this.pet.specialConditions.length;i++) {
-                if (this.pet.specialConditions[i].description
-                    && this.pet.specialConditions[i].description !== 'Please describe.') {
+            for (let i = 0; i < this.pet.specialConditions.length; i++) {
+                if (this.pet.specialConditions[i].description &&
+                    this.pet.specialConditions[i].description !== 'Please describe.') {
                     cleanSpCond.push(this.pet.specialConditions[i])
                 }
             }
             const cleanAdInstruct = []
-            for (let i=0;i<this.pet.additionalInstructions.length;i++) {
-                if (this.pet.additionalInstructions[i].description
-                    && this.pet.additionalInstructions[i].description !== 'Please describe.') {
+            for (let i = 0; i < this.pet.additionalInstructions.length; i++) {
+                if (this.pet.additionalInstructions[i].description &&
+                    this.pet.additionalInstructions[i].description !== 'Please describe.') {
                     cleanAdInstruct.push(this.pet.additionalInstructions[i])
                 }
             }
             this.pet.specialConditions = cleanSpCond;
             this.pet.additionalInstructions = cleanAdInstruct;
         }
+        validate() {
+            if (!this.pet) {
+                return false;
+            } else if (!this.pet.name) {
+                return false;
+            } else {
+                return true;
+            }
+        }
         update() {
+            console.log(this.pet);
             this._clearTextarea();
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);
+                    this.$state.go('client.dashboard');
                 });
             } else {
                 this.Pets.update({
                     id: this.pet._id
                 }, this.pet, (res) => {
                     console.log(res);
+                    this.$state.go('client.dashboard');
                 });
             }
         }

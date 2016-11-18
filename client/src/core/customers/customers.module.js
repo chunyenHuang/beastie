@@ -1,6 +1,4 @@
 import customersComponent from './customers.component';
-import customersFormComponent from './customersForm';
-import customersCheckInComponent from './customersCheckIn';
 import customersListComponent from './customersList';
 
 import customersService from './services/customers.service';
@@ -8,8 +6,6 @@ import customersService from './services/customers.service';
 const customersModule = angular
     .module('beastie.core.customers', [])
     .component('customers', customersComponent)
-    .component('customersCheckIn', customersCheckInComponent)
-    .component('customersForm', customersFormComponent)
     .component('customersList', customersListComponent)
     .service('Customers', customersService)
     .config(($stateProvider) => {
@@ -29,12 +25,12 @@ const customersModule = angular
                 template: '<customers-list layout="column" flex></customers-list>'
             })
             .state('core.customers.customersForm', {
-                url: '/customers-form?customer_id',
+                url: '/customers-form?customer_id&phoneNumber',
                 template: '<customers-form layout="column" flex></customers-form>',
                 // component: 'customersForm',
-                params: {
-                    phoneNumber: '',
-                }
+                // params: {
+                //     phoneNumber: '',
+                // }
             })
             ;
     })

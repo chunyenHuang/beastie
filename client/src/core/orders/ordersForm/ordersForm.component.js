@@ -110,6 +110,7 @@ const ordersFormComponent = {
             this.Orders.get({
                 id: 'template'
             }, (template) => {
+                console.log(template);
                 this.order = template;
             });
         }
@@ -152,17 +153,8 @@ const ordersFormComponent = {
         }
 
         getOrderForDate(date){
-            date = new Date(date);
-            date = new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate()
-            )
-            console.log(date);
-
             this.Orders.getByDate({
-                from: this.yesterday,
-                to: this.tomorrow
+                date: date
             },(res)=>{
                 console.log(res);
             });
