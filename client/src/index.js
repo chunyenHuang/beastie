@@ -55,9 +55,9 @@ angular
     .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
-    .run(() => {
-        FastClick.attach(document.body);
-    })
+    // .run(() => {
+    //     FastClick.attach(document.body);
+    // })
     .filter('orderObjectBy', () => {
         return (items, field, reverse) => {
             const filtered = [];

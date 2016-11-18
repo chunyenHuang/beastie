@@ -21,13 +21,15 @@ const clientComponent = {
             this.Socket.on('signaturesInit', (res) => {
                 console.log(res);
                 this.$state.go('client.signature', {
-                    waiverName: res.waiverName
+                    customer_id: res.customer_id,
+                    order_id: res.order_id,
+                    name: res.name
                 });
             });
         }
         $onInit() {
-            this.$state.go('client.customersCheckIn');
-            // this.$state.go('client.signature');
+            // this.$state.go('client.customersCheckIn');
+            this.$state.go('client.signature');
         }
     }
 };

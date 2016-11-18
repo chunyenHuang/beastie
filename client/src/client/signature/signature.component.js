@@ -10,12 +10,12 @@ const signatureComponent = {
         static get $inject() {
             return [
                 '$log', '$timeout', '$document', '$state', '$stateParams', '$touch', '$swipe',
-                'Signature', 'ListItems', 'Socket'
+                'Signatures', 'ListItems', 'Socket'
             ];
         }
         constructor(
             $log, $timeout, $document, $state, $stateParams, $touch, $swipe,
-            Signature, ListItems, Socket
+            Signatures, ListItems, Socket
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -24,23 +24,29 @@ const signatureComponent = {
             this.$stateParams = $stateParams;
             this.$touch = $touch;
             this.$swipe = $swipe;
-            this.Signature = Signature;
+            this.Signatures = Signatures;
             this.ListItems = ListItems;
             this.Socket = Socket;
-
         }
 
         $onInit() {
+            console.log(this.$stateParams);
             this.getWaivers();
             this.setSignatureCanvas();
+            this.$timeout(()=>{
+                this.showSaveButton = true;
+            }, 3500);
         }
 
         getWaivers() {
             this.ListItems.query({
                 type: 'waivers'
             }, (waivers) => {
-                this.waivers = waivers[0].items;
-                this.waiverName = this.$stateParams.waiverName;
+                for (var i = 0; i < waivers[0].items.length; i++) {
+                    if(waivers[0].items[i].name == this.$stateParams.name){
+                        this.waiver = waivers[0].items[i];
+                    }
+                }
             });
         }
 
@@ -64,13 +70,14 @@ const signatureComponent = {
                     this.draw(event);
                 },
                 end: (event) => {
+                    console.log('end');
                     this.stopDrawing(event);
                 },
                 cancel: () => {
                     console.log('cancel');
                     this.stopDrawing(event);
                 }
-            })
+            });
 
             // this.canvas.addEventListener('mousedown', (event) => {
             //     console.log(this.$swipe);
@@ -161,8 +168,21 @@ const signatureComponent = {
         }
 
         save() {
+            console.log(this.Signatures);
             const dataURL = this.canvas.toDataURL();
             this.signature = dataURL;
+            this.Signatures.save({
+                customer_id: this.$stateParams.customer_id,
+                order_id: this.$stateParams.order_id,
+                name: this.waiver.name,
+                description: this.waiver.description,
+                signatures: this.signature
+            }, (res)=>{
+                this.$state.go('client.customersCheckIn');
+                console.log(res);
+            }, (err)=>{
+                console.log(err);
+            });
         }
 
         startDrawing(event) {
@@ -172,7 +192,9 @@ const signatureComponent = {
         }
 
         stopDrawing() {
-            this.isDrawing = false;
+            this.$timeout(()=>{
+                this.isDrawing = false;
+            }, 500);
         }
 
         _addClick(event) {
