@@ -38,6 +38,9 @@ dbClient.connect(dbUrl, (err, db) => {
                         if(prop.indexOf('_id')>-1){
                             data[prop] = ObjectId(data[prop]);
                         }
+                        if(prop.search(/At$/) > -1){
+                            data[prop] = new Date(data[prop]);
+                        }
                     }
 
                     db.collection(collection).update(data, data, {

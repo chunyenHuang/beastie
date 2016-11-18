@@ -98,6 +98,9 @@ app.use((req, res, next) => {
                 if(prop.indexOf('_id')>-1){
                     req.body[prop] = ObjectId(req.body[prop]);
                 }
+                if(prop.search(/At$/)>-1){
+                    req.body[prop] = new Date(req.body[prop]);
+                }
             }
         }
         if(req.query){

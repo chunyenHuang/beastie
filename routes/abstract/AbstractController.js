@@ -9,6 +9,7 @@ module.exports = class AbstractController {
         const query = req.collection.find(
             req.query
         );
+        console.log(req.query);
         query.toArray((err, results) => {
             // fix wrong condition
             if (!err) {
