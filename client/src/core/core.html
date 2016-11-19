@@ -1,5 +1,5 @@
 <div layout="row" flex id="core" layout-fill>
-    <div layout="column" layout-align="start center" class="sidenav">
+    <div layout="column" layout-align="start center" class="sidenav" md-colors="{background:'primary-700'}">
         <md-icon ng-show="!toggleIcons" md-svg-src="calendar-plus" ng-click="$ctrl.newOrder()"></md-icon>
         <md-icon ng-show="!toggleIcons" md-svg-src="book-open-page-variant" ng-click="$ctrl.go('core.orders.list')"></md-icon>
         <md-icon ng-show="!toggleIcons" md-svg-src="account-multiple" ng-click="$ctrl.go('core.customers.list')"></md-icon>
@@ -16,9 +16,9 @@
         <!-- <md-icon md-svg-src="translate" ng-click="$ctrl.toggleLanguage()"></md-icon> -->
         <user-auth-logout style="icon"></user-auth-logout>
     </div>
-    <md-content ui-view layout="column" flex>
+    <div ui-view layout="column" flex>
         core content goes here
         <h1 translate="core.hello"></h1>
         <h3 translate="users.yo"></h3>
-    </md-content>
+    </div>
 </div>
