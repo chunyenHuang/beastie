@@ -3,12 +3,11 @@ import './petsForm.styl';
 
 const petsFormComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
+<<<<<<< HEAD
                 '$log', '$timeout', '$state', '$stateParams', 'Pets', 
                 'ListItems', 'Snapshot', 'SharedUtil', '$mdDialog'
             ];
@@ -16,6 +15,15 @@ const petsFormComponent = {
         constructor(
             $log, $timeout, $state, $stateParams, Pets, 
             ListItems, Snapshot, SharedUtil, $mdDialog
+=======
+                '$log', '$timeout', '$state', '$stateParams',
+                'Pets', 'ListItems', 'Snapshot', 'SharedUtil'
+            ];
+        }
+        constructor(
+            $log, $timeout, $state, $stateParams,
+            Pets, ListItems, Snapshot, SharedUtil
+>>>>>>> 808000a764e6c5dae4170bfeb99d5f3c17ba08ff
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -39,12 +47,12 @@ const petsFormComponent = {
                     today.getDate() - 1
                 )
             };
-
         }
 
         $onInit() {
             if (this.$stateParams.pet_id) {
                 this.setPet(this.$stateParams.pet_id);
+                this.preview = '/images/pets/' + this.$stateParams.pet_id + '.png';
             } else {
                 this.setNewPet();
             }
@@ -52,6 +60,13 @@ const petsFormComponent = {
             this.setLists();
             this.petVaccinationsNameList = [];
         }
+        takeSnapshot() {
+            this.Snapshot().then((res) => {
+                this.pet.file = res.blob;
+                this.preview = res.dataUrl;
+            });
+        }
+
 
         setLists() {
             this.species = ['dog', 'cat'];
@@ -69,6 +84,7 @@ const petsFormComponent = {
                 type: 'vaccinations'
             }, (results) => {
                 this.vaccinations = results[0].items;
+<<<<<<< HEAD
                 this._genVaccinationsNameList(this.pet.vaccinations);
                 // this._genVaccinationsNameList(this.vaccinations);
                 this._applyVaccineToPet();
@@ -77,8 +93,13 @@ const petsFormComponent = {
         takeSnapshot() {
             this.Snapshot.start((image) => {
                 this.pet.picture = image;
+=======
+                console.log(this.vaccinations);
+                this._genVaccinationsNameList(this.vaccinations);
+>>>>>>> 808000a764e6c5dae4170bfeb99d5f3c17ba08ff
             });
         }
+
 
         setPet(id) {
             this.Pets.get({
@@ -205,7 +226,7 @@ const petsFormComponent = {
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard',{
+                    this.$state.go('client.dashboard', {
                         customer_id: this.$stateParams.customer_id
                     });
                 });
@@ -214,7 +235,7 @@ const petsFormComponent = {
                     id: this.pet._id
                 }, this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard',{
+                    this.$state.go('client.dashboard', {
                         customer_id: this.$stateParams.customer_id
                     });
                 });

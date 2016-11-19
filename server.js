@@ -23,6 +23,7 @@ dotenv.load({
 });
 const port = process.env.PORT || 3000;
 const dbClient = mongodb.MongoClient;
+var DB;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
 const storage = multer.diskStorage({
@@ -46,6 +47,7 @@ const upload = multer({
     global
 */
 
+global.root = path.join(__dirname);
 global.uploads = path.join(__dirname, 'files/uploads');
 global.images = path.join(__dirname, 'files/images');
 
@@ -90,48 +92,56 @@ app.use(bodyParser.json());
 app.use(upload);
 app.use(expressValidator());
 app.use((req, res, next) => {
-    dbClient.connect(dbUrl, (err, db) => {
-        req.db = db;
-        /*
-            transform request
-        */
-        if(req.body){
-            const ObjectId = require('mongodb').ObjectID;
-            for(let prop in req.body){
-                if(prop.indexOf('_id')>-1){
-                    req.body[prop] = ObjectId(req.body[prop]);
-                }
-                if(prop.search(/At$/)>-1){
-                    if(req.body[prop]){
-                        req.body[prop] = new Date(req.body[prop]);
-                    }
-                }
-            }
-        }
-        if(req.query){
-            const ObjectId = require('mongodb').ObjectID;
-            for(let prop in req.query){
-                if(prop.indexOf('_id')>-1){
-                    req.query[prop] = ObjectId(req.query[prop]);
-                }
-                if(prop.search(/At$/)>-1){
-                    if(req.body[prop]){
-                        req.body[prop] = new Date(req.body[prop]);
-                    }
-                }
-            }
-        }
-        if(req.params){
-            const ObjectId = require('mongodb').ObjectID;
-            for(let prop in req.params){
-                if(prop.indexOf('_id')>-1){
-                    req.params[prop] = ObjectId(req.params[prop]);
-                }
-            }
-        }
+    if(!DB){
+        dbClient.connect(dbUrl, (err, db) => {
+            DB = db;
+            req.db = db;
+            next();
+        });
+    } else {
+        req.db = DB;
         next();
-    });
+    }
 });
+function transformRequestMiddleware(req, res, next){
+    if(req.body){
+        const ObjectId = require('mongodb').ObjectID;
+        for(let prop in req.body){
+            if(prop.indexOf('_id')>-1){
+                req.body[prop] = ObjectId(req.body[prop]);
+            }
+            if(prop.search(/At$/)>-1){
+                if(req.body[prop]){
+                    req.body[prop] = new Date(req.body[prop]);
+                }
+            }
+        }
+    }
+    if(req.query){
+        const ObjectId = require('mongodb').ObjectID;
+        for(let prop in req.query){
+            if(prop.indexOf('_id')>-1){
+                req.query[prop] = ObjectId(req.query[prop]);
+            }
+            if(prop.search(/At$/)>-1){
+                if(req.body[prop]){
+                    req.body[prop] = new Date(req.body[prop]);
+                }
+            }
+        }
+    }
+    if(req.params){
+        const ObjectId = require('mongodb').ObjectID;
+        for(let prop in req.params){
+            if(prop.indexOf('_id')>-1){
+                req.params[prop] = ObjectId(req.params[prop]);
+            }
+        }
+    }
+    next();
+}
+
+app.use(transformRequestMiddleware);
 
 if (process.env.NODE_ENV == 'development') {
     const webpack = require('webpack');
@@ -169,6 +179,13 @@ if (process.env.NODE_ENV == 'development') {
         maxAge: 31557600000
     }));
 }
+/*
+    static images/ files
+*/
+app.use(express.static(path.join(__dirname, 'files'), {
+    maxAge: 31557600000
+}));
+
 
 /*
     Routes

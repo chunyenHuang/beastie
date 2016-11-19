@@ -13,9 +13,7 @@ const userAuthModule = angular
         $stateProvider
             .state('userAuth', {
                 url: '/userAuth',
-                component: 'userAuth'
-                // template: ''
-
+                template: '<user-auth layout="column" flex></user-auth'
             });
     })
     .name;

@@ -1,5 +1,7 @@
 const AbstractController = require('../../abstract/AbstractController.js');
 const ObjectId = require('mongodb').ObjectID;
+const path = require('path');
+const fs = require('fs');
 
 class PetsController extends AbstractController {
     getTemplate(req, res) {
@@ -79,6 +81,68 @@ class PetsController extends AbstractController {
                     });
                 }
             } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
+    put(req, res) {
+        Object.assign(req.body,{
+            updatedAt: new Date(),
+            updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
+        });
+        console.log(res.body);
+
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        req.collection.update({
+            _id: ObjectId(req.params.id)
+        }, {
+            $set: req.body
+        }, {
+            upsert: true
+        }, (err) => {
+            if (!err) {
+                if(req.file){
+                    const newName = req.params.id + '.png';
+                    req.oldPath = path.join(global.uploads, req.file.filename);
+                    req.newPath = path.join(global.images, 'pets', newName);
+                    this._moveFile(req, res, () => {
+                        res.sendStatus(204);
+                    });
+                } else {
+                    res.sendStatus(204);
+                }
+            } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
+    post(req, res) {
+        Object.assign(req.body,{
+            isDeleted: false,
+            createdAt: new Date(),
+            createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
+        });
+
+        req.collection.insert(req.body, (err, docsInserted) => {
+            if (!err) {
+                if(req.file){
+                    const newName = docsInserted.ops[0]._id + '.png';
+                    req.oldPath = path.join(global.uploads, req.file.filename);
+                    req.newPath = path.join(global.images, 'pets', newName);
+                    this._moveFile(req, res, () => {
+                        res.statusCode = 201;
+                        res.json(docsInserted.ops[0]);
+                    });
+                } else {
+                    res.statusCode = 201;
+                    res.json(docsInserted.ops[0]);
+                }
+            } else {
+                console.log(err);
                 res.sendStatus(500);
             }
         });

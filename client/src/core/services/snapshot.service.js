@@ -7,26 +7,25 @@ class snapshotService {
     }
     constructor($document, $window, $mdDialog) {
         this.$document = $document;
-        this.$window = $window;
-        this.$mdDialog = $mdDialog;
-    }
-
-    start(callback) {
-        this.$mdDialog.show(
-            this.preview()
-        ).then((image) => {
-            return callback(image);
-        });
-    }
-
-    preview(locals, parent) {
+        // this.$window = $window;
+        $mdDialog = $mdDialog;
         let appendDiv = this.$document[0].getElementById('snapshot-div');
         if (!appendDiv) {
             appendDiv = this.$document[0].createElement('div');
             appendDiv.setAttribute('id', 'snapshot-div');
             this.$document[0].body.appendChild(appendDiv);
         }
-        parent = appendDiv;
+        const showDialog = (locals) => {
+            return $mdDialog.show(
+                this.preview(locals,
+                    appendDiv
+                )
+            );
+        };
+        return showDialog;
+    }
+
+    preview(locals, parent) {
         return {
             locals: locals,
             parent: parent,
@@ -96,7 +95,13 @@ class snapshotService {
                     canvas.height = this.video.videoHeight;
                     context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
                     const dataUrl = canvas.toDataURL('image/png');
-                    this.$mdDialog.hide(dataUrl);
+                    canvas.toBlob((blob) => {
+                        this.$mdDialog.hide({
+                            dataUrl: dataUrl,
+                            blob: blob
+                        });
+                    });
+
                 }
             },
             clickOutsideToClose: false,

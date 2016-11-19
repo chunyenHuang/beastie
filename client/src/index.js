@@ -13,6 +13,7 @@ import ngSanitize from 'client/node_modules/angular-sanitize';
 import 'client/node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module';
 import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
 import 'client/node_modules/angular-smart-table';
+import uiMask from 'angular-ui-mask';
 
 // configs
 import themeConfig from './themeConfig';
@@ -38,6 +39,7 @@ angular
         ngAnimate,
         ngAria,
         ngMaterial,
+        uiMask,
         'pascalprecht.translate',
         'colorpicker.module',
         'smart-table',
@@ -55,9 +57,6 @@ angular
     .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
-    // .run(() => {
-    //     FastClick.attach(document.body);
-    // })
     .filter('orderObjectBy', () => {
         return (items, field, reverse) => {
             const filtered = [];
@@ -73,3 +72,7 @@ angular
             return filtered;
         };
     });
+
+// .run(() => {
+//     FastClick.attach(document.body);
+// })

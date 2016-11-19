@@ -56,80 +56,52 @@ class InhouseOrdersController extends PrinterController {
             return;
         }
         // const barcode = req.body.order_id;
-        this.escpos.Image.load(req.newPath, (image) => {
-            this.device.open(() => {
-                const today = new Date();
-                this.printer
-                    .font('A')
-                    .align('ct')
-                    .style('b')
-                    .size(2, 4)
-                    .text(' ')
-                    .text('A+ Pet Grooming')
-                    .text('------------------------')
-                    .text('In-House Orders')
-                    .text('------------------------')
-                    .raster(image)
-                    .text('------------------------')
-                    .text(req.body.order_id)
-                    .text('------------------------')
-                    .text(today.toLocaleDateString())
-                    .text(today.toLocaleTimeString())
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .cut();
-                // .text('中文測試到底可不可以', 'Big5')
-                // .barcode(barcode, 'EAN13')
-                // .image(image, 's8')
-                // .image(image, 'd8')
-                // .image(image, 's24')
-                // .image(image, 'd24')
-                // .raster(image, 'dw')
-                // .raster(image, 'dh')
-                // .raster(image, 'dwdh')
-                // .qrimage('https://github.com/song940/node-escpos', function(err){
-                //   this.cut();
-                // });
+        const logoPath = path.join(global.root, 'logos/B1_72-01.png');
+        console.log(logoPath);
+        this.escpos.Image.load(logoPath, (logo) => {
+            this.escpos.Image.load(req.newPath, (image) => {
+                this.device.open(() => {
+                    const today = new Date();
+                    this.printer
+                        .font('A')
+                        .align('ct')
+                        .style('b')
+                        .size(2, 4)
+                        .text(' ')
+                        .text('A+ Pet Grooming')
+                        .text('------------------------')
+                        .text('In-House Orders')
+                        .text('------------------------')
+                        .raster(image)
+                        .text('------------------------')
+                        .text(req.body.order_id)
+                        .text('------------------------')
+                        .text(today.toLocaleDateString())
+                        .text(today.toLocaleTimeString())
+                        .raster(logo)
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .cut();
+                    // .text('中文測試到底可不可以', 'Big5')
+                    // .barcode(barcode, 'EAN13')
+                    // .image(image, 's8')
+                    // .image(image, 'd8')
+                    // .image(image, 's24')
+                    // .image(image, 'd24')
+                    // .raster(image, 'dw')
+                    // .raster(image, 'dh')
+                    // .raster(image, 'dwdh')
+                    // .qrimage('https://github.com/song940/node-escpos', function(err){
+                    //   this.cut();
+                    // });
 
-                next();
+                    next();
+                });
             });
         });
-    }
-
-    _moveFile(req, res, next) {
-        fs.rename(req.oldPath, req.newPath, (err) => {
-            if (err) {
-                res.status(500).json({
-                    success: false,
-                    message: 'Can not move file.',
-                    data: [],
-                    error: {
-                        type: 'UPLOAD'
-                    }
-                });
-                return;
-            } else {
-                next();
-            }
-        });
-    }
-
-    _setCorrectExtension(source, reference) {
-        const unknowExt = this._getExtension(source);
-        const extension = this._getExtension(reference);
-        if (unknowExt.toLowerCase() != extension.toLowerCase()) {
-            source += extension;
-        }
-        return source;
-    }
-
-    _getExtension(source) {
-        const extensions = source.split('.');
-        const extension = '.' + extensions[extensions.length - 1];
-        return extension;
     }
 }
 

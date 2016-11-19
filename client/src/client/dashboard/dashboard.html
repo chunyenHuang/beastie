@@ -1,21 +1,37 @@
 <div class="" layout="row" layout-align="center center">
+    <div class="" flex>
+        {{$ctrl.countDown}}
+    </div>
     <h2>Welcome Back~ {{$ctrl.customer.firstname}}</h2>
-    <md-button class="md-warn md-raised" ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button>
+    <div class="" flex></div>
+
+    <!-- <md-button class="md-warn md-raised" ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button> -->
 </div>
 <div class="main" layout="column" flex layout-align="center center">
-    <div class="" layout="column" layout-align="start center" ng-show="!$ctrl.isScheduled()">
-        <!-- <h3>you dont have any appointment</h3> -->
+    <md-content layout="row" layout-align="start center" flex>
+        <div class="order-box" layout="column" ng-repeat="order in $ctrl.orders">
+            <md-subheader>
+                {{order.scheduleAt | date:'yyyy-MM-dd'}}
+            </md-subheader>
+            <div class="" layout="row" flex>
+                <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]"/>
+            </div>
+        </div>
+    </md-content>
+    <!-- <div class="" layout="column" layout-align="start center" ng-show="!$ctrl.isScheduled()">
         <md-button ng-click="$ctrl.makeAppointment()">Make appointment now</md-button>
     </div>
     <div class="" layout="column" layout-align="start center" ng-show="$ctrl.isScheduled()">
         <md-button ng-click="$ctrl.checkIn()">Check In My Appointment</md-button>
-    </div>
+    </div> -->
 </div>
 
 <div class="footer md-padding" layout="row" layout-align="center center">
-    <md-button ng-click="$ctrl.updateMyInfo()">Update My Info</md-button>
-    <md-button ng-repeat="pet in $ctrl.customer.pets" ng-click="$ctrl.updateMyPet(pet._id)">
-        Update My {{pet.name}}
+    <md-button ng-click="$ctrl.updateMyInfo()">My Info</md-button>
+    <md-button ng-repeat="pet in $ctrl.customer.pets"
+        ng-click="$ctrl.updateMyPet(pet._id)"
+        style="background-image: url({{$ctrl.preview[pet._id]}});background-size: 100% 100%;">
+        <span>{{pet.name}}</span>
     </md-button>
     <md-button ng-click="$ctrl.addPet()">Add a Pet</md-button>
 </div>

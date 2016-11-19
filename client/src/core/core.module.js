@@ -9,6 +9,7 @@ import settings from './settings';
 import printer from './printer';
 import services from './services';
 import signatures from './signatures';
+import albums from './albums';
 
 import components from './components';
 import filters from './filters';
@@ -27,7 +28,7 @@ const coreModule = angular
         printer,
         services,
         signatures,
-
+        albums,
         components,
         filters
     ])

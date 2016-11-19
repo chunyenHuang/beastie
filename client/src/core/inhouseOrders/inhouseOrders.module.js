@@ -1,9 +1,12 @@
 import inhouseOrdersComponent from './inhouseOrders.component';
+import inhouseOrdersDialogService from './inhouseOrdersDialog.service';
+
 import inhouseOrdersService from './services/inhouseOrders.service';
 
 const inhouseOrdersModule = angular
     .module('beastie.inhouseOrders', [])
     .component('inhouseOrders', inhouseOrdersComponent)
+    .service('InhouseOrdersDialog', inhouseOrdersDialogService)
     .service('InhouseOrders', inhouseOrdersService)
     .config(($stateProvider) => {
         'ngInject';

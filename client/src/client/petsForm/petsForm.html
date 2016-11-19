@@ -1,20 +1,23 @@
-<div layout="column" flex>
-
+<div layout="column" flex id="client-pets-form">
     <div layout="row" layout-align="center" layout-padding layout-wrap style="background-color:beige;" flex="none">
         <!--<h1 class="md-display-1">Human</h1>-->
-        <div flex="80"  layout="row" layout-align="center">
+        <div flex="60"  layout="row" layout-align="center">
+            <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div>
             <img src="./assets/img/human_avatar_example.png"
                 style="height:50px; padding-right: 25px" layout-padding></img>
             <img src="./assets/img/border-collie.png"
                 style="height:100px;" layout-padding></img>
         </div>
-        <div layout layout-align="center center">
+        <div layout="row" layout-align="end center">
+            <div class="preview">
+                <img ng-src="{{$ctrl.preview}}" alt="" />
+            </div>
+
             <md-button class="md-fab md-primary" aria-label="take a picture"
                 ng-click="$ctrl.takeSnapshot()">
                 <md-icon md-svg-src="camera"></md-icon>
             </md-button>
         </div>
-        <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div>
     </div>
     <div layout="row" flex>
         <div layout="column" flex="80">

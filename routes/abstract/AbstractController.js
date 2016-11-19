@@ -1,4 +1,6 @@
 const ObjectId = require('mongodb').ObjectID;
+const path = require('path');
+const fs = require('fs');
 
 module.exports = class AbstractController {
 
@@ -111,4 +113,45 @@ module.exports = class AbstractController {
             }
         });
     }
+
+    /*
+        custom middleware
+    */
+
+    _moveFile(req, res, next) {
+        fs.rename(req.oldPath, req.newPath, (err) => {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: 'Can not move file.',
+                    data: [],
+                    error: {
+                        type: 'UPLOAD'
+                    }
+                });
+                return;
+            } else {
+                next();
+            }
+        });
+    }
+    /*
+        helper functions
+    */
+
+    _setCorrectExtension(source, reference) {
+        const unknowExt = this._getExtension(source);
+        const extension = this._getExtension(reference);
+        if (unknowExt.toLowerCase() != extension.toLowerCase()) {
+            source += extension;
+        }
+        return source;
+    }
+
+    _getExtension(source) {
+        const extensions = source.split('.');
+        const extension = '.' + extensions[extensions.length - 1];
+        return extension;
+    }
+
 };
