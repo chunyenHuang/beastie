@@ -1,3 +1,4 @@
+@import "~variable"
 #order-list
     img
         max-height: 150px
@@ -14,6 +15,9 @@
     //     border-width: 1.35em;
     //     border-right-color: #0c0;
     //     border-top-color: #0c0;
+    
+    // md-grid-tile:nth-child(2)
+
     md-grid-list:first-child::before, md-grid-list:first-child::after
         content: ' ';
         position: absolute;
@@ -22,23 +26,35 @@
         border-color: transparent;
         border-style: solid;
     md-grid-list:first-child::after
-        border-width: 1em;
+        border-width: 0em;
         // border-color: #0c0
-        
     md-grid-list
         &:first-child::after
-            border-color: #757575
+            border-color: $color-tile-upcoming
         &.label-checkedin:first-child::after
-            border-color: darkcyan
+            border-color: $md-primary
         &.label-canceled:first-child::after
-            border-color: #FF9800
+            border-color: $md-accent
         &.label-noshow:first-child::after
-            border-color: #FF5722
+            border-color: $md-warn
+    
+    
     md-grid-list md-grid-tile
         background-color rgba(178,223,219, 0.5)
         button
             min-width initial
             padding 0px
+            border-radius 0px
+    .tile-no-show.md-button.md-raised[disabled]
+        background-color $md-warn
+    .tile-cancel.md-button.md-accent[disabled]
+        background-color $md-accent
+    // .tile-warn::after
+    //     content 'hello'
+    //     position absolute
+    //     top 0
+    //     left
+    
 .selected_date_mode 
     border solid 3px
     

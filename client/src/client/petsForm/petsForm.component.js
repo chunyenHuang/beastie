@@ -7,7 +7,6 @@ const petsFormComponent = {
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
-<<<<<<< HEAD
                 '$log', '$timeout', '$state', '$stateParams', 'Pets', 
                 'ListItems', 'Snapshot', 'SharedUtil', '$mdDialog'
             ];
@@ -15,15 +14,6 @@ const petsFormComponent = {
         constructor(
             $log, $timeout, $state, $stateParams, Pets, 
             ListItems, Snapshot, SharedUtil, $mdDialog
-=======
-                '$log', '$timeout', '$state', '$stateParams',
-                'Pets', 'ListItems', 'Snapshot', 'SharedUtil'
-            ];
-        }
-        constructor(
-            $log, $timeout, $state, $stateParams,
-            Pets, ListItems, Snapshot, SharedUtil
->>>>>>> 808000a764e6c5dae4170bfeb99d5f3c17ba08ff
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -84,7 +74,6 @@ const petsFormComponent = {
                 type: 'vaccinations'
             }, (results) => {
                 this.vaccinations = results[0].items;
-<<<<<<< HEAD
                 this._genVaccinationsNameList(this.pet.vaccinations);
                 // this._genVaccinationsNameList(this.vaccinations);
                 this._applyVaccineToPet();
@@ -93,10 +82,8 @@ const petsFormComponent = {
         takeSnapshot() {
             this.Snapshot.start((image) => {
                 this.pet.picture = image;
-=======
                 console.log(this.vaccinations);
                 this._genVaccinationsNameList(this.vaccinations);
->>>>>>> 808000a764e6c5dae4170bfeb99d5f3c17ba08ff
             });
         }
 

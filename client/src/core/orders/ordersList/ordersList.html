@@ -1,11 +1,10 @@
 <div id="order-list" layout="column" flex>
-    <div layout layout-align="space-between center">
+    <div layout layout-align="space-between center" flex="none">
         <div layout-padding layout>
             <md-button class="md-headline" ng-click="$ctrl.setSortDate()">
                 <md-icon md-svg-src="clock"></md-icon>
-                <md-icon md-svg-src="menu-down"></md-icon>
-                <span ng-show="$ctrl.sortDate=='-scheduleAt'">New</span>
-                <span ng-show="$ctrl.sortDate=='scheduleAt'">Old</span>
+                <md-icon ng-show="$ctrl.sortDate=='-scheduleAt'" md-svg-src="menu-down"></md-icon>
+                <md-icon ng-show="$ctrl.sortDate=='scheduleAt'" md-svg-src="menu-up"></md-icon>
             </md-button>
             <md-button class="md-raised"
                 ng-repeat="mode in $ctrl.dateModeList"
@@ -26,13 +25,13 @@
             <!--        <md-option value="year">In This Year</md-option>-->
             <!--    </md-select>-->
             <!--</span>-->
-            <span ng-show="$ctrl.dateMode=='range'">
-                <md-datepicker ng-model="$ctrl.dateRange.from" md-placeholder="FROM" md-hide-icons='triangle' md-open-on-focus
-                    ng-change="$ctrl.viewRange()"></md-datepicker>
-                To
-                <md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="TO" md-hide-icons='triangle' md-min-date="$ctrl.dateRange.from" md-open-on-focus
-                    ng-change="$ctrl.viewRange()"></md-datepicker>
-            </span>
+            <!--<span ng-show="$ctrl.dateMode=='range'">-->
+            <!--    <md-datepicker ng-model="$ctrl.dateRange.from" md-placeholder="FROM" md-hide-icons='triangle' md-open-on-focus-->
+            <!--        ng-change="$ctrl.viewRange()"></md-datepicker>-->
+            <!--    To-->
+            <!--    <md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="TO" md-hide-icons='triangle' md-min-date="$ctrl.dateRange.from" md-open-on-focus-->
+            <!--        ng-change="$ctrl.viewRange()"></md-datepicker>-->
+            <!--</span>-->
         </div>
         <div layout-padding layout>
             <md-button class="" ng-click="$ctrl.toggleAllType()">
@@ -40,18 +39,19 @@
                 <md-icon ng-show="$ctrl.showAllTypes" md-svg-src="eye-off"></md-icon>
                 all Types
             </md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.checkInAt)
-                ng-class="{'md-primary':$ctrl.typeList.checkInAt.show, 'md-raised':!$ctrl.typeList.checkInAt.show, 'border-solid':$ctrl.typeList.checkInAt.show}">
-                {{$ctrl.typeList.checkInAt.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.isCanceled)
-                ng-class="{'md-accent':$ctrl.typeList.isCanceled.show, 'md-raised':!$ctrl.typeList.isCanceled.show, 'border-solid':$ctrl.typeList.isCanceled.show}">
-                {{$ctrl.typeList.isCanceled.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.notShowup)
-                ng-class="{'md-warn':$ctrl.typeList.notShowup.show, 'md-raised':!$ctrl.typeList.notShowup.show, 'border-solid':$ctrl.typeList.notShowup.show}">
-                {{$ctrl.typeList.notShowup.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.upcoming)
+            <md-button ng-click=$ctrl.setType($ctrl.typeList.upcoming) style="color:slategrey"
                 ng-class="{'md-raised':!$ctrl.typeList.upcoming.show, 'border-solid':$ctrl.typeList.upcoming.show}">
                 {{$ctrl.typeList.upcoming.text}}</md-button>
+            <md-button ng-click=$ctrl.setType($ctrl.typeList.checkInAt) md-colors="{color:'primary'}"
+                ng-class="{'md-primary':$ctrl.typeList.checkInAt.show, 'md-raised':!$ctrl.typeList.checkInAt.show, 'border-solid':$ctrl.typeList.checkInAt.show}">
+                {{$ctrl.typeList.checkInAt.text}}</md-button>
+            <md-button ng-click=$ctrl.setType($ctrl.typeList.isCanceled) md-colors="{color:'accent'}"
+                ng-class="{'md-accent':$ctrl.typeList.isCanceled.show, 'md-raised':!$ctrl.typeList.isCanceled.show, 'border-solid':$ctrl.typeList.isCanceled.show}">
+                {{$ctrl.typeList.isCanceled.text}}</md-button>
+            <md-button ng-click=$ctrl.setType($ctrl.typeList.notShowup) md-colors="{color:'warn'}"
+                ng-class="{'md-warn':$ctrl.typeList.notShowup.show, 'md-raised':!$ctrl.typeList.notShowup.show, 'border-solid':$ctrl.typeList.notShowup.show}">
+                {{$ctrl.typeList.notShowup.text}}</md-button>
+            
             <!--<md-button class="md-raised"-->
             <!--    ng-repeat="type in $ctrl.typeList"-->
             <!--    ng-click="$ctrl.setType(type)"-->
@@ -63,13 +63,34 @@
     <md-divider></md-divider>
 
     <!--<div layout="column" flex>-->
-    <md-content layout layout-wrap layout-align="center start" layout-padding flex="grow">
+    <md-content layout layout-wrap layout-align="start start" layout-padding flex="grow">
 
-        <div flex="50" ng-repeat="order in $ctrl.orders | orderBy: $ctrl.sortDate"
+        <div flex="80" ng-repeat="order in $ctrl.orders | orderBy: $ctrl.sortDate as filtered_result"
             ng-show="$ctrl.decideShow(order)">
-            <md-grid-list md-cols="7" md-gutter="0.25em" md-row-height="8:7"
+            <md-grid-list md-cols="10" md-gutter="0.4em" md-row-height="8:7"
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}">
-
+                
+                <md-grid-tile  md-colspan="3" md-rowspan="3" md-colors="{background: 'background'}">
+                    <div layout layout-fill layout-align="center">
+                        <div flex="90" layout-fill layout="column" layout-align="end end">
+                            
+                            
+                            <div class="md-subhead">
+                                <span ng-hide="$ctrl.isSameHour(order, filtered_result[$index-1])">
+                                    {{order.scheduleAt | date: 'EEEE, MMM dd, y'}}</span>
+                            </div>
+                            <div class="md-display-1">
+                                <span ng-hide="$ctrl.isSameHour(order, filtered_result[$index-1])">
+                                    {{order.scheduleAt | date:'h:00a'}}</span>
+                            </div>
+                            
+                            <div flex></div>
+                            <div layout layout-align="end end"><div>{{$ctrl.hourIndex(order, filtered_result[$index-1])}}</div></div>
+                            <div flex></div>
+                        </div>
+                    </div>
+                </md-grid-tile>
+                
                 <md-grid-tile  md-colspan="2" md-rowspan="2">
                     <md-button layout-fill layout="column" layout-align="center center"
                         ng-click="$ctrl.edit(order._id)"
@@ -115,11 +136,16 @@
                 <md-grid-tile  md-colspan="1" md-rowspan="1">
                     <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order._id)">
                         <md-icon md-svg-src="camera"></md-icon></md-button></md-grid-tile>
-                <md-grid-tile  md-colors="{background: 'accent-500-0.85'}">
-                    <md-button layout-fill ng-click="$ctrl.cancel(order)" ng-disabled="order.isCanceled">
+                <!--<md-grid-tile  md-colors="{background: 'accent-500-0.85'}">-->
+                <md-grid-tile>
+                    <md-button layout-fill ng-click="$ctrl.cancel(order)" ng-disabled="order.isCanceled"
+                        class="md-accent tile-cancel" ng-class="{'md-raised':order.isCanceled}">
                         cancel</md-button></md-grid-tile>
-                <md-grid-tile md-colors="{background: 'warn-500-0.85'}">
-                    <md-button layout-fill ng-click="$ctrl.notShowup(order)" ng-disabled="order.notShowup">
+                
+                <!--<md-grid-tile md-colors="{background: 'warn-500-0.85'}">-->
+                <md-grid-tile>
+                    <md-button layout-fill ng-click="$ctrl.notShowup(order)" ng-disabled="order.notShowup"
+                        class="md-warn tile-no-show" ng-class="{'md-raised':order.notShowup}">
                         no-show</md-button layout-fill></md-grid-tile>
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt && !order.isPaid" md-colors="{background: 'primary-500-1'}">
                     <md-button layout-fill ng-click="$ctrl.inhouseOdrer(order._id)">

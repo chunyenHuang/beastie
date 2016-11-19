@@ -21,15 +21,12 @@ function themeConfig($mdThemingProvider) {
             'hue-2': '500'
 
         })
-        .accentPalette('newOrange', {
+        .accentPalette('green', {
             'default': '500',
             'hue-3': '700'
-        })
-        .warnPalette('deep-orange', {
-            'default': '500'
-        })
-    // $mdThemingProvider.theme('input', 'default')
-    //     .primaryPalette('grey');
+        });
+    $mdThemingProvider.theme('input', 'default')
+        .primaryPalette('grey');
 
 }
 export default themeConfig;

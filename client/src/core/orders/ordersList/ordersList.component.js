@@ -46,9 +46,9 @@ const ordersListComponent = {
                 from: angular.copy(this.today),
                 to: angular.copy(this.today)
             };
-            this.queryOrdersWithDate();
+            this.queryOrdersWithDate(true);
 
-            this.dateModeList = ['all dates', 'date', 'range'];
+            this.dateModeList = ['all dates', 'today'];
             this.dateMode = 'date';
             this.typeList = {
                 checkInAt: {
@@ -163,6 +163,10 @@ const ordersListComponent = {
             };
         }
         setSortDate() {
+            for (let i=0; i<this.orders.length; i++) {
+                console.log(this.orders[i].scheduleAt);
+            }
+            
             this.sortDate = (this.sortDate == 'scheduleAt') ?
                 '-scheduleAt' : 'scheduleAt';
         }
@@ -185,7 +189,8 @@ const ordersListComponent = {
             // this.dateRange.from = this.dateRange.to;
             // this.queryOrdersWithDate();
             this.Orders.getByDate({
-                date: this.today
+                // date: this.today
+                date: this.dateRange.to
             }, (orders) => {
                 this.orders = orders;
                 this.getPets();
@@ -198,7 +203,34 @@ const ordersListComponent = {
         viewRange() {
             this.queryOrdersWithDate();
         }
-
+        isSameHour(thisOrder, lastOrder) {
+            if (lastOrder) {
+                const d1 = new Date(thisOrder.scheduleAt);
+                const d2 = new Date(lastOrder.scheduleAt);
+                if(d1.getDate() === d2.getDate() 
+                && d1.getHours() === d2.getHours()) {
+                    return true;
+                } else { return false; }
+            } else { return false; }
+        }
+        hourIndex(thisOrder, lastOrder){
+            return '';
+            // var counter = 0;
+            // if (lastOrder) {
+            //     if(this.isSameHour(thisOrder, lastOrder)) {
+            //         counter +=1; 
+            //         return counter;
+            //     } else { 
+            //         counter = 1;
+            //         return counter;
+            //     }
+            // }
+            
+            // else { 
+            //     counter = 1;
+            //     return counter;
+            // }
+        }
         // viewSince(since) {
         //     this.dateRange.to = angular.copy(this.today);
         //     const date = angular.copy(this.today);
