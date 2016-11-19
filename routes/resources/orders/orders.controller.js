@@ -91,24 +91,24 @@ class OrdersController extends AbstractController {
 
     _parseDate(dateString) {
         dateString = new Date(dateString);
-        dateString = new Date(
-            dateString.getFullYear(),
-            dateString.getMonth(),
-            dateString.getDate()
-        );
+        const newDateString =
+            dateString.getFullYear() + '-' +
+            (dateString.getMonth()+1) + '-' +
+            dateString.getDate() + 'T00:00:00.000Z';
+        dateString = new Date(newDateString);
         return dateString;
     }
 
     _getDateFromToday(num, startDate) {
         num = num || 0;
         parseInt(num);
-        startDate = (startDate) ? new Date(startDate) : new Date();
+        const targetDate = (startDate) ? new Date(startDate) : new Date();
         /*
             yesterday num = -1,
             tomorrow num = 1
         */
         return this._parseDate(
-            new Date(startDate.getTime() +
+            new Date(targetDate.getTime() +
                 parseInt(num) * 24 * 60 * 60 * 1000)
         );
     }
@@ -126,8 +126,8 @@ class OrdersController extends AbstractController {
         let from;
         let to;
         if (req.query.date) {
-            from = this._parseDate(req.query.date);
-            to = this._getDateFromToday(1, req.query.date);
+            from = this._getDateFromToday(1, req.query.date);
+            to = this._getDateFromToday(2, req.query.date);
         } else {
             let today = this._getDateFromToday();
             from = (req.query.from) ? this._parseDate(req.query.from) :

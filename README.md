@@ -41,4 +41,7 @@ gulp component --name AngularModuleName --parent ParentFolder
 gulp route --name RouteName --parent ParentFolder
 ```
 
-# Todo
+# Notes
+```
+chrome://flags/#overscroll-history-navigation
+```

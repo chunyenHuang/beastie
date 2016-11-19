@@ -88,7 +88,10 @@ class showSignaturesDialog {
                         return;
                     }
                     for (var i = 0; i < this.signed.length; i++) {
-                        if(this.signed[i].name == waiverName){
+                        if(
+                            this.signed[i].name == waiverName &&
+                            this.signed[i].order_id == this.order_id
+                        ){
                             return true;
                         }
                     }

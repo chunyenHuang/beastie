@@ -9,12 +9,12 @@ const signatureComponent = {
     controller: /* @ngInject */ class SignatureController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$document', '$state', '$stateParams', '$touch', '$swipe',
+                '$log', '$timeout', '$document', '$state', '$stateParams',
                 'Signatures', 'ListItems', 'Socket'
             ];
         }
         constructor(
-            $log, $timeout, $document, $state, $stateParams, $touch, $swipe,
+            $log, $timeout, $document, $state, $stateParams,
             Signatures, ListItems, Socket
         ) {
             this.$log = $log;
@@ -22,8 +22,6 @@ const signatureComponent = {
             this.$document = $document;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.$touch = $touch;
-            this.$swipe = $swipe;
             this.Signatures = Signatures;
             this.ListItems = ListItems;
             this.Socket = Socket;
@@ -59,25 +57,25 @@ const signatureComponent = {
             // this.context.fillStyle = '#959595';
             // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-            this.$swipe.bind(angular.element(this.canvas), {
-                start: (event) => {
-                    console.log('start');
-                    console.log(event);
-                    this.startDrawing(event);
-                },
-                move: (event) => {
-                    console.log('move');
-                    this.draw(event);
-                },
-                end: (event) => {
-                    console.log('end');
-                    this.stopDrawing(event);
-                },
-                cancel: () => {
-                    console.log('cancel');
-                    this.stopDrawing(event);
-                }
-            });
+            // this.$swipe.bind(angular.element(this.canvas), {
+            //     start: (event) => {
+            //         console.log('start');
+            //         console.log(event);
+            //         this.startDrawing(event);
+            //     },
+            //     move: (event) => {
+            //         console.log('move');
+            //         this.draw(event);
+            //     },
+            //     end: (event) => {
+            //         console.log('end');
+            //         this.stopDrawing(event);
+            //     },
+            //     cancel: () => {
+            //         console.log('cancel');
+            //         this.stopDrawing(event);
+            //     }
+            // });
 
             // this.canvas.addEventListener('mousedown', (event) => {
             //     console.log(this.$swipe);

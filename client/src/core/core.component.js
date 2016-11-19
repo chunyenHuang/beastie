@@ -9,12 +9,12 @@ const coreComponent = {
         static get $inject() {
             return [
                 '$timeout', '$state', '$translate', '$mdDialog', '$document',
-                'Customers', 'METADATA', 'InhouseOrdersDialog'
+                'Customers', 'METADATA', 'InhouseOrdersDialog', 'Fullscreen'
             ];
         }
         constructor(
             $timeout, $state, $translate, $mdDialog, $document,
-            Customers, METADATA, InhouseOrdersDialog
+            Customers, METADATA, InhouseOrdersDialog, Fullscreen
         ) {
             this.$timeout = $timeout;
             this.$state = $state;
@@ -24,6 +24,8 @@ const coreComponent = {
             this.Customers = Customers;
             this.METADATA = METADATA;
             this.InhouseOrdersDialog = InhouseOrdersDialog;
+            this.Fullscreen = Fullscreen;
+            this.fullscreenIcon = 'fullscreen';
         }
 
         $onInit() {
@@ -31,22 +33,32 @@ const coreComponent = {
             // this.openInhouseOrdersDialog();
         }
 
+        toggleFullscreen() {
+            if (this.Fullscreen.isEnabled()) {
+                this.fullscreenIcon = 'fullscreen';
+                this.Fullscreen.cancel();
+            } else {
+                this.Fullscreen.all();
+                this.fullscreenIcon = 'fullscreen-exit';
+                this.showFullScreenButton = false;
+            }
+        }
+
         go(state) {
             this.$state.go(state);
         }
 
-        openInhouseOrdersDialog(){
-            this.InhouseOrdersDialog().then((res)=>{
+        openInhouseOrdersDialog() {
+            this.InhouseOrdersDialog().then((res) => {
 
-            }, (err)=>{
+            }, (err) => {
 
             });
         }
 
         newOrder() {
             this.$mdDialog.show(
-                quickStartDialog({
-                }, this.$document[0].getElementById('core'))
+                quickStartDialog({}, this.$document[0].getElementById('core'))
             ).then((phone) => {
                 this.Customers.query({
                     phone: phone

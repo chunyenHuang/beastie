@@ -53,12 +53,12 @@ class previousOrdersDialog {
                     this.Orders.query({
                         pet_id: this.pet_id
                     }, (res) => {
-                        this.orders = res;
+                        this.orders = res.reverse();
                         angular.forEach(this.orders, (order)=>{
                             this.Orders.getPicturesPath({
                                 id: order._id
                             }, (res)=>{
-                                this.pictures[order._id] = res;
+                                this.pictures[order._id] = res.reverse();
                             });
                         });
                     });
