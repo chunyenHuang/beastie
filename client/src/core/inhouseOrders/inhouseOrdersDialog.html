@@ -1,0 +1,52 @@
+<div layout="column" id="inhouse-orders" layout-align="start center">
+    <md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
+        <h5>Inhouse Orders</h5>
+        <div flex></div>
+        <div class="">
+            <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" flex layout-fill>
+        <div class="padding-box" ng-show="type.type=='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
+            <h3>
+                {{type.zhName}} {{type.name}}
+            </h3>
+            <div layout="row">
+                <md-button
+                    ng-repeat="item in type.subItems"
+                    ng-click="$ctrl.assignToOrder(type.name, item)"
+                    ng-class="{
+                        'md-accent': $ctrl.isInOrder(type.name, item),
+                        'md-raised': $ctrl.isInOrder(type.name, item)
+                    }">
+                    {{item.zhName}} {{item.name}}
+                </md-button>
+            </div>
+        </div>
+        <div class="padding-box" ng-show="type.type!='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
+            <h3>
+                {{type.zhName}} {{type.name}}
+            </h3>
+            <div layout="row">
+                <md-button
+                    ng-repeat="item in type.subItems"
+                    ng-click="$ctrl.assignToOrder(type.name, item)"
+                    ng-class="{
+                        'md-accent': $ctrl.isInOrder(type.name, item),
+                        'md-raised': $ctrl.isInOrder(type.name, item)
+                    }">
+                    {{item.zhName}} {{item.name}}
+                </md-button>
+            </div>
+        </div>
+    </md-content>
+    <md-divider></md-divider>
+    <div layout="row" class="footer" layout-align="center center">
+        <md-button ng-click="$ctrl.reset()" class="md-warn">reset</md-button>
+        <div class="flex" layout="row" layout-align="center center">
+            {{$ctrl.message}}
+        </div>
+        <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">Print</md-button>
+    </div>
+</div>
+<canvas id="inhouse-orders-canvas" class="hide"></canvas>

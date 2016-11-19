@@ -1,3 +1,5 @@
+const path = require('path');
+const fs = require('fs');
 const AbstractController = require('../../abstract/AbstractController.js');
 class PicturesController extends AbstractController {
     getTemplate(req, res) {
@@ -12,6 +14,24 @@ class PicturesController extends AbstractController {
         };
         res.json(template);
     }
+
+    upload(req, res) {
+        if (!req.file || !req.body.filename) {
+            res.sendStatus(400);
+            return;
+        }
+        const timestamp = new Date().getTime()
+        const newName = req.body.filename;
+
+        req.oldPath = path.join(global.uploads, req.file.filename);
+        req.newPath = path.join(global.images, timestamp, '.png');
+        this._moveFile(req, res, () => {
+            this._print(req, res, () => {
+                res.sendStatus(200);
+            });
+        });
+    }
+
 
 }
 

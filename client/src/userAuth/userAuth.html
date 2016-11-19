@@ -1,7 +1,14 @@
-<div class="" layout="row" flex layout-align="start center">
+<div class="" layout="row" flex layout-align="start center" layout-fill>
     <div flex></div>
-    <form flex layout="column" ng-submit="$ctrl.login()">
-        <h2 class="md-headline">Welcome to Beastie</h2>
+    <form class="form" layout="column" ng-submit="$ctrl.login()">
+        <div class="logo-container">
+            <md-icon  md-svg-src="beastie"></md-icon>
+        </div>
+        <div class="" layout="row" layout-align="center center">
+            <h2 class="md-headline">
+                Welcome to Beastie
+            </h2>
+        </div>
         <md-input-container class="md-subhead">
             <label>Login ID</label>
             <input required md-no-asterisk type="text" name="loginId"
@@ -14,10 +21,13 @@
                 ng-model="$ctrl.user.password"
                 ></input>
         </md-input-container>
-        <md-button class="md-primary md-raised" type="submit">
+        <md-button class="md-accent md-raised" type="submit">
             Login
         </md-button>
         <!-- <user-auth-logout style="icon"></user-auth-logout> -->
     </form>
     <div flex></div>
+</div>
+<div class="back">
+    <md-icon  md-svg-src="beastie"></md-icon>
 </div>

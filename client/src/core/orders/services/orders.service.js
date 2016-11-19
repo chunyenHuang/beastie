@@ -9,13 +9,40 @@ class ordersService {
         }, {
             getByDate: {
                 method: 'GET',
+                url: '/ordersByDate',
+                isArray: true,
+                cache: false
+                    // params:{
+                    //     from: 'from',
+                    //     to: 'to'
+                    // },
+            },
+            getPicturesPath: {
+                method: 'GET',
+                url: '/orders/:id/pictures',
                 isArray: true,
                 cache: false,
-                // params:{
-                //     from: 'from',
-                //     to: 'to'
-                // },
-                url: '/ordersByDate'
+                params: {
+                    id: '@id'
+                }
+            },
+            uploadPicture: {
+                method: 'PUT',
+                url: '/orders/:id/uploads',
+                params: {
+                    id: '@id'
+                },
+                headers: {
+                    'Content-Type': undefined
+                },
+                transformRequest: (data) => {
+                    const formData = new FormData();
+                    for(let prop in data){
+                        formData.append(prop, data[prop]);
+                    }
+                    console.log(data);
+                    return formData;
+                }
             }
 
         });

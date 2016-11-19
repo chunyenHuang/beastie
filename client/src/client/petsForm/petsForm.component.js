@@ -3,17 +3,17 @@ import './petsForm.styl';
 
 const petsFormComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Pets', 'ListItems', 'Snapshot', 'SharedUtil'
+                '$log', '$timeout', '$state', '$stateParams',
+                'Pets', 'ListItems', 'Snapshot', 'SharedUtil'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Pets, ListItems, Snapshot, SharedUtil
+            $log, $timeout, $state, $stateParams,
+            Pets, ListItems, Snapshot, SharedUtil
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -36,12 +36,12 @@ const petsFormComponent = {
                     today.getDate() - 1
                 )
             };
-
         }
 
         $onInit() {
             if (this.$stateParams.pet_id) {
                 this.setPet(this.$stateParams.pet_id);
+                this.preview = '/images/pets/' + this.$stateParams.pet_id + '.png';
             } else {
                 this.setNewPet();
             }
@@ -49,6 +49,13 @@ const petsFormComponent = {
             this.setLists();
             this.VaccinationsNameList = [];
         }
+        takeSnapshot() {
+            this.Snapshot().then((res) => {
+                this.pet.file = res.blob;
+                this.preview = res.dataUrl;
+            });
+        }
+
 
         setLists() {
             this.species = ['dog', 'cat'];
@@ -68,13 +75,9 @@ const petsFormComponent = {
                 this.vaccinations = results[0].items;
                 console.log(this.vaccinations);
                 this._genVaccinationsNameList(this.vaccinations);
-            })
-        }
-        takeSnapshot() {
-            this.Snapshot.start((image) => {
-                this.pet.picture = image;
             });
         }
+
 
         setPet(id) {
             this.Pets.get({
@@ -174,7 +177,7 @@ const petsFormComponent = {
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard',{
+                    this.$state.go('client.dashboard', {
                         customer_id: this.$stateParams.customer_id
                     });
                 });
@@ -183,7 +186,7 @@ const petsFormComponent = {
                     id: this.pet._id
                 }, this.pet, (res) => {
                     console.log(res);
-                    this.$state.go('client.dashboard',{
+                    this.$state.go('client.dashboard', {
                         customer_id: this.$stateParams.customer_id
                     });
                 });

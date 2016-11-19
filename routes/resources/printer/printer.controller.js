@@ -1,12 +1,12 @@
 const path = require('path');
-const fs = require('fs');
-const escpos = require('escpos');
+// const fs = require('fs');
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class PrinterController extends AbstractController {
     constructor(){
         super();
         try {
+            const escpos = require('escpos');
             this.escpos = escpos;
             this.device = new escpos.USB();
             this.printer = new escpos.Printer(this.device);
@@ -56,29 +56,56 @@ class PrinterController extends AbstractController {
                 message: 'Printer is not connected.'
             });
         } else {
-            this.device.open(() => {
-                const today = new Date();
-                this.printer
-                    .font('A')
-                    .align('ct')
-                    .style('b')
-                    .size(2, 4)
-                    .text(' ')
-                    .text('Welcome to Beastie')
-                    .text('------------------------')
-                    .text('Test Print')
-                    .text('1234567890')
-                    .text('一二三四五六七八九十', 'Big5')
-                    .text('------------------------')
-                    .text(today.toLocaleDateString())
-                    .text(today.toLocaleTimeString())
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .cut();
-                res.sendStatus(200);
+            // this.device.open(() => {
+            //     const today = new Date();
+            //     this.printer
+            //         .font('A')
+            //         .align('ct')
+            //         .style('b')
+            //         .size(2, 4)
+            //         .text(' ')
+            //         .text('Welcome to Beastie')
+            //         .text('歡迎使用比司吉寵物系統', 'Big5')
+            //         .text('------------------------')
+            //         // .raster(image)
+            //         .text('------------------------')
+            //         .text(today.toLocaleDateString())
+            //         .text(today.toLocaleTimeString())
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .cut();
+            //     res.sendStatus(200);
+            // });
+
+            const logoPath = path.join(global.root, 'logos/B1_256-01.png');
+            console.log(logoPath);
+            this.escpos.Image.load(logoPath, (image) => {
+                this.device.open(() => {
+                    const today = new Date();
+                    this.printer
+                        .font('A')
+                        .align('ct')
+                        .style('b')
+                        .size(2, 4)
+                        .text(' ')
+                        .text('Welcome to Beastie')
+                        .text('歡迎使用比司吉寵物系統', 'Big5')
+                        .text('------------------------')
+                        .raster(image)
+                        .text('------------------------')
+                        .text(today.toLocaleDateString())
+                        .text(today.toLocaleTimeString())
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .text(' ')
+                        .cut();
+                    res.sendStatus(200);
+                });
             });
         }
     }

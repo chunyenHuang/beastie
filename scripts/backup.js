@@ -23,13 +23,16 @@ const backupFiles = path.join(backups, 'files');
 const uploads = path.join(root, 'files/uploads');
 const images = path.join(root, 'files/images');
 const inhouseOrders = path.join(images, 'inhouseOrders');
+const orders = path.join(images, 'orders');
+const pets = path.join(images, 'pets');
+const customers = path.join(images, 'customers');
 
 /*
     files and paths
 */
 const DirPaths = [
     backups, backupImages, backupDB, backupFiles,
-    uploads, images, inhouseOrders
+    uploads, images, inhouseOrders, orders, pets, customers
 ];
 
 const Backup = ()=>{

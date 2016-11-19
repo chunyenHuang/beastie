@@ -1,6 +1,6 @@
 function themeConfig($mdThemingProvider) {
     'ngInject';
-    var customBlueMap = $mdThemingProvider.extendPalette('blue', {
+    var customMap = $mdThemingProvider.extendPalette('brown', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
@@ -11,13 +11,15 @@ function themeConfig($mdThemingProvider) {
         '50': 'ffffff'
     });
 
-    $mdThemingProvider.definePalette('customBlue', customBlueMap);
+    $mdThemingProvider.definePalette('custom', customMap);
     $mdThemingProvider.definePalette('white', customWhiteMap);
     $mdThemingProvider.theme('default')
         .backgroundPalette('white')
-        .primaryPalette('customBlue', {
-            'default': '500',
-            'hue-1': '50'
+        .primaryPalette('custom', {
+            'default': '700',
+            'hue-1': '300',
+            'hue-2': '500'
+
         })
         .accentPalette('green', {
             'default': '500',
