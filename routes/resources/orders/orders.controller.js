@@ -91,11 +91,11 @@ class OrdersController extends AbstractController {
 
     _parseDate(dateString) {
         dateString = new Date(dateString);
-        dateString = new Date(
-            dateString.getFullYear(),
-            dateString.getMonth(),
-            dateString.getDate()
-        );
+        const newDateString =
+            dateString.getFullYear() + '-' +
+            dateString.getMonth() + '-' +
+            dateString.getDate() + 'T00:00:00.000Z';
+        dateString = new Date(newDateString);
         return dateString;
     }
 
