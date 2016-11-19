@@ -80,7 +80,7 @@
                     ><strong>Contact {{$index + 1}}</strong>
                 </h3>
                 <div flex ng-show="$ctrl.customer.emergencyContact.length>1"></div>
-                <md-button class="md-fab md-warn" style="margin-right:0px;" aria-label="removeEmergencyContact"
+                <md-button class="md-fab md-accent" style="margin-right:0px;" aria-label="removeEmergencyContact"
                     ng-click="$ctrl.removePerson($index)"
                     ng-hide="$first">
                     <md-icon md-svg-src="account-minus"></md-icon>
@@ -106,12 +106,12 @@
                                 ng-model="person.phones[$index]"
                                 ng-blur="$ctrl.updateProgressVal()"></input>
                         </div>
-                        <md-button class="md-fab md-mini md-warn" style="margin-top:0px;" aria-label="remove number"
+                        <md-button class="md-fab md-mini md-accent" style="margin-top:0px;" aria-label="remove number"
                             ng-click="$ctrl.removePhone($parent.$index, $index)"
                             ng-hide="$first">
                             <md-icon md-svg-src="minus"</md-icon>
                         </md-button>
-                        <md-button class="md-fab md-mini" layout-fill aria-label="add number"
+                        <md-button class="md-fab md-mini md-primary" layout-fill aria-label="add number"
                             ng-click="$ctrl.addPhone($parent.$index)"
                             ng-show="$last">
                             <md-icon md-svg-src="plus"></md-icon>
@@ -124,7 +124,7 @@
                     <!--    ng-hide="$first">-->
                     <!--    <md-icon md-svg-src="account-minus"></md-icon>-->
                     <!--</md-button>-->
-                    <md-button class="md-fab" style="margin-right:0px;" aria-label="addEmergencyContact"
+                    <md-button class="md-fab md-primary" style="margin-right:0px;" aria-label="addEmergencyContact"
                         ng-click="$ctrl.addPerson()"
                         ng-show="$last">
                         <md-icon md-svg-src="account-plus"></md-icon>

@@ -111,12 +111,12 @@
                                     ng-model="item.issuedAt"
                                     md-max-date="$ctrl.birthdayLimit.max"
                                     md-placeholder="Last Vaccination Date"
-                                    ng-change="$ctrl.setDaysBeforeExpire(item)"></md-datepicker>
+                                    ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)"></md-datepicker>
                             </md-input-container>
                             <md-input-container flex="50">
                                 <label>Good For</label>
                                 <md-select ng-model="item.effectiveDuration" aria-label="{{name}}-vaccine effective duration"
-                                    ng-change="$ctrl.setDaysBeforeExpire(item)">
+                                    ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)">
                                     <md-option ng-repeat="(value, display) in {1: '1 Year', 3: '3 Years'}" ng-value="value">
                                         {{display}}
                                     </md-option>

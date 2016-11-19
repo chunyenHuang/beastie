@@ -10,21 +10,29 @@ function themeConfig($mdThemingProvider) {
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
     });
-
+    var newOrangeMap = $mdThemingProvider.extendPalette('orange', {
+        '500': '#FF9800',
+        'contrastDefaultColor': 'light'
+    });
+    $mdThemingProvider.definePalette('newOrange', newOrangeMap);
     $mdThemingProvider.definePalette('customBlue', customBlueMap);
     $mdThemingProvider.definePalette('white', customWhiteMap);
     $mdThemingProvider.theme('default')
         .backgroundPalette('white')
-        .primaryPalette('customBlue', {
+        .primaryPalette('teal', {
             'default': '500',
-            'hue-1': '50'
+            'hue-1': '100',
+            'hue-2': '700'
         })
-        .accentPalette('green', {
+        .accentPalette('newOrange', {
             'default': '500',
             'hue-3': '700'
-        });
-    $mdThemingProvider.theme('input', 'default')
-        .primaryPalette('grey');
+        })
+        .warnPalette('deep-orange', {
+            'default': '500'
+        })
+    // $mdThemingProvider.theme('input', 'default')
+    //     .primaryPalette('grey');
 
 }
 export default themeConfig;

@@ -9,11 +9,13 @@ const petsFormComponent = {
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Pets', 'ListItems', 'Snapshot', 'SharedUtil'
+                '$log', '$timeout', '$state', '$stateParams', 'Pets', 
+                'ListItems', 'Snapshot', 'SharedUtil', '$mdDialog'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Pets, ListItems, Snapshot, SharedUtil
+            $log, $timeout, $state, $stateParams, Pets, 
+            ListItems, Snapshot, SharedUtil, $mdDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -23,6 +25,7 @@ const petsFormComponent = {
             this.ListItems = ListItems;
             this.Snapshot = Snapshot;
             this.SharedUtil = SharedUtil;
+            this.$mdDialog = $mdDialog;
             const today = new Date();
             this.birthdayLimit = {
                 // min: new Date(
@@ -47,7 +50,7 @@ const petsFormComponent = {
             }
 
             this.setLists();
-            this.VaccinationsNameList = [];
+            this.petVaccinationsNameList = [];
         }
 
         setLists() {
@@ -66,8 +69,9 @@ const petsFormComponent = {
                 type: 'vaccinations'
             }, (results) => {
                 this.vaccinations = results[0].items;
-                console.log(this.vaccinations);
-                this._genVaccinationsNameList(this.vaccinations);
+                this._genVaccinationsNameList(this.pet.vaccinations);
+                // this._genVaccinationsNameList(this.vaccinations);
+                this._applyVaccineToPet();
             })
         }
         takeSnapshot() {
@@ -87,7 +91,6 @@ const petsFormComponent = {
                 this.setNewPet();
             });
         }
-
         setNewPet() {
             this.Pets.get({
                 id: 'template'
@@ -98,11 +101,26 @@ const petsFormComponent = {
                 this.pet.species = 'dog';
             });
         }
+        _applyVaccineToPet() {
+            console.info(this.vaccinations);
+            for (let i=0; i<this.vaccinations.length; i++) {
+                console.log(this.vaccinations[i]);
+                if(this.petVaccinationsNameList.indexOf(this.vaccinations[i].name) < 0) {
+                    this.pet.vaccinations.push({
+                        name: this.vaccinations[i].name,
+                        issuedAt: null,
+                        expiredAt: null,
+                        createdAt: new Date()
+                    });
+                }
+            }
+            console.log(this.pet.vaccinations);
+        }
         _genVaccinationsNameList(vaccinations) {
             for (let i = 0; i < vaccinations.length; i++) {
-                this.VaccinationsNameList.push(vaccinations[i].name);
+                this.petVaccinationsNameList.push(vaccinations[i].name);
             }
-            console.info(this.VaccinationsNameList)
+            console.info(this.petVaccinationsNameList)
         }
         _parseVaccinationDate() {
                 for (let i = 0; i < this.pet.vaccinations.length; i++) {
@@ -113,15 +131,28 @@ const petsFormComponent = {
                 }
             }
             // daysBetween(pasdate, otherdate || now )
-        setDaysBeforeExpire(item) {
+        setDaysBeforeExpire(item, index) {
             let copyIssuedAt = angular.copy(item.issuedAt);
             let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() +
                 Number(item.effectiveDuration));
             let effectiveDate = new Date(effectiveYear)
                 .setDate(item.issuedAt.getDate() - 1);
             item.expiredAt = new Date(effectiveDate);
-
+                
             item.daysBeforeDue = Math.ceil(this.SharedUtil.daysBetween(item.expiredAt));
+            if (item.daysBeforeDue < this.vaccinations[index].remindCustomerWithinDays) {
+                console.log('!!!!!!!!!!!');
+                const prompt = this.$mdDialog.prompt()
+                .title(item.name + ' Vaccine Due In ' + item.daysBeforeDue +' Days!')
+                // .textContent('Bowser is a common name.')
+                // .placeholder('Phone Number')
+                // .ariaLabel('Phone Number')
+                // .ok('Go')
+                .cancel('Got It')
+                .clickOutsideToClose(false);
+
+                this.$mdDialog.show(prompt);
+            }
             // this.dateToday = Date.now();
             // let dateDiff = effectiveTill - this.dateToday;
             // // 1 day = 8.64e+7 milliseconds
