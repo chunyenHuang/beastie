@@ -1,7 +1,7 @@
 // cores
 import angular from 'client/node_modules/angular';
 import uiRouter from 'client/node_modules/angular-ui-router';
-import ngTouch from 'client/node_modules/angular-touch';
+// import ngTouch from 'client/node_modules/angular-touch';
 import ngAria from 'client/node_modules/angular-aria';
 import ngMaterial from 'client/node_modules/angular-material';
 import 'client/node_modules/angular-material/angular-material.css';
@@ -14,6 +14,7 @@ import 'client/node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpick
 import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
 import 'client/node_modules/angular-smart-table';
 import uiMask from 'angular-ui-mask';
+import 'client/vendorJs/angularFullscreen';
 
 // configs
 import themeConfig from './themeConfig';
@@ -33,7 +34,7 @@ import client from './client';
 angular
     .module('beastie', [
         uiRouter,
-        ngTouch,
+        // ngTouch,
         ngResource,
         ngSanitize,
         ngAnimate,
@@ -43,6 +44,7 @@ angular
         'pascalprecht.translate',
         'colorpicker.module',
         'smart-table',
+        'FBAngular',
         userAuth,
         core,
         client

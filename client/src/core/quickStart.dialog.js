@@ -19,8 +19,13 @@ export default (locals, parent) => ({
             this.validateMessage;
         }
 
-        go() {
-            this.$mdDialog.hide(this.phone);
+        go(inputNumbers) {
+            this.phone = inputNumbers || this.phone;
+            if(this.validate(inputNumbers)){
+                this.$mdDialog.hide(this.phone);
+            } else {
+                return;
+            }
         }
 
         cancel() {
@@ -30,16 +35,17 @@ export default (locals, parent) => ({
             this.phone = null;
         }
 
-        validate() {
-            console.log(this.phone);
-            if (!this.phone) {
+        validate(inputNumbers) {
+            console.log(inputNumbers);
+            inputNumbers = inputNumbers || this.phone;
+            if (!inputNumbers) {
                 // this.validateMessage = 'Please enter phone number';
                 return false;
             }
-            if (this.phone.length != 10) {
+            if (inputNumbers.length != 10) {
                 return false;
             }
-            angular.forEach(this.phone, (char) => {
+            angular.forEach(inputNumbers, (char) => {
                 if (isNaN(parseInt(char))) {
                     this.validateMessage = 'Invalid phone number';
                     return false;

@@ -8,15 +8,17 @@ const clientComponent = {
     },
     controller: /* @ngInject */ class ClientController {
         static get $inject() {
-            return ['$log', '$timeout', '$state', '$stateParams', 'Client', 'Socket'];
+            return ['$log', '$timeout', '$state', '$stateParams', 'Client', 'Socket', 'Fullscreen'];
         }
-        constructor($log, $timeout, $state, $stateParams, Client, Socket) {
+        constructor($log, $timeout, $state, $stateParams, Client, Socket, Fullscreen) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Client = Client;
             this.Socket = Socket;
+            this.Fullscreen = Fullscreen;
+            this.fullscreenIcon = 'fullscreen';
 
             this.Socket.on('signaturesInit', (res) => {
                 console.log(res);
@@ -27,6 +29,17 @@ const clientComponent = {
                 });
             });
         }
+        toggleFullscreen() {
+            if (this.Fullscreen.isEnabled()) {
+                this.fullscreenIcon = 'fullscreen';
+                this.Fullscreen.cancel();
+            } else {
+                this.Fullscreen.all();
+                this.fullscreenIcon = 'fullscreen-exit';
+                this.showFullScreenButton = false;
+            }
+        }
+
         $onInit() {
             // this.$state.go('client.customersCheckIn');
             // this.$state.go('client.signature');

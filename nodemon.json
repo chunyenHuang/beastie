@@ -1,6 +1,7 @@
 {
     "watch": [
         "server.js",
-        "routes"
+        "routes",
+        "test.js"
     ]
 }
