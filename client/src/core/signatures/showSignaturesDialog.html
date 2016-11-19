@@ -1,0 +1,30 @@
+<md-toolbar layout="row" layout-align="start center" class="md-padding header md-hue-2">
+    <h3>Ask your customer to sign?</h3>
+</md-toolbar>
+<md-content layout="column" flex class="md-padding">
+    <div layout="row" ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.isActivated" layout-align="start center" flex="none">
+        <div class="">
+            {{waiver.name}}
+            {{waiver.zhName}}
+        </div>
+        <div class="" flex></div>
+        <md-button ng-click="$ctrl.askToSign(waiver.name)" ng-disabled="$ctrl.isSigned(waiver.name)">
+            <span ng-show="!$ctrl.isSigned(waiver.name)">
+                ask to sign
+            </span>
+            <span ng-show="$ctrl.isSigned(waiver.name)">
+                signed
+            </span>
+        </md-button>
+    </div>
+</md-content>
+<md-divider></md-divider>
+<div layout="row" layout-align="start center" flex="none">
+    <md-button ng-click="$ctrl.cancel(waiver.name)">
+        cancel
+    </md-button>
+    <div class="" flex></div>
+    <md-button ng-click="$ctrl.done(waiver.name)">
+        done
+    </md-button>
+</div>

@@ -8,6 +8,7 @@ import inhouseOrders from './inhouseOrders';
 import settings from './settings';
 import printer from './printer';
 import services from './services';
+import signatures from './signatures';
 
 import components from './components';
 import filters from './filters';
@@ -25,6 +26,7 @@ const coreModule = angular
         settings,
         printer,
         services,
+        signatures,
 
         components,
         filters

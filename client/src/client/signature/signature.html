@@ -1,29 +1,33 @@
-<h1>signature here</h1>
-<div layout="column" flex ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.name == $ctrl.waiverName">
-    <div class="">
-        {{waiver.name}} {{waiver.zhName}}
+<div layout="column" class="md-padding" flex >
+    <div class="" layout="row" layout-align="center center">
+        <h3>{{$ctrl.waiver.name}} {{$ctrl.waiver.zhName}}</h3>
     </div>
-    <div class="">
-        {{waiver.description}}
+    <md-content layout="column" flex="35">
+        <div class="">
+            {{$ctrl.waiver.description}}
+        </div>
+        <div class="">
+            {{$ctrl.waiver.zhDescription}}
+        </div>
+    </md-content>
+    <div layout="row" flex="none">
+        <md-button ng-click="$ctrl.erase()">Erase</md-button>
+        <div class="" flex layout="row" layout-align="center center">
+            Please Sign inside the box
+        </div>
+        <md-button ng-click="$ctrl.save()" class="md-primary" ng-disabled="!$ctrl.showSaveButton">save</md-button>
     </div>
-    <div class="">
-        {{waiver.zhDescription}}
-    </div>
-</div>
-<div class="">
-    <md-button ng-click="$ctrl.erase()">Erase</md-button>
-    <md-button ng-click="$ctrl.save()">save</md-button>
-
-    <!-- <canvas
-        id="signature-canvas"
-        ng-mousemove="$ctrl.draw($event)"
-        ng-mousedown="$ctrl.startDrawing($event)"
-        ng-mouseup="$ctrl.stopDrawing($event)"
-        width="500" height="200"></canvas> -->
+        <!-- <canvas
+            id="signature-canvas"
+            ng-mousemove="$ctrl.draw($event)"
+            ng-mousedown="$ctrl.startDrawing($event)"
+            ng-mouseup="$ctrl.stopDrawing($event)"
+            width="500" height="200"></canvas> -->
     <canvas
         id="signature-canvas"
         width="800" height="400"></canvas>
-        {{$ctrl.clickX[$ctrl.clickX.length-1]}}
-        {{$ctrl.clickY[$ctrl.clickY.length-1]}}
-    <img ng-src="{{$ctrl.signature}}" alt="" />
+        <!-- {{$ctrl.clickX[$ctrl.clickX.length-1]}}
+        {{$ctrl.clickY[$ctrl.clickY.length-1]}} -->
+        <!-- <img ng-src="{{$ctrl.signature}}" alt="" /> -->
+
 </div>
