@@ -15,6 +15,9 @@ import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
 import 'client/node_modules/angular-smart-table';
 import uiMask from 'angular-ui-mask';
 import 'client/vendorJs/angularFullscreen';
+import 'client/vendorJs/sc-date-time.js';
+import 'client/vendorJs/sc-date-time.css';
+import 'client/node_modules/font-awesome/css/font-awesome.css';
 
 // configs
 import themeConfig from './themeConfig';
@@ -45,6 +48,7 @@ angular
         'colorpicker.module',
         'smart-table',
         'FBAngular',
+        'scDateTime',
         userAuth,
         core,
         client
