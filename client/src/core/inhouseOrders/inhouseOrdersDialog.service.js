@@ -213,6 +213,14 @@ class inhouseOrdersDialog {
                         if (this.order_id) {
                             formData.append('filename', this.order_id + '.png');
                             formData.append('order_id', this.order_id);
+                            if(this.order){
+                                console.log(this.orders);
+                                formData.append('customerName', this.order.customers[0].firstname + ' ' + this.order.customers[0].lastname);
+                                formData.append('customerPhone', this.order.customers[0].phone);
+                                formData.append('petName', this.order.pets[0].name);
+                                formData.append('petInfo', this.order.pets[0].breed + ' ' + this.order.pets[0].color);
+                            }
+
                         } else {
                             formData.append('filename', 'inhouseOrders.png');
                         }

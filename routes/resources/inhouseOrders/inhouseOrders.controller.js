@@ -37,6 +37,11 @@ class InhouseOrdersController extends PrinterController {
             return;
         }
         req.body.order_id = req.body.order_id || 'no order_id';
+        req.body.customerName = req.body.customerName || 'no customer name';
+        req.body.customerPhone = req.body.customerPhone || ' ';
+        req.body.petName = req.body.petName || 'no pet name';
+        req.body.petInfo = req.body.petInfo || ' ';
+
         // console.log(req.file);
         // console.log(req.body.filename);
         // const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
@@ -73,8 +78,12 @@ class InhouseOrdersController extends PrinterController {
                         .text('In-House Orders')
                         .text('------------------------')
                         .raster(image)
-                        .text('------------------------')
-                        .text(req.body.order_id)
+                        .text('------- customer -------')
+                        .text(req.body.customerName)
+                        .text(req.body.customerPhone)
+                        .text('--------  pet  ---------')
+                        .text(req.body.petName)
+                        .text(req.body.petInfo)
                         .text('------------------------')
                         .text(today.toLocaleDateString())
                         .text(today.toLocaleTimeString())
@@ -85,6 +94,9 @@ class InhouseOrdersController extends PrinterController {
                         .text(' ')
                         .text(' ')
                         .cut();
+
+                    // .text(req.body.order_id)
+
                     // .text('中文測試到底可不可以', 'Big5')
                     // .barcode(barcode, 'EAN13')
                     // .image(image, 's8')

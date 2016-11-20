@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const ObjectId = require('mongodb').ObjectID;
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class OrdersController extends AbstractController {
@@ -31,6 +32,48 @@ class OrdersController extends AbstractController {
         };
         res.json(template);
     }
+
+    get(req, res) {
+        const query = req.collection.aggregate([
+            {
+                $match: {
+                    _id: ObjectId(req.params.id),
+                    isDeleted: false
+                }
+            },
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'customers'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'pets',
+                    localField: 'pet_id',
+                    foreignField: '_id',
+                    as: 'pets'
+                }
+            }
+
+        ]);
+
+        query.toArray((err, results) => {
+            if (!err) {
+                if (results.length > 0) {
+                    res.statusCode = 200;
+                    res.json(results[0]);
+                } else {
+                    res.sendStatus(404);
+                }
+            } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
 
     upload(req, res) {
         if (!req.file) {
@@ -116,7 +159,7 @@ class OrdersController extends AbstractController {
     getByDate(req, res) {
         /*
             /ordersByDate?date= &from= &to= &last= &next=
-            
+
             date= specific date only
             from= date
             to= date
