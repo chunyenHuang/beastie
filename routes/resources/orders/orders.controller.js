@@ -133,12 +133,16 @@ class OrdersController extends AbstractController {
     // }
 
     _parseDate(dateString) {
-        dateString = new Date(dateString);
-        const newDateString =
-            dateString.getFullYear() + '-' +
-            (dateString.getMonth()+1) + '-' +
-            dateString.getDate() + 'T00:00:00.000Z';
-        dateString = new Date(newDateString);
+        const newDateString = new Date(dateString);
+        // const newDateString =
+        //     dateString.getFullYear() + '-' +
+        //     (dateString.getMonth()+1) + '-' +
+        //     dateString.getDate() + 'T00:00:00.000Z';
+        dateString = new Date(
+            newDateString.getFullYear(),
+            newDateString.getMonth(),
+            newDateString.getDate()
+        );
         return dateString;
     }
 
