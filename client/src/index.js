@@ -14,7 +14,7 @@ import 'client/node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpick
 import 'client/node_modules/angular-bootstrap-colorpicker/css/colorpicker.css';
 import 'client/node_modules/angular-smart-table';
 import uiMask from 'angular-ui-mask';
-import 'client/vendorJs/angularFullscreen';
+import 'client/vendorJs/angularFullScreen';
 
 // configs
 import themeConfig from './themeConfig';

@@ -12,10 +12,11 @@
                 ng-class="{'md-primary':mode==$ctrl.dateMode}">
                 {{mode}}
             </md-button>
-            <span ng-show="$ctrl.dateMode=='date'">
-                <md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="Orders on Date" md-open-on-focus
-                    ng-change="$ctrl.viewDate()"></md-datepicker>
-            </span>
+            <!--<md-button ng-show="$ctrl.dateMode=='today'">-->
+                <!--<md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="Orders on Date" md-open-on-focus-->
+                <!--    ng-change="$ctrl.viewDate()" md-hide-icons="all"></md-datepicker>-->
+            <!--    {{$ctrl.dateRange.to | date:'MM/d/y'}}-->
+            <!--</md-button>-->
             <!--<span ng-show="$ctrl.dateMode=='since'">-->
             <!--    <md-select ng-model="ctrl.dateRange.since" style="margin:0px;">-->
             <!--        <md-option value="7">In Last 7 Days</md-option>-->
@@ -33,6 +34,11 @@
             <!--        ng-change="$ctrl.viewRange()"></md-datepicker>-->
             <!--</span>-->
         </div>
+        <md-button ng-show="$ctrl.dateMode=='today'" ng-disabled="true">
+                <!--<md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="Orders on Date" md-open-on-focus-->
+                <!--    ng-change="$ctrl.viewDate()" md-hide-icons="all"></md-datepicker>-->
+                <span style="font-size:24px; color:#333" >{{$ctrl.dateRange.to | date:'MM/d/y'}}</span>
+        </md-button>
         <div layout-padding layout>
             <md-button class="" ng-click="$ctrl.toggleAllType()">
                 <md-icon ng-show="!$ctrl.showAllTypes" md-svg-src="eye"></md-icon>
@@ -66,20 +72,24 @@
     <md-content layout layout-wrap layout-align="start start" layout-padding flex="grow">
 
         <div flex="80" ng-repeat="order in $ctrl.orders | orderBy: $ctrl.sortDate as filtered_result"
-            ng-show="$ctrl.decideShow(order)">
-            <md-grid-list md-cols="10" md-gutter="0.4em" md-row-height="8:7"
+            ng-show="$ctrl.decideShow(order)" ng-class="{'grid-highlight': $ctrl.isToday(order.scheduleAt) && $ctrl.dateMode!=='today'}">
+            <md-grid-list md-cols="10" md-gutter="0.4em" md-row-height="8:7" 
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}">
                 
-                <md-grid-tile  md-colspan="3" md-rowspan="3" md-colors="{background: 'background'}">
+                <md-grid-tile  md-colspan="3" md-rowspan="3" md-colors="{background: 'background', color:'grey-500'}">
                     <div layout layout-fill layout-align="center">
                         <div flex="90" layout-fill layout="column" layout-align="end end">
                             
                             
                             <div class="md-subhead">
                                 <span ng-hide="$ctrl.isSameHour(order, filtered_result[$index-1])">
-                                    {{order.scheduleAt | date: 'EEEE, MMM dd, y'}}</span>
+                                    {{order.scheduleAt | date: 'EEEE'}}</span>
                             </div>
-                            <div class="md-display-1">
+                            <div class="md-subhead">
+                                <span ng-hide="$ctrl.isSameHour(order, filtered_result[$index-1])">
+                                    {{order.scheduleAt | date: 'MMM dd, y'}}</span>
+                            </div>
+                            <div class="md-display-2" md-colors="{color:'grey-500'}">
                                 <span ng-hide="$ctrl.isSameHour(order, filtered_result[$index-1])">
                                     {{order.scheduleAt | date:'h:00a'}}</span>
                             </div>

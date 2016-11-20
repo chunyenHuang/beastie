@@ -146,8 +146,8 @@ const ordersListComponent = {
             this.dateMode = mode;
             if (mode == 'all dates') {
                 this.viewAll();
-            } else if (mode == 'date') {
-                this.viewDate();
+            } else if (mode == 'today') {
+                this.viewToday();
             } else if (mode == 'range') {
                 this.viewRange();
             }
@@ -174,6 +174,10 @@ const ordersListComponent = {
             const method = all ? 'query' : 'getByDate';
             const query = all ? {} : this._getDateRange();
             this.Orders[method](query, (orders) => {
+                // for (let i=0;i<orders.length;i++) {
+                //     console.log(orders[i].sechduleAt);
+                // }
+                console.log(orders);
                 this.orders = orders;
                 this.getPets();
                 this.getCustomers();
@@ -184,6 +188,16 @@ const ordersListComponent = {
         }
         viewAll() {
             this.queryOrdersWithDate(true);
+        }
+        viewToday() {
+            this.Orders.getByDate({}, (orders) => {
+                this.orders = orders;
+                this.getPets();
+                this.getCustomers();
+                this.$timeout(() => {
+                    this.orders = this.orders;
+                }, 20);
+            });
         }
         viewDate() {
             // this.dateRange.from = this.dateRange.to;
@@ -202,6 +216,12 @@ const ordersListComponent = {
         }
         viewRange() {
             this.queryOrdersWithDate();
+        }
+        isToday(date) {
+            if (this.today.toLocaleDateString()
+            === new Date(date).toLocaleDateString()) {
+                return true;
+            } else { return false; }
         }
         isSameHour(thisOrder, lastOrder) {
             if (lastOrder) {
