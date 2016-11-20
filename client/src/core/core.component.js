@@ -101,8 +101,10 @@ const coreComponent = {
                     phone: phone
                 }, this.$document[0].getElementById('core'))
             ).then((customer) => {
+                console.log(customer);
                 this.$state.go('core.orders.form', {
-                    customer_id: customer._id
+                    customer_id: customer._id,
+                    order_id: null
                 });
             }, () => {});
         }

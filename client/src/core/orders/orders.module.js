@@ -2,6 +2,7 @@ import ordersComponent from './orders.component';
 import ordersFormComponent from './ordersForm';
 import ordersListComponent from './ordersList';
 import previousOrdersDialogService from './previousOrdersDialog.service';
+import ServicesDialogService from './servicesDialog.service';
 import ordersService from './services/orders.service';
 
 const ordersModule = angular
@@ -10,6 +11,7 @@ const ordersModule = angular
     .component('ordersForm', ordersFormComponent)
     .component('ordersList', ordersListComponent)
     .service('PreviousOrdersDialog', previousOrdersDialogService)
+    .service('ServicesDialog', ServicesDialogService)
     .service('Orders', ordersService)
     .config(($stateProvider) => {
         'ngInject';

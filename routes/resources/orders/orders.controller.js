@@ -126,8 +126,8 @@ class OrdersController extends AbstractController {
         let from;
         let to;
         if (req.query.date) {
-            from = this._getDateFromToday(1, req.query.date);
-            to = this._getDateFromToday(2, req.query.date);
+            from = this._getDateFromToday(1, this._parseDate(req.query.date));
+            to = this._getDateFromToday(2, this._parseDate(req.query.date));
         } else {
             let today = this._getDateFromToday();
             from = (req.query.from) ? this._parseDate(req.query.from) :
@@ -138,13 +138,42 @@ class OrdersController extends AbstractController {
         console.log(req.query);
         console.log('from:', from);
         console.log('to:', to);
-        const query = req.collection.find({
-            isDeleted: false,
-            scheduleAt: {
-                $gte: from,
-                $lt: to
+        // const query = req.collection.find({
+        //     isDeleted: false,
+        //     scheduleAt: {
+        //         $gte: from,
+        //         $lt: to
+        //     }
+        // });
+        const query = req.collection.aggregate([
+            {
+                $match: {
+                    isDeleted: false,
+                    scheduleAt: {
+                        $gte: from,
+                        $lt: to
+                    }
+                }
+            },
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'customers'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'pets',
+                    localField: 'pet_id',
+                    foreignField: '_id',
+                    as: 'pets'
+                }
             }
-        });
+
+        ]);
+
         query.toArray((err, results) => {
             // fix wrong condition
             if (!err) {

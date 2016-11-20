@@ -1,22 +1,82 @@
-<div layout="column" flex id="orders-form" layout-fill>
+<md-content layout="column" flex id="orders-form" layout-fill>
     <div layout="row" class="md-padding header" flex="none">
         <!-- <h1>Orders</h1> -->
+        <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
         <div flex></div>
         <h1 ng-show="$ctrl.order.scheduleAt">
             {{$ctrl.order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}
         </h1>
         <div flex></div>
-        <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
-        <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">submit</md-button>
+        <md-button ng-click="$ctrl.submitOrder()" class="md-primary md-raised">submit</md-button>
     </div>
     <div layout="row" class="md-padding" layout-align="start start">
-        <div layout="column" flex="25">
-            show selected day schedule
+        <div layout="column" flex="25" class="">
+            <div class="selected-date-orders" layout="row">
+                <div class="" flex="30" layout="row" layout-align="end">
+                    <h3>
+                        {{$ctrl.order.scheduleAt | date:'MM/dd'}}
+                    </h3>
+                </div>
+                <div class="">
+                    <h3>
+                        Orders: {{$ctrl.selectedDateOrders.length}}
+                    </h3>
+                </div>
+            </div>
+
+            <div class="" layout="column" flex ng-show="$ctrl.selectedDateOrders.length>0">
+                <div layout="row" flex="none" ng-repeat="order in $ctrl.selectedDateOrders | orderBy: 'scheduleAt'">
+                    <div class="" flex="30" layout="row" layout-align="end">
+                        <md-subheader>
+                            {{order.scheduleAt | date:'h:mma'}}
+                        </md-subheader>
+                    </div>
+                    <p ng-hide="$ctrl.order._id == order._id">
+                        {{order.customers[0].firstname}} ({{order.pets[0].name}})
+                    </p>
+                    <p ng-show="$ctrl.order._id == order._id">
+                        <span class="current-order-text">Current Order</span>
+                    </p>
+
+                </div>
+            </div>
         </div>
-        <div layout="column" flex="40" layout-align="start center">
+        <div layout="column" flex="45" layout-align="start center">
+            <time-date-picker
+                ng-model="$ctrl.order.scheduleAt"
+                display-mode="full"
+                default-date="$ctrl.defaultDate"
+                orientation="true"
+                mindate="{{$ctrl.scheduleDate.min}}"
+                maxdate="{{$ctrl.scheduleDate.max}}"
+                autosave
+                ></time-date-picker>
+            <!-- <time-date-picker
+                ng-model="$ctrl.order.scheduleAt"
+                display-mode="timeOnly"
+                ></time-date-picker> -->
+
+
             <!-- Calendar -->
-            <md-calendar ng-model="$ctrl.order.scheduleAt" md-min-date="$ctrl.scheduleDate.min" md-max-date="$ctrl.scheduleDate.max" md-date-filter="$ctrl.noTuesday" ng-change="$ctrl.changeDate()"></md-calendar>
-            <!-- Clock -->
+            <!-- <md-datepicker
+                ng-model="$ctrl.order.scheduleAt"
+                md-min-date="$ctrl.scheduleDate.min"
+                md-max-date="$ctrl.scheduleDate.max"
+                md-date-filter="$ctrl.noTuesday"
+                ng-change="$ctrl.changeDate()"
+                ng-focus="open()"
+                ></md-datepicker> -->
+
+            <!-- <form name="calendar">
+                <md-calendar
+                    ng-model="$ctrl.order.scheduleAt"
+                    md-min-date="$ctrl.scheduleDate.min"
+                    md-max-date="$ctrl.scheduleDate.max"
+                    md-date-filter="$ctrl.noTuesday"
+                    ng-change="$ctrl.changeDate()"/>
+                </md-calendar>
+                <button type="submit" class="hide"></button>
+            </form>
             <div layout="row" id="time-picker">
                 <div layout="column">
                     <md-icon md-svg-src="arrow-up-drop-circle-outline" ng-click="$ctrl.changeTime('hour',1)"></md-icon>
@@ -34,17 +94,26 @@
                         <span ng-show="!$ctrl.scheduleTimeIsAm">PM</span>
                     </md-button>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div layout="column" flex>
+            <md-content layout="column" class="pet-select" flex >
+                <md-subheader>Customer</md-subheader>
+                <div class="customer-field">
+                    <p>
+                        {{$ctrl.customer.firstname}} {{$ctrl.customer.lastname}}
+                    </p>
+                    <p>
+                        {{$ctrl.customer.phone}}
+                    </p>
+                </div>
+            </md-content>
+
             <md-content layout="column" class="pet-select" flex>
-                <div layout="row" class="md-padding" ng-repeat="pet in $ctrl.pets" ng-click="$ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]" flex="none">
-                    <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}"></md-checkbox>
-                    <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/>
-                    {{pet.name}}
-                    {{pet.sex}}
-                    {{pet.breed}}
-                    {{pet.color}}
+                <md-subheader>Pets</md-subheader>
+                <div layout="row" class="md-padding" ng-repeat="pet in $ctrl.pets" ng-click="($ctrl.pets.length>1)?($ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]):false" flex="none">
+                    <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" ></md-checkbox>
+                    <img ng-src="/images/pets/{{pet._id}}.png" alt="no picture yet"/>
                 </div>
             </md-content>
             <md-input-container class="md-block" flex-gt-sm>
@@ -57,8 +126,9 @@
             </md-input-container>
             <md-input-container class="md-block" flex>
                 <label>Notes</label>
-                <textarea ng-model="$ctrl.order.notes" md-maxlength="300" rows="5" md-select-on-focus></textarea>
+                <textarea ng-model="$ctrl.order.notes" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+                <!-- <input type="text" name="name" value="" ng-model="$ctrl.order.notes" placeholder="note"/> -->
             </md-input-container>
         </div>
     </div>
-</div>
+</md-content\>

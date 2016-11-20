@@ -2,7 +2,7 @@
 <div id="quick-start-dialog" class="" layout="column" flex layout-fill>
 
     <md-toolbar class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
-        <div class="" ng-click="touchMode = !touchMode" ng-init="touchMode = true">
+        <div class="" ng-click="touchMode = !touchMode" ng-init="touchMode = false">
             Customer's Phone Number
         </div>
         <div flex>
@@ -19,6 +19,7 @@
         <md-content  layout="column" flex class="md-padding" layout-align="center center">
             <md-input-container class="md-block">
                 <input
+                    md-autofocus
                     name="phone"
                     type="text"
                     ng-model="$ctrl.phone"

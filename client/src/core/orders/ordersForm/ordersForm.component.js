@@ -9,19 +9,20 @@ const ordersFormComponent = {
     controller: /* @ngInject */ class OrdersFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
-                'Orders', 'Pets', 'SharedUtil', 'ListItems'
+                '$scope', '$timeout', '$state', '$stateParams',
+                'Orders', 'Customers', 'Pets', 'SharedUtil', 'ListItems'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
-            Orders, Pets, SharedUtil, ListItems
+            $scope, $timeout, $state, $stateParams,
+            Orders, Customers, Pets, SharedUtil, ListItems
         ) {
-            this.$log = $log;
+            this.$scope = $scope;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Orders = Orders;
+            this.Customers = Customers;
             this.Pets = Pets;
             this.getDayName = SharedUtil.getDayName;
             this.ListItems = ListItems;
@@ -41,9 +42,16 @@ const ordersFormComponent = {
             };
             this.yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
             this.tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
+
+            $scope.$watch('$ctrl.order.scheduleAt', (value) => {
+                if (this.order && this.order.scheduleAt) {
+                    this.getOrderForDate(this.order.scheduleAt);
+                }
+            }, true);
         }
 
         $onInit() {
+            this.defaultDate = null;
             if (!this.$stateParams.order_id &&
                 !this.$stateParams.customer_id
             ) {
@@ -53,16 +61,18 @@ const ordersFormComponent = {
             this.setOrder();
         }
 
-        getServicesListItems(){
+        getServicesListItems() {
             this.ListItems.query({
                 type: 'services'
-            }, (results)=>{
+            }, (results) => {
                 this.services = results[0].items;
             });
         }
 
         setOrder() {
+            console.log(this.$stateParams);
             if (this.$stateParams.order_id) {
+                console.warn('edit order');
                 // edit order
                 this.Orders.get({
                     id: this.$stateParams.order_id
@@ -70,16 +80,36 @@ const ordersFormComponent = {
                     order.scheduleAt = new Date(order.scheduleAt);
                     this.order = order;
                     this.customer_id = this.order.customer_id;
+                    this.getCustomer(this.customer_id);
                     this.getPet(this.order.pet_id);
+                    this.defaultDate = new Date(this.order.scheduleAt);
+                    console.log(this.defaultDate);
+                    this.getOrderForDate(this.order.scheduleAt);
                 });
             } else if (this.$stateParams.customer_id) {
+                console.warn('new order');
                 // new order
                 this.setTemplate();
                 this.customer_id = this.$stateParams.customer_id;
                 this.getPets();
+                this.getCustomer(this.$stateParams.customer_id);
+                this.scheduleTimeIsAm = true;
+                const today = new Date();
+                today.setHours(9, 0, 0);
+                this.defaultDate = new Date(today);
+                console.info(this.defaultDate);
             } else {
                 // new customer
+                this.defaultDate = null;
             }
+        }
+
+        getCustomer(customer_id) {
+            this.Customers.get({
+                id: customer_id
+            }, (customer) => {
+                this.customer = customer;
+            });
         }
 
         getPet(pet_id) {
@@ -146,17 +176,17 @@ const ordersFormComponent = {
             return this.setNewHour();
         }
 
-        changeDate(){
+        changeDate() {
             this.setNewHour();
-            console.log(this.order.scheduleAt);
             this.getOrderForDate(this.order.scheduleAt);
         }
 
-        getOrderForDate(date){
+        getOrderForDate(date) {
+            const queryDate = new Date(date);
             this.Orders.getByDate({
-                date: date
-            },(res)=>{
-                console.log(res);
+                date: queryDate
+            }, (res) => {
+                this.selectedDateOrders = res;
             });
         }
 
@@ -167,14 +197,20 @@ const ordersFormComponent = {
             if (!this.order.scheduleAt) {
                 return;
             }
+            console.log(this.order.scheduleAt);
+            if (this.order.scheduleAt.getHours() <= 12) {
+                this.scheduleTimeIsAm = true;
+            }
             const hour = (this.scheduleTimeIsAm) ? this.scheduleTime[0] : this.scheduleTime[0] + 12;
             const minute = parseInt(this.scheduleTime[1]);
+            console.log();
             this.order.scheduleAt.setHours(
                 hour, minute, 0
             );
+            console.log('hour', hour);
         }
 
-        submit() {
+        submitOrder() {
             this.isSubmitting = true;
             let newOrder;
             for (let prop in this.candidates) {
@@ -194,7 +230,7 @@ const ordersFormComponent = {
                         id: newOrder._id
                     }, newOrder, () => {
                         this.candidates[newOrder.pet_id] = false;
-                        return this.submit();
+                        return this.submitOrder();
                     }, (err) => {
                         console.log(err);
                     });
@@ -202,7 +238,7 @@ const ordersFormComponent = {
                     this.Orders.save(newOrder, (res) => {
                         console.log(res);
                         this.candidates[newOrder.pet_id] = false;
-                        return this.submit();
+                        return this.submitOrder();
                     }, (err) => {
                         console.log(err);
                     });
