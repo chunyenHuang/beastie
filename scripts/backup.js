@@ -15,6 +15,7 @@ const seedsPath = path.join(root, 'seeds');
 /*
     use dropbox path for backups
 */
+const files = process.env.BACKUP_PATH || path.join(root, 'files');
 const backups = process.env.BACKUP_PATH || path.join(root, 'files/backups');
 const backupImages = path.join(backups, 'images');
 const backupDB = path.join(backups, 'db');
@@ -31,6 +32,7 @@ const customers = path.join(images, 'customers');
     files and paths
 */
 const DirPaths = [
+    files,
     backups, backupImages, backupDB, backupFiles,
     uploads, images, inhouseOrders, orders, pets, customers
 ];
