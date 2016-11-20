@@ -225,20 +225,22 @@ fs.readdirSync(routes).forEach((file) => {
  * at 11:30:00 AM. It does not run on Saturday
  * or Sunday.
  */
-
 const backupTime = [
     '00 00 10 * * 0-7',
+    '00 00 11 * * 0-7',
+    '00 05 11 * * 0-7',
     '00 00 12 * * 0-7',
+    '00 00 13 * * 0-7',
     '00 00 14 * * 0-7',
-    '00 00 18 * * 0-7',
+    '00 00 15 * * 0-7',
     '00 00 20 * * 0-7'
 ];
+const Backup = require('./scripts/backup');
 
 for (var i = 0; i < backupTime.length; i++) {
     const job = new CronJob({
         cronTime: backupTime[i],
         onTick: () => {
-            const Backup = require('./scripts/backup');
             const today = new Date();
             console.log('----------------------------')
             console.log(today);
@@ -250,6 +252,8 @@ for (var i = 0; i < backupTime.length; i++) {
     });
     job.start();
 }
+
+Backup();
 
 // Errors
 app.use(errorHandler());

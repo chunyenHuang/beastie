@@ -34,7 +34,7 @@
                             'list-item': $ctrl.selectedItem != item,
                             'hightlight': $ctrl.selectedItem == item
                         }"
-                ng-repeat="item in $ctrl.listItem.items"
+                ng-repeat="item in $ctrl.listItem.items | orderBy:['type', 'name', 'zhName']"
                 layout-align="space-between start"
                 flex="none">
                 <md-input-container class="md-block">
@@ -87,7 +87,7 @@
                     </span>
                 </md-tooltip>
             </md-button>
-            <div layout="row" class="sub-items" ng-repeat="subItem in $ctrl.selectedItem.subItems" ng-show="!subItem.isDeleted" flex="none">
+            <div layout="row" class="sub-items" ng-repeat="subItem in $ctrl.selectedItem.subItems | orderBy:['type', 'name', 'zhName']" ng-show="!subItem.isDeleted" flex="none">
                 <md-input-container class="md-block">
                     <label>name</label>
                     <input type="text" ng-model="subItem.name" aria-label="{{list.type}}-{{item.type}}-{{subItem.name}}-name">

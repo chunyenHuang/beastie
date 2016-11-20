@@ -28,7 +28,7 @@
                 </md-tooltip>
             </md-button>
             <div layout="row"
-                ng-repeat="item in $ctrl.list.items"
+                ng-repeat="item in $ctrl.list.items | orderBy:['name', 'zhName']"
                 ng-click="$ctrl.selectedItem = item"
                 ng-show="!item.isDeleted"
                 ng-class="{

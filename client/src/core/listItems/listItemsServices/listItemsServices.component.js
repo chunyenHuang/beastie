@@ -18,7 +18,7 @@ const listItemsServicesComponent = {
 
         getTemplate() {
             return {
-                name: null,
+                name: ' ',
                 description: null,
                 zhName: null,
                 zhDescription: null,

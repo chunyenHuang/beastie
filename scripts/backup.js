@@ -16,10 +16,7 @@ const seedsPath = path.join(root, 'seeds');
     use dropbox path for backups
 */
 const files = process.env.BACKUP_PATH || path.join(root, 'files');
-const backups = process.env.BACKUP_PATH || path.join(root, 'files/backups');
-const backupImages = path.join(backups, 'images');
-const backupDB = path.join(backups, 'db');
-const backupFiles = path.join(backups, 'files');
+const mongoDBPath = path.join(files, 'mongoDB');
 
 const uploads = path.join(root, 'files/uploads');
 const images = path.join(root, 'files/images');
@@ -33,11 +30,11 @@ const customers = path.join(images, 'customers');
 */
 const DirPaths = [
     files,
-    backups, backupImages, backupDB, backupFiles,
+    mongoDBPath,
     uploads, images, inhouseOrders, orders, pets, customers
 ];
 
-const Backup = ()=>{
+const Backup = (callback) => {
     DirPaths.forEach((dirPath) => {
         fs.access(dirPath, (err) => {
             if (err) {
@@ -64,14 +61,18 @@ const Backup = ()=>{
     // console.log(collections);
 
     const today = new Date();
-    const timestamp = today.getTime();
-    const backupLocation = path.join(backupDB, timestamp.toString());
+    let formatName = today.toLocaleString();
+    formatName = formatName.split('/').join('-');
+    const backupLocation = mongoDBPath + '/' + formatName;
     mkdirp(backupLocation, (err) => {
         if (err) {
             return console.log(err);
         }
         (function writeDBtoFile(index) {
             if (index == collections.length) {
+                if (callback) {
+                    callback();
+                }
                 return console.log('DB backup is finished.');
                 // return process.exit();
             }

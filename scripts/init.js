@@ -1,2 +1,4 @@
 const backup = require('./backup');
-backup();
+backup(() => {
+    return process.exit();
+});
