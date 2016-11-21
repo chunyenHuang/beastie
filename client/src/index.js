@@ -18,7 +18,6 @@ import 'client/vendorJs/angularFullscreen';
 import 'client/vendorJs/sc-date-time.js';
 import 'client/vendorJs/sc-date-time.css';
 import 'client/node_modules/font-awesome/css/font-awesome.css';
-import 'client/vendorJs/angularFullScreen';
 
 // configs
 import themeConfig from './themeConfig';
