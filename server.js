@@ -210,8 +210,18 @@ fs.readdirSync(authRoutes).forEach((file) => {
 const routes = path.join(__dirname, '/routes/resources');
 fs.readdirSync(routes).forEach((file) => {
     if (file != '.DS_Store') {
-        const route = path.join(routes, file);
-        require(route)(app);
+        if(!process.env.CLOUD9){
+            const route = path.join(routes, file);
+            console.log('route: '+ file );
+            require(route)(app);
+        } else if (
+            file != 'printer' && 
+            file != 'inhouseOrders'        
+        ) {
+            const route = path.join(routes, file);
+            console.log('route: '+ file );
+            require(route)(app);
+        }
     }
 });
 
