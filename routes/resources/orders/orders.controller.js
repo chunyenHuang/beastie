@@ -10,19 +10,21 @@ class OrdersController extends AbstractController {
             customer_id: null,
             pet_id: null,
             scheduleAt: null,
-            notes: 'Note for this order/appointment.',
+            notes: null,
             // flag for cancel and fail to show up
             isCanceled: false,
             notShowup: false,
             // customer checkin in client device
             checkInAt: null,
+            checkInNumber: null, // rush, 1, 2
+            isRush: false,
             // select services
             services: null,
             total: null,
             // select inhouseOrders
             inhouseOrders: null,
             // special conditions
-            waivers: [],
+            // waivers: [],
             // customer pay and admin manual closes order.
             isPaid: null,
             checkOutAt: null
@@ -32,6 +34,48 @@ class OrdersController extends AbstractController {
         };
         res.json(template);
     }
+
+    query(req, res) {
+        Object.assign(req.query, {
+            isDeleted: false
+        });
+        const query = req.collection.aggregate([
+            {
+                $match: req.query
+            },
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'customers'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'pets',
+                    localField: 'pet_id',
+                    foreignField: '_id',
+                    as: 'pets'
+                }
+            }
+        ]);
+        query.toArray((err, results) => {
+            // fix wrong condition
+            if (!err) {
+                if (results.length > 0) {
+                    res.statusCode = 200;
+                    res.json(results);
+                } else {
+                    // res.sendStatus(404);
+                    res.status(404).send({error:'Sorry, we cannot find that!'});
+                }
+            } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
 
     get(req, res) {
         const query = req.collection.aggregate([
@@ -57,7 +101,6 @@ class OrdersController extends AbstractController {
                     as: 'pets'
                 }
             }
-
         ]);
 
         query.toArray((err, results) => {
