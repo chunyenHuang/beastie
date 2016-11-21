@@ -24,7 +24,7 @@ class OrdersController extends AbstractController {
             // select inhouseOrders
             inhouseOrders: null,
             // special conditions
-            waivers: [],
+            // waivers: [],
             // customer pay and admin manual closes order.
             isPaid: null,
             checkOutAt: null
