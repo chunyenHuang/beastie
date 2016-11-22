@@ -29,6 +29,7 @@ const coreModule = angular
         services,
         signatures,
         albums,
+
         components,
         filters
     ])

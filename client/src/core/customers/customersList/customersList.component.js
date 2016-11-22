@@ -3,54 +3,46 @@ import './customersList.styl';
 
 const customersListComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class CustomersListController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Customers'
+                '$log', '$timeout', '$state', '$stateParams', 'Customers', 'Task', 'CustomerDetailDialog'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Customers
+            $log, $timeout, $state, $stateParams, Customers, Task, CustomerDetailDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Customers = Customers;
+            this.CustomerDetailDialog = CustomerDetailDialog;
+            this.Task = Task;
         }
+
         $onInit() {
+            this.Task.on();
             this.Customers.query({}, (customers) => {
+                this.Task.off();
                 this.customers = customers;
-                console.log(this.customers);
+                console.log(this.customers[0]);
+                this.select({
+                    _id: '5833ee414cde151f71df3fa0'
+                });
             });
         }
 
-        update(customer) {
-            if (!customer._id) {
-                this.create(customer);
-            }
-            customer.$update({
-                id: customer._id
-            }, (res) => {
-                console.log(res);
+        select(customer){
+            console.log(customer._id);
+            this.CustomerDetailDialog({
+                customer_id: customer._id,
+                tab: 'customer'
+            }, ()=>{
+
             });
         }
-
-        create(customer) {
-            this.Customers.save(customer, (res) => {
-                console.log(res);
-            });
-        }
-
-        getTemplate(callback) {
-            this.Users.get({
-                id: 'template'
-            }, callback);
-        }
-
     }
 };
 export default customersListComponent;
