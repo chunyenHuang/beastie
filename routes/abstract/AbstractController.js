@@ -3,6 +3,13 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = class AbstractController {
+    constructor(){
+        this.get = this.get.bind(this);
+        this.put = this.put.bind(this);
+        this.query = this.query.bind(this);
+        this.post = this.post.bind(this);
+        this.delete = this.delete.bind(this);
+    }
 
     query(req, res) {
         Object.assign(req.query, {
@@ -63,9 +70,12 @@ module.exports = class AbstractController {
             $set: req.body
         }, {
             upsert: true
-        }, (err) => {
+        }, (err, result, extra) => {
+            console.log(result);
             if (!err) {
-                res.sendStatus(204);
+                this.get(req, res);
+                // res.statusCode = 204;
+                // res.json(result);
             } else {
                 res.sendStatus(500);
             }
