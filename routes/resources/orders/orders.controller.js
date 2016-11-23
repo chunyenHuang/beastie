@@ -4,6 +4,13 @@ const ObjectId = require('mongodb').ObjectID;
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class OrdersController extends AbstractController {
+    constructor(){
+        super();
+        this._parseDate = this._parseDate.bind(this);
+        this._getDateFromToday = this._getDateFromToday.bind(this);
+        this._setFromTo = this._setFromTo.bind(this);
+        this._getByDate = this._getByDate.bind(this);
+    }
     getTemplate(req, res) {
         const template = {
             // require for appointment
@@ -201,44 +208,31 @@ class OrdersController extends AbstractController {
         );
     }
 
-    getByDate(req, res) {
-        /*
-            /ordersByDate?date= &from= &to= &last= &next=
-            date= specific date only
-            from= date
-            to= date
-            last= num
-            next= num
-        */
-        let from;
-        let to;
+    _setFromTo(req, res, next){
         if (req.query.date) {
-            from = this._getDateFromToday(1, this._parseDate(req.query.date));
-            to = this._getDateFromToday(2, this._parseDate(req.query.date));
+            req.from = this._getDateFromToday(1, this._parseDate(req.query.date));
+            req.to = this._getDateFromToday(2, this._parseDate(req.query.date));
         } else {
             let today = this._getDateFromToday();
-            from = (req.query.from) ? this._parseDate(req.query.from) :
+            req.from = (req.query.from) ? this._parseDate(req.query.from) :
                 ((req.query.last) ? this._getDateFromToday(req.query.last) : today);
-            to = (req.query.to) ? this._parseDate(req.query.to) :
+            req.to = (req.query.to) ? this._parseDate(req.query.to) :
                 ((req.query.next) ? this._getDateFromToday(req.query.next) : this._getDateFromToday(1));
         }
         console.log(req.query);
-        console.log('from:', from);
-        console.log('to:', to);
-        // const query = req.collection.find({
-        //     isDeleted: false,
-        //     scheduleAt: {
-        //         $gte: from,
-        //         $lt: to
-        //     }
-        // });
+        console.log('from:', req.from);
+        console.log('to:', req.to);
+        next();
+    }
+
+    _getByDate(req, res, next){
         const query = req.collection.aggregate([
             {
                 $match: {
                     isDeleted: false,
                     scheduleAt: {
-                        $gte: from,
-                        $lt: to
+                        $gte: req.from,
+                        $lt: req.to
                     }
                 }
             },
@@ -263,7 +257,25 @@ class OrdersController extends AbstractController {
 
         query.toArray((err, results) => {
             // fix wrong condition
-            if (!err) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                next(results);
+            }
+        });
+    }
+
+    /*
+        /ordersByDate?date= &from= &to= &last= &next=
+        date= specific date only
+        from= date
+        to= date
+        last= num
+        next= num
+    */
+    getByDate(req, res) {
+        this._setFromTo(req, res, ()=>{
+            this._getByDate(req, res, (results)=>{
                 if (results.length > 0) {
                     res.statusCode = 200;
                     res.json(results);
@@ -276,11 +288,8 @@ class OrdersController extends AbstractController {
                         error: 'Sorry, we cannot find that!'
                     });
                 }
-            } else {
-                res.sendStatus(500);
-            }
+            });
         });
-
     }
 }
 
