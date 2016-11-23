@@ -19,7 +19,7 @@
     "init": "node scipts/init && gulp init",
     "----------Development----------": "",
     "seed": "node scripts/seeds.js",
-    "seed:copy": "node scripts/copyFromDB.js",
+    "seed:copy": "node scripts/copyFromDBtoSeeds.js",
     "dev:front": "NODE_ENV=development node server.js",
     "dev:front-c9": "NODE_ENV=development CLOUD9=true node server.js",
     "dev:back": "NODE_ENV=dev nodemon server.js",

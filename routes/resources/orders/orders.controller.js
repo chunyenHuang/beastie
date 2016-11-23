@@ -204,7 +204,6 @@ class OrdersController extends AbstractController {
     getByDate(req, res) {
         /*
             /ordersByDate?date= &from= &to= &last= &next=
-
             date= specific date only
             from= date
             to= date

@@ -1,11 +1,11 @@
 <div id="order-list" layout="column" flex>
     <div layout layout-align="space-between center" flex="none">
         <div layout-padding layout>
-            <md-button class="md-headline" ng-click="$ctrl.setSortDate()">
-                <md-icon md-svg-src="clock"></md-icon>
-                <md-icon ng-show="$ctrl.sortDate=='-scheduleAt'" md-svg-src="menu-down"></md-icon>
-                <md-icon ng-show="$ctrl.sortDate=='scheduleAt'" md-svg-src="menu-up"></md-icon>
-            </md-button>
+            <!--<md-button class="md-headline" ng-click="$ctrl.setSortDate()">-->
+            <!--    <md-icon md-svg-src="clock"></md-icon>-->
+            <!--    <md-icon ng-show="$ctrl.sortDate=='-scheduleAt'" md-svg-src="menu-down"></md-icon>-->
+            <!--    <md-icon ng-show="$ctrl.sortDate=='scheduleAt'" md-svg-src="menu-up"></md-icon>-->
+            <!--</md-button>-->
             <md-button class="md-raised"
                 ng-repeat="mode in $ctrl.dateModeList"
                 ng-click="$ctrl.setDateMode(mode)"
@@ -34,29 +34,44 @@
             <!--        ng-change="$ctrl.viewRange()"></md-datepicker>-->
             <!--</span>-->
         </div>
+        <md-button class="md-fab" ng-show="$ctrl.dateMode=='today'">
+            <md-icon md-svg-src="chevron-left"></md-icon></md-button>
         <md-button ng-show="$ctrl.dateMode=='today'" ng-disabled="true">
                 <!--<md-datepicker ng-model="$ctrl.dateRange.to" md-placeholder="Orders on Date" md-open-on-focus-->
                 <!--    ng-change="$ctrl.viewDate()" md-hide-icons="all"></md-datepicker>-->
                 <span style="font-size:24px; color:#333" >{{$ctrl.dateRange.to | date:'MM/d/y'}}</span>
         </md-button>
+        <md-button class="md-fab" ng-show="$ctrl.dateMode=='today'">
+            <md-icon md-svg-src="chevron-right"></md-icon></md-button>
         <div layout-padding layout>
-            <md-button class="" ng-click="$ctrl.toggleAllType()">
-                <md-icon ng-show="!$ctrl.showAllTypes" md-svg-src="eye"></md-icon>
-                <md-icon ng-show="$ctrl.showAllTypes" md-svg-src="eye-off"></md-icon>
-                all Types
+            <!--<md-button class="" ng-click="$ctrl.toggleAllType()">-->
+            <!--    <md-icon ng-show="!$ctrl.showAllTypes" md-svg-src="eye"></md-icon>-->
+            <!--    <md-icon ng-show="$ctrl.showAllTypes" md-svg-src="eye-off"></md-icon>-->
+            <!--    all orders-->
+            <!--</md-button>-->
+            <md-button ng-repeat="(key, type) in $ctrl.typeList"
+                ng-click="$ctrl.setType(key)"
+                class="md-whiteframe-3dp"
+                ng-class="{'{{type.css}}': true, 'md-raised': $ctrl.showType==key, 'border-solid':false}">
+                {{type.text}}<br/>
+                <span class="md-display-1">{{type.count}}</span>
+            
+            
             </md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.upcoming) style="color:slategrey"
-                ng-class="{'md-raised':!$ctrl.typeList.upcoming.show, 'border-solid':$ctrl.typeList.upcoming.show}">
-                {{$ctrl.typeList.upcoming.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.checkInAt) md-colors="{color:'primary'}"
-                ng-class="{'md-primary':$ctrl.typeList.checkInAt.show, 'md-raised':!$ctrl.typeList.checkInAt.show, 'border-solid':$ctrl.typeList.checkInAt.show}">
-                {{$ctrl.typeList.checkInAt.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.isCanceled) md-colors="{color:'accent'}"
-                ng-class="{'md-accent':$ctrl.typeList.isCanceled.show, 'md-raised':!$ctrl.typeList.isCanceled.show, 'border-solid':$ctrl.typeList.isCanceled.show}">
-                {{$ctrl.typeList.isCanceled.text}}</md-button>
-            <md-button ng-click=$ctrl.setType($ctrl.typeList.notShowup) md-colors="{color:'warn'}"
-                ng-class="{'md-warn':$ctrl.typeList.notShowup.show, 'md-raised':!$ctrl.typeList.notShowup.show, 'border-solid':$ctrl.typeList.notShowup.show}">
-                {{$ctrl.typeList.notShowup.text}}</md-button>
+            
+            
+            <!--<md-button ng-click=$ctrl.setType($ctrl.typeList.upcoming) style="color:slategrey"-->
+            <!--    ng-class="{'md-raised':!$ctrl.typeList.upcoming.show, 'border-solid':$ctrl.typeList.upcoming.show}">-->
+            <!--    {{$ctrl.typeList.upcoming.text}}</md-button>-->
+            <!--<md-button ng-click=$ctrl.setType($ctrl.typeList.checkInAt) md-colors="{color:'primary'}"-->
+            <!--    ng-class="{'{{$ctrl.typeList.checkInAt.css}}':$ctrl.typeList.checkInAt.show, 'md-raised':!$ctrl.typeList.checkInAt.show, 'border-solid':$ctrl.typeList.checkInAt.show}">-->
+            <!--    {{$ctrl.typeList.checkInAt.text}}</md-button>-->
+            <!--<md-button ng-click=$ctrl.setType($ctrl.typeList.isCanceled) md-colors="{color:'accent'}"-->
+            <!--    ng-class="{'md-accent':$ctrl.typeList.isCanceled.show, 'md-raised':!$ctrl.typeList.isCanceled.show, 'border-solid':$ctrl.typeList.isCanceled.show}">-->
+            <!--    {{$ctrl.typeList.isCanceled.text}}</md-button>-->
+            <!--<md-button ng-click=$ctrl.setType($ctrl.typeList.notShowup) md-colors="{color:'warn'}"-->
+            <!--    ng-class="{'md-warn':$ctrl.typeList.notShowup.show, 'md-raised':!$ctrl.typeList.notShowup.show, 'border-solid':$ctrl.typeList.notShowup.show}">-->
+            <!--    {{$ctrl.typeList.notShowup.text}}</md-button>-->
             
             <!--<md-button class="md-raised"-->
             <!--    ng-repeat="type in $ctrl.typeList"-->
@@ -70,9 +85,16 @@
 
     <!--<div layout="column" flex>-->
     <md-content layout layout-wrap layout-align="start start" layout-padding flex="grow">
-
+        <div ng-if="$ctrl.typeList[$ctrl.showType].count === 0" layout="column" layout-fill layout-align="center center">
+            <div class="md-display-3" style="padding-top:200px">
+            There is no <span style="text-transform:uppercase">{{$ctrl.typeList[$ctrl.showType].text}}</span> order.
+            </div>
+        </div>
+        
         <div flex="80" ng-repeat="order in $ctrl.orders | orderBy: $ctrl.sortDate as filtered_result"
-            ng-show="$ctrl.decideShow(order)" ng-class="{'grid-highlight': $ctrl.isToday(order.scheduleAt) && $ctrl.dateMode!=='today'}">
+            class="js-order-tile"
+            ng-show="$ctrl.showAllTypes||(order.type == $ctrl.showType)" 
+            ng-class="{'grid-highlight': $ctrl.isToday(order.scheduleAt) && $ctrl.dateMode!=='today'}">
             <md-grid-list md-cols="10" md-gutter="0.4em" md-row-height="8:7" 
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}">
                 
@@ -113,9 +135,10 @@
                     </md-button layout-fill>
                 </md-grid-tile>
                 <md-grid-tile  md-colspan="2" md-rowspan="1">
-                    <div layout="column" layout-align="center center">
-                        <div>{{$ctrl.pets[order.pet_id].name}}</div>
-                        <div>({{$ctrl.customers[order.customer_id].firstname}} {{$ctrl.customers[order.customer_id].lastname}})</div>
+                    <div layout="column" layout-align="center center" class="md-headline">
+                        <div>{{order.customers[0].firstname}} {{order.customers[0].lastname}}</div>
+                        <div>{{order.customers[0].phone}}</div>
+                        <!--<div>({{$ctrl.customers[order.customer_id].firstname}} {{$ctrl.customers[order.customer_id].lastname}})</div>-->
                     </div>
                 </md-grid-tile>
                 <md-grid-tile  md-colspan="2" md-rowspan="1">
@@ -126,7 +149,9 @@
                 </md-grid-tile>
                 <md-grid-tile >${{order.services.price}}</md-grid-tile>
                 <md-grid-tile  md-colspan="2" md-rowspan="2">
-                    <img ng-src="/images/pets/{{order.pet_id}}.png" alt="Washed Out" ng-click="$ctrl.showPreviousOrders(order)"></md-grid-tile>
+                    <img ng-src="/images/pets/{{order.pet_id}}.png" alt="Washed Out" ng-click="$ctrl.showPreviousOrders(order)">
+                    <div class="md-headline tile-pets-name">{{order.pets[0].name}}</div></md-grid-tile>
+                    
                 <md-grid-tile  md-colspan="2" md-rowspan="2" ng-if="!order.checkInAt" md-colors="{background: 'primary-500-0.85'}">
                     <md-button layout-fill ng-disabled="order.checkInAt" ng-click="$ctrl.checkIn(order)"><span class="md-headline">
                         check In</span></md-button></md-grid-tile>
@@ -145,7 +170,7 @@
                         waivers</md-button></md-grid-tile>
                 <md-grid-tile  md-colspan="1" md-rowspan="1">
                     <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order._id)">
-                        <md-icon md-svg-src="camera"></md-icon></md-button></md-grid-tile>
+                        <md-icon md-svg-src="camera" aria-label="take photos"></md-icon></md-button></md-grid-tile>
                 <!--<md-grid-tile  md-colors="{background: 'accent-500-0.85'}">-->
                 <md-grid-tile>
                     <md-button layout-fill ng-click="$ctrl.cancel(order)" ng-disabled="order.isCanceled"
@@ -167,37 +192,6 @@
             </md-grid-list>
         </div>
     </md-content>
-    <!--</div>-->
-    <!--<div ng-repeat="order in $ctrl.orders | orderObjectBy:'scheduleAt'">-->
-    <!--    <md-card>-->
-    <!--        <md-card-title>-->
-    <!--            <md-card-title-media>-->
-    <!--                <div class="md-media-lg card-media">-->
-    <!--                    <img ng-src="{{$ctrl.pets[order.pet_id].pictures[0]}}" alt="Washed Out">-->
-    <!--                    <div>can some text</div>-->
-    <!--                </div>-->
-    <!--            </md-card-title-media>-->
-    <!--            <md-card-title-text>-->
-    <!--                <span class="md-headline">-->
-    <!--                    {{order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}-->
-    <!--                </span>-->
-    <!--                <span class="md-subhead">-->
-    <!--                    {{$ctrl.pets[order.pet_id].name}}, {{order.services.name}} {{order.services.zhName}}, price: ${{order.services.price}}-->
-    <!--                </span>-->
-    <!--            </md-card-title-text>-->
-    <!--        </md-card-title>-->
-    <!--        <md-card-actions layout="row" layout-align="end center">-->
-    <!--            <div flex></div>-->
-    <!--            <md-button ng-click="$ctrl.waivers()">waivers</md-button>-->
-    <!--            <md-button ng-click="$ctrl.edit(order._id)">Edit</md-button>-->
-    <!--            <md-button ng-click="$ctrl.cancel()">cancel</md-button>-->
-    <!--            <md-button ng-click="$ctrl.notShowup()">not Showup</md-button>-->
-    <!--            <md-button ng-disabled="order.checkInAt" ng-click="$ctrl.checkIn(order)">checkIn</md-button>-->
-    <!--            <md-button ng-disabled="!order.checkInAt" ng-click="$ctrl.inhouseOdrer(order._id)">Inhouse Order</md-button>-->
-    <!--            <md-button ng-disabled="!order.checkInAt" ng-click="$ctrl.paid()">paid</md-button>-->
-    <!--            <md-button ng-disabled="!order.checkInAt && !order.isPaid" ng-click="$ctrl.checkout()">checkout</md-button>-->
-    <!--            <div flex></div>-->
-    <!--        </md-card-actions>-->
-    <!--    </md-card>-->
-    <!--</div>-->
+
+
 </div>

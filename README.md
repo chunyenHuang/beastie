@@ -48,3 +48,8 @@ chrome://flags/#overscroll-history-navigation
 ```
 brew install libusb --universal
 ```
+
+# cloud9 change timezone
+```
+sudo dpkg-reconfigure tzdata
+```
