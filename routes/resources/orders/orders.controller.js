@@ -16,7 +16,7 @@ class OrdersController extends AbstractController {
             notShowup: false,
             // customer checkin in client device
             checkInAt: null,
-            checkInNumber: null, // rush, 1, 2
+            checkInNumber: null, // 1, 2
             isRush: false,
             // select services
             services: null,
@@ -76,7 +76,6 @@ class OrdersController extends AbstractController {
         });
     }
 
-
     get(req, res) {
         const query = req.collection.aggregate([
             {
@@ -116,7 +115,6 @@ class OrdersController extends AbstractController {
             }
         });
     }
-
 
     upload(req, res) {
         if (!req.file) {

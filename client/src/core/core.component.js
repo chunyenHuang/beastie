@@ -2,6 +2,7 @@ import './core.styl';
 import template from './core.html';
 import quickStartDialog from './quickStart.dialog';
 import newCustomerQuickDialog from './newCustomerQuick.dialog';
+import oldCustomerPanelDialog from './oldCustomerPanel.dialog';
 
 const coreComponent = {
     template,
@@ -9,12 +10,13 @@ const coreComponent = {
         static get $inject() {
             return [
                 '$timeout', '$state', '$translate', '$mdDialog', '$document',
-                'Customers', 'METADATA', 'InhouseOrdersDialog', 'Fullscreen'
+                'Customers', 'METADATA', 'InhouseOrdersDialog', 'Fullscreen', 'CustomerDetailDialog'
             ];
         }
         constructor(
             $timeout, $state, $translate, $mdDialog, $document,
-            Customers, METADATA, InhouseOrdersDialog, Fullscreen
+            Customers, METADATA, InhouseOrdersDialog, Fullscreen,
+            CustomerDetailDialog
         ) {
             this.$timeout = $timeout;
             this.$state = $state;
@@ -24,6 +26,7 @@ const coreComponent = {
             this.Customers = Customers;
             this.METADATA = METADATA;
             this.InhouseOrdersDialog = InhouseOrdersDialog;
+            this.CustomerDetailDialog = CustomerDetailDialog;
             this.Fullscreen = Fullscreen;
             this.fullscreenIcon = 'fullscreen';
         }
@@ -31,6 +34,7 @@ const coreComponent = {
         $onInit() {
             // this.newCustomer(123456789);
             // this.openInhouseOrdersDialog();
+            this.testStartup();
         }
 
         toggleFullscreen() {
@@ -56,43 +60,67 @@ const coreComponent = {
             });
         }
 
-        newOrder() {
+        testStartup(){
+            this.Customers.query({
+                phone: 8888888888
+            }, (res) => {
+                this.oldCustomer(res[0]._id);
+            }, () => {
+                // quick create a new customer
+                this.newCustomer(phone);
+            });
+        }
+
+        startup() {
             this.$mdDialog.show(
                 quickStartDialog({}, this.$document[0].getElementById('core'))
             ).then((phone) => {
                 this.Customers.query({
                     phone: phone
                 }, (res) => {
-                    this.$state.go('core.orders.form', {
-                        customer_id: res[0]._id
-                    });
+                    this.oldCustomer(res[0]._id);
                 }, () => {
                     // quick create a new customer
                     this.newCustomer(phone);
                 });
             }, () => {});
+        }
 
-            // const prompt = this.$mdDialog.prompt()
-            //     .title('Customer Phone number.')
-            //     // .textContent('Bowser is a common name.')
-            //     .placeholder('Phone Number')
-            //     .ariaLabel('Phone Number')
-            //     .ok('Go')
-            //     .cancel('cancel')
-            //     .clickOutsideToClose(false);
-            //
-            // this.$mdDialog.show(prompt).then((phone) => {
-            //     this.Customers.query({
-            //         phone: phone
-            //     }, (res) => {
-            //         this.$state.go('core.orders.form', {
-            //             customer_id: res[0]._id
-            //         });
-            //     }, () => {
-            //         // quick create a new customer
-            //         this.newCustomer(phone);
-            //     });
-            // }, () => {});
+        oldCustomer(customer_id){
+            this.$mdDialog.show(
+                oldCustomerPanelDialog({
+                    customer_id: customer_id
+                }, this.$document[0].getElementById('core'))
+            ).then((select)=>{
+                switch (select.value) {
+                    case 'viewCustomer':
+                        this.CustomerDetailDialog({
+                            customer_id: customer_id,
+                            tab: 'customer'
+                        });
+                        break;
+                    case 'checkIn':
+                        this.Customers.checkIn({
+                            phone: select.phone
+                        }, (res) => {
+                            console.log(res);
+                        }, () => {
+                        });
+                        break;
+                    case 'editOrder':
+                        this.$state.go('core.orders.form', {
+                            order_id: select.order_id
+                        });
+                        break;
+                    case 'newOrder':
+                        this.$state.go('core.orders.form', {
+                            customer_id: customer_id
+                        });
+                        break;
+                    default:
+
+                }
+            });
         }
 
         newCustomer(phone) {
@@ -101,7 +129,6 @@ const coreComponent = {
                     phone: phone
                 }, this.$document[0].getElementById('core'))
             ).then((customer) => {
-                console.log(customer);
                 this.$state.go('core.orders.form', {
                     customer_id: customer._id,
                     order_id: null

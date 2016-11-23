@@ -25,6 +25,7 @@ import resourceConfig from './resourceConfig';
 import languageConfig from './languageConfig';
 import iconConfig from './iconConfig';
 import METADATA from './METADATA';
+import SharedUtil from './SharedUtil';
 
 import Socket from './services/socket.service';
 // Shared
@@ -55,6 +56,7 @@ angular
     ])
     .constant('METADATA', METADATA)
     .service('Socket', Socket)
+    .service('SharedUtil', SharedUtil)
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
         $urlRouterProvider.otherwise('/userAuth');
