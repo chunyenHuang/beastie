@@ -14,6 +14,7 @@ const path = require('path');
 const fs = require('fs');
 const CronJob = require('cron').CronJob;
 const multer = require('multer');
+const colors = require('colors');
 
 /*
     Configuration
@@ -215,8 +216,8 @@ fs.readdirSync(routes).forEach((file) => {
             console.log('route: '+ file );
             require(route)(app);
         } else if (
-            file != 'printer' && 
-            file != 'inhouseOrders'        
+            file != 'printer' &&
+            file != 'inhouseOrders'
         ) {
             const route = path.join(routes, file);
             console.log('route: '+ file );
@@ -263,7 +264,7 @@ for (var i = 0; i < backupTime.length; i++) {
     job.start();
 }
 
-Backup();
+// Backup();
 
 // Errors
 app.use(errorHandler());
@@ -273,9 +274,14 @@ app.use(errorHandler());
 //     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
 //     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 // });
+
 server.listen(app.get('port'), () => {
     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
-    console.log('Listening on port %d in %s mode', app.get('port'), mode);
+    console.log(mode.green);
+    require('dns').lookup(require('os').hostname(),  (err, add, fam) =>{
+        console.log((add+ ':' + app.get('port')).yellow);
+    })
+    // console.log(server.address().address );
 });
 
 // Running w/ https

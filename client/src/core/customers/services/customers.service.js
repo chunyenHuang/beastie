@@ -4,7 +4,7 @@ class customersService {
         return ['$resource'];
     }
     constructor($resource) {
-        const Customers = $resource('/customers/:id', {
+        const service = $resource('/customers/:id', {
             id: '@id'
         }, {
             getWithPets: {
@@ -22,8 +22,26 @@ class customersService {
                 }
             }
         });
-        return Customers;
+        for(let prop in service) {
+            this[prop] = service[prop];
+        }
     }
+    
+    getCache(){
+        if(!this.customers){
+            return new Promise((resolve)=>{
+                this.query({}, (customers)=>{
+                    this.customers = customers;
+                    resolve(this.customers);
+                });
+            });
+        } else {
+            return new Promise((resolve)=>{
+                resolve(this.customers);
+            });
+        }
+    }
+
 }
 
 export default customersService;

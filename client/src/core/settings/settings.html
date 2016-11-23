@@ -1,7 +1,6 @@
 <md-content layout="column" flex class="md-padding">
-    <h3>settings</h3>
     <div class="" layout="column">
-        <h3>company information</h3>
+        <h3>Company information</h3>
         <md-input-container class="md-block">
             <label>name</label>
             <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
@@ -20,5 +19,9 @@
             <label>EIN</label>
             <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
         </md-input-container>
+    </div>
+    <div class="" layout="column">
+        <h3>Printer</h3>
+        <printer></printer>
     </div>
 </md-content>

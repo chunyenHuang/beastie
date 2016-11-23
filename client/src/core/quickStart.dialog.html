@@ -12,7 +12,7 @@
             <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
         </div>
     </md-toolbar>
-    <div layout="column" flex ng-show="touchMode">
+    <div layout="column" flex ng-show="touchMode" ng-init="touchMode=true">
         <keypad limit=10 type="tel" on-update="$ctrl.go(inputNumbers)"></keypad>
     </div>
     <div layout="column" flex ng-show="!touchMode">

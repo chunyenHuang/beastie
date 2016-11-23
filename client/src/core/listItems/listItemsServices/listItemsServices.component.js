@@ -23,6 +23,7 @@ const listItemsServicesComponent = {
                 zhName: null,
                 zhDescription: null,
                 price: null,
+                estimatedHours: 1,
                 isActivated: true,
                 isDeleted: false
             };
