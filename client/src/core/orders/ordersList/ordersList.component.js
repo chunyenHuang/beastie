@@ -51,30 +51,77 @@ const ordersListComponent = {
             this.dateModeList = ['all dates', 'today'];
             this.dateMode = 'date';
             this.typeList = {
-                checkInAt: {
-                    text: 'checked in',
-                    show: true,
+                all: {
+                    text: 'all',
                     css: 'md-primary'
-                },
-                isCanceled: {
-                    text: 'canceled',
-                    show: true,
-                    css: 'md-accent'
-                },
-                notShowup: {
-                    text: 'no-show',
-                    show: true,
-                    css: 'md-warn'
                 },
                 upcoming: {
                     text: 'upcoming',
-                    show: true,
+                    css: 'md-primary',
+                },
+                checkInAt: {
+                    text: 'checked-in',
                     css: 'md-primary'
+                },
+                processing: {
+                    text: 'processing',
+                    css: 'md-accent'
+                },
+                checkOutAt: {
+                    text: 'checked-out',
+                    css: 'md-warn',
                 }
+                // isCanceled: {
+                //     text: 'canceled',
+                //     show: true,
+                //     css: 'md-accent'
+                // },
+                // notShowup: {
+                //     text: 'no-show',
+                //     show: true,
+                //     css: 'md-warn'
+                // },
+                
             };
             this.sortDate = 'scheduleAt';
             this.showAllTypes = true;
+            this.showType = "all";
             this.setDateMode('date');
+        }
+        setOrderType() {
+            this._resetOrderCount();
+            angular.forEach(this.orders, (order)=>{
+                this.typeList.all.count +=1;
+                if (order.checkInAt) {
+                    if (order.checkOutAt) { 
+                        order.type = 'checkOutAt'; 
+                        this.typeList.checkOutAt.count +=1;
+                    } 
+                    else if (order.inhouseOrders.length) { 
+                        order.type = 'processing';
+                        this.typeList.processing.count +=1;
+                    }
+                    else { 
+                        order.type = 'checkInAt';
+                        this.typeList.checkInAt.count +=1;
+                    }
+                } else {
+                    if (!order.isCanceled && !order.notShowup) { 
+                        order.type = 'upcoming';
+                        this.typeList.upcoming.count +=1;                    
+                    }
+                    else { order.type = null; }
+                }
+            });
+        }
+        _resetOrderCount() {
+            angular.forEach(this.typeList, (type)=>{
+                type.count = 0;
+            });
+        }
+        setType(key) {
+            this.showType = key;
+            key === 'all' ? this.showAllTypes = true : this.showAllTypes = false;
         }
 
         showPreviousOrders(order){
@@ -119,29 +166,9 @@ const ordersListComponent = {
             });
         }
 
-        setType(type) {
-            type.show = !type.show;
-            console.log(this.typeList);
-        }
-        toggleAllType() {
-            this.showAllTypes = !this.showAllTypes;
-            for (let prop in this.typeList) {
-                this.typeList[prop].show = this.showAllTypes;
-            }
-        }
-        decideShow(order) {
-            for (let prop in this.typeList) {
-                if (this.typeList[prop].show) {
-                    if (order[prop]) {
-                        return true;
-                    }
-                }
-            }
-            if (this.typeList.upcoming.show) {
-                return !(order.checkInAt || order.isCanceled || order.notShowup);
-            }
-            return false;
-        }
+        
+        
+        
         setDateMode(mode) {
             this.dateMode = mode;
             if (mode == 'all dates') {
@@ -174,16 +201,15 @@ const ordersListComponent = {
             const method = all ? 'query' : 'getByDate';
             const query = all ? {} : this._getDateRange();
             this.Orders[method](query, (orders) => {
-                // for (let i=0;i<orders.length;i++) {
-                //     console.log(orders[i].sechduleAt);
-                // }
-                console.log(orders);
                 this.orders = orders;
-                this.getPets();
-                this.getCustomers();
-                this.$timeout(() => {
-                    this.orders = this.orders;
-                }, 20);
+                this.setOrderType();
+                    // console.error(order);
+                console.info(this.orders);
+                // this.getPets();
+                // this.getCustomers();
+                // this.$timeout(() => {
+                //     this.orders = this.orders;
+                // }, 20);
             });
         }
         viewAll() {
@@ -357,6 +383,7 @@ const ordersListComponent = {
             this.update(order);
         }
         update(order) {
+            console.log('inside update');
             this.Orders.update({
                 id: order._id
             }, order, () => {

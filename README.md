@@ -45,3 +45,8 @@ gulp route --name RouteName --parent ParentFolder
 ```
 chrome://flags/#overscroll-history-navigation
 ```
+
+# cloud9 change timezone
+```
+sudo dpkg-reconfigure tzdata
+```

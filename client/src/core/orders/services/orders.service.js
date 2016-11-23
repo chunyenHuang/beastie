@@ -7,6 +7,30 @@ class ordersService {
         const Orders = $resource('/orders/:id', {
             id: '@id'
         }, {
+            update: {
+                method: 'PUT',
+                url: '/orders/:id',
+                parmas: {
+                    id: '@id'  
+                },
+                transformRequest: (data) => {
+                    console.log(data)
+                    const cpData = Object.assign({}, data);
+                    if (cpData.customers) {
+                        delete cpData.customers;
+                    }
+                    if (cpData.pets) {
+                        delete cpData.pets;
+                    }
+                    // {
+                    //     _id: data._id,
+                    //     customer_id: data.
+                    //     asdasdj: (data.isActive != null ) ? data.isActive : null,
+                    // });
+                    console.log(cpData);
+                    return angular.toJson(cpData);
+                }
+            },
             getByDate: {
                 method: 'GET',
                 url: '/ordersByDate',
