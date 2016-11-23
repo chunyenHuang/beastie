@@ -24,6 +24,7 @@ class CustomerCheckInController extends AbstractController {
                         res.statusCode = 500;
                         res.send('Can not update Customer lastLoginAt');
                     } else {
+                        const today = new Date();
                         req.db.collection('orders').update({
                             customer_id: (customer._id).toString(),
                             checkInAt: null,
@@ -31,28 +32,14 @@ class CustomerCheckInController extends AbstractController {
                             notShowup: false
                         }, {
                             $set: {
-                                checkInAt: new Date()
+                                checkInAt: today
                             }
                         }, ()=>{
                             res.statusCode = 200;
                             res.json({
-                                _id: customer._id
+                                _id: customer._id,
+                                checkInAt: today
                             });
-                            //
-                            // if (err) {
-                            //     res.statusCode = 500;
-                            //     res.send('Can not update Order checkInAt');
-                            //     res.statusCode = 200;
-                            //     res.json({
-                            //         _id: customer._id
-                            //     });
-                            //
-                            // } else {
-                            //     res.statusCode = 200;
-                            //     res.json({
-                            //         _id: customer._id
-                            //     });
-                            // }
                         });
                     }
                 });
