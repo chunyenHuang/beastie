@@ -4,10 +4,14 @@
             <thead>
                 <tr>
                     <th colspan="4">
-                        <md-icon md-svg-src="magnify"></md-icon>
-                        <md-input-container class="md-block">
-                            <input st-search="" class="form-control" placeholder="" type="text"/>
-                        </md-input-container>
+                        <div class="fixed-top" layout="row" flex>
+                            <div class="" flex></div>
+                            <md-icon md-svg-src="magnify"></md-icon>
+                            <md-input-container class="md-block">
+                                <input st-search="" class="form-control" placeholder="" type="text"/>
+                            </md-input-container>
+                            <div class="" flex></div>
+                        </div>
                     </th>
                 </tr>
                 <tr>
@@ -17,7 +21,7 @@
                     <th st-sort="visits">visits</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="scroll-tbody">
                 <tr ng-repeat="row in displayedCollection" ng-click="$ctrl.select(row)">
                     <td>{{row.firstname}}</td>
                     <td>{{row.lastname}}</td>

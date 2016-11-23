@@ -1,3 +1,6 @@
+<div id="preview-large" class="hide">
+    <img src="{{$ctrl.previewLargeUrl}}" alt=""  ng-click="$ctrl.toggleLargePic()"/>
+</div>
 <div layout="column" layout-align="start center" flex>
     <md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
         <!-- <h5>Customer - Pet - Detail</h5> -->
@@ -9,16 +12,16 @@
     <md-content layout="column" flex layout-fill>
         <md-tabs md-border-bottom flex layout="column" md-center-tabs md-customer="$ctrl.customerTab">
           <md-tab label="gallery">
-              <div layout="row" layout-align="start start" flex class="gallery">
-                  <div layout="column" ng-repeat="order in $ctrl.customer.orders" class="gallery-box">
+              <md-content layout="row" layout-align="start start" flex class="gallery">
+                  <md-content layout="column" ng-repeat="order in $ctrl.customer.orders" class="gallery-box">
                       <md-subheader>
                           {{order.scheduleAt | date:'yyyy-MM-dd'}}
                       </md-subheader>
                       <md-content layout="column" flex>
-                          <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]"/>
+                          <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]" ng-click="$ctrl.toggleLargePic(url)"/>
                       </md-content>
-                  </div>
-              </div>
+                  </md-content>
+              </md-content>
           </md-tab>
           <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
             <md-content class="customer-form" flex layout="column">
