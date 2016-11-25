@@ -34,7 +34,7 @@ const coreComponent = {
         $onInit() {
             // this.newCustomer(123456789);
             // this.openInhouseOrdersDialog();
-            this.testStartup();
+            // this.testStartup();
         }
 
         toggleFullscreen() {

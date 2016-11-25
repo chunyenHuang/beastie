@@ -7,7 +7,15 @@
             {{$ctrl.order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}}
         </h1>
         <div flex></div>
-        <md-button ng-click="$ctrl.submitOrder()" class="md-primary md-raised">submit</md-button>
+        <md-button
+            ng-disabled="!$ctrl.validateTime()"
+            ng-click="$ctrl.submitOrder()" class="md-primary md-raised">
+            submit
+        </md-button>
+    </div>
+    <div class="" layout="row" flex="none" layout-align="center">
+        <day-schedule orders="$ctrl.selectedDateOrders">
+        </day-schedule>
     </div>
     <div layout="row" class="md-padding" layout-align="start start">
         <div layout="column" flex="25" class="">

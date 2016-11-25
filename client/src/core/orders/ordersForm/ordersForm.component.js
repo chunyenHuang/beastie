@@ -27,6 +27,10 @@ const ordersFormComponent = {
             this.getDayName = SharedUtil.getDayName;
             this.ListItems = ListItems;
             this.scheduleTime = [9, 0];
+            this.officeHours = {
+                start: 10,
+                end: 20
+            };
             this.today = new Date();
             this.scheduleDate = {
                 min: new Date(
@@ -57,7 +61,6 @@ const ordersFormComponent = {
             ) {
                 return this.$state.go('core.orders');
             }
-            this.getServicesListItems();
             this.setOrder();
         }
 
@@ -79,6 +82,7 @@ const ordersFormComponent = {
                 }, (order) => {
                     order.scheduleAt = new Date(order.scheduleAt);
                     this.order = order;
+                    console.log(this.order);
                     this.customer_id = this.order.customer_id;
                     this.getCustomer(this.customer_id);
                     this.getPet(this.order.pet_id);
@@ -170,9 +174,7 @@ const ordersFormComponent = {
                     this.scheduleTime[1] = (this.scheduleTime[1] > 59) ? 0 : this.scheduleTime[1];
                     break;
                 default:
-
             }
-
             return this.setNewHour();
         }
 
@@ -208,6 +210,24 @@ const ordersFormComponent = {
                 hour, minute, 0
             );
             console.log('hour', hour);
+        }
+
+        validateTime(){
+            if(!this.order){
+                return false
+            } else if (!this.order.scheduleAt){
+                return false;
+            }
+            // console.log(this.order.scheduleAt);
+            // console.log(this.officeHours);
+            const scheduleAt = new Date(this.order.scheduleAt).getHours();
+            if (scheduleAt < this.officeHours.start){
+                return false;
+            } else if (scheduleAt >= this.officeHours.end) {
+                return false;
+            } else {
+                return true;
+            }
         }
 
         submitOrder() {

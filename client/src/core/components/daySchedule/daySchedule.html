@@ -1,0 +1,18 @@
+<div class="" layout="column">
+    <div class="" layout="row" flex="none">
+        orders: {{$ctrl.orders.length}} 
+    </div>
+    <div class="" id="day-schedule" ng-click="$ctrl.toggleExpand()" flex>
+        <div class="grid" ng-repeat="time in $ctrl.dayTimes" >
+            <div class="header">
+                <span ng-show="$ctrl.isInt(time)">{{time}}</span>
+                <span ng-hide="$ctrl.isInt(time)">-</span>
+            </div>
+        </div>
+        <div id="day-schedule-events" class="">
+            <div class="day-schedule-event" style="background-color:#0932c4;top:30px;left:600px"></div>
+            <div class="day-schedule-event" style="background-color:#c4096e;top:20px;left:200px"></div>
+            <div class="day-schedule-event" style="background-color:#c48a09;top:30px;left:300px"></div>
+        </div>
+    </div>
+</div>
