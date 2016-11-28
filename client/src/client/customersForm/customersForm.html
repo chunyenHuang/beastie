@@ -64,6 +64,7 @@
                 <md-input-container class="md-subhead">
                     <label>State</label>
                     <input required type="text" name="state"
+                        ng-init="$ctrl.customer.address.state=($ctrl.customer.address.state)?$ctrl.customer.address.state:'CA'"
                         ng-model="$ctrl.customer.address.state"
                         ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
@@ -244,6 +245,7 @@
     <div layout="column" flex="20">
         <md-button flex layout-fill class="md-raised md-primary" aria-label="next"
             style="min-width:initial"
+            ng-disabled="!$ctrl.validateForm()"
             ng-click="$ctrl.navigateForm('next')">
             <md-icon md-svg-src="chevron-right" class="s48"></md-icon>
         </md-button>

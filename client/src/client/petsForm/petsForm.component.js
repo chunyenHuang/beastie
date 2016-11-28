@@ -7,12 +7,12 @@ const petsFormComponent = {
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Pets', 
+                '$log', '$timeout', '$state', '$stateParams', 'Pets',
                 'ListItems', 'Snapshot', 'SharedUtil', '$mdDialog'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Pets, 
+            $log, $timeout, $state, $stateParams, Pets,
             ListItems, Snapshot, SharedUtil, $mdDialog
         ) {
             this.$log = $log;
@@ -74,6 +74,7 @@ const petsFormComponent = {
                 type: 'vaccinations'
             }, (results) => {
                 this.vaccinations = results[0].items;
+                console.log(this.vaccinations);
                 this._genVaccinationsNameList(this.pet.vaccinations);
                 // this._genVaccinationsNameList(this.vaccinations);
                 this._applyVaccineToPet();
@@ -146,7 +147,7 @@ const petsFormComponent = {
             let effectiveDate = new Date(effectiveYear)
                 .setDate(item.issuedAt.getDate() - 1);
             item.expiredAt = new Date(effectiveDate);
-                
+
             item.daysBeforeDue = Math.ceil(this.SharedUtil.daysBetween(item.expiredAt));
             if (item.daysBeforeDue < this.vaccinations[index].remindCustomerWithinDays) {
                 console.log('!!!!!!!!!!!');
@@ -199,6 +200,8 @@ const petsFormComponent = {
             this.pet.additionalInstructions = cleanAdInstruct;
         }
         validate() {
+            console.info(this.petVaccinationsNameList)
+
             if (!this.pet) {
                 return false;
             } else if (!this.pet.name) {
@@ -206,10 +209,14 @@ const petsFormComponent = {
             } else {
                 return true;
             }
+
         }
         update() {
             console.log(this.pet);
             this._clearTextarea();
+            if(!this.validate()){
+                return false;
+            }
             if (this.isNewPet) {
                 this.Pets.save(this.pet, (res) => {
                     console.log(res);
