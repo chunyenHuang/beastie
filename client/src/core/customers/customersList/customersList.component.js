@@ -27,10 +27,10 @@ const customersListComponent = {
             this.Customers.query({}, (customers) => {
                 this.Task.off();
                 this.customers = customers;
-                console.log(this.customers[0]);
-                this.select({
-                    _id: '5833ee414cde151f71df3fa0'
-                });
+                // console.log(this.customers[0]);
+                // this.select({
+                //     _id: '5833ee414cde151f71df3fa0'
+                // });
             });
         }
 
