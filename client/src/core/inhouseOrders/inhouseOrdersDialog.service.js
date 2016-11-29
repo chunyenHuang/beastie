@@ -86,6 +86,16 @@ class inhouseOrdersDialog {
                     this.populateInhouseOrders('reset');
                 }
 
+                updateOrder(){
+                    this.Orders.update({
+                        id: this.order_id
+                    }, {
+                        isRush: this.order.isRush
+                    }, (res)=>{
+                        console.log(res);
+                    });
+                }
+
                 populateInhouseOrders(reset) {
                     angular.forEach(this.list, (listItem) => {
                         let value = [];
