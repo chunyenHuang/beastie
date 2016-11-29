@@ -7,21 +7,14 @@
         </div>
     </md-toolbar>
     <md-content layout="column" flex layout-fill>
-        <div class="padding-box" ng-show="type.type=='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
-            <h3>
-                {{type.zhName}} {{type.name}}
-            </h3>
-            <div layout="row">
-                <md-button
-                    ng-repeat="item in type.subItems"
-                    ng-click="$ctrl.assignToOrder(type.name, item)"
-                    ng-class="{
-                        'md-accent': $ctrl.isInOrder(type.name, item),
-                        'md-raised': $ctrl.isInOrder(type.name, item)
-                    }">
-                    {{item.zhName}} {{item.name}}
-                </md-button>
-            </div>
+        <div class="" layout="row" layout-align="center center" flex="none" ng-show="$ctrl.order_id">
+            <md-checkbox
+                ng-true-value="true"
+                ng-false-value="false"
+                ng-model="$ctrl.order.isRush"
+                ng-change="$ctrl.updateOrder()" aria-label="Checkbox 1">
+                <h5>Rush?</h5>
+            </md-checkbox>
         </div>
         <div class="padding-box" ng-show="type.type!='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
             <h3>
