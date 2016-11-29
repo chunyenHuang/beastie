@@ -4,10 +4,16 @@
     </div>
     <h2>Welcome Back~ {{$ctrl.customer.firstname}}</h2>
     <div class="" flex></div>
-
-    <!-- <md-button class="md-warn md-raised" ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button> -->
 </div>
+<md-divider></md-divider>
+<div class="" layout="row" layout-align="center center">
+    <md-button ng-click="$ctrl.makeAppointment()">Make an Appointment</md-button>
+    <md-button ng-click="$ctrl.selfService()">Self Service</md-button>
+    <md-button ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button>
+</div>
+<md-divider></md-divider>
 <div class="main" layout="column" flex layout-align="center center">
+    <h5>My Visits: {{$ctrl.orders.length}}</h5>
     <md-content layout="row" layout-align="start center" flex>
         <div class="order-box" layout="column" ng-repeat="order in $ctrl.orders">
             <md-subheader>
@@ -18,14 +24,8 @@
             </div>
         </div>
     </md-content>
-    <!-- <div class="" layout="column" layout-align="start center" ng-show="!$ctrl.isScheduled()">
-        <md-button ng-click="$ctrl.makeAppointment()">Make appointment now</md-button>
-    </div>
-    <div class="" layout="column" layout-align="start center" ng-show="$ctrl.isScheduled()">
-        <md-button ng-click="$ctrl.checkIn()">Check In My Appointment</md-button>
-    </div> -->
 </div>
-
+<md-divider></md-divider>
 <div class="footer md-padding" layout="row" layout-align="center center">
     <md-button ng-click="$ctrl.updateMyInfo()">My Info</md-button>
     <md-button ng-repeat="pet in $ctrl.customer.pets"

@@ -50,7 +50,7 @@ const listItemsInhouseOrdersComponent = {
             return {
                 type: 'cut',
                 multiple: false,
-                name: null,
+                name: ' ',
                 zhName: null,
                 subItems: []
             };
@@ -71,7 +71,7 @@ const listItemsInhouseOrdersComponent = {
 
         getSubItemTemp() {
             return {
-                name: null,
+                name: ' ',
                 zhName: null,
                 isActivated: true,
                 isDeleted: false

@@ -1,62 +1,117 @@
 const AbstractController = require('../../abstract/AbstractController.js');
-// const ObjectId = require('mongodb').ObjectID;
+const OrdersController = require('../../resources/orders/orders.controller.js');
+const Orders = new OrdersController;
 
 class CustomerCheckInController extends AbstractController {
-    checkIn(req, res) {
-        let customer;
+    constructor(){
+        super();
+        this.checkIn = this.checkIn.bind(this);
+    }
+    _findCustomer(req, res, next){
         const query = req.collection.find({
             phone: req.params.phone
         });
         query.toArray((err, results) => {
             if (err || results.length === 0) {
-                res.statusCode = 500;
+                res.statusCode = 400;
                 res.send('Can not find Customer');
             } else {
-                customer = results[0];
-                req.collection.update({
-                    phone: req.params.phone
-                }, {
-                    $set: {
-                        lastLoginAt: new Date()
-                    }
-                }, (err) => {
-                    if (err) {
-                        res.statusCode = 500;
-                        res.send('Can not update Customer lastLoginAt');
-                    } else {
-                        req.db.collection('orders').update({
-                            customer_id: (customer._id).toString(),
-                            checkInAt: null,
-                            isCanceled: false,
-                            notShowup: false
-                        }, {
-                            $set: {
-                                checkInAt: new Date()
-                            }
-                        }, ()=>{
-                            res.statusCode = 200;
-                            res.json({
-                                _id: customer._id
-                            });
-                            //
-                            // if (err) {
-                            //     res.statusCode = 500;
-                            //     res.send('Can not update Order checkInAt');
-                            //     res.statusCode = 200;
-                            //     res.json({
-                            //         _id: customer._id
-                            //     });
-                            //
-                            // } else {
-                            //     res.statusCode = 200;
-                            //     res.json({
-                            //         _id: customer._id
-                            //     });
-                            // }
-                        });
-                    }
-                });
+                req.customer = results[0];
+                next();
             }
+        });
+    }
+
+    _updateCustomerLastLoginAt(req, res, next){
+        req.collection.update({
+            id: req.customer._id
+        }, {
+            $set: {
+                lastLoginAt: new Date()
+            }
+        }, (err) => {
+            if (err) {
+                res.statusCode = 500;
+                res.send({
+                    customer_id: req.customer._id,
+                    message: 'Can not update Customer lastLoginAt'
+                });
+            } else {
+                next();
+            }
+        });
+    }
+
+    _getTodayNextNumber(req, res, next){
+        Orders._setFromTo(req, res, ()=>{
+            req.collection = req.db.collection('orders');
+            Orders._getByDate(req, res, (results)=>{
+                if(results.length===0){
+                    res.statusCode = 500;
+                    res.send({
+                        customer_id: req.customer._id,
+                        message: 'Can not find any orders for today'
+                    });
+                } else {
+                    next(results);
+                }
+            });
+        });
+    }
+
+    checkIn(req, res) {
+        req.today = new Date();
+        this._findCustomer(req, res, ()=>{
+            this._updateCustomerLastLoginAt(req, res, ()=>{
+                this._getTodayNextNumber(req, res, (todayOrders)=>{
+                    let currentCheckInNumber = 0;
+                    let order;
+                    for (var i = 0; i < todayOrders.length; i++) {
+                        if(todayOrders[i].checkInNumber){
+                            if(todayOrders[i].checkInNumber > currentCheckInNumber){
+                                currentCheckInNumber = todayOrders[i].checkInNumber;
+                            }
+                        }
+                        if(todayOrders[i].customer_id.toString() == req.customer._id.toString()){
+                            order = todayOrders[i];
+                        }
+                    }
+                    const checkInNumber = (currentCheckInNumber + 1);
+
+                    req.db.collection('orders').update({
+                        _id: order._id,
+                        checkInAt: null,
+                        checkInNumber: null
+                    }, {
+                        $set: {
+                            checkInAt: req.today,
+                            checkInNumber: checkInNumber
+                        }
+                    }, (err, results)=>{
+                        if(results.result.nModified != 0){
+                            const response = {
+                                order_id: order._id,
+                                customer_id: req.customer._id,
+                                checkInAt: req.today,
+                                checkInNumber: checkInNumber
+                            };
+                            const io = req.app.get('socket-io');
+                            io.sockets.emit('customerCheckIn', response);
+                            res.statusCode = 200;
+                            res.json(response);
+                        } else {
+                            const response = {
+                                order_id: order._id,
+                                customer_id: req.customer._id,
+                                checkInAt: order.checkInAt,
+                                checkInNumber: order.checkInNumber
+                            };
+                            res.statusCode = 500;
+                            res.json(response);
+                        }
+                    });
+                });
+            });
         });
     }
 }

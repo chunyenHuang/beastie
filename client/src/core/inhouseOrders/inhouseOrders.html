@@ -13,7 +13,7 @@
             </h3>
             <div layout="row">
                 <md-button
-                    ng-repeat="item in type.subItems"
+                    ng-repeat="item in type.subItems | orderBy:['type', 'name']"
                     ng-click="$ctrl.assignToOrder(type.name, item)"
                     ng-class="{
                         'md-accent': $ctrl.isInOrder(type.name, item),

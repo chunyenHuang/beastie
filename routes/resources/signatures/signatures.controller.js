@@ -3,10 +3,12 @@ const ObjectId = require('mongodb').ObjectID;
 class SignaturesController extends AbstractController {
     getTemplate(req, res) {
         const template = {
-            customer_id: null,
+            // save all as it.
             order_id: null,
-            name: null,
-            description: null,
+            customer_id: null,
+            customer: {},
+            pet: {},
+            waiver: {},
             signatures: null
         };
         res.json(template);
@@ -22,8 +24,8 @@ class SignaturesController extends AbstractController {
         }
     }
 
-    signed(req, res){
-        Object.assign(req.body,{
+    signed(req, res) {
+        Object.assign(req.body, {
             isDeleted: false,
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
@@ -31,7 +33,7 @@ class SignaturesController extends AbstractController {
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
-                if (req.body.name != 'registration'){
+                if (req.body.name != 'registration') {
                     const io = req.app.get('socket-io');
                     io.sockets.emit('signaturesFinished', {
                         // test

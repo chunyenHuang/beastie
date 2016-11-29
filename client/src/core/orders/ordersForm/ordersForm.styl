@@ -17,21 +17,29 @@
     .current-order-text
         color: #ff7a7a
         font-weight: bold
-    .time-date.vertical
+    .time-date
+        // .vertical
         input
             background-color: rgb(255, 255, 255)
             border 0px
         .am-pm-btn
-            margin-top: -100px
-            margin-left: 100px
+            margin-top: 0px
+            margin-left: -70px
             color: white
             background-color: rgb(198, 89, 96)
     .time-date.vertical.full-mode > .control
-        height: 35rem
+        height: 23rem
+    .time-date.full-mode > .control
+        height: 23rem
+        > .full-title
+            display: none;
     .time-date > .control > .slider > .date-control
-        height: 20rem
+        height: 22rem
     .time-date > .control > .slider > .time-control
-        height: 15rem
+        height: 22rem
+        .buttons
+            height: 40px
+            z-index: 5
     .time-date.vertical.full-mode > .control > .full-title
         display: none;
     .time-date.full-mode > .buttons

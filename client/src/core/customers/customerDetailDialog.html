@@ -1,0 +1,172 @@
+<div id="preview-large" class="hide">
+    <img src="{{$ctrl.previewLargeUrl}}" alt=""  ng-click="$ctrl.toggleLargePic()"/>
+</div>
+<div layout="column" layout-align="start center" flex>
+    <md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
+        <!-- <h5>Customer - Pet - Detail</h5> -->
+        <div flex></div>
+        <div class="">
+            <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+        </div>
+    </md-toolbar>
+    <md-content layout="column" flex layout-fill>
+        <md-tabs md-border-bottom flex layout="column" md-center-tabs md-customer="$ctrl.customerTab">
+          <md-tab label="gallery">
+              <md-content layout="row" layout-align="start start" flex class="gallery">
+                  <md-content layout="column" ng-repeat="order in $ctrl.customer.orders" class="gallery-box">
+                      <md-subheader>
+                          {{order.scheduleAt | date:'yyyy-MM-dd'}}
+                      </md-subheader>
+                      <md-content layout="column" flex>
+                          <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]" ng-click="$ctrl.toggleLargePic(url)"/>
+                      </md-content>
+                  </md-content>
+              </md-content>
+          </md-tab>
+          <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
+            <md-content class="customer-form" flex layout="column">
+                <md-subheader class="md-no-sticky">
+                    Information
+                </md-subheader>
+                <div layout="row" class="md-padding">
+                    <md-input-container class="md-block">
+                        <label>First Name</label>
+                        <input type="text" ng-model="$ctrl.customer.firstname"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Last Name</label>
+                        <input type="text" ng-model="$ctrl.customer.lastname"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Primary Phone (for login)</label>
+                        <input type="text" ng-model="$ctrl.customer.phone"/>
+                    </md-input-container>
+                    <div class="" flex></div>
+                    <md-button ng-show="$ctrl.customer" ng-click="$ctrl.update($ctrl.customer)" class="md-raised md-primary">Update</md-button>
+                </div>
+                <md-subheader class="md-no-sticky">
+                    Address
+                </md-subheader>
+
+                <div layout="row" class="md-padding" flex="none">
+                    <md-input-container class="md-block">
+                        <label>Street</label>
+                        <input type="text" ng-model="$ctrl.customer.address.street"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>City</label>
+                        <input type="text" ng-model="$ctrl.customer.address.city"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>state</label>
+                        <input type="text" ng-model="$ctrl.customer.address.state"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>zipCode</label>
+                        <input type="text" ng-model="$ctrl.customer.address.zipCode"/>
+                    </md-input-container>
+                </div>
+                <md-subheader class="md-no-sticky">
+                    Emergency Contacts
+                </md-subheader>
+                <div layout="row" flex="none" class="md-padding" ng-repeat="contact in $ctrl.customer.emergencyContact">
+                    <md-input-container class="md-block">
+                        <label>name</label>
+                        <input type="text" ng-model="contact.name"/>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Relationship</label>
+                        <input type="text" ng-model="contact.relationship"/>
+                    </md-input-container>
+                    <md-input-container class="md-block" ng-repeat="phone in contact.phones">
+                        <label>phone {{$index+1}}</label>
+                        <input type="text" ng-model="phone"/>
+                    </md-input-container>
+                </div>
+            </md-content>
+          </md-tab>
+          <md-tab label="{{pet.name}}" ng-repeat="pet in $ctrl.customer.pets">
+              <md-content layout="column" flex class="md-padding">
+                  <div layout="row" flex="none">
+                      <div flex></div>
+                      <md-button ng-show="pet" ng-click="$ctrl.update(pet)" class="md-raised md-primary">Update Pet</md-button>
+                  </div>
+                  <md-subheader class="md-no-sticky">
+                      Information
+                  </md-subheader>
+                  <div layout="column" flex="none" class="md-padding">
+                      <md-input-container class="md-block">
+                          <label>Name</label>
+                          <input type="text" ng-model="pet.name"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Breed</label>
+                          <input type="text" ng-model="pet.breeds"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Color</label>
+                          <input type="text" ng-model="pet.phone"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Weight</label>
+                          <input type="text" ng-model="pet.weight"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Gender</label>
+                          <input type="text" ng-model="pet.gender"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Species</label>
+                          <input type="text" ng-model="pet.specices"/>
+                      </md-input-container>
+                      <md-input-container class="md-block">
+                          <label>Birthday</label>
+                          <input type="text" ng-model="pet.birthday"/>
+                      </md-input-container>
+                  </div>
+                  <md-subheader class="md-no-sticky">
+                      vaccinations
+                  </md-subheader>
+                  <div layout="column" flex="none" class="md-padding">
+                      <!-- <md-input-container class="md-block">
+                          <label>Street</label>
+                          <input type="text" ng-model="pet.address.street"/>
+                      </md-input-container> -->
+                  </div>
+                  <md-subheader class="md-no-sticky">
+                      previousHistory
+                  </md-subheader>
+                  <div layout="column" flex="none" class="md-padding" ng-repeat="contact in pet.emergencyContact">
+                      <!-- <md-input-container class="md-block">
+                          <label>name</label>
+                          <input type="text" ng-model="contact.name"/>
+                      </md-input-container> -->
+                  </div>
+                  <md-subheader class="md-no-sticky">
+                      specialConditions
+                  </md-subheader>
+                  <div layout="column" flex="none" class="md-padding" ng-repeat="contact in pet.emergencyContact">
+                      <!-- <md-input-container class="md-block">
+                          <label>name</label>
+                          <input type="text" ng-model="contact.name"/>
+                      </md-input-container> -->
+                  </div>
+
+                  <md-divider></md-divider>
+                  <div layout="column" flex="none" class="md-padding">
+                      <!-- <label>Last Login At</label>
+                      {{pet.lastLoginAt | date:'EEEE h:mma @ MMMM d, y'}}
+                      <label>Created At</label> -->
+                      {{pet.updatedAt | date:'EEEE h:mma @ MMMM d, y'}}
+                  </div>
+              </md-content>
+          </md-tab>
+          <md-tab label="history">
+            <md-content class="md-padding">
+              <h1 class="md-display-2">history</h1>
+              {{$ctrl.customer.orders}}
+            </md-content>
+          </md-tab>
+        </md-tabs>
+    </md-content>
+</div>

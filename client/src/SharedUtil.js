@@ -4,7 +4,9 @@ class SharedUtil {
         return [];
     }
 
-    constructor() {}
+    constructor() {
+
+    }
 
     getDayName(date) {
         if (!date) {
@@ -32,6 +34,32 @@ class SharedUtil {
             default:
         }
     }
+
+    _parseDate(dateString) {
+        const newDateString = new Date(dateString);
+        dateString = new Date(
+            newDateString.getFullYear(),
+            newDateString.getMonth(),
+            newDateString.getDate()
+        );
+        return dateString;
+    }
+
+    isWithinToday(dateString){
+        const target = new Date(dateString).getTime();
+        const today = new Date();
+        const todayStartAt = this._parseDate(today).getTime();
+        const todayEndAt = this._parseDate(new Date(today.getTime() + 24 * 60 * 60 * 1000)).getTime();
+        if(
+            target>todayStartAt &&
+            target<todayEndAt
+        ){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     daysBetween(pastDate, otherDate ){
         // 1 day = 8.64e+7 milliseconds
         if(otherDate) {

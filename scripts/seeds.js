@@ -24,12 +24,17 @@ fs.readdirSync(routePath).forEach((file) => {
 dbClient.connect(dbUrl, (err, db) => {
     (function insert(index) {
         if (index == routes.length) {
-            return db.close();
+            db.close();
+            return process.exit();
         }
         const collection = routes[index];
         var count = 0;
         db.collection(collection).remove({}, (err) => {
-            if (!err) {
+            console.log();
+            if (!err && initDatas[collection].length === 0) {
+                index++;
+                return insert(index);
+            } else if (!err) {
                 initDatas[collection].forEach((data) => {
                     // if (data._id) {
                     //     data._id = ObjectId(data._id);
@@ -40,8 +45,8 @@ dbClient.connect(dbUrl, (err, db) => {
                         }
                         if (prop.search(/At$/) > -1) {
                             if (data[prop]) {
-                                console.log(prop);
-                                console.log(data[prop]);
+                                // console.log(prop);
+                                // console.log(data[prop]);
                                 data[prop] = new Date(data[prop]);
                             }
                         }

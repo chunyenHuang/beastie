@@ -18,11 +18,12 @@ const listItemsServicesComponent = {
 
         getTemplate() {
             return {
-                name: null,
+                name: ' ',
                 description: null,
                 zhName: null,
                 zhDescription: null,
                 price: null,
+                estimatedHours: 1,
                 isActivated: true,
                 isDeleted: false
             };

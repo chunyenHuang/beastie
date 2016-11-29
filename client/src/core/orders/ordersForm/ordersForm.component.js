@@ -9,24 +9,31 @@ const ordersFormComponent = {
     controller: /* @ngInject */ class OrdersFormController {
         static get $inject() {
             return [
-                '$scope', '$timeout', '$state', '$stateParams',
+                '$scope', '$timeout', '$state', '$stateParams', 'Settings',
                 'Orders', 'Customers', 'Pets', 'SharedUtil', 'ListItems'
             ];
         }
         constructor(
-            $scope, $timeout, $state, $stateParams,
+            $scope, $timeout, $state, $stateParams, Settings,
             Orders, Customers, Pets, SharedUtil, ListItems
         ) {
             this.$scope = $scope;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.Settings = Settings;
             this.Orders = Orders;
             this.Customers = Customers;
             this.Pets = Pets;
             this.getDayName = SharedUtil.getDayName;
             this.ListItems = ListItems;
             this.scheduleTime = [9, 0];
+            this.Settings.query({
+                type: 'officeHours'
+            }, (res)=>{
+                this.officeHours = res[0].officeHours;
+                // console.log(this.officeHours);
+            });
             this.today = new Date();
             this.scheduleDate = {
                 min: new Date(
@@ -43,7 +50,7 @@ const ordersFormComponent = {
             this.yesterday = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
             this.tomorrow = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
-            $scope.$watch('$ctrl.order.scheduleAt', (value) => {
+            $scope.$watch('$ctrl.order.scheduleAt', () => {
                 if (this.order && this.order.scheduleAt) {
                     this.getOrderForDate(this.order.scheduleAt);
                 }
@@ -57,37 +64,39 @@ const ordersFormComponent = {
             ) {
                 return this.$state.go('core.orders');
             }
-            this.getServicesListItems();
             this.setOrder();
+            this.getServicesListItems();
         }
 
         getServicesListItems() {
             this.ListItems.query({
                 type: 'services'
             }, (results) => {
+                // console.log(results);
                 this.services = results[0].items;
             });
         }
 
         setOrder() {
-            console.log(this.$stateParams);
+            // console.log(this.$stateParams);
             if (this.$stateParams.order_id) {
-                console.warn('edit order');
+                // console.warn('edit order');
                 // edit order
                 this.Orders.get({
                     id: this.$stateParams.order_id
                 }, (order) => {
                     order.scheduleAt = new Date(order.scheduleAt);
                     this.order = order;
+                    // console.log(this.order);
                     this.customer_id = this.order.customer_id;
                     this.getCustomer(this.customer_id);
                     this.getPet(this.order.pet_id);
                     this.defaultDate = new Date(this.order.scheduleAt);
-                    console.log(this.defaultDate);
+                    // console.log(this.defaultDate);
                     this.getOrderForDate(this.order.scheduleAt);
                 });
             } else if (this.$stateParams.customer_id) {
-                console.warn('new order');
+                // console.warn('new order');
                 // new order
                 this.setTemplate();
                 this.customer_id = this.$stateParams.customer_id;
@@ -97,7 +106,7 @@ const ordersFormComponent = {
                 const today = new Date();
                 today.setHours(9, 0, 0);
                 this.defaultDate = new Date(today);
-                console.info(this.defaultDate);
+                // console.info(this.defaultDate);
             } else {
                 // new customer
                 this.defaultDate = null;
@@ -140,7 +149,6 @@ const ordersFormComponent = {
             this.Orders.get({
                 id: 'template'
             }, (template) => {
-                console.log(template);
                 this.order = template;
             });
         }
@@ -170,9 +178,7 @@ const ordersFormComponent = {
                     this.scheduleTime[1] = (this.scheduleTime[1] > 59) ? 0 : this.scheduleTime[1];
                     break;
                 default:
-
             }
-
             return this.setNewHour();
         }
 
@@ -197,17 +203,43 @@ const ordersFormComponent = {
             if (!this.order.scheduleAt) {
                 return;
             }
-            console.log(this.order.scheduleAt);
+            // console.log(this.order.scheduleAt);
             if (this.order.scheduleAt.getHours() <= 12) {
                 this.scheduleTimeIsAm = true;
             }
             const hour = (this.scheduleTimeIsAm) ? this.scheduleTime[0] : this.scheduleTime[0] + 12;
             const minute = parseInt(this.scheduleTime[1]);
-            console.log();
             this.order.scheduleAt.setHours(
                 hour, minute, 0
             );
-            console.log('hour', hour);
+            // console.log('hour', hour);
+        }
+
+        validateTime(){
+            if(!this.order){
+                return false;
+            } else if (!this.order.scheduleAt){
+                return false;
+            }
+            const scheduleAt = new Date(this.order.scheduleAt).getHours();
+            let selectedDay;
+            for (let prop in this.officeHours) {
+                if(
+                    new Date(this.order.scheduleAt).getDay() ==
+                    this.officeHours[prop].id
+                ){
+                    selectedDay = this.officeHours[prop];
+                    break;
+                }
+            }
+            if (scheduleAt < selectedDay.from){
+                return false;
+            } else if (scheduleAt >= selectedDay.to) {
+                return false;
+            } else {
+                return true;
+            }
+
         }
 
         submitOrder() {
@@ -231,16 +263,16 @@ const ordersFormComponent = {
                     }, newOrder, () => {
                         this.candidates[newOrder.pet_id] = false;
                         return this.submitOrder();
-                    }, (err) => {
-                        console.log(err);
+                    }, () => {
+                        // console.log(err);
                     });
                 } else {
-                    this.Orders.save(newOrder, (res) => {
-                        console.log(res);
+                    this.Orders.save(newOrder, () => {
+                        // console.log(res);
                         this.candidates[newOrder.pet_id] = false;
                         return this.submitOrder();
-                    }, (err) => {
-                        console.log(err);
+                    }, () => {
+                        // console.log(err);
                     });
                 }
             } else {

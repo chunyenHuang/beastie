@@ -14,7 +14,6 @@ import albums from './albums';
 import components from './components';
 import filters from './filters';
 
-import SharedUtil from './SharedUtil';
 
 const coreModule = angular
     .module('beastie.core', [
@@ -29,11 +28,11 @@ const coreModule = angular
         services,
         signatures,
         albums,
+
         components,
         filters
     ])
     .component('core', coreComponent)
-    .service('SharedUtil', SharedUtil)
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider

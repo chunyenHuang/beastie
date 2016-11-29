@@ -1,13 +1,15 @@
 import customersComponent from './customers.component';
 import customersListComponent from './customersList';
-
 import customersService from './services/customers.service';
+import CustomerDetailDialogService from './customerDetailDialog.service';
 
 const customersModule = angular
     .module('beastie.core.customers', [])
     .component('customers', customersComponent)
     .component('customersList', customersListComponent)
     .service('Customers', customersService)
+    .service('CustomerDetailDialog', CustomerDetailDialogService)
+
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider

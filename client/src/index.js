@@ -18,7 +18,6 @@ import 'client/vendorJs/angularFullscreen';
 import 'client/vendorJs/sc-date-time.js';
 import 'client/vendorJs/sc-date-time.css';
 import 'client/node_modules/font-awesome/css/font-awesome.css';
-import 'client/vendorJs/angularFullScreen';
 
 // configs
 import themeConfig from './themeConfig';
@@ -26,6 +25,7 @@ import resourceConfig from './resourceConfig';
 import languageConfig from './languageConfig';
 import iconConfig from './iconConfig';
 import METADATA from './METADATA';
+import SharedUtil from './SharedUtil';
 
 import Socket from './services/socket.service';
 // Shared
@@ -56,6 +56,7 @@ angular
     ])
     .constant('METADATA', METADATA)
     .service('Socket', Socket)
+    .service('SharedUtil', SharedUtil)
     .config(($stateProvider, $urlRouterProvider) => {
         'ngInject';
         $urlRouterProvider.otherwise('/userAuth');
