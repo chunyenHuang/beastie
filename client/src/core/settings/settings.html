@@ -1,24 +1,51 @@
 <md-content layout="column" flex class="md-padding">
-    <div class="" layout="column">
-        <h3>Company information</h3>
-        <md-input-container class="md-block">
-            <label>name</label>
-            <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
-        </md-input-container>
-        <md-input-container class="md-block">
-            <label>zh name</label>
-            <input type="text" ng-model="$ctrl.company.zhName" aria-label="company-zhName">
-        </md-input-container>
-        <div ng-repeat="phone in $ctrl.company.phones">
+    <div class="" layout="row">
+        <div class="" layout="column" flex="50">
+            <h3>Company information</h3>
             <md-input-container class="md-block">
-                <label>phone</label>
-                <input type="text" ng-model="phone" aria-label="company-phone {{$index}}">
+                <label>name</label>
+                <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>zh name</label>
+                <input type="text" ng-model="$ctrl.company.zhName" aria-label="company-zhName">
+            </md-input-container>
+            <div ng-repeat="phone in $ctrl.company.phones">
+                <md-input-container class="md-block">
+                    <label>phone</label>
+                    <input type="text" ng-model="phone" aria-label="company-phone {{$index}}">
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label>EIN</label>
+                <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
             </md-input-container>
         </div>
-        <md-input-container class="md-block">
-            <label>EIN</label>
-            <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
-        </md-input-container>
+        <div class="" layout="column" flex>
+            <div class="" layout="row">
+                <div class="" flex="40">
+                    <h5>Max Hours a day</h5>
+                </div>
+                <md-input-container class="md-block">
+                    <input type="number" ng-model="$ctrl.officeHours.maxHours" aria-label="max-hours">
+                </md-input-container>
+            </div>
+            <div class="" layout="row" ng-repeat="(day, dayValue) in $ctrl.officeHours.officeHours">
+                <div class="" flex="40">
+                    <h5>{{day}}</h5>
+                </div>
+                <div class="" layout="row" flex>
+                    <md-input-container class="md-block">
+                        <label>from</label>
+                        <input type="number" ng-model="dayValue.from" aria-label="{{day}}-from">
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>to</label>
+                        <input type="number" ng-model="dayValue.to" aria-label="{{day}}-to">
+                    </md-input-container>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="" layout="column">
         <h3>Printer</h3>

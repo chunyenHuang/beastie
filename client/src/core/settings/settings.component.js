@@ -37,6 +37,8 @@ const settingsComponent = {
             this.Settings.query({}, (settings) => {
                 this.settings = settings;
                 this.company = this.findInArray(this.settings, 'type', 'company');
+                this.officeHours = this.findInArray(this.settings, 'type', 'officeHours');
+
             });
         }
 

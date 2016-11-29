@@ -13,7 +13,7 @@ class CustomerCheckInController extends AbstractController {
         });
         query.toArray((err, results) => {
             if (err || results.length === 0) {
-                res.statusCode = 500;
+                res.statusCode = 400;
                 res.send('Can not find Customer');
             } else {
                 req.customer = results[0];
@@ -32,7 +32,10 @@ class CustomerCheckInController extends AbstractController {
         }, (err) => {
             if (err) {
                 res.statusCode = 500;
-                res.send('Can not update Customer lastLoginAt');
+                res.send({
+                    customer_id: req.customer._id,
+                    message: 'Can not update Customer lastLoginAt'
+                });
             } else {
                 next();
             }
@@ -45,7 +48,10 @@ class CustomerCheckInController extends AbstractController {
             Orders._getByDate(req, res, (results)=>{
                 if(results.length===0){
                     res.statusCode = 500;
-                    res.send('Can not find any orders for today.');
+                    res.send({
+                        customer_id: req.customer._id,
+                        message: 'Can not find any orders for today'
+                    });
                 } else {
                     next(results);
                 }
