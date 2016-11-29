@@ -36,25 +36,20 @@ const customersCheckInComponent = {
                     this.$state.go('client.dashboard', {
                         customer_id: res._id
                     });
-                }, () => {
-                    this.$state.go(this.nextState, {
-                        phoneNumber: number
-                    });
+                }, (err) => {
+                    console.log(err);
+                    console.log(err.status);
+                    if (err.status == 400) {
+                        // new customer
+                        this.$state.go(this.nextState, {
+                            phoneNumber: number
+                        });
+                    } else {
+                        this.$state.go('client.dashboard', {
+                            customer_id: err.data.customer_id
+                        });
+                    }
                 });
-                // this.Customers.query({
-                //     phone: number
-                // }, (customers) => {
-                //     if (customers.length > 0) {
-                //         this.$state.go('client.dashboard',{
-                //             customer_id: customers[0]._id
-                //         });
-                //     } else {
-                //     }
-                // }, () => {
-                //     this.$state.go(this.nextState, {
-                //         phoneNumber: number
-                //     });
-                // });
             }
         }
     }

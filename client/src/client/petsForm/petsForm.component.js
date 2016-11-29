@@ -50,13 +50,19 @@ const petsFormComponent = {
             this.setLists();
             this.petVaccinationsNameList = [];
         }
+
+        backToDashboard() {
+            this.$state.go('client.dashboard', {
+                customer_id: this.$stateParams.customer_id
+            });
+        }
+
         takeSnapshot() {
             this.Snapshot().then((res) => {
                 this.pet.file = res.blob;
                 this.preview = res.dataUrl;
             });
         }
-
 
         setLists() {
             this.species = ['dog', 'cat'];
@@ -74,20 +80,18 @@ const petsFormComponent = {
                 type: 'vaccinations'
             }, (results) => {
                 this.vaccinations = results[0].items;
+                this.requiredVaccinations = [];
+                for (var i = 0; i < this.vaccinations.length; i++) {
+                    if (this.vaccinations[i].rejectOrderIfIsExpired) {
+                        this.requiredVaccinations.push(this.vaccinations[i].name);
+                    }
+                }
                 console.log(this.vaccinations);
                 this._genVaccinationsNameList(this.pet.vaccinations);
                 // this._genVaccinationsNameList(this.vaccinations);
                 this._applyVaccineToPet();
-            })
-        }
-        takeSnapshot() {
-            this.Snapshot.start((image) => {
-                this.pet.picture = image;
-                console.log(this.vaccinations);
-                this._genVaccinationsNameList(this.vaccinations);
             });
         }
-
 
         setPet(id) {
             this.Pets.get({
@@ -100,21 +104,23 @@ const petsFormComponent = {
                 this.setNewPet();
             });
         }
+
         setNewPet() {
             this.Pets.get({
                 id: 'template'
             }, (template) => {
                 this.isNewPet = true;
                 this.pet = template;
-                this.pet.customer_id = this.$stateParams.customer_id
+                this.pet.customer_id = this.$stateParams.customer_id;
                 this.pet.species = 'dog';
             });
         }
         _applyVaccineToPet() {
-            console.info(this.vaccinations);
-            for (let i=0; i<this.vaccinations.length; i++) {
-                console.log(this.vaccinations[i]);
-                if(this.petVaccinationsNameList.indexOf(this.vaccinations[i].name) < 0) {
+            for (let i = 0; i < this.vaccinations.length; i++) {
+                if (this.petVaccinationsNameList.indexOf(this.vaccinations[i].name) < 0) {
+                    if (!this.pet.vaccinations || !angular.isArray(this.pet.vaccinations)) {
+                        this.pet.vaccinations = [];
+                    }
                     this.pet.vaccinations.push({
                         name: this.vaccinations[i].name,
                         issuedAt: null,
@@ -123,23 +129,29 @@ const petsFormComponent = {
                     });
                 }
             }
-            console.log(this.pet.vaccinations);
         }
+
         _genVaccinationsNameList(vaccinations) {
+            if (!angular.isArray(vaccinations)) {
+                return;
+            }
             for (let i = 0; i < vaccinations.length; i++) {
                 this.petVaccinationsNameList.push(vaccinations[i].name);
             }
-            console.info(this.petVaccinationsNameList)
         }
+
         _parseVaccinationDate() {
-                for (let i = 0; i < this.pet.vaccinations.length; i++) {
-                    this.pet.vaccinations[0].issuedAt =
-                        new Date(this.pet.vaccinations[0].issuedAt);
-                    this.pet.vaccinations[0].expiredAt =
-                        new Date(this.pet.vaccinations[0].expiredAt)
-                }
+            if (!this.pet.vaccinations || !angular.isArray(this.pet.vaccinations)) {
+                return;
             }
-            // daysBetween(pasdate, otherdate || now )
+            for (let i = 0; i < this.pet.vaccinations.length; i++) {
+                this.pet.vaccinations[0].issuedAt =
+                    new Date(this.pet.vaccinations[0].issuedAt);
+                this.pet.vaccinations[0].expiredAt =
+                    new Date(this.pet.vaccinations[0].expiredAt);
+            }
+        }
+
         setDaysBeforeExpire(item, index) {
             let copyIssuedAt = angular.copy(item.issuedAt);
             let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() +
@@ -150,15 +162,14 @@ const petsFormComponent = {
 
             item.daysBeforeDue = Math.ceil(this.SharedUtil.daysBetween(item.expiredAt));
             if (item.daysBeforeDue < this.vaccinations[index].remindCustomerWithinDays) {
-                console.log('!!!!!!!!!!!');
                 const prompt = this.$mdDialog.prompt()
-                .title(item.name + ' Vaccine Due In ' + item.daysBeforeDue +' Days!')
-                // .textContent('Bowser is a common name.')
-                // .placeholder('Phone Number')
-                // .ariaLabel('Phone Number')
-                // .ok('Go')
-                .cancel('Got It')
-                .clickOutsideToClose(false);
+                    .title(item.name + ' Vaccine Due In ' + item.daysBeforeDue + ' Days!')
+                    // .textContent('Bowser is a common name.')
+                    // .placeholder('Phone Number')
+                    // .ariaLabel('Phone Number')
+                    // .ok('Go')
+                    .cancel('Got It')
+                    .clickOutsideToClose(false);
 
                 this.$mdDialog.show(prompt);
             }
@@ -166,55 +177,71 @@ const petsFormComponent = {
             // let dateDiff = effectiveTill - this.dateToday;
             // // 1 day = 8.64e+7 milliseconds
             // item.daysBeforeExpire = Math.floor(dateDiff/8.64e+7) + 1;
-
         }
+
         addTextarea(name) {
-                this.pet[name].push({
-                    description: 'Please describe.',
-                    createdAt: new Date()
-                });
-            }
-            // _setVaccinations() {
-            //     if (this.pet && this.vaccinations) {
-            //         this.pet.vaccinations =
-            //             Object.assign({}, this.vaccinations, this.pet.vaccinations);
-            //             console.info(this.pet.vaccinations);
-            //     } else { console.log('_setVaccinations not ready'); }
-            // }
+            this.pet[name].push({
+                description: 'Please describe.',
+                createdAt: new Date()
+            });
+        }
+
         _clearTextarea() {
-            const cleanSpCond = []
+            const cleanSpCond = [];
             for (let i = 0; i < this.pet.specialConditions.length; i++) {
                 if (this.pet.specialConditions[i].description &&
                     this.pet.specialConditions[i].description !== 'Please describe.') {
-                    cleanSpCond.push(this.pet.specialConditions[i])
+                    cleanSpCond.push(this.pet.specialConditions[i]);
                 }
             }
-            const cleanAdInstruct = []
+            const cleanAdInstruct = [];
             for (let i = 0; i < this.pet.additionalInstructions.length; i++) {
                 if (this.pet.additionalInstructions[i].description &&
                     this.pet.additionalInstructions[i].description !== 'Please describe.') {
-                    cleanAdInstruct.push(this.pet.additionalInstructions[i])
+                    cleanAdInstruct.push(this.pet.additionalInstructions[i]);
                 }
             }
             this.pet.specialConditions = cleanSpCond;
             this.pet.additionalInstructions = cleanAdInstruct;
         }
-        validate() {
-            console.info(this.petVaccinationsNameList)
 
+        validate() {
             if (!this.pet) {
                 return false;
             } else if (!this.pet.name) {
+                this.errorMessage = 'You must give your pet a name.';
                 return false;
             } else {
+                this.errorMessage = null;
                 return true;
             }
 
         }
+
+        checkVaccination() {
+            for (var i = 0; i < this.pet.vaccinations.length; i++) {
+                if (
+                    this.requiredVaccinations.indexOf(this.pet.vaccinations[i].name) > -1 &&
+                    (!this.pet.vaccinations[i].expiredAt && !this.pet.vaccinations[i].issuedAt)
+                ) {
+                    console.log(this.pet.vaccinations[i].name + ' is required. ');
+                    this.errorMessage = this.pet.vaccinations[i].name + ' is required. ';
+                    return false;
+                }
+            }
+            this.errorMessage = null;
+            return true;
+        }
+
         update() {
             console.log(this.pet);
             this._clearTextarea();
-            if(!this.validate()){
+            if (!this.validate()) {
+                this.selectedTab = 0;
+                return false;
+            }
+            if (!this.checkVaccination()) {
+                this.selectedTab = 1;
                 return false;
             }
             if (this.isNewPet) {
