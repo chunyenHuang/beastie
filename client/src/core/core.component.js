@@ -33,7 +33,7 @@ const coreComponent = {
 
         $onInit() {
             // this.newCustomer(123456789);
-            this.openInhouseOrdersDialog();
+            // this.openInhouseOrdersDialog();
             // this.testStartup();
         }
 
