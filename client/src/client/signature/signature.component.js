@@ -52,7 +52,6 @@ const signatureComponent = {
             this.cleanup();
             this.canvas = this.$document[0].getElementById('signature-canvas');
             this.canvas.style.border = '2px solid';
-
             this.context = this.canvas.getContext('2d');
             // this.context.fillStyle = '#959595';
             // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -77,39 +76,39 @@ const signatureComponent = {
             //     }
             // });
 
-            // this.canvas.addEventListener('mousedown', (event) => {
-            //     console.log(this.$swipe);
-            //     this._addClick(event);
-            //     this.isDrawing = true;
-            //     this._redraw();
-            // });
-            // this.canvas.addEventListener('mousemove', (event) => {
-            //     if (this.isDrawing) {
-            //         this._addClick(event);
-            //         this._redraw();
-            //     }
-            // });
-            // this.canvas.addEventListener('mouseup', () => {
-            //     this.isDrawing = false;
-            // });
-            // this.canvas.addEventListener('mouseleave', () => {
-            //     this.isDrawing = false;
-            // });
-            //
-            // this.canvas.addEventListener('touchstart', (event) => {
-            //     this._addClick(event);
-            //     this.isDrawing = true;
-            //     this._redraw();
-            // });
-            // this.canvas.addEventListener('touchmove', (event) => {
-            //     if (this.isDrawing) {
-            //         this._addClick(event);
-            //         this._redraw();
-            //     }
-            // });
-            // this.canvas.addEventListener('touchend', () => {
-            //     this.isDrawing = false;
-            // });
+            this.canvas.addEventListener('mousedown', (event) => {
+                console.log(this.$swipe);
+                this._addClick(event);
+                this.isDrawing = true;
+                this._redraw();
+            });
+            this.canvas.addEventListener('mousemove', (event) => {
+                if (this.isDrawing) {
+                    this._addClick(event);
+                    this._redraw();
+                }
+            });
+            this.canvas.addEventListener('mouseup', () => {
+                this.isDrawing = false;
+            });
+            this.canvas.addEventListener('mouseleave', () => {
+                this.isDrawing = false;
+            });
+
+            this.canvas.addEventListener('touchstart', (event) => {
+                this._addClick(event);
+                this.isDrawing = true;
+                this._redraw();
+            });
+            this.canvas.addEventListener('touchmove', (event) => {
+                if (this.isDrawing) {
+                    this._addClick(event);
+                    this._redraw();
+                }
+            });
+            this.canvas.addEventListener('touchend', () => {
+                this.isDrawing = false;
+            });
 
 
             //
