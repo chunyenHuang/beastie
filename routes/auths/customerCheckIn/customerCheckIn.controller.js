@@ -83,24 +83,28 @@ class CustomerCheckInController extends AbstractController {
                         }
                     }, (err, results)=>{
                         if(results.result.nModified != 0){
-                            res.statusCode = 200;
-                            res.json({
+                            const response = {
                                 order_id: order._id,
                                 customer_id: req.customer._id,
                                 checkInAt: req.today,
                                 checkInNumber: checkInNumber
-                            });
+                            };
+                            const io = req.app.get('socket-io');
+                            io.sockets.emit('customerCheckIn', response);
+                            res.statusCode = 200;
+                            res.json(response);
                         } else {
-                            res.statusCode = 500;
-                            res.json({
+                            const response = {
                                 order_id: order._id,
                                 customer_id: req.customer._id,
                                 checkInAt: order.checkInAt,
                                 checkInNumber: order.checkInNumber
-                            });
+                            };
+                            res.statusCode = 500;
+                            res.json(response);
                         }
                     });
-                })
+                });
             });
         });
     }
