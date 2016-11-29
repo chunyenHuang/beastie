@@ -210,8 +210,8 @@ class OrdersController extends AbstractController {
 
     _setFromTo(req, res, next){
         if (req.query.date) {
-            req.from = this._getDateFromToday(1, this._parseDate(req.query.date));
-            req.to = this._getDateFromToday(2, this._parseDate(req.query.date));
+            req.from = this._getDateFromToday(0, this._parseDate(req.query.date));
+            req.to = this._getDateFromToday(1, this._parseDate(req.query.date));
         } else {
             let today = this._getDateFromToday();
             req.from = (req.query.from) ? this._parseDate(req.query.from) :
