@@ -248,7 +248,8 @@ const ordersFormComponent = {
                 if (newOrder._id) {
                     this.Orders.update({
                         id: newOrder._id
-                    }, newOrder, () => {
+                    }, newOrder, (res) => {
+                        console.info(res);
                         this.candidates[newOrder.pet_id] = false;
                         return this.submitOrder();
                     }, (err) => {

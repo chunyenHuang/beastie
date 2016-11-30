@@ -59,7 +59,11 @@ class SharedUtil {
             return false;
         }
     }
-
+    daysBetweenParsedDate(d1, d2) {
+        d2 = d2 || new Date();
+        let diff = this._parseDate(d1).valueOf() - this._parseDate(d2).valueOf();
+        return diff/8.64e+7;
+    }
     daysBetween(pastDate, otherDate ){
         // 1 day = 8.64e+7 milliseconds
         if(otherDate) {
@@ -69,6 +73,11 @@ class SharedUtil {
             let diffNow = pastDate.valueOf() - Date.now();
             return diffNow/8.64e+7;
         }
+    }
+    isToday(date) {
+        if (date) {
+            return (new Date(date).toDateString() === new Date().toDateString());
+        } else { return false; }
     }
 }
 

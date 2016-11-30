@@ -22,9 +22,10 @@ const ordersModule = angular
                 template: '<orders layout="column" flex></orders>'
             })
             .state('core.orders.list', {
-                url: '/list',
+                url: '/list?type',
                 // component: 'orders'
                 template: '<orders-list layout="column" flex></orders-list>'
+            
             })
             .state('core.orders.form', {
                 url: '/form?customer_id&order_id',
