@@ -295,6 +295,8 @@ app.use(errorHandler());
 //     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 // });
 if (process.env.CLOUD9) {
+    const server = require('http').createServer(app);
+    const io = require('socket.io')(server);
     server.listen(app.get('port'), () => {
         let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
         console.log(mode.green);
