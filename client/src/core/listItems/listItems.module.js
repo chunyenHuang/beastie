@@ -7,6 +7,7 @@ import listItemsWaiversComponent from './listItemsWaivers';
 import listItemsVaccinationsComponent from './listItemsVaccinations';
 import listItemsBreedsComponent from './listItemsBreeds';
 import listItemsColorsComponent from './listItemsColors';
+import listItemsSelfServicesComponent from './listItemsSelfServices';
 
 const listItemsModule = angular
     .module('beastie.listItems', [])
@@ -18,6 +19,7 @@ const listItemsModule = angular
     .component('listItemsVaccinations', listItemsVaccinationsComponent)
     .component('listItemsBreeds', listItemsBreedsComponent)
     .component('listItemsColors', listItemsColorsComponent)
+    .component('listItemsSelfServices', listItemsSelfServicesComponent)
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
@@ -49,6 +51,11 @@ const listItemsModule = angular
             url: '/colors',
             template: '<list-items-colors layout="column" flex></list-items-colors>'
         })
+        .state('core.listItems.selfServices', {
+            url: '/selfServices',
+            template: '<list-items-self-services layout="column" flex></list-items-self-services>'
+        })
+
         ;
 
     })
