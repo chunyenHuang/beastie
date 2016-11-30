@@ -1,12 +1,16 @@
 <div layout="column" flex>
 
 <div layout="row" layout-align="center" layout-padding layout-wrap style="background-color:beige;" flex="none">
+    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
+        <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
+        Back to dashboard
+    </md-button>
     <!--<h1 class="md-display-1">Human</h1>-->
-    <div flex="100"  layout="row" layout-align="center">
+    <!-- <div flex="100"  layout="row" layout-align="center">
         <img src="./assets/img/human_avatar_example.png"
             style="height:100px;" layout-padding></img>
     </div>
-    <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div>
+    <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div> -->
 </div>
 
 <md-progress-linear ng-show="$ctrl.customer" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>

@@ -60,7 +60,9 @@ class snapshotService {
                                 }
                             }
                         }, (stream) => {
+                            console.log(stream);
                             this.video = $document[0].getElementById('camera');
+                            console.log(this.video);
                             this.video.src = $window.URL.createObjectURL(stream);
                             this.video.onloadedmetadata = (err) => {
                                 if (err) {
@@ -72,6 +74,8 @@ class snapshotService {
                         }, (err) => {
                             console.log(err);
                         });
+                    } else {
+                        console.log('can not load camera');
                     }
                 }
 

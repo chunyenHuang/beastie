@@ -1,12 +1,22 @@
-<div class="" layout="column">
+<div class="day-schedule-container" layout="column">
     <div class="" layout="row" flex="none">
-        orders: {{$ctrl.orders.length}} 
+        <h3>
+            Orders:
+            {{$ctrl.orders.length}}
+        </h3>
+        <div class="" flex="5">
+
+        </div>
+        <h3>
+            Estimated Hours:
+            {{$ctrl.totalHours}} / {{$ctrl.maxHours}}
+        </h3>
     </div>
     <div class="" id="day-schedule" ng-click="$ctrl.toggleExpand()" flex>
-        <div class="grid" ng-repeat="time in $ctrl.dayTimes" >
+        <div class="grid" ng-repeat="time in $ctrl.dayTimes">
             <div class="header">
                 <span ng-show="$ctrl.isInt(time)">{{time}}</span>
-                <span ng-hide="$ctrl.isInt(time)">-</span>
+                <span ng-hide="$ctrl.isInt(time)">&nbsp;</span>
             </div>
         </div>
         <div id="day-schedule-events" class="">

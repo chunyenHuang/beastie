@@ -12,23 +12,15 @@
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <link rel="icon" href="<%= htmlWebpackPlugin.options.iconUrl %>">
     <base href="<%= htmlWebpackPlugin.options.baseUrl %>">
-    <link rel="stylesheet" src="/assets/css/font-awesome/css/font-awesome.min.css">
-    <script src='/assets/js/vis/vis.js'></script>
-    <link rel="stylesheet" src="/assets/js/vis/vis.css">
-</head>
-
-<body ng-app="beastie" ng-strict-di ng-cloak layout="column" flex>
-    <div id="snapshot-div"></div>
-    <div ui-view layout="column" flex layout-fill>
-        <div style="width:100%;height:100vh;text-align:center;padding-top:200px">
-            <img width="200px" src="./assets/img/loading.gif" alt="Loading..." />
-        </div>
-    </div>
-    <script src='./assets/js/fastclick.js'></script>
+    <!-- <link rel="stylesheet" src="/assets/css/font-awesome/css/font-awesome.min.css"> -->
+    <!-- <script src='/assets/js/vis/vis.js'></script> -->
+    <!-- <link rel="stylesheet" src="/assets/js/vis/vis.css"> -->
+    <script type='application/javascript' src='/assets/js/fastclick.js'></script>
     <script type="text/javascript">
         if ('addEventListener' in document) {
             document.addEventListener('DOMContentLoaded', function() {
                 FastClick.attach(document.body);
+                console.log('attach fastclick');
             }, false);
             document.addEventListener('mousewheel', function(event) {
               // We don't want to scroll below zero or above the width and height
@@ -51,6 +43,15 @@
 
         }
     </script>
+</head>
+
+<body ng-app="beastie" ng-strict-di ng-cloak layout="column" flex>
+    <div id="snapshot-div"></div>
+    <div ui-view layout="column" flex layout-fill>
+        <div style="width:100%;height:100vh;text-align:center;padding-top:200px">
+            <img width="200px" src="./assets/img/loading.gif" alt="Loading..." />
+        </div>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
 </body>
 

@@ -6,8 +6,7 @@ const customersFormComponent = {
     bindings: {
         customerId: '<'
     },
-    controller: /* @ngInject */
-    class customersFormController {
+    controller: /* @ngInject */ class customersFormController {
         static get $inject() {
             return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope', 'Pets'];
         }
@@ -22,7 +21,7 @@ const customersFormComponent = {
             this.Pets = Pets;
         }
 
-        $onInit(){
+        $onInit() {
             this.getForm();
             this.getTemplate();
             // this.customerForm = null;
@@ -41,12 +40,19 @@ const customersFormComponent = {
             // });
 
         }
-        $onChanges(change){
+        $onChanges(change) {
             console.log(change);
             // if(this.customerId){
             //     // execute
             // }
         }
+
+        backToDashboard() {
+            this.$state.go('client.dashboard', {
+                customer_id: this.customer._id
+            });
+        }
+
         getTemplate() {
             this.Customers.get({
                 id: 'template'
@@ -55,18 +61,17 @@ const customersFormComponent = {
                 this.emergencyContactTemplate = angular.copy(
                     this.customerTemplate.emergencyContact[0]
                 );
-            })
+            });
         }
 
-        validateForm(){
+        validateForm() {
             // const formStates = ["name", "address", "emergencyContact", "review"];
-            if (!this.customer){
+            if (!this.customer) {
                 return false;
             }
             switch (this.currentFormState) {
                 case 'name':
-                    if(
-                        !this.customer.firstname ||
+                    if (!this.customer.firstname ||
                         this.customer.firstname == '' ||
                         !this.customer.lastname ||
                         this.customer.lastname == ''
@@ -75,10 +80,9 @@ const customersFormComponent = {
                     }
                     break;
                 case 'address':
-                    for(let prop in this.customer.address){
-                        if(
-                            !this.customer.address[prop] ||
-                            this.customer.address[prop] ==''
+                    for (let prop in this.customer.address) {
+                        if (!this.customer.address[prop] ||
+                            this.customer.address[prop] == ''
                         ) {
                             return false;
                         }
@@ -89,14 +93,14 @@ const customersFormComponent = {
             }
             return true;
         }
-        _refresh(value){
-            this.$timeout(()=>{
-               value = value;
+        _refresh(value) {
+            this.$timeout(() => {
+                value = value;
             });
         }
-        getForm(){
+        getForm() {
             const createCustomerForm = new Promise(
-                (resolve, reject) => {
+                (resolve) => {
                     // this.$stateParams.customer_id ? let
                     this.Customers.get({
                         id: this.$stateParams.customer_id ?
@@ -114,8 +118,8 @@ const customersFormComponent = {
                         // this.currentFormState = 'emergencyContact';
                         this.updateProgressVal();
                         resolve();
-                    })
-                })
+                    });
+                });
 
             createCustomerForm
                 .then(() => {
@@ -131,14 +135,14 @@ const customersFormComponent = {
             let validFormModelCounts = 0;
             // console.log(this.customers_form);
             for (let val in this.customers_form) {
-                if(!(/\$/).test(val)) {
+                if (!(/\$/).test(val)) {
                     formModelCounts += 1;
-                    if(this.customers_form[val].$valid) {
+                    if (this.customers_form[val].$valid) {
                         validFormModelCounts += 1;
                     }
                 }
             }
-            this.progressValue = validFormModelCounts/formModelCounts*100;
+            this.progressValue = validFormModelCounts / formModelCounts * 100;
             console.log(this.progressValue);
             // console.log(this.customers_form);
             this._refresh(this.progressValue);
@@ -155,8 +159,7 @@ const customersFormComponent = {
                     this.currentFormState = formStates[index + 1];
                 }
                 console.log(this.currentFormState);
-            }
-            else if (click == "back") {
+            } else if (click == "back") {
                 if (index == 0) {
                     // this.$state.go('core.customers');
                 } else {
@@ -166,21 +169,21 @@ const customersFormComponent = {
             }
         }
         addPerson() {
-            let newContact = {
-                name: null,
-                relationship: null,
-                phones: [null]
-            };
-            this.customer.emergencyContact
-                .push(newContact);
-        }
-        // there is some problem form data binding with this method....
-        // addPerson2() {
-        //     let newContact = angular.copy(this.customerTemplate.emergencyContact)
-        //     console.log(newContact);
-        //     this.customer.emergencyContact
-        //         .push(newContact);
-        // }
+                let newContact = {
+                    name: null,
+                    relationship: null,
+                    phones: [null]
+                };
+                this.customer.emergencyContact
+                    .push(newContact);
+            }
+            // there is some problem form data binding with this method....
+            // addPerson2() {
+            //     let newContact = angular.copy(this.customerTemplate.emergencyContact)
+            //     console.log(newContact);
+            //     this.customer.emergencyContact
+            //         .push(newContact);
+            // }
         removePerson(index) {
             this.customer.emergencyContact.splice(index, 1);
         }
@@ -193,43 +196,43 @@ const customersFormComponent = {
 
 
         update() {
-            if (this.customer._id) {
-                 this.Customers.update({
-                    id: this.customer._id
-                }, this.customer, (res)=>{
-                    console.log(res);
-                    this.$state.go('client.dashboard',{
-                        customer_id: this.customer._id
+                if (this.customer._id) {
+                    this.Customers.update({
+                        id: this.customer._id
+                    }, this.customer, (res) => {
+                        console.log(res);
+                        this.$state.go('client.dashboard', {
+                            customer_id: this.customer._id
+                        });
+                        // this.Pets.query({
+                        //     customer_id: this.customer._id,
+                        // }, (results)=>{
+                        //     console.info(results[0]);
+                        //     this.$state.go('client.petsForm',
+                        //         { pet_id: results[0]._id })
+                        // })
                     });
-                    // this.Pets.query({
-                    //     customer_id: this.customer._id,
-                    // }, (results)=>{
-                    //     console.info(results[0]);
-                    //     this.$state.go('client.petsForm',
-                    //         { pet_id: results[0]._id })
-                    // })
-                });
-            } else{
-                console.log('new customer');
-                this.Customers.save(this.customer, (res)=>{
-                    console.log(res);
-                    this.$state.go('client.petsForm',{
-                        customer_id: res._id
+                } else {
+                    console.log('new customer');
+                    this.Customers.save(this.customer, (res) => {
+                        console.log(res);
+                        this.$state.go('client.petsForm', {
+                            customer_id: res._id
+                        });
                     });
-                });
+                }
             }
-        }
-        // _findProp(obj, str, isTemplate) {
-        //     const re = /\]*\.|\[/;
-        //     let path = str.split(re);
-        //     path[0] = isTemplate ? path[0] + 'Template' : path[0];
-        //     // path[2] = isTemplate ? '0' : path[2];
-        //     let target = obj;
-        //     console.log(path);
-        //     while (path.length > 0) {
-        //         target = target[path[0]];
-        //         path.shift();
-        //     }
+            // _findProp(obj, str, isTemplate) {
+            //     const re = /\]*\.|\[/;
+            //     let path = str.split(re);
+            //     path[0] = isTemplate ? path[0] + 'Template' : path[0];
+            //     // path[2] = isTemplate ? '0' : path[2];
+            //     let target = obj;
+            //     console.log(path);
+            //     while (path.length > 0) {
+            //         target = target[path[0]];
+            //         path.shift();
+            //     }
 
         //     return target;
         // }

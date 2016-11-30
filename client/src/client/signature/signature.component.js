@@ -52,7 +52,6 @@ const signatureComponent = {
             this.cleanup();
             this.canvas = this.$document[0].getElementById('signature-canvas');
             this.canvas.style.border = '2px solid';
-
             this.context = this.canvas.getContext('2d');
             // this.context.fillStyle = '#959595';
             // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -77,42 +76,43 @@ const signatureComponent = {
             //     }
             // });
 
-            // this.canvas.addEventListener('mousedown', (event) => {
-            //     console.log(this.$swipe);
-            //     this._addClick(event);
-            //     this.isDrawing = true;
-            //     this._redraw();
-            // });
-            // this.canvas.addEventListener('mousemove', (event) => {
-            //     if (this.isDrawing) {
-            //         this._addClick(event);
-            //         this._redraw();
-            //     }
-            // });
-            // this.canvas.addEventListener('mouseup', () => {
-            //     this.isDrawing = false;
-            // });
-            // this.canvas.addEventListener('mouseleave', () => {
-            //     this.isDrawing = false;
-            // });
-            //
-            // this.canvas.addEventListener('touchstart', (event) => {
-            //     this._addClick(event);
-            //     this.isDrawing = true;
-            //     this._redraw();
-            // });
-            // this.canvas.addEventListener('touchmove', (event) => {
-            //     if (this.isDrawing) {
-            //         this._addClick(event);
-            //         this._redraw();
-            //     }
-            // });
-            // this.canvas.addEventListener('touchend', () => {
-            //     this.isDrawing = false;
-            // });
+            this.canvas.addEventListener('mousedown', (event) => {
+                // console.log(this.$swipe);
+                this._addClick(event);
+                this.isDrawing = true;
+                this._redraw();
+            });
+            this.canvas.addEventListener('mousemove', (event) => {
+                if (this.isDrawing) {
+                    this._addClick(event);
+                    this._redraw();
+                }
+            });
+            this.canvas.addEventListener('mouseup', () => {
+                this.isDrawing = false;
+            });
+            this.canvas.addEventListener('mouseleave', () => {
+                this.isDrawing = false;
+            });
 
+            this.canvas.addEventListener('touchstart', (event) => {
+                console.log('touchstart');
+                this._addClick(event);
+                this.isDrawing = true;
+                this._redraw();
+            });
+            this.canvas.addEventListener('touchmove', (event) => {
+                console.log('touchmove');
+                if (this.isDrawing) {
+                    this._addClick(event);
+                    this._redraw();
+                }
+            });
+            this.canvas.addEventListener('touchend', () => {
+                console.log('touchend');
+                this.isDrawing = false;
+            });
 
-            //
             // this.$document[0].body.addEventListener('touchstart', function (e) {
             //     console.log(e);
             //     if (e.target == this.canvas) {
@@ -129,7 +129,6 @@ const signatureComponent = {
             //         e.preventDefault();
             //     }
             // }, false);
-            //
         }
 
         cleanup() {
@@ -147,9 +146,8 @@ const signatureComponent = {
             canvas = canvas || this.canvas;
             const rect = canvas.getBoundingClientRect();
             if (event.target) {
-                event.X = event.clientX;
-                event.Y = event.clientY;
-
+                event.X = event.clientX || event.touches[0].clientX;
+                event.Y = event.clientY || event.touches[0].clientY;
             } else {
                 event.X = event.x;
                 event.Y = event.y;
@@ -201,6 +199,8 @@ const signatureComponent = {
             this.clickX.push(pos.x);
             this.clickY.push(pos.y);
             this.clickDrag.push(this.isDrawing);
+            console.log(pos.x, pos.y);
+
         }
 
         draw(event) {
