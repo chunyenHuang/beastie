@@ -60,7 +60,7 @@ const coreComponent = {
             });
         }
 
-        testStartup(){
+        testStartup() {
             this.Customers.query({
                 phone: 8888888888
             }, (res) => {
@@ -86,35 +86,34 @@ const coreComponent = {
             }, () => {});
         }
 
-        oldCustomer(customer_id){
+        oldCustomer(customer_id) {
             this.$mdDialog.show(
                 oldCustomerPanelDialog({
                     customer_id: customer_id
                 }, this.$document[0].getElementById('core'))
-            ).then((select)=>{
-                switch (select.value) {
-                    case 'viewCustomer':
+            ).then((select) => {
+                switch (select.type) {
+                    case 'info':
                         this.CustomerDetailDialog({
-                            customer_id: customer_id,
+                            customer_id: select.customer._id,
                             tab: 'customer'
                         });
                         break;
                     case 'checkIn':
                         this.Customers.checkIn({
-                            phone: select.phone
+                            phone: select.customer.phone
                         }, (res) => {
                             console.log(res);
-                        }, () => {
-                        });
+                        }, () => {});
                         break;
                     case 'editOrder':
                         this.$state.go('core.orders.form', {
-                            order_id: select.order_id
+                            order_id: select._id // ??
                         });
                         break;
                     case 'newOrder':
                         this.$state.go('core.orders.form', {
-                            customer_id: customer_id
+                            customer_id: select.customer._id
                         });
                         break;
                     default:

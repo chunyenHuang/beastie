@@ -17,65 +17,44 @@ export default (locals, parent) => ({
             this.$document = $document;
             this.$mdDialog = $mdDialog;
             this.Customers = Customers;
-            this.SharedUtil = SharedUtil;
+            this.daysBetween = SharedUtil.daysBetween;
+            this.isToday = SharedUtil.isToday;
             Customers.get({
                 id: this.customer_id
-            }, (customer)=>{
+            }, (customer) => {
                 this.customer = customer;
-                this.setSelectItems();
-                console.info(this.customer);
+                this.findNewOrders();
             });
         }
 
-        isTodaysOrder(){
-            const today = new Date();
-
-        }
-
-        hasNewOrder(){
-            console.log(this.customer.orders);
-            if(this.customer.orders.length === 0 ){
+        findNewOrders() {
+            if (this.customer.orders.length === 0) {
                 return false;
             }
+            this.newOrders = [];
+            this.todayOrders = [];
             for (var i = 0; i < this.customer.orders.length; i++) {
                 let order = this.customer.orders[i];
-                if(
-                    !order.isCanceled &&
+                if (!order.isCanceled &&
                     !order.notShowup &&
                     !order.checkIn &&
                     !order.isPaid &&
                     !order.checkOutAt
                 ) {
-                    return order;
+                    if (this.isToday(order.scheduleAt)) {
+                        this.todayOrders.push(order);
+                    } else if (this.daysBetween(order.scheduleAt) > 0) {
+                        this.newOrders.push(order);
+                    }
                 }
             }
-            return false;
         }
 
-        setSelectItems(){
-            this.newOrder = this.hasNewOrder();
-            this.selectItems = [{
-                label: 'Info',
-                value: 'viewCustomer',
-                show: true
-            },{
-                label: 'Check In',
-                value: 'checkIn',
-                phone: this.customer.phone,
-                show: (!this.newOrder)?false:((this.SharedUtil.isWithinToday(this.newOrder.scheduleAt))?true: false)
-            }, {
-                label: 'Edit Order',
-                value: 'editOrder',
-                order_id: this.newOrder._id,
-                show: (this.newOrder)?true:false
-            }, {
-                label: 'New Order',
-                value: 'newOrder',
-                show: (!this.newOrder)?true:false
-            }];
-        }
-
-        selectAndConfirm(selectItem){
+        selectAndConfirm(type, selectItem) {
+            selectItem = selectItem || {};
+            selectItem.type = type;
+            selectItem.customer = this.customer;
+            console.log(selectItem);
             this.$mdDialog.hide(selectItem);
         }
 

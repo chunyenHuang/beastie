@@ -10,7 +10,7 @@
         </div>
     </md-toolbar>
     <md-content layout="column" flex layout-fill>
-        <md-tabs md-border-bottom flex layout="column" md-center-tabs md-customer="$ctrl.customerTab">
+        <md-tabs md-border-bottom flex layout="column" md-center-tabs md-selected="$ctrl.selectedTab">
           <md-tab label="gallery">
               <md-content layout="row" layout-align="start start" flex class="gallery">
                   <md-content layout="column" ng-repeat="order in $ctrl.customer.orders" class="gallery-box">

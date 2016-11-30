@@ -18,6 +18,7 @@ import 'client/vendorJs/angularFullscreen';
 import 'client/vendorJs/sc-date-time.js';
 import 'client/vendorJs/sc-date-time.css';
 import 'client/node_modules/font-awesome/css/font-awesome.css';
+import 'client/node_modules/angular-local-storage/dist/angular-local-storage';
 
 // configs
 import themeConfig from './themeConfig';
@@ -50,6 +51,7 @@ angular
         'smart-table',
         'FBAngular',
         'scDateTime',
+        'LocalStorageModule',
         userAuth,
         core,
         client

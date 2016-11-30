@@ -44,8 +44,7 @@ const keypadComponent = {
         $onInit() {
             this.keypadItems = this.getKeypadItems();
         }
-        $onChanges() {
-        }
+        $onChanges() {}
         $onDestroy() {}
         $postLink() {}
         getKeypadItems() {
@@ -65,7 +64,7 @@ const keypadComponent = {
             this.pressed = this.combine(this.pressed, val);
             if (this.rightBottomButton == 'enter') {
                 if (val == 'enter') {
-                    if (this.pressed != ''){
+                    if (this.pressed != '') {
                         this.onUpdate({
                             inputNumbers: this.pressed
                         });
@@ -80,22 +79,18 @@ const keypadComponent = {
         }
         combine(string, newVal) {
             switch (newVal) {
-            case 'enter':
-                return string;
-                break;
-
-            case 'back':
-                if (string.length > 1) {
-                    string = string.slice(0, -1);
-                }
-                return string;
-                break;
-            case 'clear':
-                return '';
-                break;
-            default:
-                string += newVal.toString();
-                return string;
+                case 'enter':
+                    return string;
+                case 'back':
+                    if (string.length > 1) {
+                        string = string.slice(0, -1);
+                    }
+                    return string;
+                case 'clear':
+                    return '';
+                default:
+                    string += newVal.toString();
+                    return string;
             }
         }
         isLimit() {

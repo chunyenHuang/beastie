@@ -45,39 +45,52 @@ class SharedUtil {
         return dateString;
     }
 
-    isWithinToday(dateString){
+    isWithinToday(dateString) {
         const target = new Date(dateString).getTime();
         const today = new Date();
         const todayStartAt = this._parseDate(today).getTime();
         const todayEndAt = this._parseDate(new Date(today.getTime() + 24 * 60 * 60 * 1000)).getTime();
-        if(
-            target>todayStartAt &&
-            target<todayEndAt
-        ){
+        if (
+            target > todayStartAt &&
+            target < todayEndAt
+        ) {
             return true;
         } else {
             return false;
         }
     }
+
     daysBetweenParsedDate(d1, d2) {
         d2 = d2 || new Date();
         let diff = this._parseDate(d1).valueOf() - this._parseDate(d2).valueOf();
-        return diff/8.64e+7;
+        return diff / 8.64e+7;
     }
-    daysBetween(pastDate, otherDate ){
-        // 1 day = 8.64e+7 milliseconds
-        if(otherDate) {
-            let diff = pastDate.valueOf() - otherDate.valueOf();
-            return diff/8.64e+7;
-        } else {
-            let diffNow = pastDate.valueOf() - Date.now();
-            return diffNow/8.64e+7;
-        }
+
+    // daysBetween(pastDate, otherDate) {
+    //     // 1 day = 8.64e+7 milliseconds
+    //     if (otherDate) {
+    //         let diff = pastDate.valueOf() - otherDate.valueOf();
+    //         return diff / 8.64e+7;
+    //     } else {
+    //         let diffNow = pastDate.valueOf() - Date.now();
+    //         return diffNow / 8.64e+7;
+    //     }
+    // }
+
+    daysBetween(from, to) {
+        const oneDay = 24 * 60 * 60 * 1000;
+        from = new Date(from);
+        to = to || new Date();
+        const diff = Math.round((from.getTime() - to.getTime()) / (oneDay));
+        return diff;
     }
+
     isToday(date) {
         if (date) {
             return (new Date(date).toDateString() === new Date().toDateString());
-        } else { return false; }
+        } else {
+            return false;
+        }
     }
 }
 

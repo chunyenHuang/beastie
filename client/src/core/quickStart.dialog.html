@@ -1,46 +1,54 @@
 <form>
 <div id="quick-start-dialog" class="" layout="column" flex layout-fill>
-
     <md-toolbar class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
+        <div flex></div>
         <div class="" ng-click="touchMode = !touchMode" ng-init="touchMode = false">
             Customer's Phone Number
         </div>
-        <div flex>
-
-        </div>
+        <div flex></div>
         <div class="">
             <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
         </div>
     </md-toolbar>
-    <div layout="column" flex ng-show="touchMode" ng-init="touchMode=true">
-        <keypad limit=10 type="tel" on-update="$ctrl.go(inputNumbers)"></keypad>
-    </div>
-    <div layout="column" flex ng-show="!touchMode">
-        <md-content  layout="column" flex class="md-padding" layout-align="center center">
-            <md-input-container class="md-block">
-                <input
-                    md-autofocus
-                    name="phone"
-                    type="text"
-                    ng-model="$ctrl.phone"
-                    ui-mask="(999) 999-9999"
-                    allowInvalidValue="true"
-                    ui-options="{clearOnBlur:false}"
-                    aria-label="customer-phone">
-            </md-input-container>
+    <div class="" layout="row">
+        <md-content class="query" layout="column" layout-align="start center">
+            <h3>History</h3>
+            <md-button ng-click="$ctrl.quickSelect(phone)" ng-repeat="phone in $ctrl.history | limitTo:10 track by $index" flex="none">
+                {{phone | tel}}
+            </md-button>
         </md-content>
-        <md-divider></md-divider>
-        <div class="" layout="row" flex="none" class="md-padding">
-            <md-button ng-click="$ctrl.reset()" class="md-warn" aria-label="cancel">
-                <span>Reset</span>
-            </md-button>
-            <div flex layout="row" layout-align="center center">
-                {{$ctrl.validateMessage}}
+        <div class="keypad" layout="column">
+            <div layout="column" flex ng-show="touchMode" ng-init="touchMode=true">
+                <keypad limit=10 type="tel" on-update="$ctrl.go(inputNumbers)"></keypad>
             </div>
-            <md-button ng-click="$ctrl.go()" type="submit" class="md-primary md-raised" ng-disabled="!$ctrl.validate()" aria-label="create">
-                <md-icon md-svg-src="arrow-right-bold-hexagon-outline"></md-icon>
-                <span>Go</span>
-            </md-button>
+            <div layout="column" flex ng-show="!touchMode">
+                <md-content  layout="column" flex class="md-padding" layout-align="center center">
+                    <md-input-container class="md-block">
+                        <input
+                            md-autofocus
+                            name="phone"
+                            type="text"
+                            ng-model="$ctrl.phone"
+                            ui-mask="(999) 999-9999"
+                            allowInvalidValue="true"
+                            ui-options="{clearOnBlur:false}"
+                            aria-label="customer-phone">
+                    </md-input-container>
+                </md-content>
+                <md-divider></md-divider>
+                <div class="" layout="row" flex="none" class="md-padding">
+                    <md-button ng-click="$ctrl.reset()" class="md-warn" aria-label="cancel">
+                        <span>Reset</span>
+                    </md-button>
+                    <div flex layout="row" layout-align="center center">
+                        {{$ctrl.validateMessage}}
+                    </div>
+                    <md-button ng-click="$ctrl.go()" type="submit" class="md-primary md-raised" ng-disabled="!$ctrl.validate()" aria-label="create">
+                        <md-icon md-svg-src="arrow-right-bold-hexagon-outline"></md-icon>
+                        <span>Go</span>
+                    </md-button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
