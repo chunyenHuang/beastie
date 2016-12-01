@@ -26,28 +26,40 @@ class ordersService {
                     if (cpData.pets) {
                         delete cpData.pets;
                     }
+                    if (cpData.type) {
+                        delete cpData.type;
+                    }
                     if (cpData.scheduleAt) {
                         console.info(this.orders);
                         this.orders = null;
                         console.warn(this.orders);
                     }
-                    // {
-                    //     _id: data._id,
-                    //     customer_id: data.
-                    //     asdasdj: (data.isActive != null ) ? data.isActive : null,
-                    // });
                     console.log(cpData);
                     return angular.toJson(cpData);
                 },
                 transformResponse: (res)=>{
-                if (!res) {
+                    if (!res) {
                         return 'error';
                     } else {
+                        // res = angular.fromJson(res);
+                        // if (res._id) {
+                        //     this._setOrderType(res);
+                        // }
+                        // return res;
                         res = angular.fromJson(res);
                         if (res._id) {
-                            this._setOrderType(res);
+                            // this._setOrderType(res);
+                            this.updateCache(res, ()=>{
+                                return res;
+                            });
+                            return res;
+                        } else {
+                            return res;
                         }
-                        return res;
+                        
+                        // if (this.orders) {
+                        //     this.updateCache(res);
+                        // }
                     }
                 }
                 
@@ -138,16 +150,43 @@ class ordersService {
             }
         })
     }
-    updateCache(order, callback){
-        if(!order || !this.orders){
+    getOneCache(order) {
+        if (!order) {
+            return;
+        } else {
+            let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
+            if (this.orders && this.orders[scheduleAt.toDateString()]) {
+                return this.orders[scheduleAt.toDateString()][order._id];
+            }
             return;
         }
-        let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
-        this.orders[scheduleAt.toDateString()][order._id] = order;
-        if(callback){
-            return callback();
+    }
+    updateCache(order, callback){
+        if (!order) {
+            return;
+        } else {
+            let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
+            if (this.orders && this.orders[scheduleAt.toDateString()]) {
+                this._setOrderType(order);
+                this.orders[scheduleAt.toDateString()][order._id] = order;
+                if (callback) {
+                    return callback();
+                }
+            }
+            return;
         }
-        return;
+        // if(!order || !this.orders) { 
+        //     return; 
+        // }
+        
+        // let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
+        // if (this.orders[scheduleAt.toDateString()]) {}
+        // // this.orders[scheduleAt.toDateString()][order._id] = this._setOrderType(order);
+        // this.orders[scheduleAt.toDateString()][order._id] = order;
+        // if(callback){
+        //     return callback();
+        // }
+        // return;
     }
     
     _setOrderType(order) {

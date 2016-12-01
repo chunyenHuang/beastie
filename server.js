@@ -60,26 +60,29 @@ const app = express();
 const http = require('http');
 const https = require('https');
 const sslport = parseInt(port) + 1;
-
-const server = http.createServer((request, response) => {
-    const correctedHost = request.headers['host'].replace(port, sslport);
-    const httpsURI = correctedHost + request.url;
-    // eslint-disable-next-line no-console
-    console.log('Redirecting to: ' + httpsURI);
-    response.writeHead(301, {
-        Location: 'https://' + httpsURI
-    });
-    response.end();
-});
-const serverHttps = https.createServer({
-    key: fs.readFileSync('./ssl/server.key'),
-    cert: fs.readFileSync('./ssl/server.crt')
-}, app);
-
+let server;
+let serverHttps;
 let io;
 if (process.env.CLOUD9) {
+    server = http.Server(app);
     io = require('socket.io')(server);
 } else {
+    server = http.createServer((request, response) => {
+        const correctedHost = request.headers['host'].replace(port, sslport);
+        const httpsURI = correctedHost + request.url;
+        // eslint-disable-next-line no-console
+        console.log('Redirecting to: ' + httpsURI);
+        response.writeHead(301, {
+            Location: 'https://' + httpsURI
+        });
+        response.end();
+    });
+    
+    serverHttps = https.createServer({
+        key: fs.readFileSync('./ssl/server.key'),
+        cert: fs.readFileSync('./ssl/server.crt')
+    }, app);
+    
     io = require('socket.io')(serverHttps);
 }
 app.set('socket-io', io);
