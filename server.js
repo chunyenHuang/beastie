@@ -76,8 +76,12 @@ const serverHttps = https.createServer({
     cert: fs.readFileSync('./ssl/server.crt')
 }, app);
 
-// const io = require('socket.io')(server);
-const io = require('socket.io')(serverHttps);
+let io;
+if (process.env.CLOUD9) {
+    io = require('socket.io')(server);
+} else {
+    io = require('socket.io')(serverHttps);
+}
 app.set('socket-io', io);
 app.set('port', port);
 
@@ -295,8 +299,6 @@ app.use(errorHandler());
 //     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 // });
 if (process.env.CLOUD9) {
-    const server = require('http').createServer(app);
-    const io = require('socket.io')(server);
     server.listen(app.get('port'), () => {
         let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
         console.log(mode.green);
