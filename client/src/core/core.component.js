@@ -10,13 +10,15 @@ const coreComponent = {
         static get $inject() {
             return [
                 '$timeout', '$state', '$translate', '$mdDialog', '$document',
-                'Customers', 'METADATA', 'InhouseOrdersDialog', 'Fullscreen', 'CustomerDetailDialog'
+                'Customers', 'METADATA', 'InhouseOrdersDialog', 'Fullscreen',
+                'CustomerDetailDialog',
+                'Socket'
             ];
         }
         constructor(
             $timeout, $state, $translate, $mdDialog, $document,
             Customers, METADATA, InhouseOrdersDialog, Fullscreen,
-            CustomerDetailDialog
+            CustomerDetailDialog, Socket
         ) {
             this.$timeout = $timeout;
             this.$state = $state;
@@ -29,6 +31,16 @@ const coreComponent = {
             this.CustomerDetailDialog = CustomerDetailDialog;
             this.Fullscreen = Fullscreen;
             this.fullscreenIcon = 'fullscreen';
+
+            Socket.on('selfServicesPurchase', (res) => {
+                // purchase of new ticket or packages
+                console.log(res);
+            });
+
+            Socket.on('selfServicesNewTicket', (res) => {
+                // add the new ticket
+                console.log(res);
+            });
         }
 
         $onInit() {

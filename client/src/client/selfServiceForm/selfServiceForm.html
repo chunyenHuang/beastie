@@ -1,0 +1,50 @@
+<md-content layout="column" flex>
+    <div class="" layout="row">
+        <div layout="row" layout-align="start" layout-padding flex="none">
+            <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
+                <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
+                Back to dashboard
+            </md-button>
+            <div class="error" flex layout="row" layout-align="center center">
+                {{$ctrl.errorMessage}}
+            </div>
+        </div>
+    </div>
+    <div layout="column" flex layout-align="start center" ng-hide="$ctrl.data">
+        <h1 class="md-headline">Please enter your pin passwords (6 digits)</h1>
+        <keypad type="pin" limit="6" on-update="$ctrl.login(inputNumbers)"></keypad>
+    </div>
+
+    <md-content layout="column" flex layout-align="start center" ng-show="$ctrl.data">
+        <div class="">
+            <h3>
+                Your Credit:
+                {{$ctrl.data.credit}}
+            </h3>
+        </div>
+        <md-button class="md-primary">
+            Add More Credit
+        </md-button>
+
+        <h5>Basic Self Service</h5>
+        <div class="" layout="row">
+            <md-button class="md-primary" ng-repeat="item in $ctrl.list.basic">
+                {{item.name}}
+                {{item.zhName}}
+                {{item.price | currency}}
+            </md-button>
+        </div>
+        <h5>Add on</h5>
+        <div class="" layout="row">
+            <md-button class="md-primary" ng-repeat="item in $ctrl.list.addon">
+                {{item.name}}
+                {{item.zhName}}
+                {{item.price | currency}}
+            </md-button>
+        </div>
+        <div class="" layout="row" flex>
+            Total:
+            {{$ctrl.getTotal()}}
+        </div>
+    </md-content>
+</md-content>

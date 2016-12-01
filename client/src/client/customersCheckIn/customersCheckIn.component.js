@@ -27,18 +27,18 @@ const customersCheckInComponent = {
         }
 
         checkIn(number) {
-            console.log(number);
+            // console.log(number);
             if (number.length == 10) {
                 this.Customers.checkIn({
                     phone: number
                 }, (res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$state.go('client.dashboard', {
                         customer_id: res._id
                     });
                 }, (err) => {
-                    console.log(err);
-                    console.log(err.status);
+                    // console.log(err);
+                    // console.log(err.status);
                     if (err.status == 400) {
                         // new customer
                         this.$state.go(this.nextState, {

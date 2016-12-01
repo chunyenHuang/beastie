@@ -40,6 +40,12 @@ const dashboardComponent = {
             }
         }
 
+        selfService(){
+            this.$state.go('client.selfServiceForm', {
+                customer_id: this.$stateParams.customer_id
+            });
+        }
+
         getMyOrders() {
             this.pictures = {};
             this.orders = [];

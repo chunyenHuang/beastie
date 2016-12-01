@@ -5,6 +5,7 @@ import customersFormComponent from './customersForm';
 import petsFormComponent from './petsForm';
 import dashboardComponent from './dashboard';
 import signature from './signature';
+import selfServiceForm from './selfServiceForm';
 
 const clientModule = angular
     .module('beastie.client', [
@@ -16,6 +17,7 @@ const clientModule = angular
     .component('clientCustomersCheckIn', customersCheckInComponent)
     .component('clientCustomersForm', customersFormComponent)
     .component('clientPetsForm', petsFormComponent)
+    .component('clientSelfServiceForm', selfServiceForm)
     .service('Client', clientService)
     .config(($stateProvider) => {
         'ngInject';
@@ -30,8 +32,9 @@ const clientModule = angular
             })
             .state('client.customersCheckIn', {
                 url: '/customersCheckIn',
-                template: '<client-customers-check-in layout="column"flex>' +
-                    '</client-customers-check-in>'
+                template: `
+                    <client-customers-check-in layout="column"flex></client-customers-check-in>
+                `
             })
             .state('client.customersForm', {
                 url: '/customersForm?customer_id&phoneNumber',
@@ -41,6 +44,13 @@ const clientModule = angular
                 url: '/petsForm?pet_id&customer_id',
                 template: '<client-pets-form flex layout="column"></client-pets-form>'
             })
+            .state('client.selfServiceForm', {
+                url: '/selfServiceForm?customer_id',
+                template: `
+                <client-self-service-form flex layout="column"></client-self-service-form>
+                `
+            })
+
 
         ;
     })
