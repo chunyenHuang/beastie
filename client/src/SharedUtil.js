@@ -92,6 +92,15 @@ class SharedUtil {
             return false;
         }
     }
+    capitalizeStr(str) {
+        let strArr = str.split(' ');
+        let capStrArr = [];
+        for (let i=0, j=strArr.length; i<j; i++) {
+            let capStr = strArr[i].charAt(0).toUpperCase() + strArr[i].slice(1).toLowerCase();
+            capStrArr.push(capStr);
+        }
+        return capStrArr.join(' ');
+    }
 }
 
 export default SharedUtil;

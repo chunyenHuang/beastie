@@ -12,14 +12,16 @@ const ordersListComponent = {
                 '$log', '$timeout', '$state', '$stateParams',
                 'Orders', 'Pets', 'SharedUtil', 'Customers', '$mdColors',
                 'Snapshot', 'InhouseOrdersDialog', 'ShowSignaturesDialog',
-                'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast'
+                'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast',
+                'chooseServiceDialog', '$location', '$anchorScroll'
             ];
         }
         constructor(
             $log, $timeout, $state, $stateParams,
             Orders, Pets, SharedUtil, Customers, $mdColors,
             Snapshot, InhouseOrdersDialog, ShowSignaturesDialog,
-            PreviousOrdersDialog, Socket, $mdDialog, $mdToast
+            PreviousOrdersDialog, Socket, $mdDialog, $mdToast, 
+            chooseServiceDialog, $location, $anchorScroll
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -29,6 +31,7 @@ const ordersListComponent = {
             this.Pets = Pets;
             this.getDayName = SharedUtil.getDayName;
             this.isToday = SharedUtil.isToday;
+            this.capitalizeStr = SharedUtil.capitalizeStr;
 
             this.Customers = Customers;
             this.$mdColors = $mdColors;
@@ -38,8 +41,12 @@ const ordersListComponent = {
             this.PreviousOrdersDialog = PreviousOrdersDialog;
             this.$mdDialog = $mdDialog;
             this.$mdToast = $mdToast;
+            this.chooseServiceDialog = chooseServiceDialog;
+            this.$location = $location;
+            this.$anchorScroll = $anchorScroll;
             
             Socket.on('customerCheckIn', (res) => {
+                console.log(res);
                 if (this.Orders.orders
                     && this.Orders.orders[this.today.toDateString()]
                     && this.Orders.orders[this.today.toDateString()][res.order_id]) {
@@ -52,31 +59,42 @@ const ordersListComponent = {
                         this.getOrders(new Date(res.checkInAt));
                     }
                 } else {
-                    const toast = this.$mdToast.simple()
-                        .textContent('A Customer Jsut Checked-In!')
-                        .highlightAction(true)
-                        .highlightClass('md-accent')
-                        .position('top right');
-                    this.$mdToast.show(toast);
+                    
                 }
-                
+                const toast = this.$mdToast.simple()
+                    .textContent('A Customer Jsut Checked-In!')
+                    .highlightAction(true)
+                    .highlightClass('md-accent')
+                    .position('top right');
+                this.$mdToast.show(toast);
+            
                 // console.log(res);
                 // Object {order_id: "58351017852e9b0b59ed15cb", customer_id: "58350ff6852e9b0b59ed15c9", checkInAt: "2016-11-29T05:39:36.908Z", checkInNumber: 1}
             });
         }
-
+        scroll() {
+        //     this.$location.hash(this.orders[this.i]._id);
+        //   // call $anchorScroll()
+        //     this.$anchorScroll();
+            this.i++;
+            this.$state.go('core.orders.list', {'#': this.orders[this.i]._id });
+        }
+        isHighlited(id) {
+            return (this.$stateParams['#'] == id);
+        }
         $onInit() {
+            this.i = 0;
             console.log(this.$stateParams);
             if(this.$stateParams.type){
-                this.showType = type;
+                this.showType = this.$stateParams.type;
                 // scroll
             } else {
-                this.showType = "all";
+                this.setType('all');
             }
            
             this.today = new Date();
             this.date = new Date();
-            this.changeDate(-5);
+            this.changeDate(0);
             this.schedules = [];
             this.dateModeList = ['today'];
             this.dateMode = 'date';
@@ -101,21 +119,8 @@ const ordersListComponent = {
                     text: 'checked-out',
                     css: 'md-warn',
                 }
-                // isCanceled: {
-                //     text: 'canceled',
-                //     show: true,
-                //     css: 'md-accent'
-                // },
-                // notShowup: {
-                //     text: 'no-show',
-                //     show: true,
-                //     css: 'md-warn'
-                // },
-                
             };
             this.sortDate = 'scheduleAt';
-            this.showAllTypes = true;
-            // this.setDateMode('today');
             this.orderFlags = {
                 isCanceled: false,
                 notShowup: false,
@@ -126,12 +131,23 @@ const ordersListComponent = {
             
         }
         genConfirmDialog(order, text) {
+            let name = this.capitalizeStr(order.customers[0].firstname);
+            console.log(name);
             this.confirm = this.$mdDialog.confirm()
-                .title('Are you setting ' + order.customers[0].firstname +
+                .title('Are you setting ' + name +
                     "'s order to " + text + '?')
                 .ariaLabel('confirm ' + text)
                 .ok('YES')
                 .cancel('NO');
+        }
+        genChooseServiceDialog(order) {
+            this.chooseService = {
+                controller: DialogController,
+                templateUrl: 'tabDialog.tmpl.html',
+                parent: angular.element(document.body),
+                // targetEvent: ev,
+                clickOutsideToClose:true
+            }
         }
         changeDate(offset, date) {
             offset = offset || 0;
@@ -204,6 +220,16 @@ const ordersListComponent = {
                 });
             });
         }
+        
+        chooseService(order){
+            let index = this.orders.indexOf(order);
+            this.chooseServiceDialog({
+                order: order
+            }).then((res)=>{
+                this.orders.splice(index, 1, this.Orders.getOneCache(order));
+                this.countOrderType();
+            });
+        }
 
         waivers(order){
             this.ShowSignaturesDialog({
@@ -213,19 +239,6 @@ const ordersListComponent = {
 
             });
         }
-
-        
-        
-        /*
-            jHuang
-            you may put these function into shareUtil
-        */
-        // isToday(date) {
-        //     if (date) {
-        //         return (new Date(date).toDateString() === 
-        //                 new Date().toDateString());
-        //     } else {return false;}
-        // }
 
         edit(order) {
             this.resetOrder(order, ()=>{
@@ -245,6 +258,7 @@ const ordersListComponent = {
             // this.$state.go('core.inhouseOrders', {
             // });
         }
+        
 
         
         // cancel(order) {
@@ -294,81 +308,105 @@ const ordersListComponent = {
         }
         checkIn(order) {
             let orderDate = new Date(order.scheduleAt);
+            let index = this.orders.indexOf(order);
             if (orderDate.toDateString() === new Date().toDateString()) {
                 this.resetOrder(order, ()=>{
                     this.Customers.checkIn({
                         phone: order.customers[0].phone
                     }, (res) => {
-                        let updatedOrder = Object.assign({}, order, res);
-                        this.Orders._setOrderType(updatedOrder);
+                        // res
+                        // Resource {order_id: "583f16d90171fa7680a83b42", customer_id: "583f169b36080c76668bebd4", 
+                        // checkInAt: "2016-11-30T18:41:37.529Z", checkInNumber: 4, $promise: Promise…}
+                        let updatedOrder = Object.assign(order, res);
                         this.Orders.updateCache(updatedOrder, ()=>{
-                            this.orders.splice([this.orders.indexOf(order)], 1, updatedOrder);
+                            this.orders.splice(index, 1, updatedOrder);
+                            this.countOrderType();
                         });
                     });
                 })
             } else {
-                this.Orders.update({
-                    id: order._id
-                }, Object.assign({}, this.orderFlags, {scheduleAt: new Date}), (data)=>{
-                    this.Customers.checkIn({
-                        phone: order.customers[0].phone
-                    }, ()=>{
-                        this.getOrders(this.today);
+                this.genConfirmDialog(order, 'CHECK IN'); 
+                this.$mdDialog.show(this.confirm).then(() => {
+                    this.Orders.update({
+                        id: order._id
+                    }, Object.assign(order, this.orderFlags, {scheduleAt: new Date()}), (data)=>{
+                        this.Customers.checkIn({
+                            phone: order.customers[0].phone
+                        }, ()=>{
+                            this.date = new Date();
+                            this.getOrders(this.date);
+                        });
                     });
-                });
+                }, () => {});
             }
         }
         resetOrder(order, callback) {
+            let index = this.orders.indexOf(order);
             this.Orders.update({
                 id: order._id
             }, this.orderFlags, (data) => {
-                this.Orders.updateCache(data, ()=>{
-                    this.orders.splice([this.orders.indexOf(order)], 1, data);
+                if (!data._id) {
+                    console.log('error: '+data)
+                } else {
+                    this.orders.splice(index, 1, data);
+                    this.countOrderType();
                     if (callback) {
                         return callback();
                     }
-                })
+                }
             });   
         }
         cancel(order) {
-            this.genConfirmDialog(order, 'CANCEL'); 
-            this.$mdDialog.show(this.confirm).then(() => {
-                this.Orders.update({
-                    id: order._id
-                }, {
-                    isCanceled: true,
-                    notShowup: false,
-                    checkInAt: null,
-                    isPaid: false,
-                    checkOutAt: null
-                }, (data) => {
-                    this.Orders.updateCache(data, ()=>{
-                        this.orders.splice([this.orders.indexOf(order)], 1, data);
-                        this.countOrderType();
+            if (!order.isCanceled) {
+                let index = this.orders.indexOf(order);
+                this.genConfirmDialog(order, 'CANCEL'); 
+                this.$mdDialog.show(this.confirm).then(() => {
+                    this.Orders.update({
+                        id: order._id
+                    }, {
+                        isCanceled: true,
+                        notShowup: false,
+                        checkInAt: null,
+                        isPaid: false,
+                        checkOutAt: null
+                    }, (data) => {
+                        if (!data._id) {
+                            console.log('error: '+data)
+                        } else {
+                            this.orders.splice(index, 1, data);
+                            this.countOrderType();
+                        }
                     });
-                });
-            }, () => {});
+                }, () => {});
+            }
         }
         notShowup(order) {
-            this.genConfirmDialog(order, 'NO-SHOW'); 
-            this.$mdDialog.show(this.confirm).then(() => {
-                this.Orders.update({
-                    id: order._id
-                }, {
-                    isCanceled: false,
-                    notShowup: true,
-                    checkInAt: null,
-                    isPaid: false,
-                    checkOutAt: null
-                }, (data) => {
-                    this.Orders.updateCache(data, ()=>{
-                        this.orders.splice([this.orders.indexOf(order)], 1, data);
-                        this.countOrderType();
+            if (!order.notShowup) {
+                let index = this.orders.indexOf(order);
+                this.genConfirmDialog(order, 'NO-SHOW'); 
+                this.$mdDialog.show(this.confirm).then(() => {
+                    this.Orders.update({
+                        id: order._id
+                    }, {
+                        isCanceled: false,
+                        notShowup: true,
+                        checkInAt: null,
+                        isPaid: false,
+                        checkOutAt: null
+                    }, (data) => {
+                        if (!data._id) {
+                            console.log('error: '+data)
+                        } else {
+                            this.orders.splice(index, 1, data);
+                            this.countOrderType();
+                        }
                     });
-                });
-            }, () => {});
+                }, () => {});
+            }
         }
-        
+    }
+};
+export default ordersListComponent;
         // setDateMode(mode) {
         //     this.dateMode = mode;
         //     if (mode == 'all dates') {
@@ -504,6 +542,3 @@ const ordersListComponent = {
         //         }
         //     });
         // }
-    }
-};
-export default ordersListComponent;
