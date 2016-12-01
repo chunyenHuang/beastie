@@ -1,0 +1,22 @@
+<md-toolbar layout="row" layout-align="start center" class="md-padding header md-hue-2">
+    <h3>Select One of the Following Services</h3>
+</md-toolbar>
+<md-content layout="row" flex layout-wrap layout-align="center center">
+    <md-button layout="column" layout-margin
+        ng-repeat="service in $ctrl.services" flex="80"
+        class="md-raised" ng-class="{'md-primary':$ctrl.service==service}"
+        ng-click="$ctrl.setService(service)">
+        <div class="md-headline">{{service.name}}</div>
+        <div class="md-headline">{{service.zhName}}</div>
+    </md-button>
+</md-content>
+<md-divider></md-divider>
+<div layout="row" layout-align="start center" flex="none">
+    <md-button ng-click="$ctrl.cancel(waiver.name)">
+        cancel
+    </md-button>
+    <div class="" flex></div>
+    <md-button ng-click="$ctrl.submit()">
+        confirm
+    </md-button>
+</div>
