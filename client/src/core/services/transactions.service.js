@@ -9,16 +9,16 @@ class transactionService {
         const Transactions = $resource('/transactions/:id', {
             id: '@id'
         }, {
-            save: {
+            checkout: {
                 method: 'POST',
-                url: '/transactions/:id',
-                parmas: {
-                    id: '@id'  
-                },
-                transformRequest: (data) => {
-                },
-                transformResponse: (res)=>{
-                }
+                url: '/transactions',
+                // parmas: {
+                //     // id: '@id'  
+                // },
+                // transformRequest: (data) => {
+                // },
+                // transformResponse: (res)=>{
+                // }
             },
             update: {
                 method: 'PUT',
@@ -26,10 +26,10 @@ class transactionService {
                 parmas: {
                     id: '@id'  
                 },
-                transformRequest: (data) => {
-                },
-                transformResponse: (res)=>{
-                }
+                // transformRequest: (data) => {
+                // },
+                // transformResponse: (res)=>{
+                // }
             },
             getTransaction: {
                 method: 'GET',
@@ -44,6 +44,18 @@ class transactionService {
                     //     to: 'to'
                     // },
             },
+            get: {
+                method: 'GET',
+                url: '/transactions?',
+                isArray: true,
+            },
+            delete: {
+                method: 'DELETE',
+                url: '/transactions/:id',
+                parmas: {
+                    id: '@id'  
+                },
+            }
 
         });
         

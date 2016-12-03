@@ -2,7 +2,35 @@
 md-toast .md-toast-content span.md-toast-text
     font-size 200%
     text-align center
+[aria-label="paid by cash"], [aria-label="confirm CANCEL"], [aria-label="confirm NO-SHOW"]
+    font-size 24px
+    md-dialog-actions
+        padding 0px 8px
+        button
+            margin 8px 4px
+            font-size 24px
+            width 50%
+            height 100px
 #order-list
+    .animate-show.ng-hide-add 
+        transition: all linear 0.75s;
+    .animate-show.ng-hide-remove
+        transition: all linear 0.5s;
+    .animate-show.ng-hide 
+        opacity: 0;
+
+    .label-rush::after
+        content: "RUSH";
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 20%;
+        word-wrap: break-word;
+        background-color: rgb(255,138,101);
+        font-size: 40%;
+        line-height: 90%;
+        text-align: center;
+        padding 2px 2px
     
     img
         max-height: 150px
@@ -83,11 +111,12 @@ md-toast .md-toast-content span.md-toast-text
     border-style: solid;
 }
 
-
-
 #box::after {
-    
     border-width: 1.35em;
     border-right-color: #0c0;
     border-top-color: #0c0;
 }
+
+#md-date-pane0 > div.md-datepicker-input-mask
+    height 20px
+    

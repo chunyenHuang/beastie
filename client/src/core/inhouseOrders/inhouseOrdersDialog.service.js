@@ -60,6 +60,7 @@ class inhouseOrdersDialog {
                             id: this.order_id
                         }, (order) => {
                             this.order = order;
+                            console.log(this.order);
                             this.message = 'order id: ' + this.order_id;
                             this.ListItems.query({
                                 type: 'inhouseOrders'
@@ -154,13 +155,14 @@ class inhouseOrdersDialog {
                 submit() {
                     if (this.order_id) {
                         this.order.inhouseOrders = this.inhouseOrders;
+                        if (this.order.scheduleAt) { delete this.order.scheduleAt }
                         this.order.$update({
                             id: this.order_id
                         }, (res) => {
-                            console.info(res);
                             // this.formatOrderForm();
+                            // this.$mdDialog.hide(res);
                             this.print(() => {
-                                this.$mdDialog.hide();
+                                this.$mdDialog.hide(res);
                             });
                         }, (err) => {
                             console.error(err);

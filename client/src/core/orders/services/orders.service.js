@@ -17,9 +17,11 @@ class ordersService {
                 },
                 transformRequest: (data) => {
                     
-                    this.queueData = data;
-                    // console.log(data)
-                    const cpData = Object.assign({}, data);
+                    // console.warn(data);
+                    // console.info(angular.copy(data));
+                    // data.test = 'ttttttttttttttt';
+                    // return angular.toJson(data);
+                    const cpData = angular.copy(data);
                     if (cpData.customers) {
                         delete cpData.customers;
                     }
@@ -30,11 +32,12 @@ class ordersService {
                         delete cpData.type;
                     }
                     if (cpData.scheduleAt) {
-                        console.info(this.orders);
+                        // console.info(this.orders);
                         this.orders = null;
-                        console.warn(this.orders);
+                        // console.warn(this.orders);
                     }
-                    console.log(cpData);
+                    console.warn(cpData);
+                    // return cpData;
                     return angular.toJson(cpData);
                 },
                 transformResponse: (res)=>{
@@ -200,9 +203,13 @@ class ordersService {
             return order.type = 'checkOutAt'; 
         } 
         if (order.inhouseOrders && 
-            angular.isArray(order.inhouseOrders) &&
-            order.inhouseOrders.length) { 
-            order.type = 'processing';
+            angular.isObject(order.inhouseOrders)) {
+            if (Object.keys(order.inhouseOrders).length) {
+                return order.type = 'processing';
+            } else {
+                return order.type = 'checkInAt';
+            }
+            
         }
         return order.type = 'checkInAt'
         

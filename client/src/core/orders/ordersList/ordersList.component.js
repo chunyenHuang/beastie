@@ -1,5 +1,6 @@
 import template from './ordersList.html';
 import './ordersList.styl';
+import quickStartDialog from '../../quickStart.dialog';
 
 const ordersListComponent = {
     template,
@@ -13,7 +14,9 @@ const ordersListComponent = {
                 'Orders', 'Pets', 'SharedUtil', 'Customers', '$mdColors',
                 'Snapshot', 'InhouseOrdersDialog', 'ShowSignaturesDialog',
                 'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast',
-                'chooseServiceDialog', '$location', '$anchorScroll'
+                'chooseServiceDialog', '$location', '$anchorScroll', 'Transactions',
+                '$document'
+                
             ];
         }
         constructor(
@@ -21,7 +24,8 @@ const ordersListComponent = {
             Orders, Pets, SharedUtil, Customers, $mdColors,
             Snapshot, InhouseOrdersDialog, ShowSignaturesDialog,
             PreviousOrdersDialog, Socket, $mdDialog, $mdToast, 
-            chooseServiceDialog, $location, $anchorScroll
+            chooseServiceDialog, $location, $anchorScroll, Transactions,
+            $document
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -44,19 +48,28 @@ const ordersListComponent = {
             this.chooseServiceDialog = chooseServiceDialog;
             this.$location = $location;
             this.$anchorScroll = $anchorScroll;
+            this.Transactions = Transactions;
+            this.$document = $document;
             
             Socket.on('customerCheckIn', (res) => {
+                console.log('socket');
                 console.log(res);
+                let todayStr = new Date(res.checkInAt).toDateString();
                 if (this.Orders.orders
-                    && this.Orders.orders[this.today.toDateString()]
-                    && this.Orders.orders[this.today.toDateString()][res.order_id]) {
+                    && this.Orders.orders[todayStr]
+                    && this.Orders.orders[todayStr][res.order_id]) {
                     let updatedOrder = Object.assign({}, 
-                        this.Orders.orders[this.today.toDateString()][res.order_id],
-                        {checkInAt: res.checkInAt, checkInNumber: res.checkInNumber});
+                        this.Orders.orders[todayStr][res.order_id],
+                        { checkInAt: res.checkInAt, checkInNumber: res.checkInNumber });
                     this.Orders._setOrderType(updatedOrder);
-                    this.Orders.orders[this.today.toDateString()][res.order_id] = updatedOrder;
-                    if (new Date(res.checkInAt).toDateString() === this.date.toDateString()) {
-                        this.getOrders(new Date(res.checkInAt));
+                    this.Orders.orders[todayStr][res.order_id] = updatedOrder;
+                    if (this.isHostTrigger) { 
+                        this.isHostTrigger = false; 
+                    } else {
+                        if (this.date.toDateString() === todayStr && !this.isHostTrigger) {
+                            this.isClientTrigger = true;
+                            this.changeDate(0, this.date);
+                        }
                     }
                 } else {
                     
@@ -72,29 +85,38 @@ const ordersListComponent = {
                 // Object {order_id: "58351017852e9b0b59ed15cb", customer_id: "58350ff6852e9b0b59ed15c9", checkInAt: "2016-11-29T05:39:36.908Z", checkInNumber: 1}
             });
         }
-        scroll() {
-        //     this.$location.hash(this.orders[this.i]._id);
-        //   // call $anchorScroll()
-        //     this.$anchorScroll();
-            this.i++;
-            this.$state.go('core.orders.list', {'#': this.orders[this.i]._id });
+        scrollToId(id) {
+            if(id) {
+                this.$location.hash(id);
+                this.$anchorScroll();
+            } else {
+                // this.$location.hash(this.orders[this.i]._id);
+                // this.i++;
+            }
+            
+            // this.$state.go('core.orders.list', {'#': this.orders[this.i]._id });
         }
         isHighlited(id) {
             return (this.$stateParams['#'] == id);
         }
+        followStateParams() {
+            if (this.isClientTrigger) { this.isClientTrigger = false; }
+            else {
+                if (this.$stateParams.type) {
+                    this.showType = this.$stateParams.type;
+                } else {
+                    this.setType('all');
+                }
+                if (this.$stateParams['#']) {
+                    this.scrollToId(this.$stateParams['#']);
+                }
+            }
+        }
         $onInit() {
+            this.calOpen = false;
             this.i = 0;
             console.log(this.$stateParams);
-            if(this.$stateParams.type){
-                this.showType = this.$stateParams.type;
-                // scroll
-            } else {
-                this.setType('all');
-            }
-           
-            this.today = new Date();
-            this.date = new Date();
-            this.changeDate(0);
+            this.changeDate(0, new Date());
             this.schedules = [];
             this.dateModeList = ['today'];
             this.dateMode = 'date';
@@ -128,27 +150,45 @@ const ordersListComponent = {
                 isPaid: false,
                 checkOutAt: null
             }
-            
         }
+        // interestingArray() {
+        //     this.arrtest = [];
+        //     this.arrtest['foo'] = 'bar';
+        //     this.arrtest.push(1);
+        //     this.arrtest.push({zzz:'aaa'});
+        //     console.log(this.arrtest);
+        //     return this.arrtest;
+        // }
         genConfirmDialog(order, text) {
             let name = this.capitalizeStr(order.customers[0].firstname);
+            let title = '', ariaLabel = '', textContent = '';
             console.log(name);
+            if (text === 'checkout') {
+                title = 'Is ' + name + ' Paying by Cash?';
+                ariaLabel = 'paid by cash'
+            } else {
+                title = 'Are you setting ' + name + "'s order to " + text + '?';
+                ariaLabel = 'confirm ' + text;
+            }
             this.confirm = this.$mdDialog.confirm()
-                .title('Are you setting ' + name +
-                    "'s order to " + text + '?')
-                .ariaLabel('confirm ' + text)
+                .title(title)
+                .textContent(textContent)
+                .ariaLabel(ariaLabel)
                 .ok('YES')
                 .cancel('NO');
         }
-        genChooseServiceDialog(order) {
-            this.chooseService = {
-                controller: DialogController,
-                templateUrl: 'tabDialog.tmpl.html',
-                parent: angular.element(document.body),
-                // targetEvent: ev,
-                clickOutsideToClose:true
-            }
-        }
+        // genChooseServiceDialog(order) {
+        //     this.chooseService = {
+        //         controller: DialogController,
+        //         templateUrl: 'tabDialog.tmpl.html',
+        //         parent: angular.element(document.body),
+        //         // targetEvent: ev,
+        //         clickOutsideToClose:true
+        //     }
+        // }
+        // new Date() not allowed in angular html
+        
+        getToday() { return new Date() }
         changeDate(offset, date) {
             offset = offset || 0;
             date = date || this.date;
@@ -166,6 +206,8 @@ const ordersListComponent = {
                     console.log('getting' + this.date.toDateString());
                     console.info(this.orders);
                     this.countOrderType();
+                    this.followStateParams();
+                    // this.scrollToId();
                 }, 20);
             });
         }
@@ -186,6 +228,11 @@ const ordersListComponent = {
         setType(key) {
             this.showType = key;
             key === 'all' ? this.showAllTypes = true : this.showAllTypes = false;
+            if (key === 'upcoming') {
+                this.$timeout(()=>{
+                    this.scrollToId('top');
+                }, 0);
+            }            
         }
 
         showPreviousOrders(order){
@@ -249,46 +296,89 @@ const ordersListComponent = {
             
         }
 
-        inhouseOdrer(order_id) {
+        inhouseOdrer(order_id, order) {
+            let index = this.orders.indexOf(order);
             this.InhouseOrdersDialog({
                 order_id: order_id
             }).then((res) => {
-                console.log(res);
+                if (!res._id) {
+                    console.log('error: '+res)
+                } else {
+                    this.orders.splice(index, 1, res);
+                    this.countOrderType();
+                }
             });
-            // this.$state.go('core.inhouseOrders', {
-            // });
         }
-        
 
+        getTotal(order) {
+            let total;
+            if (!order) { 
+                totla = ''; 
+            } else {
+                if (!order.services) {
+                    total = order.total || '';
+                } else {
+                    total = order.total || order.services.price || '';
+                }
+            }
+            return total;
+        }
         
-        // cancel(order) {
-        //     order.checkInAt = null;
-        //     order.notShowup = false;
-        //     order.isCanceled = true;
-        //     order.checkOutAt = null;
-        //     order.isPaid = false;
-        //     this.update(order);
-        // }
-        // notShowup(order) {
-        //     order.checkInAt = null;
-        //     order.notShowup = true;
-        //     order.isCanceled = false;
-        //     order.checkOutAt = null;
-        //     order.isPaid = false;
-        //     this.update(order);
-        // }
+        changeTotal(order) {
+            let index = this.orders.indexOf(order);
+            let oriMoney = order.total || order.services.price;
+            this.$mdDialog.show(
+                quickStartDialog({
+                element: 'order-list',
+                oriMoney: oriMoney,
+            }, this.$document[0].getElementById('order-list'))
+            ).then((money) => {
+                this.Orders.update({
+                    id: order._id
+                }, { total: money }, (data) => {
+                    if (!data._id) {
+                        console.log('error: '+data)
+                    } else {
+                        this.orders.splice(index, 1, data);
+                        this.countOrderType();
+                    }
+                }); 
+            }, () => {});
+            
+        }
         checkout(order) {
-            order.notShowup = false;
-            order.isCanceled = false;
-            order.checkOutAt = new Date();
-            order.isPaid = true;
-            this.update(order);
+            let index = this.orders.indexOf(order);
+            let paidByCash;
+            this.genConfirmDialog(order, 'checkout');
+            this.$mdDialog.show(this.confirm).then(()=>{
+                paidByCash = true; 
+            }, ()=>{
+                paidByCash = false;
+            }).then(()=>{
+                order.total = order.total || order.services.price
+                console.warn(order);
+                this.Transactions.checkout({}, {
+                    selfService_id: null,
+                    order_id: order._id,
+                    note: null,
+                    customer_id: order.customer_id,
+                    total: order.total,
+                    paidByCash: paidByCash,
+                }, (res)=>{
+                    console.log(res);
+                    Object.assign(order, {
+                        checkOutAt: res.checkOutAt,
+                        isPaid: res.isPaid
+                    });
+                    console.info(order);
+                    this.Orders.updateCache(order, ()=>{
+                        this.orders.splice(index, 1, order);
+                        this.countOrderType();
+                    })
+                });
+            });
         }
-        resetCheckOut(order) {
-            order.checkOutAt = null;
-            order.isPaid = false;
-            this.update(order);
-        }
+       
         update(order) {
             console.log('inside update');
             this.Orders.update({
@@ -307,6 +397,7 @@ const ordersListComponent = {
             });
         }
         checkIn(order) {
+            this.isHostTrigger = true;
             let orderDate = new Date(order.scheduleAt);
             let index = this.orders.indexOf(order);
             if (orderDate.toDateString() === new Date().toDateString()) {
@@ -321,6 +412,15 @@ const ordersListComponent = {
                         this.Orders.updateCache(updatedOrder, ()=>{
                             this.orders.splice(index, 1, updatedOrder);
                             this.countOrderType();
+                            // timeout for .ng-hide-add
+                            this.$timeout(()=>{
+                                this.setType('checkInAt');
+                            }, 750)
+                            // timeout for .ng-hide-add + .ng-hide-remove
+                            this.$timeout(()=>{
+                                this.scrollToId(updatedOrder._id);
+                            }, 1300)
+                            
                         });
                     });
                 })
@@ -333,8 +433,7 @@ const ordersListComponent = {
                         this.Customers.checkIn({
                             phone: order.customers[0].phone
                         }, ()=>{
-                            this.date = new Date();
-                            this.getOrders(this.date);
+                            this.changeDate(0, new Date());
                         });
                     });
                 }, () => {});
@@ -355,6 +454,35 @@ const ordersListComponent = {
                     }
                 }
             });   
+        }
+         resetCheckOut(order) {
+            let index = this.orders.indexOf(order);
+            this.Orders.update({
+                id: order._id
+            }, {
+                checkOutAt: null,
+                isPaid: false
+            }, (data) => {
+                if (!data._id) {
+                    console.log('error: '+data)
+                } else {
+                    this.orders.splice(index, 1, data);
+                    this.countOrderType();
+                    }
+                }
+            );  
+            
+            
+            this.Transactions.query({
+                order_id:order._id
+            }, (data) => {
+                this.Transactions.delete({
+                    id: data[0]._id
+                }, (res) => {
+                    console.log(res)
+                });
+            });
+            
         }
         cancel(order) {
             if (!order.isCanceled) {

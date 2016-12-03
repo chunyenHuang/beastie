@@ -38,7 +38,7 @@ class TransactionsController extends AbstractController {
             return;
         }
         Object.assign(req.body,{
-            paidByCash: req.body.paidByCash || true,
+            paidByCash: req.body.paidByCash || false,
             isDeleted: false,
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')

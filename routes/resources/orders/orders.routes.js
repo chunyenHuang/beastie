@@ -23,6 +23,12 @@ module.exports = (app) => {
             if (req.params.id == 'template') {
                 Orders.getTemplate(req, res);
             } else {
+                if(req.body.isPaid){
+                    delete req.body.isPaid;
+                }
+                if(req.body.checkOutAt){
+                    delete req.body.checkOutAt;
+                }
                 req.collection = req.db.collection(dbCollectionName);
                 next();
             }
