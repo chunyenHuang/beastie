@@ -18,7 +18,7 @@
                     ng-change="$ctrl.getOrders($ctrl.date)"></md-datepicker>
             </div>
         </md-button>
-            
+
         <md-button ng-click="$ctrl.changeDate(1)" aria-label="tomorrow" style="height:84px">
             <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
         <div layout-padding layout>
@@ -50,9 +50,9 @@
             ng-show="$ctrl.showAllTypes||(order.type == $ctrl.showType)"
             ng-class="{'grid-highlight': $ctrl.isHighlited(order._id)}">
             <!--ng-class="{'grid-highlight': $ctrl.isToday(order.scheduleAt) && $ctrl.dateMode!=='today'}">-->
-            <md-grid-list md-cols="9" md-gutter="0.4em" md-row-height="8:7" 
+            <md-grid-list md-cols="9" md-gutter="0.4em" md-row-height="8:7"
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}">
-                
+
                 <md-grid-tile  md-colspan="2" md-rowspan="3" md-colors="{background: 'background', color:'grey-500'}">
                     <div layout layout-fill layout-align="center">
                         <div flex="90" layout-fill layout="column" layout-align="start end">
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </md-grid-tile>
-                
+
                 <md-grid-tile  md-colspan="2" md-rowspan="2">
                     <md-button layout-fill layout="column" layout-align="center center"
                         ng-click="$ctrl.edit(order)"
@@ -97,7 +97,7 @@
                         <!--<div>({{$ctrl.customers[order.customer_id].firstname}} {{$ctrl.customers[order.customer_id].lastname}})</div>-->
                     </div>
                 </md-grid-tile>
-                
+
                 <md-grid-tile  md-colspan="3" md-rowspan="3" ng-if="!order.checkInAt" md-colors="{background: 'primary-500-0.85'}">
                     <md-button layout-fill ng-click="$ctrl.checkIn(order)"
                         ng-if="!order.isCanceled && !order.notShowup"><span class="md-display-1">
@@ -108,9 +108,9 @@
                         <div class="md-display-1"><span ng-show="order.isCanceled">canceled</span><span ng-show="order.notShowup">no-show</span></div>
                         <div class="md-subhead">click to reset</div>
                         </md-button></md-grid-tile>
-                        
+
                 </md-grid-tile>
-                        
+
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt" md-colors="{background: 'primary-500-1'}">
                     <md-button ng-click="$ctrl.chooseService(order)" layout-fill>
                         <div layout="column" layout-align="center center">
@@ -119,17 +119,17 @@
                             <div class="md-headline">{{order.services.zhName}}</div>
                         </div>
                     </md-button>
-                    
+
                 </md-grid-tile>
                 <md-grid-tile md-colspan="1" md-rowspan="1" ng-if="order.checkInAt">
                     <md-button layout-fill ng-click="$ctrl.changeTotal(order)" ng-disabled="!order.services">
                         <span class="md-headline">
                         ${{$ctrl.getTotal(order)}}</span></md-button></md-grid-tile>
                 <md-grid-tile md-colspan="2" md-rowspan="2">
-                    <!--<img ng-src="/images/pets/{{order.pet_id}}.png" alt="Washed Out" ng-click="$ctrl.showPreviousOrders(order)">-->
+                    <!-- <img ng-src="/images/pets/{{order.pet_id}}.png" alt="Washed Out" ng-click="$ctrl.showPreviousOrders(order)"> -->
 
                     <div class="md-headline tile-pets-name">{{order.pets[0].name | uppercase}}</div></md-grid-tile>
-                    
+
                 <!--<md-grid-tile  md-colspan="2" md-rowspan="2" ng-if="!order.checkInAt" md-colors="{background: 'primary-500-0.85'}">-->
                 <!--    <md-button layout-fill ng-disabled="order.checkInAt" ng-click="$ctrl.checkIn(order)"><span class="md-headline">-->
                 <!--        check In</span></md-button></md-grid-tile>-->
@@ -147,22 +147,22 @@
                     <md-button layout-fill ng-click="$ctrl.waivers(order)" ng-disabled="!order.services">
                         waivers</md-button></md-grid-tile>
                 <md-grid-tile  md-colspan="1" md-rowspan="1" ng-if="order.checkInAt">
-                    <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order._id)">
+                    <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order.pet_id)">
                         <md-icon class="s48" md-svg-src="camera" aria-label="take photos"></md-icon></md-button></md-grid-tile>
                 <!--<md-grid-tile  md-colors="{background: 'accent-500-0.85'}">-->
-                
+
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt" md-colors="">
                     <md-button layout-fill ng-click="$ctrl.resetOrder(order)" ng-hide="order.checkOutAt">
                         {{$ctrl.typeList[order.type].text}}</md-button>
                     <md-button layout-fill ng-click="$ctrl.resetCheckOut(order)" ng-if="order.checkOutAt">
                         {{$ctrl.typeList[order.type].text}}</md-button></md-grid-tile>
-                
+
                 <md-grid-tile ng-if="!order.checkInAt">
                     <!--<md-button layout-fill ng-click="$ctrl.cancel(order._id)" ng-disabled="order.isCanceled"-->
-                    <md-button layout-fill ng-click="$ctrl.cancel(order)" 
+                    <md-button layout-fill ng-click="$ctrl.cancel(order)"
                         class="md-accent tile-cancel" ng-class="{'md-raised':order.isCanceled}">
                         cancel</md-button></md-grid-tile>
-                
+
                 <!--<md-grid-tile md-colors="{background: 'warn-500-0.85'}">-->
                 <md-grid-tile ng-if="!order.checkInAt">
                     <md-button layout-fill ng-click="$ctrl.notShowup(order)" ng-disabled="order.notShowup"

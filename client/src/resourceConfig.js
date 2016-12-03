@@ -19,15 +19,15 @@ function resourceConfig(
         },
         save: {
             method: 'POST',
-            transformSend
+            transformRequest
         },
         update: {
             method: 'PUT',
-            transformSend
+            transformRequest
         }
     };
 
-    function transformSend(data){
+    function transformRequest(data){
         return angular.toJson(data);
     }
 

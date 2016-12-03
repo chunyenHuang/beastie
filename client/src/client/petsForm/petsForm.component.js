@@ -7,18 +7,20 @@ const petsFormComponent = {
     controller: /* @ngInject */ class PetsFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Pets',
+                '$log', '$timeout', '$scope', '$state', '$stateParams', '$window', 'Pets',
                 'ListItems', 'Snapshot', 'SharedUtil', '$mdDialog'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Pets,
+            $log, $timeout, $scope, $state, $stateParams, $window, Pets,
             ListItems, Snapshot, SharedUtil, $mdDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
+            this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$window = $window;
             this.Pets = Pets;
             this.ListItems = ListItems;
             this.Snapshot = Snapshot;
@@ -37,18 +39,31 @@ const petsFormComponent = {
                     today.getDate() - 1
                 )
             };
+            this.$scope.changePicture = (fileInput) => {
+                if (fileInput.length > 0) {
+                    this.inputPicture = fileInput[0];
+                    let reader = new FileReader();
+                    reader.readAsDataURL(this.inputPicture);
+                    reader.onload = (event) => {
+                        this.$timeout(()=>{
+                            this.preview = event.target.result;
+                        });
+                    };
+                }
+            };
         }
 
         $onInit() {
+            this.pet = null;
+            this.preview = null;
+            console.log(this.$stateParams.pet_id);
             if (this.$stateParams.pet_id) {
                 this.setPet(this.$stateParams.pet_id);
                 this.preview = '/images/pets/' + this.$stateParams.pet_id + '.png';
             } else {
                 this.setNewPet();
             }
-
-            this.setLists();
-            this.petVaccinationsNameList = [];
+            // this.petVaccinationsNameList = [];
         }
 
         backToDashboard() {
@@ -59,7 +74,7 @@ const petsFormComponent = {
 
         takeSnapshot() {
             this.Snapshot().then((res) => {
-                this.pet.file = res.blob;
+                this.inputPicture = res.blob;
                 this.preview = res.dataUrl;
             });
         }
@@ -79,17 +94,17 @@ const petsFormComponent = {
             this.ListItems.query({
                 type: 'vaccinations'
             }, (results) => {
-                this.vaccinations = results[0].items;
+                this.vaccinations = {};
                 this.requiredVaccinations = [];
-                for (var i = 0; i < this.vaccinations.length; i++) {
-                    if (this.vaccinations[i].rejectOrderIfIsExpired) {
-                        this.requiredVaccinations.push(this.vaccinations[i].name);
+                angular.forEach(results[0].items, (item) => {
+                    this.vaccinations[item.name] = item;
+                    if (item.rejectOrderIfIsExpired) {
+                        this.requiredVaccinations.push(item.name);
                     }
-                }
-                console.log(this.vaccinations);
-                this._genVaccinationsNameList(this.pet.vaccinations);
-                // this._genVaccinationsNameList(this.vaccinations);
+                });
                 this._applyVaccineToPet();
+                // this._genVaccinationsNameList(this.pet.vaccinations);
+                // this._applyVaccineToPet();
             });
         }
 
@@ -97,9 +112,10 @@ const petsFormComponent = {
             this.Pets.get({
                 id: id
             }, (pet) => {
-                pet.birthday = new Date(pet.birthday);
+                // pet.birthday = new Date(pet.birthday);
                 this.pet = pet;
-                this._parseVaccinationDate();
+                this.setLists();
+                // this._parseVaccinationDate();
             }, () => {
                 this.setNewPet();
             });
@@ -109,12 +125,26 @@ const petsFormComponent = {
             this.Pets.get({
                 id: 'template'
             }, (template) => {
-                this.isNewPet = true;
                 this.pet = template;
                 this.pet.customer_id = this.$stateParams.customer_id;
                 this.pet.species = 'dog';
+                this.setLists();
             });
         }
+
+        addVaccine(vaccine) {
+            if (!this.pet) {
+                return;
+            }
+            this.pet.vaccinations =
+                (angular.isArray(this.pet.vaccinations)) ? this.pet.vaccinations : [];
+            this.pet.vaccinations.push({
+                name: vaccine.name,
+                issuedAt: null,
+                expiredAt: null
+            });
+        }
+
         _applyVaccineToPet() {
             for (let i = 0; i < this.vaccinations.length; i++) {
                 if (this.petVaccinationsNameList.indexOf(this.vaccinations[i].name) < 0) {
@@ -152,7 +182,7 @@ const petsFormComponent = {
             }
         }
 
-        setDaysBeforeExpire(item, index) {
+        setDaysBeforeExpire(item, vaccineName) {
             let copyIssuedAt = angular.copy(item.issuedAt);
             let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() +
                 Number(item.effectiveDuration));
@@ -161,7 +191,7 @@ const petsFormComponent = {
             item.expiredAt = new Date(effectiveDate);
 
             item.daysBeforeDue = Math.ceil(this.SharedUtil.daysBetween(item.expiredAt));
-            if (item.daysBeforeDue < this.vaccinations[index].remindCustomerWithinDays) {
+            if (item.daysBeforeDue < this.vaccinations[vaccineName].remindCustomerWithinDays) {
                 const prompt = this.$mdDialog.prompt()
                     .title(item.name + ' Vaccine Due In ' + item.daysBeforeDue + ' Days!')
                     // .textContent('Bowser is a common name.')
@@ -234,7 +264,6 @@ const petsFormComponent = {
         }
 
         update() {
-            console.log(this.pet);
             this._clearTextarea();
             if (!this.validate()) {
                 this.selectedTab = 0;
@@ -244,23 +273,49 @@ const petsFormComponent = {
                 this.selectedTab = 1;
                 return false;
             }
-            if (this.isNewPet) {
+            if (this.pet['birthday'] == 'Invalid Date') {
+                this.pet['birthday'] = null;
+            }
+            if (!this.pet._id) {
                 this.Pets.save(this.pet, (res) => {
-                    console.log(res);
-                    this.$state.go('client.dashboard', {
-                        customer_id: this.$stateParams.customer_id
+                    this._uploadPicture(res._id, () => {
+                        this.$state.go('client.dashboard', {
+                            customer_id: this.$stateParams.customer_id
+                        });
                     });
                 });
             } else {
                 this.Pets.update({
                     id: this.pet._id
                 }, this.pet, (res) => {
-                    console.log(res);
-                    this.$state.go('client.dashboard', {
-                        customer_id: this.$stateParams.customer_id
+                    this._uploadPicture(this.pet._id, () => {
+                        this.$state.go('client.dashboard', {
+                            customer_id: this.$stateParams.customer_id
+                        });
                     });
                 });
             }
+        }
+
+        _uploadPicture(pet_id, callback) {
+            if (!this.inputPicture) {
+                return callback();
+            }
+            const timestamp = new Date().getTime();
+            this.Pets.uploadPicture({
+                id: pet_id
+            }, {
+                pet_id: pet_id,
+                file: this.inputPicture,
+                filename: pet_id + '-' + timestamp + '.png'
+            }, (res) => {
+                // this will return url for the last pictures
+                console.log(res);
+                callback();
+            }, (err) => {
+                console.log(err);
+                callback();
+            });
         }
 
         changeTab(val) {
@@ -268,6 +323,7 @@ const petsFormComponent = {
             this.selectedTab = (this.selectedTab < 0) ? 0 : this.selectedTab;
             this.selectedTab = (this.selectedTab > 4) ? 4 : this.selectedTab;
         }
+
     }
 };
 export default petsFormComponent;

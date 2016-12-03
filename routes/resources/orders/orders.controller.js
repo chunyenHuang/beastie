@@ -123,45 +123,6 @@ class OrdersController extends AbstractController {
         });
     }
 
-    upload(req, res) {
-        if (!req.file) {
-            res.statusCode = 400;
-            res.json({
-                message: 'no file.'
-            });
-            return;
-        }
-        if (!req.body.filename) {
-            res.statusCode = 400;
-            res.json({
-                message: 'no filename ( order_id + "-" + timestamp + ".png")'
-            });
-            return;
-        }
-        // const timestamp = new Date().getTime()
-        const newName = req.body.filename;
-        // order_id + '-' + timestamp + '.png';
-
-        req.oldPath = path.join(global.uploads, req.file.filename);
-        req.newPath = path.join(global.images, 'orders', newName);
-        this._moveFile(req, res, () => {
-            res.sendStatus(200);
-        });
-    }
-
-    getPicturesPath(req, res) {
-        const ordersImagesPath = path.join(global.images, 'orders');
-        const filenames = [];
-        fs.readdirSync(ordersImagesPath).forEach((filename) => {
-            if (filename.indexOf(req.params.id) > -1) {
-                filenames.push(
-                    path.join('images/orders', filename)
-                );
-            }
-        });
-        res.send(filenames);
-    }
-
     // transformDates(req, res, next) {
     //     if (req.body) {
     //         for (let prop in req.body) {
