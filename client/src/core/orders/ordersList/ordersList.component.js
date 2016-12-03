@@ -89,6 +89,7 @@ const ordersListComponent = {
         }
         scrollToId(id) {
             if (id) {
+                console.log('scroll to ' + id);
                 this.$location.hash(id);
                 this.$anchorScroll();
             } else {
@@ -105,16 +106,25 @@ const ordersListComponent = {
             if (this.isClientTrigger) {
                 this.isClientTrigger = false;
             } else {
-                if (this.$stateParams.type) {
-                    this.showType = this.$stateParams.type;
-                } else {
-                    this.setType('all');
-                }
+                this.setType(this.$stateParams.type);
                 if (this.$stateParams['#']) {
-                    this.scrollToId(this.$stateParams['#']);
+                    this.$timeout(()=>{
+                        this.scrollToId(this.$stateParams['#']);
+                    }, 500);
                 }
             }
         }
+        setType(key) {
+            key = key || 'all';
+            this.showType = key;
+            key === 'all' ? this.showAllTypes = true : this.showAllTypes = false;
+            if (key === 'upcoming') {
+                this.$timeout(() => {
+                    this.scrollToId('top');
+                }, 0);
+            }
+        }
+
         $onInit() {
             this.calOpen = false;
             this.i = 0;
@@ -232,15 +242,6 @@ const ordersListComponent = {
                     this.typeList[order.type].count += 1;
                 }
             });
-        }
-        setType(key) {
-            this.showType = key;
-            key === 'all' ? this.showAllTypes = true : this.showAllTypes = false;
-            if (key === 'upcoming') {
-                this.$timeout(() => {
-                    this.scrollToId('top');
-                }, 0);
-            }
         }
 
         showPreviousOrders(order) {
