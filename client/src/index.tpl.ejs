@@ -7,7 +7,9 @@
         <%= htmlWebpackPlugin.options.title %>
     </title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <meta name="author" content="<%= htmlWebpackPlugin.options.author %>">
     <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
     <link rel="icon" href="<%= htmlWebpackPlugin.options.iconUrl %>">
@@ -15,7 +17,7 @@
     <!-- <link rel="stylesheet" src="/assets/css/font-awesome/css/font-awesome.min.css"> -->
     <!-- <script src='/assets/js/vis/vis.js'></script> -->
     <!-- <link rel="stylesheet" src="/assets/js/vis/vis.css"> -->
-    <script type='application/javascript' src='/assets/js/fastclick.js'></script>
+    <!-- <script type='application/javascript' src='/assets/js/fastclick.js'></script>
     <script type="text/javascript">
         if ('addEventListener' in document) {
             document.addEventListener('DOMContentLoaded', function() {
@@ -42,7 +44,7 @@
             }, false);
 
         }
-    </script>
+    </script> -->
 </head>
 
 <body ng-app="beastie" ng-strict-di ng-cloak layout="column" flex>
