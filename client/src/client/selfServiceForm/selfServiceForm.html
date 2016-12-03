@@ -12,7 +12,9 @@
     </div>
     <div layout="column" flex layout-align="start center" ng-hide="$ctrl.data">
         <h1 class="md-headline">Please enter your pin passwords (6 digits)</h1>
-        <keypad type="pin" limit="6" on-update="$ctrl.login(inputNumbers)"></keypad>
+        <keypad type="pin"
+            right-bottom-button="enter"
+            limit="$ctrl.pinPasswordsLength" on-update="$ctrl.login(inputNumbers)"></keypad>
     </div>
 
     <md-content layout="column" flex layout-align="start center" ng-show="$ctrl.data">
