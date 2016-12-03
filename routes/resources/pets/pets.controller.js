@@ -4,6 +4,10 @@ const path = require('path');
 const fs = require('fs');
 
 class PetsController extends AbstractController {
+    constructor() {
+        super();
+        this._getPetsPicturesPath = this._getPetsPicturesPath.bind(this);
+    }
     getTemplate(req, res) {
         const template = {
             customer_id: null,
@@ -21,24 +25,24 @@ class PetsController extends AbstractController {
                 createdAt: new Date()
             }],
             vaccinations: [
-                {
-                    name: null,
-                    issuedAt: null,
-                    expiredAt: null,
-                    createdAt: new Date()
-                }
+                // {
+                //     name: null,
+                //     issuedAt: null,
+                //     expiredAt: null,
+                //     createdAt: new Date()
+                // }
             ],
             specialConditions: [
-                {
-                    description: null,
-                    createdAt: new Date()
-                }
+                // {
+                //     description: null,
+                //     createdAt: new Date()
+                // }
             ],
             additionalInstructions: [
-                {
-                    description: null,
-                    createdAt: new Date()
-                }
+                // {
+                //     description: null,
+                //     createdAt: new Date()
+                // }
             ],
             createdAt: new Date(),
             isDeleted: false
@@ -72,8 +76,18 @@ class PetsController extends AbstractController {
             // fix wrong condition
             if (!err) {
                 if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results);
+                    (function setPictures(pets, index, func, res) {
+                        if (index == pets.length) {
+                            res.statusCode = 200;
+                            res.json(pets);
+                            return;
+                        }
+                        func(pets[index]._id, (filenames) => {
+                            pets[index].pictures = filenames;
+                            index++;
+                            setPictures(pets, index, func, res);
+                        });
+                    })(results, 0, this._getPetsPicturesPath, res);
                 } else {
                     // res.sendStatus(404);
                     res.status(404).send({
@@ -86,34 +100,23 @@ class PetsController extends AbstractController {
         });
     }
 
-    put(req, res) {
-        Object.assign(req.body,{
+    update(req, res) {
+        Object.assign(req.body, {
             updatedAt: new Date(),
             updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
-        console.log(res.body);
 
         if (req.body._id) {
             delete req.body._id;
+            delete req.body.customer_id;
         }
-        req.collection.update({
+        req.collection.updateOne({
             _id: ObjectId(req.params.id)
         }, {
             $set: req.body
-        }, {
-            upsert: true
         }, (err) => {
             if (!err) {
-                if(req.file){
-                    const newName = req.params.id + '.png';
-                    req.oldPath = path.join(global.uploads, req.file.filename);
-                    req.newPath = path.join(global.images, 'pets', newName);
-                    this._moveFile(req, res, () => {
-                        res.sendStatus(204);
-                    });
-                } else {
-                    res.sendStatus(204);
-                }
+                return this.get(req, res);
             } else {
                 res.sendStatus(500);
             }
@@ -121,7 +124,7 @@ class PetsController extends AbstractController {
     }
 
     post(req, res) {
-        Object.assign(req.body,{
+        Object.assign(req.body, {
             isDeleted: false,
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
@@ -129,7 +132,7 @@ class PetsController extends AbstractController {
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
-                if(req.file){
+                if (req.file) {
                     const newName = docsInserted.ops[0]._id + '.png';
                     req.oldPath = path.join(global.uploads, req.file.filename);
                     req.newPath = path.join(global.images, 'pets', newName);
@@ -148,6 +151,54 @@ class PetsController extends AbstractController {
         });
     }
 
+    upload(req, res) {
+        if (!req.file) {
+            res.statusCode = 400;
+            res.json({
+                message: 'no file.'
+            });
+            return;
+        }
+        if (!req.body.filename) {
+            res.statusCode = 400;
+            res.json({
+                message: 'no filename ( order_id + "-" + timestamp + ".png")'
+            });
+            return;
+        }
+        // const timestamp = new Date().getTime()
+        const newName = req.body.filename;
+        // order_id + '-' + timestamp + '.png';
+
+        req.oldPath = path.join(global.uploads, req.file.filename);
+        req.newPath = path.join(global.images, 'pets', newName);
+        this._moveFile(req, res, () => {
+            res.statusCode = 201;
+            res.json({
+                url: path.join('images/pets', newName)
+            });
+        });
+    }
+
+    getPicturesPath(req, res) {
+        this._getPetsPicturesPath(req.params.id, (filenames) => {
+            res.statusCode = 200;
+            res.send(filenames);
+        });
+    }
+
+    _getPetsPicturesPath(pet_id, callback) {
+        const petsImagesPath = path.join(global.images, 'pets');
+        const filenames = [];
+        fs.readdirSync(petsImagesPath).forEach((filename) => {
+            if (filename.indexOf(pet_id) > -1) {
+                filenames.push(
+                    path.join('images/pets', filename)
+                );
+            }
+        });
+        callback(filenames);
+    }
 }
 
 module.exports = PetsController;

@@ -23,10 +23,12 @@ const selfServiceFormComponent = {
             this.$stateParams = $stateParams;
             this.SelfServices = SelfServices;
             this.ListItems = ListItems;
+
+            this.pinPasswordsLength = 6;
         }
+
         $onInit() {
             this.setSelfServices();
-
             this.data = null;
         }
 
@@ -40,15 +42,18 @@ const selfServiceFormComponent = {
             });
         }
 
-        reload(){
+        reload() {
             this.SelfServices.check({
                 customer_id: this.$stateParams.customer_id
-            }, (res)=>{
+            }, (res) => {
                 this.data = res;
             });
         }
 
         login(pinPasswords) {
+            if (pinPasswords.length != this.pinPasswordsLength) {
+                return;
+            }
             this.SelfServices.login({
                 customer_id: this.$stateParams.customer_id
             }, {
@@ -64,7 +69,7 @@ const selfServiceFormComponent = {
                 type: 'selfServices'
             }, (listItems) => {
                 this.list = {};
-                angular.forEach(listItems[0].items, (item)=>{
+                angular.forEach(listItems[0].items, (item) => {
                     this.list[item.type] = item.subItems;
                 });
                 console.log(this.list);

@@ -3,11 +3,11 @@ const OrdersController = require('../../resources/orders/orders.controller.js');
 const Orders = new OrdersController;
 
 class CustomerCheckInController extends AbstractController {
-    constructor(){
+    constructor() {
         super();
         this.checkIn = this.checkIn.bind(this);
     }
-    _findCustomer(req, res, next){
+    _findCustomer(req, res, next) {
         const query = req.collection.find({
             phone: req.params.phone
         });
@@ -22,7 +22,7 @@ class CustomerCheckInController extends AbstractController {
         });
     }
 
-    _updateCustomerLastLoginAt(req, res, next){
+    _updateCustomerLastLoginAt(req, res, next) {
         req.collection.update({
             id: req.customer._id
         }, {
@@ -42,11 +42,11 @@ class CustomerCheckInController extends AbstractController {
         });
     }
 
-    _getTodayNextNumber(req, res, next){
-        Orders._setFromTo(req, res, ()=>{
+    _getTodayNextNumber(req, res, next) {
+        Orders._setFromTo(req, res, () => {
             req.collection = req.db.collection('orders');
-            Orders._getByDate(req, res, (results)=>{
-                if(results.length===0){
+            Orders._getByDate(req, res, (results) => {
+                if (results.length === 0) {
                     res.statusCode = 500;
                     res.send({
                         customer_id: req.customer._id,
@@ -61,20 +61,25 @@ class CustomerCheckInController extends AbstractController {
 
     checkIn(req, res) {
         req.today = new Date();
-        this._findCustomer(req, res, ()=>{
-            this._updateCustomerLastLoginAt(req, res, ()=>{
-                this._getTodayNextNumber(req, res, (todayOrders)=>{
+        this._findCustomer(req, res, () => {
+            this._updateCustomerLastLoginAt(req, res, () => {
+                this._getTodayNextNumber(req, res, (todayOrders) => {
                     let currentCheckInNumber = 0;
                     let order;
                     for (var i = 0; i < todayOrders.length; i++) {
-                        if(todayOrders[i].checkInNumber){
-                            if(todayOrders[i].checkInNumber > currentCheckInNumber){
+                        if (todayOrders[i].checkInNumber) {
+                            if (todayOrders[i].checkInNumber > currentCheckInNumber) {
                                 currentCheckInNumber = todayOrders[i].checkInNumber;
                             }
                         }
-                        if(todayOrders[i].customer_id.toString() == req.customer._id.toString()){
+                        if (todayOrders[i].customer_id.toString() == req.customer._id.toString()) {
                             order = todayOrders[i];
                         }
+                    }
+                    if (!order) {
+                        res.statusCode = 200;
+                        res.json(req.customer);
+                        return;
                     }
                     const checkInNumber = (currentCheckInNumber + 1);
 
@@ -87,8 +92,8 @@ class CustomerCheckInController extends AbstractController {
                             checkInAt: req.today,
                             checkInNumber: checkInNumber
                         }
-                    }, (err, results)=>{
-                        if(results.result.nModified != 0){
+                    }, (err, results) => {
+                        if (results.result.nModified != 0) {
                             const response = {
                                 order_id: order._id,
                                 customer_id: req.customer._id,

@@ -9,11 +9,11 @@ const dashboardComponent = {
     controller: /* @ngInject */ class DashboardController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Customers', 'Orders'
+                '$log', '$timeout', '$state', '$stateParams', 'Customers', 'Orders', 'Pets'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Customers, Orders
+            $log, $timeout, $state, $stateParams, Customers, Orders, Pets
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -21,6 +21,7 @@ const dashboardComponent = {
             this.$stateParams = $stateParams;
             this.Customers = Customers;
             this.Orders = Orders;
+            this.Pets = Pets;
             this.preview = {};
         }
         $onInit() {
@@ -40,7 +41,7 @@ const dashboardComponent = {
             }
         }
 
-        selfService(){
+        selfService() {
             this.$state.go('client.selfServiceForm', {
                 customer_id: this.$stateParams.customer_id
             });
@@ -54,8 +55,8 @@ const dashboardComponent = {
             }, (res) => {
                 this.orders = res;
                 angular.forEach(this.orders, (order) => {
-                    this.Orders.getPicturesPath({
-                        id: order._id
+                    this.Pets.getPicturesPath({
+                        id: order.pet_id
                     }, (res) => {
                         this.pictures[order._id] = res;
                     });

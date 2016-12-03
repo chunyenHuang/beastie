@@ -78,11 +78,13 @@ const signatureComponent = {
 
             this.canvas.addEventListener('mousedown', (event) => {
                 // console.log(this.$swipe);
+                event.preventDefault();
                 this._addClick(event);
                 this.isDrawing = true;
                 this._redraw();
             });
             this.canvas.addEventListener('mousemove', (event) => {
+                event.preventDefault();
                 if (this.isDrawing) {
                     this._addClick(event);
                     this._redraw();
@@ -96,12 +98,14 @@ const signatureComponent = {
             });
 
             this.canvas.addEventListener('touchstart', (event) => {
+                event.preventDefault();
                 console.log('touchstart');
                 this._addClick(event);
                 this.isDrawing = true;
                 this._redraw();
             });
             this.canvas.addEventListener('touchmove', (event) => {
+                event.preventDefault();
                 console.log('touchmove');
                 if (this.isDrawing) {
                     this._addClick(event);

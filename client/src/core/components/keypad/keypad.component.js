@@ -64,7 +64,7 @@ const keypadComponent = {
             }
             if (val==='.') {
                 if (!this.pressed) {
-                    val = '0.'
+                    val = '0.';
                 }
                 if (this.pressed.indexOf('.') != -1) {
                     val = '';

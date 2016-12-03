@@ -1,6 +1,6 @@
 const AbstractController = require('../../abstract/AbstractController.js');
 class TransactionsController extends AbstractController {
-    constructor(){
+    constructor() {
         super();
         this.get = this.get.bind(this);
         this._payOrder = this._payOrder.bind(this);
@@ -9,52 +9,54 @@ class TransactionsController extends AbstractController {
         const template = {
             selfService_id: null,
             order_id: null,
-            note: null,
             customer_id: null,
+            note: null,
             total: null,
-            paidByCash: false,
+            isTaxIncluded: false,
+            paymentTransactionsNumber: null,
             createdAt: null
         };
         res.send(template);
     }
-    
-    checkout(req, res){
-        if(!req.body.customer_id){
+
+    checkout(req, res) {
+        if (!req.body.customer_id) {
             res.json({
                 message: 'no customer_id'
             });
             return;
         }
-        if(!req.body.order_id && !req.body.selfService_id){
+        if (!req.body.order_id && !req.body.selfService_id) {
             res.json({
                 message: 'no order_id or selfService_id'
             });
             return;
         }
-        if(!req.body.total){
+        if (!req.body.total) {
             res.json({
                 message: 'no total'
             });
             return;
         }
-        Object.assign(req.body,{
-            paidByCash: req.body.paidByCash || false,
+        Object.assign(req.body, {
+            isTaxIncluded: req.body.isTaxIncluded || false,
+            paymentTransactionsNumber: req.body.paymentTransactionsNumber || null,
             isDeleted: false,
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
 
         req.collection.update({
-           order_id: req.body.order_id,
-           selfService_id: req.body.selfService_id
+            order_id: req.body.order_id,
+            selfService_id: req.body.selfService_id
         }, req.body, {
-          upsert: true  
+            upsert: true
         }, (err) => {
             if (!err) {
-                if(req.body.order_id){
+                if (req.body.order_id) {
                     this._payOrder(req, res);
-                // } else if(req.body.selfService_id){
-                //     this._paySelfService(req, res);
+                    // } else if(req.body.selfService_id){
+                    //     this._paySelfService(req, res);
                 } else {
                     res.statusCode = 201;
                     res.send();
@@ -67,8 +69,8 @@ class TransactionsController extends AbstractController {
             }
         });
     }
-    
-    _payOrder(req, res){
+
+    _payOrder(req, res) {
         req.params.id = req.body.order_id;
         req.collection = req.db.collection('orders');
         req.collection.update({
@@ -78,25 +80,25 @@ class TransactionsController extends AbstractController {
                 isPaid: true,
                 checkOutAt: new Date()
             }
-        }, (err)=>{
-           if(!err){
-               req.lookup = {
+        }, (err) => {
+            if (!err) {
+                req.lookup = {
                     from: 'transactions',
                     localField: '_id',
                     foreignField: 'order_id',
                     as: 'transactions'
                 };
-               this.get(req, res);
-           } else {
-              res.sendStatus(400);
-           }
+                this.get(req, res);
+            } else {
+                res.sendStatus(400);
+            }
         });
     }
-    
-    _paySelfService(req, res){
-        
+
+    _paySelfService(req, res) {
+
     }
-    
+
     get(req, res) {
         req.lookup = req.lookup || {};
         const query = req.collection.aggregate([
@@ -140,7 +142,7 @@ class TransactionsController extends AbstractController {
             }
         });
     }
-    
+
 }
 
 module.exports = TransactionsController;

@@ -8,78 +8,28 @@ import yargs from 'yargs';
 import prompt from 'gulp-prompt';
 import replace from 'gulp-replace';
 
-// helper method for resolving paths
-let resolveToRoutes = (glob = '') => {
-    return path.join(__dirname, 'routes', glob); // app/{glob}
-};
+/*
+    gulp temp --type module --parent path --name something
+    type: route, module, component, service(w/ Cache), dialogService
+*/
 
-let resolveToComponents = (glob = '') => {
-    return path.join(__dirname, 'client/src', glob); // app/components/{glob}
-};
-let resolveToModules = (glob = '') => {
-    return path.join(__dirname, 'client/src', glob); // app/components/{glob}
-};
-
-// map of all paths
-let paths = {
-    blankTemplatesForRoute: path.join(__dirname, 'generator', 'route/**/*.**'),
-    blankTemplatesForComponent: path.join(__dirname, 'generator', 'component/**/*.**'),
-    blankTemplatesForModule: path.join(__dirname, 'generator', 'module/**/*.**')
-};
-
-gulp.task('route', () => {
+gulp.task('temp', () => {
     const cap = (val) => {
         return val.charAt(0).toUpperCase() + val.slice(1);
     };
+    const type = yargs.argv.type || 'module';
     const name = yargs.argv.name;
     const parentPath = yargs.argv.parent || '';
-    const destPath = path.join(resolveToRoutes(), parentPath, name);
-
-    return gulp.src(paths.blankTemplatesForRoute)
+    const destPath = path.join(__dirname, parentPath, cap(name));
+    gulp.src(
+            path.join(__dirname, 'generator', type, '/**/*.**')
+        )
         .pipe(template({
             name: name,
             upCaseName: cap(name)
         }))
         .pipe(rename((path) => {
-            path.basename = path.basename.replace('temp', name);
-        }))
-        .pipe(gulp.dest(destPath));
-});
-
-gulp.task('component', () => {
-    const cap = (val) => {
-        return val.charAt(0).toUpperCase() + val.slice(1);
-    };
-    const name = yargs.argv.name;
-    const parentPath = yargs.argv.parent || '';
-    const destPath = path.join(resolveToComponents(), parentPath, name);
-
-    return gulp.src(paths.blankTemplatesForComponent)
-        .pipe(template({
-            name: name,
-            upCaseName: cap(name)
-        }))
-        .pipe(rename((path) => {
-            path.basename = path.basename.replace('temp', name);
-        }))
-        .pipe(gulp.dest(destPath));
-});
-
-gulp.task('module', () => {
-    const cap = (val) => {
-        return val.charAt(0).toUpperCase() + val.slice(1);
-    };
-    const name = yargs.argv.name;
-    const parentPath = yargs.argv.parent || '';
-    const destPath = path.join(resolveToModules(), parentPath, name);
-
-    return gulp.src(paths.blankTemplatesForModule)
-        .pipe(template({
-            name: name,
-            upCaseName: cap(name)
-        }))
-        .pipe(rename((path) => {
-            path.basename = path.basename.replace('temp', name);
+            path.basename = path.basename.replace('temp', cap(name));
         }))
         .pipe(gulp.dest(destPath));
 });
@@ -164,5 +114,4 @@ gulp.task('init', () => {
 
         }))
         .pipe(gulp.dest('./'));
-
 });

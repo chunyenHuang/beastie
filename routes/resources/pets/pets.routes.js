@@ -21,6 +21,19 @@ module.exports = (app) => {
             }
         })
         .get(Pets.get.bind(Pets))
-        .put(Pets.put.bind(Pets))
+        .post(Pets.update.bind(Pets))
+        .put(Pets.update.bind(Pets))
         .delete(Pets.delete);
+
+    app.route('/pets?/:id/pictures?')
+        .get(Pets.getPicturesPath.bind(Pets));
+
+    app.route('/pets?/:id/uploads?')
+        .all((req, res, next) => {
+            req.collection = req.db.collection(dbCollectionName);
+            next();
+        })
+        .put(Pets.upload.bind(Pets))
+        .post(Pets.upload.bind(Pets));
+
 };
