@@ -8,8 +8,8 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Transactions.query)
-        .post(Transactions.post);
+        .get(Transactions.query.bind(Transactions))
+        .post(Transactions.checkout.bind(Transactions));
 
     app.route('/transactions?/:id')
         .all((req, res, next) => {
@@ -20,7 +20,7 @@ module.exports = (app) => {
                 next();
             }
         })
-        .get(Transactions.get)
-        .put(Transactions.put)
-        .delete(Transactions.delete);
+        .get(Transactions.get.bind(Transactions))
+        .put(Transactions.put.bind(Transactions))
+        .delete(Transactions.delete.bind(Transactions));
 };
