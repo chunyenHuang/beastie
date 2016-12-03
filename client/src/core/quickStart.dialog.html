@@ -3,7 +3,8 @@
     <md-toolbar class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
         <div flex></div>
         <div class="" ng-click="touchMode = !touchMode" ng-init="touchMode = false">
-            Customer's Phone Number
+            <span ng-show="$ctrl.element!='order-list'">Customer's Phone Number</span>
+            <span ng-show="$ctrl.element=='order-list'">Change Payment Total</span>
         </div>
         <div flex></div>
         <div class="">
@@ -11,7 +12,7 @@
         </div>
     </md-toolbar>
     <div class="" layout="row">
-        <md-content class="query" layout="column" layout-align="start center">
+        <md-content class="query" layout="column" layout-align="start center" ng-hide="$ctrl.element=='order-list'">
             <h3>History</h3>
             <md-button ng-click="$ctrl.quickSelect(phone)" ng-repeat="phone in $ctrl.history | limitTo:10 track by $index" flex="none">
                 {{phone | tel}}
@@ -19,7 +20,8 @@
         </md-content>
         <div class="keypad" layout="column">
             <div layout="column" flex ng-show="touchMode" ng-init="touchMode=true">
-                <keypad limit=10 type="tel" on-update="$ctrl.go(inputNumbers)"></keypad>
+                <keypad limit=10 type="tel" on-update="$ctrl.go(inputNumbers)" ng-if="$ctrl.element!='order-list'"></keypad>
+                <keypad limit=10 type="money" on-update="$ctrl.saved(inputNumbers)" right-bottom-button="." ng-if="$ctrl.element=='order-list'"></keypad>
             </div>
             <div layout="column" flex ng-show="!touchMode">
                 <md-content  layout="column" flex class="md-padding" layout-align="center center">
@@ -50,6 +52,13 @@
                 </div>
             </div>
         </div>
+        <md-content layout-padding class="query" layout="column" layout-align="start center" ng-show="$ctrl.element=='order-list'">
+            <div class="md-headline" style="color:#999">Original Total</div>
+            <div class="md-display-1" style="color:#999">${{$ctrl.oriMoney}}</div>
+            <div flex></div>
+            <md-button class="md-raised md-primary" ng-click="$ctrl.confirm()" style="width:200px;height:100px">confirm</md-button>
+            <div flex></div>
+        </md-content>
     </div>
 </div>
 

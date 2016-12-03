@@ -1,7 +1,10 @@
 import template from './quickStart.dialog.html';
 
 export default (locals, parent) => ({
-    locals,
+    locals: {
+        element: locals.element,
+        oriMoney: locals.oriMoney
+    },
     parent,
     template: template,
     controller: /* @ngInject */ class OpenDocumentController {
@@ -31,7 +34,16 @@ export default (locals, parent) => ({
                 return;
             }
         }
-
+        
+        saved(inputNumbers) {
+            this.money = inputNumbers || this.money;
+        }
+        
+        confirm() {
+            let finalMoney = this.money || this.oriMoney;
+            this.$mdDialog.hide(finalMoney);
+        }
+        
         quickSelect(phone) {
             this.$mdDialog.hide(phone);
         }

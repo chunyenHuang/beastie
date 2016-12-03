@@ -62,6 +62,14 @@ const keypadComponent = {
             if (this.isLimit() && typeof (val) == 'number') {
                 val = '';
             }
+            if (val==='.') {
+                if (!this.pressed) {
+                    val = '0.'
+                }
+                if (this.pressed.indexOf('.') != -1) {
+                    val = '';
+                }
+            }
             this.pressed = this.combine(this.pressed, val);
             if (this.rightBottomButton == 'enter') {
                 if (val == 'enter') {
