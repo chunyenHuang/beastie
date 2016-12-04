@@ -1,0 +1,41 @@
+<md-content layout="column" flex class="md-padding" >
+    <h1>new transactions need to be resolve</h1>
+    <div class="" layout="column" flex="none" ng-show="$ctrl.credits">
+        <h3>new credits packages</h3>
+        <md-card class="md-padding" layout="row" flex ng-repeat="item in $ctrl.credits" layout-align="space-between center">
+            <div class="">
+                {{item.customers[0].phone | tel }}
+            </div>
+            <div class="">
+                {{item.customers[0].firstname}} {{item.customers[0].lastname}}
+            </div>
+            <div class="">
+                {{item.balance | currency}}
+            </div>
+            <div class="">
+                <md-button class="md-primary" ng-click="$ctrl.pay(item, 'credit')">
+                    pay
+                </md-button>
+            </div>
+        </md-card>
+    </div>
+    <div class="" layout="column" flex="none" ng-show="$ctrl.selfServices">
+        <h3>new self services</h3>
+        <md-card class="md-padding" layout="row" flex ng-repeat="item in $ctrl.selfServices" layout-align="space-between center">
+            <div class="">
+                {{item.customers[0].phone | tel }}
+            </div>
+            <div class="">
+                {{item.customers[0].firstname}} {{item.customers[0].lastname}}
+            </div>
+            <div class="">
+                {{item.total | currency}}
+            </div>
+            <div class="">
+                <md-button class="md-primary" ng-click="$ctrl.pay(item, 'selfService')">
+                    pay
+                </md-button>
+            </div>
+        </md-card>
+    </div>
+</md-content>

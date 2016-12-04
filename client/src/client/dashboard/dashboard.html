@@ -7,9 +7,9 @@
 </div>
 <md-divider></md-divider>
 <div class="" layout="row" layout-align="center center">
-    <md-button ng-click="$ctrl.makeAppointment()">Make an Appointment</md-button>
-    <md-button ng-click="$ctrl.selfService()">Self Service</md-button>
-    <md-button ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button>
+    <!-- <md-button ng-click="$ctrl.makeAppointment()">Make an Appointment</md-button> -->
+    <md-button class="md-accent md-raised" ng-click="$ctrl.selfService()">Self Service</md-button>
+    <md-button class="md-warn md-raised" ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button>
 </div>
 <md-divider></md-divider>
 <div class="main" layout="column" flex layout-align="center center">

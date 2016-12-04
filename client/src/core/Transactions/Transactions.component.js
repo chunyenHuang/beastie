@@ -23,6 +23,8 @@ const transactionsComponent = {
             this.$stateParams = $stateParams;
             this.Transactions = Transactions;
         }
+        $onInit(){
+        }
     }
 };
 export default transactionsComponent;

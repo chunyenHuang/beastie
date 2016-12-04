@@ -17,7 +17,6 @@ import credits from './Credits';
 import components from './components';
 import filters from './filters';
 
-
 const coreModule = angular
     .module('beastie.core', [
         users,

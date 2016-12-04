@@ -11,7 +11,11 @@ class transactionsService {
         }, {
             checkout: {
                 method: 'POST',
-                url: '/transactions'
+                url: '/transactions',
+                transformRequest: (data)=>{
+                    console.warn(data);
+                    return angular.toJson(data);
+                }
             },
             void: {
                 method: 'PUT',

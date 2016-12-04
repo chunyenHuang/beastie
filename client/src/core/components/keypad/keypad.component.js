@@ -13,7 +13,7 @@ const keypadComponent = {
         <table class="keypad">
             <tr>
                 <td colspan="3" class="keypad-display">
-                    <span ng-show="$ctrl.type=='pin'">{{$ctrl.pressed}}</span>
+                    <span ng-show="$ctrl.type=='pin'">{{$ctrl.pressed | password}}</span>
                     <span ng-show="$ctrl.type=='tel'">{{$ctrl.pressed | tel}}</span>
                     <span ng-show="$ctrl.type=='money'">{{$ctrl.pressed | number}}</span>
                 </td>

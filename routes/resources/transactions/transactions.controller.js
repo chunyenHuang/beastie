@@ -28,10 +28,10 @@ class TransactionsController extends PrinterController {
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
-
+        console.log('-----');
+        console.log(req.body);
         req.collection.insert(req.body,
             (err, docsInserted) => {
-                console.log(docsInserted.ops[0]);
                 req.params.transaction_id = docsInserted.ops[0]._id;
                 if (!err) {
                     if (req.body.order_id) {
@@ -58,10 +58,10 @@ class TransactionsController extends PrinterController {
     }
 
     _payOrder(req, res) {
-        req.params.id = req.body.order_id;
         req.collection = req.db.collection('orders');
         req.collection.update({
-            _id: req.body.order_id
+            _id: req.body.order_id,
+            isDeleted: false
         }, {
             $set: {
                 isPaid: true,
@@ -69,13 +69,15 @@ class TransactionsController extends PrinterController {
             }
         }, (err) => {
             if (!err) {
-                req.lookup = {
-                    from: 'transactions',
-                    localField: '_id',
-                    foreignField: 'order_id',
-                    as: 'transactions'
-                };
                 this._printReceipt(req, res, () => {
+                    req.collection = req.db.collection('orders');
+                    req.params.id = req.body.order_id;
+                    req.lookup = {
+                        from: 'transactions',
+                        localField: '_id',
+                        foreignField: 'order_id',
+                        as: 'transactions'
+                    };
                     this.get(req, res);
                     return;
                 });
@@ -86,10 +88,10 @@ class TransactionsController extends PrinterController {
     }
 
     _paySelfService(req, res) {
-        req.params.id = req.body.selfService_id;
         req.collection = req.db.collection('selfServices');
         req.collection.update({
-            _id: req.body.selfService_id
+            _id: req.body.selfService_id,
+            isDeleted: false
         }, {
             $set: {
                 isPaid: true,
@@ -97,13 +99,15 @@ class TransactionsController extends PrinterController {
             }
         }, (err) => {
             if (!err) {
-                req.lookup = {
-                    from: 'transactions',
-                    localField: '_id',
-                    foreignField: 'selfService_id',
-                    as: 'transactions'
-                };
                 this._printReceipt(req, res, () => {
+                    req.collection = req.db.collection('selfServices');
+                    req.params.id = req.body.selfService_id;
+                    req.lookup = {
+                        from: 'transactions',
+                        localField: '_id',
+                        foreignField: 'selfService_id',
+                        as: 'transactions'
+                    };
                     this.get(req, res);
                     return;
                 });
@@ -114,10 +118,10 @@ class TransactionsController extends PrinterController {
     }
 
     _parCredit(req, res) {
-        req.params.id = req.body.credit_id;
         req.collection = req.db.collection('credits');
         req.collection.update({
-            _id: req.body.credit_id
+            _id: req.body.credit_id,
+            isDeleted: false
                 // customer_id: req.params.customer_id
         }, {
             $inc: {
@@ -126,14 +130,15 @@ class TransactionsController extends PrinterController {
             }
         }, (err) => {
             if (!err) {
-                req.lookup = {
-                    from: 'transactions',
-                    localField: '_id',
-                    foreignField: 'credit_id',
-                    as: 'transactions'
-                };
-                req.params.id = req.params.transaction_id || req.params.id;
                 this._printReceipt(req, res, () => {
+                    req.params.id = req.body.credit_id;
+                    req.collection = req.db.collection('credits');
+                    req.lookup = {
+                        from: 'transactions',
+                        localField: '_id',
+                        foreignField: 'credit_id',
+                        as: 'transactions'
+                    };
                     this.get(req, res);
                     return;
                 });
@@ -285,14 +290,36 @@ class TransactionsController extends PrinterController {
                 });
                 return;
             }
+            const transaction = results[0];
+
             const tax = 0.09;
             const today = new Date();
-            const transaction = results[0];
-            const price = (number) => {
+            const price = (input) => {
+                let number = input;
                 number = parseFloat(number).toFixed(2);
                 number = '$' + number;
                 return number;
             };
+            let subtotal,
+                taxAmount,
+                total;
+
+            if (!transaction.isTaxIncluded) {
+                subtotal = price(transaction.total);
+                taxAmount = price(transaction.total * tax);
+                total = price(transaction.total * (1 + tax));
+            } else {
+                subtotal = price(transaction.total / (1 + tax));
+                taxAmount = price(transaction.total / (1 + tax) * tax);
+                total = price(transaction.total);
+            }
+
+            if (transaction.customers.length === 0) {
+                transaction.customers[0] = {
+                    firstname: null,
+                    lastname: null
+                };
+            }
             /*
                 4141 S. Nogales St. B105
                 West Covina, CA 91792
@@ -320,15 +347,15 @@ class TransactionsController extends PrinterController {
                     .align('lt')
                     .text('Grooming service')
                     .align('rt')
-                    .text(price(transaction.total))
+                    .text(subtotal)
                     .align('lt')
                     .text('Tax')
                     .align('rt')
-                    .text(price(transaction.total * tax))
+                    .text(taxAmount)
                     .align('lt')
                     .text('Total')
                     .align('rt')
-                    .text(price(transaction.total * (1 + tax)))
+                    .text(total)
                     // .text(' ')
                     // .align('lt')
                     // .text('Paid')
@@ -361,6 +388,7 @@ class TransactionsController extends PrinterController {
                 // .qrimage('https://github.com/song940/node-escpos', function(err){
                 //   this.cut();
                 // });
+                req.params.id = req.params.transaction_id || req.params.id;
                 next();
                 // res.sendStatus(200);
             });

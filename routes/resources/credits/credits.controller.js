@@ -1,5 +1,10 @@
 const AbstractController = require('../../abstract/AbstractController.js');
+const ObjectId = require('mongodb').ObjectID;
+
 class creditsController extends AbstractController {
+    constructor(){
+        super();
+    }
     getTemplate(req, res) {
         const template = {
             customer_id: req.params.customer_id,
@@ -21,20 +26,67 @@ class creditsController extends AbstractController {
         res.send(template);
     }
 
+    queryCredit(req, res) {
+        Object.assign(req.query, {
+            isDeleted: false
+        });
+        console.log(req.query);
+        const query = req.collection.aggregate([
+            {
+                $match: req.query
+            },
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'customers'
+                }
+            }
+        ]);
+        query.toArray((err, results) => {
+            // fix wrong condition
+            if (!err) {
+                if (results.length > 0) {
+                    res.statusCode = 200;
+                    res.json(results);
+                } else {
+                    // res.sendStatus(404);
+                    res.status(404).send({
+                        error: 'Sorry, we cannot find that!'
+                    });
+                }
+            } else {
+                res.sendStatus(500);
+            }
+        });
+    }
+
     login(req, res) {
+        if (!req.body.customer_id) {
+            res.statusCode = 400;
+            res.json({
+                message: 'no customer_id'
+            });
+            return;
+        }
+
         if (!req.body.pinPasswords) {
+            res.statusCode = 400;
             res.json({
                 message: 'no pinPasswords'
             });
             return;
         }
         if (req.body.pinPasswords.length != 6) {
+            res.statusCode = 400;
             res.json({
                 message: 'pinPasswords is not 6 digits'
             });
             return;
         }
         if (isNaN(parseInt(req.body.pinPasswords))) {
+            res.statusCode = 400;
             res.json({
                 message: 'pinPasswords is not numbers'
             });
@@ -42,7 +94,7 @@ class creditsController extends AbstractController {
         }
 
         const query = req.collection.find({
-            customer_id: req.params.customer_id,
+            customer_id: req.body.customer_id,
             isDeleted: false
         });
         query.toArray((err, results) => {
@@ -68,7 +120,7 @@ class creditsController extends AbstractController {
 
     _createNewPinPasswords(req, res) {
         req.collection.insert({
-            customer_id: req.params.customer_id,
+            customer_id: req.body.customer_id,
             pinPasswords: req.body.pinPasswords,
             purchased: [],
             // used: [],
@@ -88,7 +140,7 @@ class creditsController extends AbstractController {
 
     getCredits(req, res) {
         const query = req.collection.find({
-            customer_id: req.params.customer_id,
+            customer_id: ObjectId(req.params.customer_id),
             isDeleted: false
         });
         query.toArray((err, results) => {
@@ -107,6 +159,12 @@ class creditsController extends AbstractController {
 
     purchase(req, res) {
         // for ex: total 90 and credit 100 (10 %off)
+        if (!req.body.customer_id) {
+            res.json({
+                message: 'no customer_id'
+            });
+            return;
+        }
         if (!req.body.package) {
             res.json({
                 message: 'no package'
@@ -137,8 +195,9 @@ class creditsController extends AbstractController {
             });
             return;
         }
-        req.collection.update({
-            customer_id: req.params.customer_id
+        console.log(req.body.customer_id);
+        req.collection.updateOne({
+            customer_id: ObjectId(req.body.customer_id)
         }, {
             $push: {
                 purchased: req.body.package
@@ -151,7 +210,10 @@ class creditsController extends AbstractController {
             if (!err) {
                 const io = req.app.get('socket-io');
                 io.sockets.emit('creditsPurchased', {
-                    message: 'A customer purchase credits.'
+                    message: 'A customer purchase credits.',
+                    data: {
+                        customer_id: req.params.customer_id
+                    }
                 });
                 res.statusCode = 201;
                 this.getCredits(req, res);
@@ -162,7 +224,7 @@ class creditsController extends AbstractController {
     }
 
     useCredit(req, res) {
-        if (!req.body.service){
+        if (!req.body.service) {
             res.json({
                 message: 'no service'
             });
@@ -181,7 +243,7 @@ class creditsController extends AbstractController {
             return;
         }
         req.collection.update({
-            customer_id: req.params.customer_id
+            customer_id: ObjectId(req.body.customer_id)
         }, {
             $inc: {
                 credit: -parseFloat(req.body.useCredit)

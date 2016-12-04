@@ -1,5 +1,5 @@
-import creditsComponent from './credits.component';
-import creditsService from './services/credits.service';
+import creditsComponent from './Credits.component';
+import creditsService from './services/Credits.service';
 import addCreditsDialogService from './AddCredits';
 const creditsModule = angular
     .module('beastie.credits', [])

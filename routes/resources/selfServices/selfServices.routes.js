@@ -10,8 +10,7 @@ module.exports = (app) => {
             next();
         })
         .get(SelfServices.query.bind(SelfServices))
-        .post(SelfServices.post.bind(SelfServices));
-
+        .post(SelfServices.purchase.bind(SelfServices));
     app.route('/selfServices?/:id')
         .all((req, res, next) => {
             if (req.params.id == 'template') {
@@ -22,8 +21,8 @@ module.exports = (app) => {
             }
         })
         .get(SelfServices.get.bind(SelfServices))
-        .put(SelfServices.put.bind(SelfServices))
-        .post(SelfServices.put.bind(SelfServices))
+        // .put(SelfServices.put.bind(SelfServices))
+        // .post(SelfServices.put.bind(SelfServices))
         .delete(SelfServices.delete.bind(SelfServices));
 
     // app.route('/selfServices?/:id/print')

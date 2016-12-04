@@ -1,5 +1,22 @@
 const appFilters = angular
     .module('beastie.core.filters', [])
+    .filter('password', function () {
+        return function (password) {
+            if (!password) {
+                return '';
+            }
+            let hiddenStrings = '';
+
+            for (var i = 0; i < password.length; i++) {
+                if ((i + 1) == password.length) {
+                    hiddenStrings = hiddenStrings + password[i];
+                } else {
+                    hiddenStrings = hiddenStrings + '*';
+                }
+            }
+            return hiddenStrings;
+        };
+    })
     .filter('tel', function () {
         return function (tel) {
             if (!tel) {
