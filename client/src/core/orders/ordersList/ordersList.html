@@ -159,9 +159,10 @@
                 <!--<md-grid-tile  md-colors="{background: 'accent-500-0.85'}">-->
 
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt" md-colors="">
-                    <md-button layout-fill ng-click="$ctrl.resetOrder(order)" ng-hide="order.checkOutAt"><span class="md-headline">
+                    <md-button layout-fill ng-click="$ctrl.confirmResetOrder(order)" ng-hide="order.checkOutAt"><span class="md-headline">
                         {{$ctrl.typeList[order.type].text}}</span></md-button>
-                    <md-button layout-fill ng-click="$ctrl.resetCheckOut(order)" ng-if="order.checkOutAt" class="md-headline">
+                    <!--<md-button layout-fill ng-click="$ctrl.resetCheckOut(order)" ng-if="order.checkOutAt" class="md-headline">-->
+                    <md-button layout-fill ng-click="" ng-if="order.checkOutAt" class="md-headline">
                         {{$ctrl.typeList[order.type].text}}</md-button></md-grid-tile>
 
                 <md-grid-tile ng-if="!order.checkInAt">

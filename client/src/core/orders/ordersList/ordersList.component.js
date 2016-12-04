@@ -532,6 +532,18 @@ const ordersListComponent = {
                 }
             });
         }
+        confirmResetOrder(order) {
+            let name = this.capitalizeStr(order.customers[0].firstname);
+            let confirm = this.$mdDialog.confirm()
+                    .title('Are you resetting ' + name + "'s order to UPCOMING?")
+                    .textContent('If YES, it will lose its check-in number.')
+                    .ariaLabel('confirm reset')
+                    .ok('YES')
+                    .cancel('NO');
+            this.$mdDialog.show(confirm).then(()=>{
+                this.resetOrder(order);
+            }, ()=>{});
+        }
         resetCheckOut(order) {
             let index = this.orders.indexOf(order);
             this.Orders.update({
