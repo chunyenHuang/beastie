@@ -6,6 +6,7 @@ import petsFormComponent from './petsForm';
 import dashboardComponent from './dashboard';
 import signature from './signature';
 import selfServiceForm from './selfServiceForm';
+import addCredits from './AddCredits';
 
 const clientModule = angular
     .module('beastie.client', [
@@ -18,6 +19,8 @@ const clientModule = angular
     .component('clientCustomersForm', customersFormComponent)
     .component('clientPetsForm', petsFormComponent)
     .component('clientSelfServiceForm', selfServiceForm)
+    .component('clientAddCredits', addCredits)
+
     .service('Client', clientService)
     .config(($stateProvider) => {
         'ngInject';
@@ -50,8 +53,12 @@ const clientModule = angular
                 <client-self-service-form flex layout="column"></client-self-service-form>
                 `
             })
-
-
+            .state('client.addCredits', {
+                url: '/addCredits?customer_id',
+                template: `
+                <client-add-credits flex layout="column"></client-add-credits>
+                `
+            })
         ;
     })
     .config(($translatePartialLoaderProvider) => {

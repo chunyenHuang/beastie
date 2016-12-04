@@ -9,27 +9,36 @@ const selfServiceFormComponent = {
     controller: /* @ngInject */ class SelfServiceFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
+                '$log', '$timeout', '$state', '$stateParams', 'Credits',
+                'AddCreditsDialog',
                 'SelfServices', 'ListItems'
             ];
         }
         constructor(
             $log, $timeout, $state, $stateParams,
+            Credits, AddCreditsDialog,
             SelfServices, ListItems
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.Credits = Credits;
+            this.AddCreditsDialog = AddCreditsDialog;
             this.SelfServices = SelfServices;
             this.ListItems = ListItems;
 
             this.pinPasswordsLength = 6;
+
+            this.selected = {
+                services: [],
+                addons: []
+            };
         }
 
         $onInit() {
             this.setSelfServices();
-            this.data = null;
+            // this.data = null;
         }
 
         $onDestroy() {
@@ -43,7 +52,7 @@ const selfServiceFormComponent = {
         }
 
         reload() {
-            this.SelfServices.check({
+            this.Credits.get({
                 customer_id: this.$stateParams.customer_id
             }, (res) => {
                 this.data = res;
@@ -54,7 +63,7 @@ const selfServiceFormComponent = {
             if (pinPasswords.length != this.pinPasswordsLength) {
                 return;
             }
-            this.SelfServices.login({
+            this.Credits.login({
                 customer_id: this.$stateParams.customer_id
             }, {
                 pinPasswords: pinPasswords
@@ -74,6 +83,53 @@ const selfServiceFormComponent = {
                 });
                 console.log(this.list);
             });
+        }
+
+        addCredits() {
+            this.$state.go('client.addCredits', {
+                customer_id: this.$stateParams.customer_id
+            });
+        }
+
+        isIn(type, item) {
+            const pos = this.selected[type].indexOf(item);
+            return (pos > -1) ? true : false;
+        }
+
+        removeFrom(type, item) {
+            const pos = this.selected[type].indexOf(item);
+            this.selected[type].splice(pos, 1);
+        }
+
+        getTotal() {
+            let total = 0;
+            for (let prop in this.selected) {
+                for (var i = 0; i < this.selected[prop].length; i++) {
+                    total += parseFloat(this.selected[prop][i].price);
+                }
+            }
+            return total;
+        }
+
+        select(item, type) {
+            switch (type) {
+                case 'services':
+                    if (this.isIn(type, item)) {
+                        this.removeFrom(type, item);
+                    } else {
+                        this.selected[type] = [item];
+                    }
+                    break;
+                case 'addons':
+                    if (this.isIn(type, item)) {
+                        this.removeFrom(type, item);
+                    } else {
+                        this.selected[type].push(item);
+                    }
+                    break;
+                default:
+
+            }
         }
 
     }

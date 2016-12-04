@@ -18,35 +18,86 @@
     </div>
 
     <md-content layout="column" flex layout-align="start center" ng-show="$ctrl.data">
-        <div class="">
-            <h3>
-                Your Credit:
-                {{$ctrl.data.credit}}
-            </h3>
+        <div class="header" layout="row" layout-align="space-between" flex="none">
+            <div class="">
+                <h3>
+                    Balance: {{$ctrl.data.balance | currency}}
+                </h3>
+            </div>
+            <div class="">
+                <h3>
+                    Credit: {{$ctrl.data.credit | currency}}
+                </h3>
+            </div>
+            <div class="">
+                <md-button class="md-primary md-raised" ng-click="$ctrl.addCredits()">
+                    Add More Credit
+                </md-button>
+            </div>
         </div>
-        <md-button class="md-primary">
-            Add More Credit
-        </md-button>
+        <md-card class="md-padding md-whiteframe-3dp" layout="column" flex="none">
+            <h3>Basic Self Service</h3>
+            <div class="" layout="column">
+                <md-button
+                    ng-repeat="item in $ctrl.list.basic"
+                    ng-click="$ctrl.select(item, 'services')"
+                    class="list-item md-accent"
+                    ng-class="{
+                        'md-raised': $ctrl.isIn('services', item)
+                    }"
+                    >
+                    {{item.name}}
+                    {{item.zhName}}
+                    {{item.price | currency}}
+                </md-button>
+            </div>
+        </md-card>
+        <md-card class="md-padding md-whiteframe-3dp" layout="column" flex="none">
+            <h3>Addons</h3>
+            <div class="" layout="column">
+                <md-button
+                    ng-repeat="item in $ctrl.list.addon"
+                    ng-click="$ctrl.select(item, 'addons')"
+                    class="list-item md-accent"
+                    ng-class="{
+                        'md-raised': $ctrl.isIn('addons', item)
+                    }"
+                    >
+                    {{item.name}}
+                    {{item.zhName}}
+                    {{item.price | currency}}
+                </md-button>
+            </div>
+        </md-card>
+        <md-card class="md-padding md-whiteframe-3dp" layout="column" flex="none">
+            <h3>Total</h3>
+            <h2 class="md-accent">
+                 {{$ctrl.getTotal() | currency}}
+            </h2>
+        </md-card>
 
-        <h5>Basic Self Service</h5>
-        <div class="" layout="row">
-            <md-button class="md-primary" ng-repeat="item in $ctrl.list.basic">
-                {{item.name}}
-                {{item.zhName}}
-                {{item.price | currency}}
-            </md-button>
+        <div class="" layout="column" flex layout-align="start center">
+            <div class="md-padding" layout="row" flex="none">
+                <md-button
+                    ng-disabled="
+                        $ctrl.selected['services'].length === 0 ||
+                        $ctrl.data.balance != 0
+                    "
+                    class="md-primary md-raised md-padding" ng-click="$ctrl.purchase('credits')">
+                    Pay with My Credits
+                </md-button>
+                <md-button
+                    ng-disabled="$ctrl.selected['services'].length === 0"
+                    class="md-primary md-raised md-padding" ng-click="$ctrl.purchase()">
+                    Pay At the Counter
+                </md-button>
+            </div>
+            <div ng-show="$ctrl.data.balance != 0" class="md-padding" layout="row" layout-align="space-between" flex="none">
+                <span class="alert">
+                    To use your credits. Please pay off the balance at the couner.
+                </span>
+            </div>
         </div>
-        <h5>Add on</h5>
-        <div class="" layout="row">
-            <md-button class="md-primary" ng-repeat="item in $ctrl.list.addon">
-                {{item.name}}
-                {{item.zhName}}
-                {{item.price | currency}}
-            </md-button>
-        </div>
-        <div class="" layout="row" flex>
-            Total:
-            {{$ctrl.getTotal()}}
-        </div>
+
     </md-content>
 </md-content>

@@ -16,6 +16,14 @@ class selfServicesService {
                     'customer_id': '@customer_id'
                 }
             },
+            purchase: {
+                method: 'PUT',
+                url: url + '/purchase',
+                params: {
+                    'customer_id': '@customer_id'
+                }
+            },
+
             check: {
                 method: 'GET',
                 url: packagesUrl,
