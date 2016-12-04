@@ -15,7 +15,7 @@ const ordersListComponent = {
                 'Snapshot', 'InhouseOrdersDialog', 'ShowSignaturesDialog',
                 'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast',
                 'chooseServiceDialog', '$location', '$anchorScroll', 'Transactions',
-                '$document'
+                '$document', 'TransactionsDialog'
 
             ];
         }
@@ -25,7 +25,7 @@ const ordersListComponent = {
             Snapshot, InhouseOrdersDialog, ShowSignaturesDialog,
             PreviousOrdersDialog, Socket, $mdDialog, $mdToast,
             chooseServiceDialog, $location, $anchorScroll, Transactions,
-            $document
+            $document, TransactionsDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -50,6 +50,7 @@ const ordersListComponent = {
             this.$anchorScroll = $anchorScroll;
             this.Transactions = Transactions;
             this.$document = $document;
+            this.TransactionsDialog = TransactionsDialog;
 
             Socket.on('customerCheckIn', (res) => {
                 console.log('socket');
@@ -148,11 +149,11 @@ const ordersListComponent = {
                 },
                 processing: {
                     text: 'processing',
-                    css: 'md-accent'
+                    css: 'md-primary'
                 },
                 checkOutAt: {
                     text: 'checked-out',
-                    css: 'md-warn'
+                    css: 'md-primary'
                 }
             };
             this.sortDate = 'scheduleAt';
@@ -259,22 +260,30 @@ const ordersListComponent = {
             if (!pet_id) {
                 return;
             }
-            this.Snapshot().then((res) => {
-                const timestamp = new Date().getTime();
-
-                this.Pets.uploadPicture({
-                    id: pet_id
-                }, {
-                    pet_id: pet_id,
-                    file: res.blob,
-                    filename: pet_id + '-' + timestamp + '.png'
-                }, (res) => {
-                    // this will return url for the last pictures
-                    console.log(res);
-                }, (err) => {
-                    console.log(err);
-                });
+            
+           this.Pets.getPicturesPath({
+                id: pet_id
+            }, (res)=>{
+                console.info(res);
+            }, (err)=>{
+                console.info(err);
             });
+            // this.Snapshot().then((res) => {
+            //     const timestamp = new Date().getTime();
+
+            //     this.Pets.uploadPicture({
+            //         id: pet_id
+            //     }, {
+            //         pet_id: pet_id,
+            //         file: res.blob,
+            //         filename: pet_id + '-' + timestamp + '.png'
+            //     }, (res) => {
+            //         // this will return url for the last pictures
+            //         console.log(res);
+            //     }, (err) => {
+            //         console.log(err);
+            //     });
+            // });
         }
 
         chooseService(order) {
@@ -359,35 +368,70 @@ const ordersListComponent = {
         }
         checkout(order) {
             let index = this.orders.indexOf(order);
-            let paidByCash;
-            this.genConfirmDialog(order, 'checkout');
-            this.$mdDialog.show(this.confirm).then(() => {
-                paidByCash = true;
-            }, () => {
-                paidByCash = false;
-            }).then(() => {
-                order.total = order.total || order.services.price
-                console.warn(order);
-                this.Transactions.checkout({}, {
-                    selfService_id: null,
-                    order_id: order._id,
-                    note: null,
-                    customer_id: order.customer_id,
-                    total: order.total,
-                    paidByCash: paidByCash,
-                }, (res) => {
-                    console.log(res);
-                    Object.assign(order, {
-                        checkOutAt: res.checkOutAt,
-                        isPaid: res.isPaid
-                    });
-                    console.info(order);
-                    this.Orders.updateCache(order, () => {
-                        this.orders.splice(index, 1, order);
-                        this.countOrderType();
-                    })
-                });
-            });
+            let oriMoney = order.total || order.services.price;
+            
+            this.TransactionsDialog({
+                order_id: order._id
+            }).then(
+                (finalMoney)=>{
+                    console.log(finalMoney);
+                },
+                ()=>{
+                    
+                }
+            );
+            // this.$mdDialog.show(
+            //     quickStartDialog({
+            //         element: 'order-list',
+            //         oriMoney: oriMoney,
+            //     }, this.$document[0].getElementById('order-list'))
+            // ).then((money) => {
+            //     this.Orders.update({
+            //         id: order._id
+            //     }, {
+            //         total: money
+            //     }, (data) => {
+            //         if (!data._id) {
+            //             console.log('error: ' + data)
+            //         } else {
+            //             this.orders.splice(index, 1, data);
+            //             this.countOrderType();
+            //         }
+            //     });
+            // }, () => {});
+            
+            
+            
+            
+            // let paidByCash;
+            // this.genConfirmDialog(order, 'checkout');
+            // this.$mdDialog.show(this.confirm).then(() => {
+            //     paidByCash = true;
+            // }, () => {
+            //     paidByCash = false;
+            // }).then(() => {
+            //     order.total = order.total || order.services.price
+            //     console.warn(order);
+                // this.Transactions.checkout({}, {
+                //     selfService_id: null,
+                //     order_id: order._id,
+                //     note: null,
+                //     customer_id: order.customer_id,
+                //     total: order.total,
+                //     paidByCash: paidByCash,
+                // }, (res) => {
+                //     console.log(res);
+                //     Object.assign(order, {
+                //         checkOutAt: res.checkOutAt,
+                //         isPaid: res.isPaid
+                //     });
+                //     console.info(order);
+                //     this.Orders.updateCache(order, () => {
+                //         this.orders.splice(index, 1, order);
+                //         this.countOrderType();
+                //     })
+                // });
+            // });
         }
 
         update(order) {
@@ -456,7 +500,14 @@ const ordersListComponent = {
             let index = this.orders.indexOf(order);
             this.Orders.update({
                 id: order._id
-            }, this.orderFlags, (data) => {
+            }, {
+                isCanceled: false,
+                notShowup: false,
+                checkInAt: null,
+                checkInNumber: null,
+                isPaid: false,
+                checkOutAt: null
+            }, (data) => {
                 if (!data._id) {
                     console.log('error: ' + data)
                 } else {

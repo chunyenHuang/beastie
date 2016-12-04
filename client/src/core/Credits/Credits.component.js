@@ -1,5 +1,5 @@
-import template from './credits.html';
-import './credits.styl';
+import template from './Credits.html';
+import './Credits.styl';
 
 const creditsComponent = {
     template,

@@ -25,7 +25,6 @@
             <md-button ng-repeat="(key, type) in $ctrl.typeList"
                 ng-click="$ctrl.setType(key)"
                 class="md-whiteframe-3dp" style="padding: 2px 8px;" 
-                md-theme="altTheme"
                 ng-class="{'{{type.css}}': true, 'md-raised': $ctrl.showType==key, 'border-solid':false}">
                 {{type.text}}<br/>
                 <span class="md-display-1">{{type.count}}</span>
@@ -91,7 +90,6 @@
                         <div class="md-display-1"><span ng-show="order.isCanceled">canceled</span><span ng-show="order.notShowup">no-show</span></div>
                         <div class="md-subhead">click to reset</div>
                         </md-button></md-grid-tile>
-<<<<<<< HEAD
                 </md-grid-tile>
                 
                 <md-grid-tile md-colspan="3" md-rowspan="3" ng-if="order.isPaid" md-colors="{background: 'primary-200-0.85'}">
@@ -110,12 +108,6 @@
                         </md-button></md-grid-tile>
                         
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt && !order.checkOutAt" md-colors="{background: 'primary-500-1'}">
-=======
-
-                </md-grid-tile>
-
-                <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt" md-colors="{background: 'primary-500-1'}">
->>>>>>> 5754ea5477b4fec3cb31d0e3b4be7f756f895a9f
                     <md-button ng-click="$ctrl.chooseService(order)" layout-fill>
                         <div layout="column" layout-align="center center">
                             <div ng-hide="order.services">select service</div>
@@ -150,13 +142,8 @@
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt && !order.checkOutAt" md-colors="{background: 'primary-500-1'}">
                     <md-button layout-fill ng-click="$ctrl.waivers(order)" ng-disabled="!order.services">
                         waivers</md-button></md-grid-tile>
-<<<<<<< HEAD
                 <md-grid-tile  md-colspan="1" md-rowspan="1" ng-if="order.checkInAt && !order.checkOutAt">
-                    <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order._id)">
-=======
-                <md-grid-tile  md-colspan="1" md-rowspan="1" ng-if="order.checkInAt">
-                    <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order.pet_id)">
->>>>>>> 5754ea5477b4fec3cb31d0e3b4be7f756f895a9f
+                    <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order.pets[0]._id)">
                         <md-icon class="s48" md-svg-src="camera" aria-label="take photos"></md-icon></md-button></md-grid-tile>
                 <!--<md-grid-tile  md-colors="{background: 'accent-500-0.85'}">-->
 
