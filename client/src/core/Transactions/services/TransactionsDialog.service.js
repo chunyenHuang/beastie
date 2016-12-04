@@ -69,12 +69,13 @@ class TransactionsDialogService {
                         this.Orders.get({
                             id: this.order_id
                         }, (order) => {
+                            const price = order.total || order.services.price;
                             this.transaction = Object.assign(this.transaction, {
-                                total: order.total || order.services.price,
+                                total: price,
                                 order_id: order._id,
                                 customer_id: order.customer_id
                             });
-                            this.oriMoney = angular.copy(order.total);
+                            this.oriMoney = angular.copy(price);
                         });
                     }
                     if (this.selfService_id) {

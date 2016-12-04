@@ -2,7 +2,7 @@
     <div class="" layout="row" layout-align="center center">
         <h3>{{$ctrl.waiver.name}} {{$ctrl.waiver.zhName}}</h3>
     </div>
-    <md-content layout="column" flex="35">
+    <md-content layout="column" flex="35" class="description">
         <div class="">
             {{$ctrl.waiver.description}}
         </div>
@@ -11,11 +11,11 @@
         </div>
     </md-content>
     <div layout="row" flex="none">
-        <md-button ng-click="$ctrl.erase()">Erase</md-button>
+        <md-button ng-click="$ctrl.erase()" class="md-warn">Erase</md-button>
         <div class="" flex layout="row" layout-align="center center">
             Please Sign inside the box
         </div>
-        <md-button ng-click="$ctrl.save()" class="md-primary" ng-disabled="!$ctrl.showSaveButton">save</md-button>
+        <md-button ng-click="$ctrl.save()" class="md-primary md-raised" ng-disabled="!$ctrl.showSaveButton">save</md-button>
     </div>
         <!-- <canvas
             id="signature-canvas"

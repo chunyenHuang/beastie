@@ -81,7 +81,8 @@
                 <md-button
                     ng-disabled="
                         $ctrl.selected['services'].length === 0 ||
-                        $ctrl.data.balance != 0
+                        $ctrl.data.balance > 0 ||
+                        $ctrl.data.credit < $ctrl.getTotal()
                     "
                     class="md-primary md-raised md-padding" ng-click="$ctrl.purchaseWithCredits()">
                     Pay with My Credits
