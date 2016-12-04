@@ -23,7 +23,6 @@ export default (locals, parent) => ({
             this.validateMessage;
             this.history = this.localStorageService.get('beastie-query-history') || [];
         }
-
         go(inputNumbers) {
             this.phone = inputNumbers || this.phone;
             if (this.validate(inputNumbers)) {
@@ -33,15 +32,6 @@ export default (locals, parent) => ({
             } else {
                 return;
             }
-        }
-        
-        saved(inputNumbers) {
-            this.money = inputNumbers || this.money;
-        }
-        
-        confirm() {
-            let finalMoney = this.money || this.oriMoney;
-            this.$mdDialog.hide(finalMoney);
         }
         
         quickSelect(phone) {
