@@ -4,12 +4,13 @@ const ObjectId = require('mongodb').ObjectID;
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class OrdersController extends AbstractController {
-    constructor(){
+    constructor() {
         super();
         this._parseDate = this._parseDate.bind(this);
         this._getDateFromToday = this._getDateFromToday.bind(this);
         this._setFromTo = this._setFromTo.bind(this);
         this._getByDate = this._getByDate.bind(this);
+        this._getPetsPicturesPath = this._getPetsPicturesPath.bind(this);
     }
     getTemplate(req, res) {
         const template = {
@@ -75,7 +76,9 @@ class OrdersController extends AbstractController {
                     res.json(results);
                 } else {
                     // res.sendStatus(404);
-                    res.status(404).send({error:'Sorry, we cannot find that!'});
+                    res.status(404).send({
+                        error: 'Sorry, we cannot find that!'
+                    });
                 }
             } else {
                 res.sendStatus(500);
@@ -169,7 +172,7 @@ class OrdersController extends AbstractController {
         );
     }
 
-    _setFromTo(req, res, next){
+    _setFromTo(req, res, next) {
         if (req.query.date) {
             req.from = this._getDateFromToday(0, this._parseDate(req.query.date));
             req.to = this._getDateFromToday(1, this._parseDate(req.query.date));
@@ -186,7 +189,7 @@ class OrdersController extends AbstractController {
         next();
     }
 
-    _getByDate(req, res, next){
+    _getByDate(req, res, next) {
         const query = req.collection.aggregate([
             {
                 $match: {
@@ -235,11 +238,24 @@ class OrdersController extends AbstractController {
         next= num
     */
     getByDate(req, res) {
-        this._setFromTo(req, res, ()=>{
-            this._getByDate(req, res, (results)=>{
+        this._setFromTo(req, res, () => {
+            this._getByDate(req, res, (results) => {
                 if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results);
+                    (function setPictures(results, index, func, res) {
+                        if (index == results.length) {
+                            res.statusCode = 200;
+                            res.json(results);
+                            return;
+                        }
+                        console.log(results[index].pet_id);
+                        func(results[index].pet_id, (filenames) => {
+                            results[index].pictures = filenames;
+                            index++;
+                            setPictures(results, index, func, res);
+                        });
+                    })(results, 0, this._getPetsPicturesPath, res);
+                    // res.statusCode = 200;
+                    // res.json(results);
                 } else if (results.length == 0) {
                     res.statusCode = 200;
                     res.json(results);
@@ -252,6 +268,20 @@ class OrdersController extends AbstractController {
             });
         });
     }
+
+    _getPetsPicturesPath(pet_id, callback) {
+        const petsImagesPath = path.join(global.images, 'pets');
+        const filenames = [];
+        fs.readdirSync(petsImagesPath).forEach((filename) => {
+            if (filename.indexOf(pet_id) > -1) {
+                filenames.push(
+                    path.join('images/pets', filename)
+                );
+            }
+        });
+        callback(filenames);
+    }
+
 }
 
 // quick fix for date range query
