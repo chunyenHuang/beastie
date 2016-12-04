@@ -9,7 +9,10 @@ module.exports = (app) => {
             next();
         })
         .get(Transactions.query.bind(Transactions))
-        .post(Transactions.checkout.bind(Transactions));
+        .post(
+            Transactions.validateRequest.bind(Transactions),
+            Transactions.checkout.bind(Transactions)
+        );
 
     app.route('/transactions?/:id')
         .all((req, res, next) => {
