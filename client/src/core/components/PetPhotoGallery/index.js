@@ -1,2 +1,2 @@
-import petPhotoGalleryComponent from './petPhotoGallery.component';
+import petPhotoGalleryComponent from './PetPhotoGallery.component';
 export default petPhotoGalleryComponent;

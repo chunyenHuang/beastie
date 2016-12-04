@@ -15,7 +15,7 @@ const ordersListComponent = {
                 'Snapshot', 'InhouseOrdersDialog', 'ShowSignaturesDialog',
                 'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast',
                 'chooseServiceDialog', '$location', '$anchorScroll', 'Transactions',
-                '$document', 'TransactionsDialog'
+                '$document', 'TransactionsDialog', 'CustomerDetailDialog'
 
             ];
         }
@@ -25,7 +25,7 @@ const ordersListComponent = {
             Snapshot, InhouseOrdersDialog, ShowSignaturesDialog,
             PreviousOrdersDialog, Socket, $mdDialog, $mdToast,
             chooseServiceDialog, $location, $anchorScroll, Transactions,
-            $document, TransactionsDialog
+            $document, TransactionsDialog, CustomerDetailDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -51,6 +51,7 @@ const ordersListComponent = {
             this.Transactions = Transactions;
             this.$document = $document;
             this.TransactionsDialog = TransactionsDialog;
+            this.CustomerDetailDialog = CustomerDetailDialog;
 
             Socket.on('customerCheckIn', (res) => {
                 console.log('socket');
@@ -244,7 +245,22 @@ const ordersListComponent = {
                 }
             });
         }
-
+        customerDetail(customer_id, order, entry) {
+            let index = this.orders.indexOf(order);
+            this.CustomerDetailDialog({
+                customer_id: customer_id,
+                tab: entry,
+                isFromOrdersList: true
+            }).then((res)=>{
+                this.Orders.get({
+                    id: order._id
+                }, (newOrder)=>{
+                    this.Orders.updateCache(newOrder, ()=>{
+                        this.orders.splice(index, 1, newOrder);
+                    })
+                })
+            }, (err)=>{})           
+        }
         showPreviousOrders(order) {
             // console.log(order);
             this.PreviousOrdersDialog({
@@ -256,34 +272,31 @@ const ordersListComponent = {
             });
         }
 
-        takeSnapshot(pet_id) {
+        takeSnapshot(pet_id, order) {
+            let index = this.orders.indexOf(order);
             if (!pet_id) {
                 return;
             }
-            
-           this.Pets.getPicturesPath({
-                id: pet_id
-            }, (res)=>{
-                console.info(res);
-            }, (err)=>{
-                console.info(err);
-            });
-            // this.Snapshot().then((res) => {
-            //     const timestamp = new Date().getTime();
+            this.Snapshot().then((res) => {
+                const timestamp = new Date().getTime();
 
-            //     this.Pets.uploadPicture({
-            //         id: pet_id
-            //     }, {
-            //         pet_id: pet_id,
-            //         file: res.blob,
-            //         filename: pet_id + '-' + timestamp + '.png'
-            //     }, (res) => {
-            //         // this will return url for the last pictures
-            //         console.log(res);
-            //     }, (err) => {
-            //         console.log(err);
-            //     });
-            // });
+                this.Pets.uploadPicture({
+                    id: pet_id
+                }, {
+                    pet_id: pet_id,
+                    file: res.blob,
+                    filename: pet_id + '-' + timestamp + '.png'
+                }, (res) => {
+                    // this will return url for the last pictures
+                    // Resource {url: "images/pets/583f8de50955410b878551e1-1480843773505.png", $promise: Promise, $resolved: true}
+                    order.pictures.push(res.url);
+                    this.Orders.updateCache(order, ()=>{
+                        this.orders.splice(index, 1, order);
+                    })
+                }, (err) => {
+                    console.log(err);
+                });
+            });
         }
 
         chooseService(order) {

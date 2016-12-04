@@ -63,6 +63,13 @@ class petsService {
             //         return angular.toJson(data);
             //     }
             // },
+            update: {
+                method: 'PUT',
+                url: '/pets/:id',
+                parmas: {
+                    id: '@id'
+                }
+            },
             getPicturesPath: {
                 method: 'GET',
                 url: '/pets/:id/pictures',

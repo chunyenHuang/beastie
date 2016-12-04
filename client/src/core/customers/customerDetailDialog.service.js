@@ -56,15 +56,15 @@ class customerDetailDialog {
                         id: this.customer_id
                     }, (customer)=>{
                         this.customer = customer;
-                        angular.forEach(this.customer.orders.reverse(), (order)=>{
-                            this.Orders.getPicturesPath({
-                                id: order._id
-                            }, (res)=>{
-                                this.pictures[order._id] = res.reverse();
-                            });
-                        });
+                        // angular.forEach(this.customer.orders.reverse(), (order)=>{
+                        //     this.Orders.getPicturesPath({
+                        //         id: order._id
+                        //     }, (res)=>{
+                        //         this.pictures[order._id] = res.reverse();
+                        //     });
+                        // });
                     });
-
+                    
                     switch (this.tab) {
                         case 'gallery':
                             this.selectedTab = 0;
@@ -84,6 +84,25 @@ class customerDetailDialog {
                     customer.$update({
                         id: customer._id
                     }, (res) => {
+                        if(this.isFromOrdersList) {
+                            this.$mdDialog.hide(res);
+                        }
+                        console.log(res);
+                    });
+                }
+                
+                updatePet(pet) {
+                    console.log(pet)
+                    if (!pet._id) {
+                        return;
+                        // this.create(pet);
+                    }
+                    this.Pets.update({
+                        id: pet._id
+                    },pet ,(res) => {
+                        if(this.isFromOrdersList) {
+                            this.$mdDialog.hide(res);
+                        }
                         console.log(res);
                     });
                 }
@@ -103,6 +122,8 @@ class customerDetailDialog {
                 toggleLargePic(url){
                     if(!this.previewLargeUrl){
                         this.previewLargeUrl = url;
+                        // ng-show="$ctrl.previewLargeUrl"
+                        // dom ng-click="$ctrl.previewLargeUrl=null"
                         this.$document[0].getElementById('preview-large').classList.remove('hide');
                     } else {
                         this.previewLargeUrl = null;
