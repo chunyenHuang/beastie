@@ -227,13 +227,12 @@ class TransactionsController extends PrinterController {
     }
 
     _printReceipt(req, res, next) {
+        req.collection = req.db.collection('transactions');
         if (!this.device) {
-            res.send({
-                message: 'printer is not connected.'
-            });
+            console.log('printer is not connected');
+            next();
             return;
         }
-        req.collection = req.db.collection('transactions');
         const query = req.collection.aggregate([
             {
                 $match: {
