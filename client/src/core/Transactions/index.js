@@ -1,2 +1,2 @@
-import transactionsModule from './transactions.module';
+import transactionsModule from './Transactions.module';
 export default transactionsModule;

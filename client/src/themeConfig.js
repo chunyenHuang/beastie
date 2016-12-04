@@ -27,6 +27,18 @@ function themeConfig($mdThemingProvider) {
         });
     $mdThemingProvider.theme('input', 'default')
         .primaryPalette('grey');
-
+    $mdThemingProvider.theme('altTheme')
+        .primaryPalette('orange', {
+            'default': '100',
+            'hue-1': '800'
+        })
+        .accentPalette('green', {
+            'default': '300',
+            'hue-1': '800'
+        })
+        .warnPalette('blue', {
+            'default': '100',
+            'hue-1': '800'
+        })
 }
 export default themeConfig;
