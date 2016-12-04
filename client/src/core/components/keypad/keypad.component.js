@@ -6,7 +6,8 @@ const keypadComponent = {
         limit: '<',
         type: '@', //tel, money
         rightBottomButton: '@',
-        onUpdate: '&'
+        onUpdate: '&',
+        initValue: '<'
     },
     template: `
         <table class="keypad">
@@ -44,6 +45,7 @@ const keypadComponent = {
         }
         $onInit() {
             this.keypadItems = this.getKeypadItems();
+            if (this.initValue) {this.keyPress(this.initValue)};
         }
         $onChanges() {}
         $onDestroy() {}
