@@ -4,60 +4,13 @@ class selfServicesService {
         return ['$resource'];
     }
     constructor($resource) {
-        const url = '/selfServices/:customer_id';
-        const packagesUrl = '/selfServicesPackages/:customer_id';
+        const url = '/selfServices/:id';
         const SelfServices = $resource(url, {
-            customer_id: '@customer_id'
+            id: '@id'
         }, {
-            printTicket: {
-                method: 'GET',
-                url: url + '/login',
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
             purchase: {
-                method: 'PUT',
-                url: url + '/purchase',
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
-
-            check: {
-                method: 'GET',
-                url: packagesUrl,
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
-            login: {
-                method: 'PUT',
-                url: packagesUrl + '/login',
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
-            purchasePackage: {
-                method: 'PUT',
-                url: packagesUrl + '/purchase',
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
-            // payBalance: {
-            //     method: 'PUT',
-            //     url: packagesUrl + '/payBalance',
-            //     params: {
-            //         'customer_id': '@customer_id'
-            //     }
-            // },
-            useCredit: {
-                method: 'PUT',
-                url: packagesUrl + '/useCredit',
-                params: {
-                    'customer_id': '@customer_id'
-                }
+                method: 'POST',
+                url: '/selfServices'
             }
         });
         return SelfServices;

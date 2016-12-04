@@ -1,9 +1,8 @@
 @import "~variable"
-
+$highlight = #ff0000
 [ng-click]:focus
     outline: none
     border: 0
-
 
 #core
     md-dialog
@@ -28,6 +27,21 @@
         md-icon:focus
             outline: none
             border: 0
+    .highlight-menu-item
+        position: relative
+    .highlight-menu-item:after
+        color $highlight
+        font-size: 30px
+        content: "•";
+        position: absolute;
+        top: -9px;
+        right: 7px;
+        width: 0;
+        height: 0;
+        display: block;
+        // border-left: 20px solid transparent;
+        // border-bottom: 20px solid transparent;
+        // border-top: 20px solid #f00;
 
 #quick-start-dialog
     min-width: 700px

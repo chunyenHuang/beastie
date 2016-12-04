@@ -1,8 +1,8 @@
-<div id="quick-start-dialog" class="" layout="column" flex layout-fill>
+<div class="" layout="column" flex layout-fill>
     <md-toolbar class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
         <div flex></div>
         <div class>
-            <span>Change Payment Total</span>
+            <span>New Transaction</span>
         </div>
         <div flex></div>
         <div class="">
@@ -10,51 +10,81 @@
         </div>
     </md-toolbar>
     <div class="" layout="row" flex>
-        <div class="keypad" layout="column">
-            <div layout="column" flex>
-                <keypad limit=10 type="money" on-update="$ctrl.updateTotal(inputNumbers)" right-bottom-button="." init-value="$ctrl.total"
-                    style="margin-left: -25px;" ng-if="$ctrl.total!==undefined"></keypad>
+        <div layout="column" flex>
+            <keypad
+                limit=10
+                type="money"
+                on-update="$ctrl.updateTotal(inputNumbers)"
+                right-bottom-button="."
+                init-value="$ctrl.total"
+                ></keypad>
+        </div>
+        <div
+            class="detail"
+            layout="column"
+            layout-align="start center"
+            layout-margin>
+            <md-subheader>
+                Sub Total
+            </md-subheader>
+            <div class="md-display-1" >
+                <span ng-class="{
+                    'strikethrough': $ctrl.oriMoney != $ctrl.transaction.total
+                }">
+                    {{$ctrl.oriMoney | currency}}
+                </span>
+                <span ng-show="$ctrl.oriMoney != $ctrl.transaction.total">
+                    {{$ctrl.transaction.total | currency}}
+                </span>
             </div>
-        </div>  
-        <md-content layout="column" layout-align="start center"
-            style="max-width:300px" layout-margin>
-            
-            <div class="md-subhead" style="color:#999">Original Total</div>
-            <div class="md-display-1" style="color:#999; margin:0px">${{$ctrl.oriMoney | number}}</div>
-            
-            <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div>
-            
-            <div>Discount</div>
+
+            <!-- <div>Discount</div>
             <div layout layout-wrap layout-fill flex layout-align="space-between space-between">
                 <md-button layout-fill style="height:60px" class="md-raised"
                     ng-repeat="num in [0,5,10,15,20]" flex="30"
                     ng-click="$ctrl.applyDiscount(num)"><span class="md-headline">
                     {{num}}%</span></md-button>
             </div>
-            
-            <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div>
-            
-            <div>Tax</div>
-            <div class="md-headline" layout layout-wrap layout-fill layout-align="space-between">
-                <md-button layout-fill style="height:60px" class="md-raised" flex="45"
-                    ng-click="$ctrl.setIncludeTax('included')"
-                    ng-class="{'md-primary': $ctrl.includeTax}">
-                    included</md-button>
-                <md-button layout-fill style="height:60px" class="md-raised" flex="45"
-                    ng-click="$ctrl.setIncludeTax('exculded')"
-                     ng-class="{'md-primary': $ctrl.includeTax===false}">
-                    exculded</md-button>
+            <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div> -->
+            <md-subheader>
+                Tax ({{$ctrl.tax*100}}%) include?
+            </md-subheader>
+            <div class="select-buttons" layout="row" flex>
+                <md-button class="md-raised"
+                    ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
+                    ng-class="{'md-primary': $ctrl.transaction.isTaxIncluded}">
+                    included
+                </md-button>
+                <md-button class="md-raised"
+                    ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
+                    ng-class="{'md-primary': !$ctrl.transaction.isTaxIncluded}">
+                    exculded
+                </md-button>
             </div>
-            
-            <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div>
+            <md-subheader>
+                Total
+            </md-subheader>
+            <div class="md-display-1" >
+                <span>
+                    {{$ctrl.getTotalWithTax($ctrl.transaction.total) | currency}}
+                </span>
+            </div>
 
-            <div class="md-subhead" layout layout-wrap layout-fill layout-align="space-between">
-                <md-button class="md-raised md-warn" flex="45" layout-fill
-                    ng-click="$ctrl.cancel()" style="height:60px">cancel</md-button>
-                <md-button class="md-raised md-accent" flex="45" layout-fill
-                    ng-click="$ctrl.confirm()" style="height:60px"
-                    ng-disabled="$ctrl.includeTax == undefined || !$ctrl.parseFloat()"
-                    >confirm</md-button>
+
+            <!-- <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div> -->
+            <div class="flex">
+
+            </div>
+            <div class="select-buttons" layout="row">
+                <md-button class="md-raised md-warn"
+                    ng-click="$ctrl.cancel()">
+                    cancel
+                </md-button>
+                <md-button class="md-raised md-accent"
+                    ng-click="$ctrl.confirm()"
+                    >
+                    confirm
+                </md-button>
             </div>
             <div flex></div>
         </md-content>

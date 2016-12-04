@@ -77,12 +77,12 @@ if (process.env.CLOUD9) {
         });
         response.end();
     });
-    
+
     serverHttps = https.createServer({
         key: fs.readFileSync('./ssl/server.key'),
         cert: fs.readFileSync('./ssl/server.crt')
     }, app);
-    
+
     io = require('socket.io')(serverHttps);
 }
 app.set('socket-io', io);
@@ -166,6 +166,7 @@ function transformRequestMiddleware(req, res, next) {
             }
         }
     }
+    console.log(req.params);
     next();
 }
 

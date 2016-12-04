@@ -53,6 +53,7 @@ const addCreditsComponent = {
             this.Credits.purchase({
                 customer_id: this.$stateParams.customer_id
             }, {
+                customer_id: this.$stateParams.customer_id,
                 package: this.selected
             }).$promise.then((res) => {
                 console.log(res);

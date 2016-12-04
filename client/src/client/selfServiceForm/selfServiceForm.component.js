@@ -66,10 +66,13 @@ const selfServiceFormComponent = {
             this.Credits.login({
                 customer_id: this.$stateParams.customer_id
             }, {
+                customer_id: this.$stateParams.customer_id,
                 pinPasswords: pinPasswords
             }, (res) => {
                 this.data = res;
                 console.log(this.data);
+            }, (err) => {
+                console.log(err);
             });
         }
 
@@ -130,6 +133,35 @@ const selfServiceFormComponent = {
                 default:
 
             }
+        }
+
+        purchase() {
+            this.SelfServices.purchase(Object.assign(
+                this.selected, {
+                    customer_id: this.$stateParams.customer_id,
+                    total: this.getTotal()
+                }
+            )).$promise.then((res) => {
+                console.log(res);
+                this.backToDashboard();
+            }, (err) => {
+                console.log(err);
+            });
+        }
+
+        purchaseWithCredits() {
+            this.Credits.use({
+                customer_id: this.$stateParams.customer_id
+            }, {
+                customer_id: this.$stateParams.customer_id,
+                service: this.selected,
+                useCredit: this.getTotal()
+            }).$promise.then((res) => {
+                console.log(res);
+                this.backToDashboard();
+            }, (err) => {
+                console.log(err);
+            });
         }
 
     }

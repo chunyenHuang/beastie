@@ -8,7 +8,7 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(credits.query.bind(this));
+        .get(credits.queryCredit.bind(this));
 
     app.route('/credits?/:customer_id')
         .all((req, res, next) => {

@@ -32,15 +32,29 @@ const coreComponent = {
             this.Fullscreen = Fullscreen;
             this.fullscreenIcon = 'fullscreen';
 
-            Socket.on('selfServicesPurchase', (res) => {
-                // purchase of new ticket or packages
-                console.log(res);
+            Socket.on('customerCheckIn', (res) => {
+                this.$timeout(() => {
+                    this.hasNewCheckedIn = true;
+                });
             });
 
-            Socket.on('selfServicesNewTicket', (res) => {
+            Socket.on('creditsPurchased', (res) => {
                 // add the new ticket
                 console.log(res);
+                this.$timeout(() => {
+                    this.hasNewPurchase = true;
+                });
             });
+
+            Socket.on('selfServicesPurchase', (res) => {
+                console.log(res);
+                this.$timeout(() => {
+                    this.hasNewPurchase = true;
+                });
+            });
+            // this.hasNewPurchase = true;
+            // this.hasNewCheckedIn = true;
+
         }
 
         $onInit() {

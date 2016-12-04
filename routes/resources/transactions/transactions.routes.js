@@ -6,6 +6,9 @@ module.exports = (app) => {
     app.route('/transactions?')
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
+            if (req.body) {
+                console.log(req.body);
+            }
             next();
         })
         .get(Transactions.query.bind(Transactions))
@@ -16,7 +19,7 @@ module.exports = (app) => {
 
     app.route('/transactions?/:id')
         .all((req, res, next) => {
-            if(req.params.id == 'template'){
+            if (req.params.id == 'template') {
                 Transactions.getTemplate(req, res);
             } else {
                 req.collection = req.db.collection(dbCollectionName);
