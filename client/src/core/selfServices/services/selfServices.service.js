@@ -37,13 +37,13 @@ class selfServicesService {
                     'customer_id': '@customer_id'
                 }
             },
-            payBalance: {
-                method: 'PUT',
-                url: packagesUrl + '/payBalance',
-                params: {
-                    'customer_id': '@customer_id'
-                }
-            },
+            // payBalance: {
+            //     method: 'PUT',
+            //     url: packagesUrl + '/payBalance',
+            //     params: {
+            //         'customer_id': '@customer_id'
+            //     }
+            // },
             useCredit: {
                 method: 'PUT',
                 url: packagesUrl + '/useCredit',

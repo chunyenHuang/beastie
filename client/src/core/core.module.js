@@ -11,6 +11,7 @@ import services from './services';
 import signatures from './signatures';
 import albums from './albums';
 import selfServices from './selfServices';
+import transactions from './Transactions';
 
 import components from './components';
 import filters from './filters';
@@ -30,6 +31,7 @@ const coreModule = angular
         signatures,
         albums,
         selfServices,
+        transactions,
 
         components,
         filters
