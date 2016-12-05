@@ -104,7 +104,7 @@
                                 {{order.checkOutAt | date:'h:mma'}}
                             </div>
                             <div class="md-headline">{{order.services.name}}</div>
-                            <div class="md-headline">${{order.total}}</div>
+                            <div class="md-headline">{{order.total | currency}}</div>
                         <!--</div>-->
                         </md-button></md-grid-tile>
 

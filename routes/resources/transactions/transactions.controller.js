@@ -1,4 +1,5 @@
 const PrinterController = require('../printer/printer.controller.js');
+const ObjectId = require('mongodb').ObjectID;
 class TransactionsController extends PrinterController {
     constructor() {
         super();
@@ -20,6 +21,34 @@ class TransactionsController extends PrinterController {
             createdAt: null
         };
         res.send(template);
+    }
+
+    updateInfo(req, res){
+        Object.assign(req.body,{
+            updatedAt: new Date(),
+            updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
+        });
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        const info = {
+            note: req.body.note,
+            paymentTransactionsNumber: req.body.paymentTransactionsNumber
+        };
+        req.collection.update({
+            _id: ObjectId(req.params.id)
+        }, {
+            $set: info
+        }, {
+            upsert: true
+        }, (err, result) => {
+            if (!err) {
+                res.statusCode = 204;
+                res.json(result);
+            } else {
+                res.sendStatus(500);
+            }
+        });
     }
 
     checkout(req, res) {

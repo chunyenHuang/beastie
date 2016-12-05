@@ -1,0 +1,35 @@
+<md-content class="md-padding" layout="column" flex>
+    <div class="" layout="row" flex="none" layout-align="start center" ng-repeat="item in $ctrl.transactions | orderBy:'createdAt':true">
+        <div class="" layout="row" flex="10">
+            <div class="" flex></div>
+            {{item.createdAt | date:'medium'}}
+        </div>
+        <div class="" flex="25">
+            {{item._id}}
+        </div>
+        <div class="" layout="row" flex="10">
+            <div class="" flex></div>
+            <div class="">
+                {{item.total | currency}}
+            </div>
+        </div>
+        <div class="" flex>
+
+        </div>
+        <div class="">
+            <md-input-container class="md-block">
+                <label>transac#</label>
+                <input type="text" ng-model="item.paymentTransactionsNumber" ng-change="$ctrl.update(item)"/>
+            </md-input-container>
+        </div>
+        <div class="">
+            <md-input-container class="md-block">
+                <label>note</label>
+                <input type="text" ng-model="item.note" ng-change="$ctrl.update(item)"/>
+            </md-input-container>
+        </div>
+        <div class="" >
+            <md-button ng-disabled="true">voided</md-button>
+        </div>
+    </div>
+</md-content>

@@ -27,6 +27,7 @@ module.exports = (app) => {
             }
         })
         .get(Transactions.get.bind(Transactions))
-        .put(Transactions.put.bind(Transactions))
+        .put(Transactions.updateInfo.bind(Transactions))
+        .post(Transactions.updateInfo.bind(Transactions))
         .delete(Transactions.delete.bind(Transactions));
 };
