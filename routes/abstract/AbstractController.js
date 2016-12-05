@@ -91,8 +91,11 @@ module.exports = class AbstractController {
 
         req.collection.insert(req.body, (err, docsInserted) => {
             if (!err) {
-                res.statusCode = 201;
-                res.json(docsInserted.ops[0]);
+                req.params.id = docsInserted.ops[0]._id;
+                this.get(req, res);
+                //
+                // res.statusCode = 201;
+                // res.json(docsInserted.ops[0]);
             } else {
                 console.log(err);
                 res.sendStatus(500);

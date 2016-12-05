@@ -268,10 +268,11 @@ const ordersFormComponent = {
                         // console.log(err);
                     });
                 } else {
-                    this.Orders.save(newOrder, () => {
-                        // console.log(res);
-                        this.candidates[newOrder.pet_id] = false;
-                        return this.submitOrder();
+                    this.Orders.save(newOrder, (res) => {
+                        this.Orders.updateCache(res, ()=>{
+                            this.candidates[newOrder.pet_id] = false;
+                            return this.submitOrder();
+                        });
                     }, () => {
                         // console.log(err);
                     });
