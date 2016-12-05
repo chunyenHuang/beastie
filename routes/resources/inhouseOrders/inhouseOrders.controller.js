@@ -43,7 +43,7 @@ class InhouseOrdersController extends PrinterController {
         req.body.petInfo = req.body.petInfo || ' ';
 
         // console.log(req.file);
-        // console.log(req.body.filename);
+        console.log(req.body);
         // const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
         const newName = req.body.filename;
         req.oldPath = path.join(global.uploads, req.file.filename);
@@ -63,6 +63,7 @@ class InhouseOrdersController extends PrinterController {
         // const barcode = req.body.order_id;
         const logoPath = path.join(global.root, 'logos/B1_72-01.png');
         console.log(logoPath);
+        const rush = (req.body.isRush) ? 'RUSH' : null;
         this.escpos.Image.load(logoPath, (logo) => {
             this.escpos.Image.load(req.newPath, (image) => {
                 this.device.open(() => {
@@ -75,15 +76,24 @@ class InhouseOrdersController extends PrinterController {
                         .text(' ')
                         .text('A+ Pet Grooming')
                         .text('------------------------')
-                        .text('In-House Orders')
+                        .text(' ')
+                        .text(req.body.checkInNumber)
+                        .text(rush)
+                        .text(' ')
                         .text('------------------------')
                         .raster(image)
-                        .text('customer----------------')
+                        .text(' ')
+                        .text(' ')
+                        .text('customer')
+                        .text(' ')
                         .text(req.body.customerName)
                         .text(req.body.customerPhone)
-                        .text('pet---------------------')
+                        .text(' ')
+                        .text('pet')
+                        .text(' ')
                         .text(req.body.petName)
                         .text(req.body.petInfo)
+                        .text(' ')
                         .text('------------------------')
                         .text(today.toLocaleDateString())
                         .text(today.toLocaleTimeString())

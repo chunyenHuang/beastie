@@ -231,6 +231,9 @@ class inhouseOrdersDialog {
                                 formData.append('customerPhone', this.order.customers[0].phone);
                                 formData.append('petName', this.order.pets[0].name);
                                 formData.append('petInfo', this.order.pets[0].breed + ' ' + this.order.pets[0].color);
+                                formData.append('isRush', this.order.isRush);
+                                formData.append('checkInNumber', this.order.checkInNumber);
+                                formData.append('services', this.order.services);
                             }
 
                         } else {

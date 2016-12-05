@@ -3,7 +3,7 @@
         <md-icon ng-show="!toggleIcons" md-svg-src="calendar-plus" ng-click="$ctrl.startup()"></md-icon>
         <md-icon ng-class="{'highlight-menu-item':$ctrl.hasNewCheckedIn}" ng-show="!toggleIcons" md-svg-src="book-open-page-variant" ng-click="$ctrl.hasNewCheckedIn=false; $ctrl.go('core.orders.list')"></md-icon>
         <md-icon ng-class="{'highlight-menu-item':$ctrl.hasNewPurchase}" ng-show="!toggleIcons" md-svg-src="cash-usd" ng-click="$ctrl.hasNewPurchase=false; $ctrl.go('core.transactions.new')"></md-icon>
-        <md-icon ng-show="!toggleIcons" md-svg-src="format-list-bulleted" ng-click="$ctrl.openInhouseOrdersDialog()"></md-icon>
+        <md-icon ng-show="!toggleIcons" md-svg-src="file-document-box" ng-click="$ctrl.openInhouseOrdersDialog()"></md-icon>
         <!-- <div flex></div> -->
         <md-icon ng-show="toggleIcons" md-svg-src="account-multiple" ng-click="$ctrl.go('core.customers.list')"></md-icon>
         <!-- <md-icon ng-show="toggleIcons" md-svg-src="paw" ng-click="$ctrl.go('core.pets.list')"></md-icon> -->

@@ -9,10 +9,14 @@ const dbClient = mongodb.MongoClient;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 const root = path.join(__dirname, '../');
 const seedPath = path.join(root, 'seeds');
-const collections = [];
+const collections = [
+    'customers', 'listItems', 'settings', 'users'
+];
 fs.readdirSync(seedPath).forEach((file) => {
     const filename = file.split('.')[0];
-    collections.push(filename);
+    if (collections.indexOf(filename) == -1) {
+        collections.push(filename);
+    }
 });
 
 (function writeDBtoFile(index) {

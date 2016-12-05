@@ -9,11 +9,13 @@ const dbClient = mongodb.MongoClient;
 const ObjectId = mongodb.ObjectId;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
+
+const source = 'seeds-12042016';
 // Load Datas
 const initDatas = {};
 const routes = [];
 const root = path.join(__dirname, '../');
-const routePath = path.join(root, 'seeds');
+const routePath = path.join(root, source);
 fs.readdirSync(routePath).forEach((file) => {
     const filename = file.split('.')[0];
     const route = path.join(routePath, file);

@@ -120,6 +120,7 @@ const dayScheduleComponent = {
 
         setEvents() {
             for (var i = 0; i < this.orders.length; i++) {
+                console.log(this.orders);
                 this.appendOrderEvent(this.orders[i], this.colors[i]);
             }
         }

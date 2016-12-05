@@ -41,7 +41,7 @@ const clientComponent = {
         }
 
         $onInit() {
-            // this.$state.go('client.customersCheckIn');
+            this.$state.go('client.customersCheckIn');
             // this.$state.go('client.signature');
         }
     }

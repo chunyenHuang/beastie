@@ -16,13 +16,17 @@
                 <h5>Rush?</h5>
             </md-checkbox>
         </div>
-        <div class="padding-box" ng-show="type.type!='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
+        <div class="padding-box"
+            ng-show="type.type!='time'"
+            ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
             <h3>
                 {{type.zhName}} {{type.name}}
             </h3>
-            <div layout="row">
+            <div class="button-container">
                 <md-button
+                    class="click-button"
                     ng-repeat="item in type.subItems"
+                    ng-show="!item.isDeleted && item.isActivated"
                     ng-click="$ctrl.assignToOrder(type.name, item)"
                     ng-class="{
                         'md-accent': $ctrl.isInOrder(type.name, item),
