@@ -15,12 +15,17 @@
             <h3>
                 {{$ctrl.customer.firstname}} {{$ctrl.customer.lastname}} - {{$ctrl.customer.phone}}
             </h3>
-            <div class="">
-                <md-button ng-click="$ctrl.selectAndConfirm('info')">
-                    Info
-                </md-button>
-            </div>
         </div>
+        <md-divider></md-divider>
+        <div class="" layout="row" flex="none" layout-align="center center">
+            <md-button ng-click="$ctrl.selectAndConfirm('newOrder')" class="md-primary md-raised">
+                New Order
+            </md-button>
+            <md-button ng-click="$ctrl.selectAndConfirm('info')"  class="md-accent md-raised">
+                Info
+            </md-button>
+        </div>
+
         <md-divider></md-divider>
         <div class="md-padding" layout="column" flex>
             <div layout="row" ng-repeat="order in $ctrl.todayOrders | orderBy:'scheduleAt'" layout-align="start center">
@@ -42,11 +47,6 @@
                         Edit
                     </md-button>
                 </div>
-            </div>
-            <div layout="row" ng-show="$ctrl.newOrders.length===0 && $ctrl.todayOrders.length === 0">
-                <md-button ng-click="$ctrl.selectAndConfirm('newOrder')">
-                    New Order
-                </md-button>
             </div>
 
         </div>
