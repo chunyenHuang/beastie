@@ -10,7 +10,7 @@ const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 const root = path.join(__dirname, '../');
 const seedPath = path.join(root, 'seeds');
 const collections = [
-    'customers', 'listItems', 'settings', 'users'
+    'customers', 'pets', 'listItems', 'settings', 'users'
 ];
 fs.readdirSync(seedPath).forEach((file) => {
     const filename = file.split('.')[0];
