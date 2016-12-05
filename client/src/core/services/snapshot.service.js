@@ -80,7 +80,7 @@ class snapshotService {
                 }
 
                 hide() {
-                    this.cleanup();
+                    // this.cleanup();
                     this.$mdDialog.hide();
                 }
 

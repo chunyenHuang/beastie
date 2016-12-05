@@ -259,7 +259,7 @@ const ordersListComponent = {
                         this.orders.splice(index, 1, newOrder);
                     })
                 })
-            }, (err)=>{})           
+            }, (err)=>{})
         }
         showPreviousOrders(order) {
             // console.log(order);
@@ -382,15 +382,19 @@ const ordersListComponent = {
         checkout(order) {
             let index = this.orders.indexOf(order);
             let oriMoney = order.total || order.services.price;
-            
+
             this.TransactionsDialog({
                 order_id: order._id
             }).then(
-                (finalMoney)=>{
-                    console.log(finalMoney);
+                (res)=>{
+                    console.log('check out');
+                    console.warn(res);
+                    this.Orders.updateCache(res,()=>{
+                        this.changeDate(0, new Date());
+                    });
                 },
                 ()=>{
-                    
+
                 }
             );
             // this.$mdDialog.show(
@@ -412,10 +416,10 @@ const ordersListComponent = {
             //         }
             //     });
             // }, () => {});
-            
-            
-            
-            
+
+
+
+
             // let paidByCash;
             // this.genConfirmDialog(order, 'checkout');
             // this.$mdDialog.show(this.confirm).then(() => {

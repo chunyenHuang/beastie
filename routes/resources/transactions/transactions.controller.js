@@ -304,16 +304,17 @@ class TransactionsController extends PrinterController {
                 taxAmount,
                 total;
 
-            if (!transaction.isTaxIncluded) {
-                subtotal = price(transaction.total);
-                taxAmount = price(transaction.total * tax);
-                total = price(transaction.total * (1 + tax));
-            } else {
+            if (transaction.isTaxIncluded) {
                 subtotal = price(transaction.total / (1 + tax));
                 taxAmount = price(transaction.total / (1 + tax) * tax);
                 total = price(transaction.total);
+            } else {
+                subtotal = price(transaction.total);
+                // taxAmount = price(transaction.total * tax);
+                taxAmount = price(0);
+                total = price(transaction.total);
             }
-
+            // console.log(transaction);
             if (transaction.customers.length === 0) {
                 transaction.customers[0] = {
                     firstname: null,

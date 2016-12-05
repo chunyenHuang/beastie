@@ -141,7 +141,7 @@ class TransactionsDialogService {
                 }
 
                 getTotalWithTax(total) {
-                    if (!this.transaction.isTaxIncluded) {
+                    if (this.transaction.isTaxIncluded) {
                         total =
                             parseFloat(
                                 Number(total * (1 + this.tax)).toFixed(2)

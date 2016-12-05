@@ -24,7 +24,7 @@
         <div layout-padding layout>
             <md-button ng-repeat="(key, type) in $ctrl.typeList"
                 ng-click="$ctrl.setType(key)"
-                class="md-whiteframe-3dp" style="padding: 2px 8px;" 
+                class="md-whiteframe-3dp" style="padding: 2px 8px;"
                 ng-class="{'{{type.css}}': true, 'md-raised': $ctrl.showType==key, 'border-solid':false}">
                 {{type.text}}<br/>
                 <span class="md-display-1">{{type.count}}</span>
@@ -53,7 +53,7 @@
                 <md-grid-tile  md-colspan="2" md-rowspan="3" md-colors="{background: 'background', color:'grey-500'}">
                     <div layout layout-fill layout-align="center">
                         <div flex="90" layout-fill layout="column" layout-align="start end">
-                            <div class="md-display-2" md-colors="{color:'grey-500'}">
+                            <div class="md-display-2" md-colors="{color:'grey-600'}">
                                 {{order.scheduleAt | date:'h:mma'}}
                             </div>
                             <div class="md-subhead">
@@ -75,7 +75,7 @@
                 </md-grid-tile>
                 <md-grid-tile  md-colspan="2" md-rowspan="1">
                     <md-button layout="column" layout-align="center center" layout-fill
-                        ng-click="$ctrl.customerDetail(order.customers[0]._id, order, 'customer')"> 
+                        ng-click="$ctrl.customerDetail(order.customers[0]._id, order, 'customer')">
                         <div class="md-headline" style="text-transform:capitalize;">{{order.customers[0].firstname | lowercase}} {{order.customers[0].lastname | lowercase}}</div>
                         <div class="md-headline">{{order.customers[0].phone | tel}}</div>
                     </md-button>
@@ -92,7 +92,7 @@
                         <div class="md-subhead">click to reset</div>
                         </md-button></md-grid-tile>
                 </md-grid-tile>
-                
+
                 <md-grid-tile md-colspan="3" md-rowspan="3" ng-if="order.isPaid" md-colors="{background: 'primary-200-0.85'}">
                     <md-button layout-fill layout="column" layout-align="center center" layout-padding
                         ng-click="" >
@@ -107,7 +107,7 @@
                             <div class="md-headline">${{order.total}}</div>
                         <!--</div>-->
                         </md-button></md-grid-tile>
-                        
+
                 <md-grid-tile  md-colspan="2" md-rowspan="1" ng-if="order.checkInAt && !order.checkOutAt" md-colors="{background: 'primary-500-1'}">
                     <md-button ng-click="$ctrl.chooseService(order)" layout-fill>
                         <div layout="column" layout-align="center center">
@@ -119,9 +119,12 @@
 
                 </md-grid-tile>
                 <md-grid-tile md-colspan="1" md-rowspan="1" ng-if="order.checkInAt && !order.checkOutAt">
-                    <md-button layout-fill ng-click="$ctrl.changeTotal(order)" ng-disabled="!order.services">
+                    <md-button layout-fill>
                         <span class="md-headline">
-                        ${{$ctrl.getTotal(order)}}</span></md-button></md-grid-tile>
+                            ${{$ctrl.getTotal(order)}}
+                        </span>
+                    </md-button>
+                </md-grid-tile>
                 <md-grid-tile md-colspan="2" md-rowspan="2">
                     <md-button ng-click="$ctrl.customerDetail(order.customers[0]._id, order, 'gallery')" layout-fill>
                         <div class="tile-pet-img" layout-fill

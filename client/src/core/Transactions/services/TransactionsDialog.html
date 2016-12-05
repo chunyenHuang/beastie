@@ -47,18 +47,18 @@
             </div>
             <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div> -->
             <md-subheader>
-                Tax ({{$ctrl.tax*100}}%) include?
+                Tax ({{$ctrl.tax*100}}%)
             </md-subheader>
             <div class="select-buttons" layout="row" flex>
                 <md-button class="md-raised"
                     ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
                     ng-class="{'md-primary': $ctrl.transaction.isTaxIncluded}">
-                    included
+                    Add Tax
                 </md-button>
                 <md-button class="md-raised"
                     ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
                     ng-class="{'md-primary': !$ctrl.transaction.isTaxIncluded}">
-                    exculded
+                    No Tax
                 </md-button>
             </div>
             <md-subheader>
