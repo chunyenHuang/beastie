@@ -10,7 +10,7 @@ const ObjectId = mongodb.ObjectId;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
 
-const source = 'seeds-12042016';
+const source = 'seeds';
 // Load Datas
 const initDatas = {};
 const routes = [];
