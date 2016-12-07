@@ -53,6 +53,7 @@ class inhouseOrdersDialog {
                     this.Orders = Orders;
 
                     this.inhouseOrders = {};
+                    this.previewIndex = 0;
 
                     if (this.order_id) {
                         this.order_id = this.order_id;
@@ -60,13 +61,22 @@ class inhouseOrdersDialog {
                             id: this.order_id
                         }, (order) => {
                             this.order = order;
-                            console.log(this.order);
                             this.message = 'order id: ' + this.order_id;
+                            this.applyPreviousOrder(order);
                             this.ListItems.query({
                                 type: 'inhouseOrders'
                             }, (datas) => {
                                 this.list = datas[0].items;
                                 this.populateInhouseOrders();
+                            });
+                            this.Orders.query({
+                                pet_id: this.order.pet_id,
+                                // isCanceled: false,
+                                // isPaid: true,
+                                // notShowup: false
+                            }).$promise.then((orders) => {
+                                console.log(orders);
+                                this.previousOrders = orders;
                             });
                         });
                     } else {
@@ -84,78 +94,106 @@ class inhouseOrdersDialog {
                 }
 
                 reset() {
-                    this.populateInhouseOrders('reset');
+                    this.populateInhouseOrders(null, 'reset');
                 }
 
-                updateOrder(){
+                updateOrder() {
                     this.Orders.update({
                         id: this.order_id
                     }, {
                         isRush: this.order.isRush
-                    }, (res)=>{
+                    }, (res) => {
                         console.log(res);
                     });
                 }
 
-                populateInhouseOrders(reset) {
+                populateInhouseOrders(sourceOrder, reset) {
+                    const source = (sourceOrder) ?
+                        sourceOrder.inhouseOrders : this.order.inhouseOrders;
                     angular.forEach(this.list, (listItem) => {
                         let value = [];
-                        if (this.order.inhouseOrders && this.order.inhouseOrders[listItem.name]) {
-                            value = this.order.inhouseOrders[listItem.name].value;
+                        if (source && source[listItem.keyID]) {
+                            value = source[listItem.keyID].value;
                         }
                         if (reset) {
                             value = [];
                         }
-                        this.inhouseOrders[listItem.name] = {
+                        console.warn(listItem);
+                        this.inhouseOrders[listItem.keyID] = {
                             type: listItem.type,
                             multiple: listItem.multiple,
                             name: listItem.name,
                             zhName: listItem.zhName,
+                            keyID: listItem.keyID,
                             value: value
                         };
                     });
                 }
 
-                assignToOrder(key, item) {
-                    if (this.inhouseOrders[key].multiple) {
-                        if (this.isInOrder(key, item)) {
-                            this.inhouseOrders[key].value.splice(this.findInOrder(key, item), 1);
-                        } else {
-                            this.inhouseOrders[key].value.push(item);
-                        }
+                assignToOrder(keyID, item) {
+                    if (this.isInOrder(keyID, item)) {
+                        this.inhouseOrders[keyID].value.splice(
+                            this.findInOrder(keyID, item), 1
+                        );
+                    } else if (this.inhouseOrders[keyID].multiple) {
+                        this.inhouseOrders[keyID].value.push(item);
                     } else {
-                        this.inhouseOrders[key].value = [item];
+                        this.inhouseOrders[keyID].value = [item];
                     }
                     this.$timeout(() => {
                         this.inhouseOrders = this.inhouseOrders;
                     });
                 }
 
-                findInOrder(key, item) {
-                    const value = this.inhouseOrders[key].value;
+                findInOrder(keyID, item) {
+                    const value = this.inhouseOrders[keyID].value;
                     for (var i = 0; i < value.length; i++) {
-                        if (
-                            value[i].name == item.name &&
-                            value[i].zhName == item.zhName
-                        ) {
+                        if (value[i].keyID == item.keyID) {
                             return i;
                         }
                     }
                     return -1;
                 }
 
-                isInOrder(key, item) {
-                    if (!this.inhouseOrders || !key || !item) {
+                isInOrder(keyID, item) {
+                    if (!this.inhouseOrders || !keyID || !item) {
                         return false;
                     } else {
-                        return (this.findInOrder(key, item) > -1) ? true : false;
+                        return (this.findInOrder(keyID, item) > -1) ? true : false;
+                    }
+                }
+
+                applyPreviousOrder(previousOrder) {
+                    this.previewIndex = 0;
+                    this.selectedPreviouseOrder = previousOrder;
+                    this.selectedPreviouseOrderPictures = [];
+                    this.populateInhouseOrders(previousOrder);
+                    if (previousOrder) {
+                        for (var i = 0; i < previousOrder.pictures.length; i++) {
+                            if (previousOrder.pictures[i].indexOf(previousOrder._id) > -1) {
+                                this.selectedPreviouseOrderPictures.push(previousOrder.pictures[i]);
+                            }
+                        }
+                    }
+                }
+
+                changePreview(num) {
+                    this.previewIndex += num;
+                    if (this.previewIndex < 0) {
+                        this.previewIndex = (this.selectedPreviouseOrderPictures.length - 1);
+                    }
+                    if (this.previewIndex > (this.selectedPreviouseOrderPictures.length - 1)) {
+                        this.previewIndex = 0;
                     }
                 }
 
                 submit() {
+                    console.log(this.inhouseOrders);
                     if (this.order_id) {
                         this.order.inhouseOrders = this.inhouseOrders;
-                        if (this.order.scheduleAt) { delete this.order.scheduleAt }
+                        if (this.order.scheduleAt) {
+                            delete this.order.scheduleAt;
+                        }
                         this.order.$update({
                             id: this.order_id
                         }, (res) => {
@@ -176,10 +214,10 @@ class inhouseOrdersDialog {
 
                 drawImage(callback) {
                     const texts = [];
-                    for (let type in this.inhouseOrders) {
-                        if (this.inhouseOrders[type].value.length > 0) {
-                            angular.forEach(this.inhouseOrders[type].value, (value) => {
-                                const text = type + ': ' + value.name +
+                    for (let keyID in this.inhouseOrders) {
+                        if (this.inhouseOrders[keyID].value.length > 0) {
+                            angular.forEach(this.inhouseOrders[keyID].value, (value) => {
+                                const text = value.type + ': ' + value.name +
                                     ' ' + ((value.name != value.zhName) ? value.zhName : '');
                                 texts.push(text);
                             });
@@ -225,7 +263,7 @@ class inhouseOrdersDialog {
                         if (this.order_id) {
                             formData.append('filename', this.order_id + '.png');
                             formData.append('order_id', this.order_id);
-                            if(this.order){
+                            if (this.order) {
                                 console.log(this.orders);
                                 formData.append('customerName', this.order.customers[0].firstname + ' ' + this.order.customers[0].lastname);
                                 formData.append('customerPhone', this.order.customers[0].phone);

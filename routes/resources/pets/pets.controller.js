@@ -168,7 +168,7 @@ class PetsController extends AbstractController {
         }
         // const timestamp = new Date().getTime()
         const newName = req.body.filename;
-        // order_id + '-' + timestamp + '.png';
+        // pet_id + '-' + timestamp + '-' + order_id '.png';
 
         req.oldPath = path.join(global.uploads, req.file.filename);
         req.newPath = path.join(global.images, 'pets', newName);

@@ -72,8 +72,19 @@ class OrdersController extends AbstractController {
             // fix wrong condition
             if (!err) {
                 if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results);
+                    (function setPictures(results, index, func, res) {
+                        if (index == results.length) {
+                            res.statusCode = 200;
+                            res.json(results);
+                            return;
+                        }
+                        console.log(results[index].pet_id);
+                        func(results[index].pet_id, (filenames) => {
+                            results[index].pictures = filenames;
+                            index++;
+                            setPictures(results, index, func, res);
+                        });
+                    })(results, 0, this._getPetsPicturesPath, res);
                 } else {
                     // res.sendStatus(404);
                     res.status(404).send({
@@ -115,8 +126,22 @@ class OrdersController extends AbstractController {
         query.toArray((err, results) => {
             if (!err) {
                 if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results[0]);
+                    (function setPictures(results, index, func, res) {
+                        if (index == results.length) {
+                            res.statusCode = 200;
+                            res.json(results[0]);
+                            return;
+                        }
+                        console.log(results[index].pet_id);
+                        func(results[index].pet_id, (filenames) => {
+                            results[index].pictures = filenames;
+                            index++;
+                            setPictures(results, index, func, res);
+                        });
+                    })(results, 0, this._getPetsPicturesPath, res);
+                    //
+                    // res.statusCode = 200;
+                    // res.json(results[0]);
                 } else {
                     res.sendStatus(404);
                 }

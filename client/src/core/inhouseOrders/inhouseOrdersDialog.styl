@@ -1,9 +1,10 @@
 @import "~variable"
 #inhouse-orders-dialog
     md-dialog
-        min-height: 650px
-        min-width: 1000px
-        max-height: 100vh
+        // min-height: 650px
+        // min-width: 1000px
+        min-width: 100%
+        min-height: 100vh
 
 #inhouse-orders
     md-toolbar
@@ -34,6 +35,23 @@
             display: inline-block;
             font-size: 2em
             padding: 5px
+
+    .preview
+        height: 300px
+        line-height: 300px
+        img
+            max-height: 300px
+            max-width: 100%
+    .control
+        height: 50px
+    .rush
+        height: 50px
+        line-height: 50px
+        md-checkbox
+            margin: 0px
+        h5
+            font-size: 1.3em
+            margin: 0px
 
 #inhouse-orders-canvas
     width: 500px

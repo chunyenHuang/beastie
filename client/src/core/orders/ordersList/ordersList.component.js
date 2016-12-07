@@ -110,7 +110,7 @@ const ordersListComponent = {
             } else {
                 this.setType(this.$stateParams.type);
                 if (this.$stateParams['#']) {
-                    this.$timeout(()=>{
+                    this.$timeout(() => {
                         this.scrollToId(this.$stateParams['#']);
                     }, 500);
                 }
@@ -251,15 +251,15 @@ const ordersListComponent = {
                 customer_id: customer_id,
                 tab: entry,
                 isFromOrdersList: true
-            }).then((res)=>{
+            }).then((res) => {
                 this.Orders.get({
                     id: order._id
-                }, (newOrder)=>{
-                    this.Orders.updateCache(newOrder, ()=>{
+                }, (newOrder) => {
+                    this.Orders.updateCache(newOrder, () => {
                         this.orders.splice(index, 1, newOrder);
                     })
                 })
-            }, (err)=>{})
+            }, (err) => {})
         }
         showPreviousOrders(order) {
             // console.log(order);
@@ -285,12 +285,12 @@ const ordersListComponent = {
                 }, {
                     pet_id: pet_id,
                     file: res.blob,
-                    filename: pet_id + '-' + timestamp + '.png'
+                    filename: pet_id + '-' + timestamp + '-' + order._id + '.png'
                 }, (res) => {
                     // this will return url for the last pictures
                     // Resource {url: "images/pets/583f8de50955410b878551e1-1480843773505.png", $promise: Promise, $resolved: true}
                     order.pictures.push(res.url);
-                    this.Orders.updateCache(order, ()=>{
+                    this.Orders.updateCache(order, () => {
                         this.orders.splice(index, 1, order);
                     })
                 }, (err) => {
@@ -386,14 +386,14 @@ const ordersListComponent = {
             this.TransactionsDialog({
                 order_id: order._id
             }).then(
-                (res)=>{
+                (res) => {
                     console.log('check out');
                     console.warn(res);
-                    this.Orders.updateCache(res,()=>{
+                    this.Orders.updateCache(res, () => {
                         this.changeDate(0, new Date());
                     });
                 },
-                ()=>{
+                () => {
 
                 }
             );
@@ -429,25 +429,25 @@ const ordersListComponent = {
             // }).then(() => {
             //     order.total = order.total || order.services.price
             //     console.warn(order);
-                // this.Transactions.checkout({}, {
-                //     selfService_id: null,
-                //     order_id: order._id,
-                //     note: null,
-                //     customer_id: order.customer_id,
-                //     total: order.total,
-                //     paidByCash: paidByCash,
-                // }, (res) => {
-                //     console.log(res);
-                //     Object.assign(order, {
-                //         checkOutAt: res.checkOutAt,
-                //         isPaid: res.isPaid
-                //     });
-                //     console.info(order);
-                //     this.Orders.updateCache(order, () => {
-                //         this.orders.splice(index, 1, order);
-                //         this.countOrderType();
-                //     })
-                // });
+            // this.Transactions.checkout({}, {
+            //     selfService_id: null,
+            //     order_id: order._id,
+            //     note: null,
+            //     customer_id: order.customer_id,
+            //     total: order.total,
+            //     paidByCash: paidByCash,
+            // }, (res) => {
+            //     console.log(res);
+            //     Object.assign(order, {
+            //         checkOutAt: res.checkOutAt,
+            //         isPaid: res.isPaid
+            //     });
+            //     console.info(order);
+            //     this.Orders.updateCache(order, () => {
+            //         this.orders.splice(index, 1, order);
+            //         this.countOrderType();
+            //     })
+            // });
             // });
         }
 
@@ -539,14 +539,14 @@ const ordersListComponent = {
         confirmResetOrder(order) {
             let name = this.capitalizeStr(order.customers[0].firstname);
             let confirm = this.$mdDialog.confirm()
-                    .title('Are you resetting ' + name + "'s order to UPCOMING?")
-                    .textContent('If YES, it will lose its check-in number.')
-                    .ariaLabel('confirm reset')
-                    .ok('YES')
-                    .cancel('NO');
-            this.$mdDialog.show(confirm).then(()=>{
+                .title('Are you resetting ' + name + "'s order to UPCOMING?")
+                .textContent('If YES, it will lose its check-in number.')
+                .ariaLabel('confirm reset')
+                .ok('YES')
+                .cancel('NO');
+            this.$mdDialog.show(confirm).then(() => {
                 this.resetOrder(order);
-            }, ()=>{});
+            }, () => {});
         }
         resetCheckOut(order) {
             let index = this.orders.indexOf(order);

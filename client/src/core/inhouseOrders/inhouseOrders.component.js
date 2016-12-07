@@ -11,7 +11,10 @@ const inhouseOrdersComponent = {
                 'InhouseOrders', 'ListItems', 'Orders'
             ];
         }
-        constructor($log, $timeout, $document, $http, $state, $stateParams, InhouseOrders, ListItems, Orders) {
+        constructor(
+            $log, $timeout, $document, $http, $state, $stateParams,
+            InhouseOrders, ListItems, Orders
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$document = $document;
