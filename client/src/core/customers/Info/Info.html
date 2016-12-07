@@ -1,0 +1,58 @@
+<md-subheader class="md-no-sticky">
+    Information
+</md-subheader>
+<div layout="row" class="md-padding">
+    <md-input-container class="md-block">
+        <label>First Name</label>
+        <input type="text" ng-model="$ctrl.customer.firstname"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Last Name</label>
+        <input type="text" ng-model="$ctrl.customer.lastname"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Primary Phone (for login)</label>
+        <input type="text" ng-model="$ctrl.customer.phone"/>
+    </md-input-container>
+    <div class="" flex></div>
+    <md-button ng-show="$ctrl.customer" ng-click="$ctrl.update($ctrl.customer)" class="md-raised md-primary">Update</md-button>
+</div>
+<md-subheader class="md-no-sticky">
+    Address
+</md-subheader>
+
+<div layout="row" class="md-padding" flex="none">
+    <md-input-container class="md-block">
+        <label>Street</label>
+        <input type="text" ng-model="$ctrl.customer.address.street"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>City</label>
+        <input type="text" ng-model="$ctrl.customer.address.city"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>state</label>
+        <input type="text" ng-model="$ctrl.customer.address.state"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>zipCode</label>
+        <input type="text" ng-model="$ctrl.customer.address.zipCode"/>
+    </md-input-container>
+</div>
+<md-subheader class="md-no-sticky">
+    Emergency Contacts
+</md-subheader>
+<div layout="row" flex="none" class="md-padding" ng-repeat="contact in $ctrl.customer.emergencyContact">
+    <md-input-container class="md-block">
+        <label>name</label>
+        <input type="text" ng-model="contact.name"/>
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Relationship</label>
+        <input type="text" ng-model="contact.relationship"/>
+    </md-input-container>
+    <md-input-container class="md-block" ng-repeat="phone in contact.phones">
+        <label>phone {{$index+1}}</label>
+        <input type="text" ng-model="phone"/>
+    </md-input-container>
+</div>

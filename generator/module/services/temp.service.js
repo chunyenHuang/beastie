@@ -1,12 +1,23 @@
 /* @ngInject */
-class <%= name %>Service {
+class <%= upCaseName %>Service {
     static get $inject() {
-        return ['$resource'];
+        return ['$resource', '$cacheFactory', 'apiConstants'];
     }
-    constructor($resource) {
-        const <%= upCaseName %> = $resource('/<%= name %>/:id', {id:'@id'});
-        return <%= upCaseName %>;
+    constructor($resource, $cacheFactory, apiConstants) {
+        const url = apiConstants.resourceApi + '<%= name %>/:id';
+        let service = $resource(url, {
+            id: '@id'
+        }, {});
+        service.$cacheFactory = $cacheFactory;
+        for (let prop in service) {
+            this[prop] = service[prop];
+        }
+    }
+    getTemplate(){
+        return {
+
+        };
     }
 }
 
-export default <%= name %>Service;
+export default <%= upCaseName %>Service;

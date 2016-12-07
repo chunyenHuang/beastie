@@ -1,12 +1,12 @@
-import template from './<%= upCaseName %>.html';
-import './<%= upCaseName %>.styl';
+import template from './Pets.html';
+import './Pets.styl';
 
-const <%= name %>Component = {
+const petsComponent = {
     template,
     bindings: {
-
+        pets: '<'
     },
-    controller: /* @ngInject */ class <%= upCaseName %>Controller {
+    controller: /* @ngInject */ class PetsController {
         static get $inject() {
             return [
                 '$log',
@@ -28,8 +28,13 @@ const <%= name %>Component = {
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
-
+        }
+        $onChanges() {
+            console.log(this.pets);
+            if (this.pets) {
+                this.selectedPet = this.pets[0];
+            }
         }
     }
 };
-export default <%= name %>Component;
+export default petsComponent;

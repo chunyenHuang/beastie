@@ -1,2 +1,2 @@
-import <%= name %>Module from './<%= name %>.module';
+import <%= name %>Module from './<%= upCaseName %>.module';
 export default <%= name %>Module;

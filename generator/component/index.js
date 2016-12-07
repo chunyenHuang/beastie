@@ -1,2 +1,2 @@
-import <%= name %>Component from './<%= name %>.component';
+import <%= name %>Component from './<%= upCaseName %>.component';
 export default <%= name %>Component;

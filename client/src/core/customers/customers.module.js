@@ -1,12 +1,22 @@
 import customersComponent from './customers.component';
 import customersListComponent from './customersList';
-import customersService from './services/customers.service';
+import customersService from './customers.service';
 import CustomerDetailDialogService from './customerDetailDialog.service';
+
+import customerTransactions from './Transactions';
+import customerInfo from './Info';
+import customerPets from './Pets';
+import customerCredits from './Credits';
 
 const customersModule = angular
     .module('beastie.core.customers', [])
     .component('customers', customersComponent)
     .component('customersList', customersListComponent)
+    .component('customerTransactions', customerTransactions)
+    .component('customerInfo', customerInfo)
+    .component('customerPets', customerPets)
+    .component('customerCredits', customerCredits)
+
     .service('Customers', customersService)
     .service('CustomerDetailDialog', CustomerDetailDialogService)
 
@@ -19,7 +29,7 @@ const customersModule = angular
                 // component: 'customers',
                 template: '<customers layout="column" flex></customers>',
                 params: {
-                    phoneNumber: '',
+                    phoneNumber: ''
                 }
             })
             .state('core.customers.list', {
@@ -28,7 +38,7 @@ const customersModule = angular
             })
             .state('core.customers.customersForm', {
                 url: '/customers-form?customer_id&phoneNumber',
-                template: '<customers-form layout="column" flex></customers-form>',
+                template: '<customers-form layout="column" flex></customers-form>'
                 // component: 'customersForm',
                 // params: {
                 //     phoneNumber: '',

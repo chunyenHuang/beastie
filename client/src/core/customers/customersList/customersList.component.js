@@ -28,9 +28,9 @@ const customersListComponent = {
                 this.Task.off();
                 this.customers = customers;
                 // console.log(this.customers[0]);
-                // this.select({
-                //     _id: '5833ee414cde151f71df3fa0'
-                // });
+                this.select({
+                    _id: '58451388d3c7554fb9b01d4e'
+                });
             });
         }
 
