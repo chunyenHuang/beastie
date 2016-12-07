@@ -1,19 +1,36 @@
 @import "~variable"
-md-toast .md-toast-content span.md-toast-text
-    font-size 200%
-    text-align center
-[aria-label="paid by cash"], [aria-label="confirm CANCEL"], [aria-label="confirm NO-SHOW"], [aria-label="confirm reset"]
-    font-size 20px
-    h2 
-        font-size 24px
-    md-dialog-actions
-        padding 0px 8px
+$navHeight = 100px
+$navBtnHeight = 84px
+
+
+
+#md-date-pane0 > div.md-datepicker-input-mask
+    height 0px
+
+#orders-list
+    nav
+        height $navHeight
         button
-            margin 8px 4px
-            font-size 24px
-            width 50%
-            height 100px
-#order-list
+            height $navBtnHeight
+            padding 2px 8px
+            md-datepicker
+                display block
+                width 0px
+                height 0px
+            &.nav-date
+                min-width 0px
+                padding 0px
+                margin auto 0px
+    #no-order-text
+        &>div
+            position:absolute
+            top:200px
+            left:0px
+            text-align:center
+            width:100%
+    .pet-img-placeholder
+        padding-bottom 20px
+    
     .animate-show.ng-hide-add 
         transition: all linear 0.75s;
     .animate-show.ng-hide-remove
@@ -34,9 +51,6 @@ md-toast .md-toast-content span.md-toast-text
         text-align: center;
         padding 2px 2px
     
-    img
-        max-height: 150px
-        max-width: 150px
     .tile-pets-name
         background-color: rgba(255,255,255,0.5);
         position: absolute;
@@ -45,6 +59,42 @@ md-toast .md-toast-content span.md-toast-text
         width: 100%;
         text-align: center;
         padding-bottom: 6px;
+    
+    div.grid-highlight 
+        background $md-primary-light
+    
+    md-grid-list md-grid-tile
+        // background-color rgba(178,223,219, 0.5)
+        background-color #D9EFED
+        button
+            min-width initial
+            padding 0px
+            border-radius 0px
+    
+    .tile-pet-img
+        background-repeat no-repeat
+        background-position: center center; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size cover
+
+md-toast .md-toast-content span.md-toast-text
+    font-size 200%
+    text-align center
+
+[aria-label="paid by cash"], [aria-label="confirm CANCEL"], [aria-label="confirm NO-SHOW"], [aria-label="confirm reset"]
+    font-size 20px
+    h2 
+        font-size 24px
+    md-dialog-actions
+        padding 0px 8px
+        button
+            margin 8px 4px
+            font-size 24px
+            width 50%
+            height 100px        
+    
         
     // md-grid-list md-grid-tile::before, md-grid-list md-grid-tile::after
     //     content: '';
@@ -60,72 +110,56 @@ md-toast .md-toast-content span.md-toast-text
     
     // md-grid-tile:nth-child(2)
 
-    md-grid-list:first-child::before, md-grid-list:first-child::after
-        content: ' ';
-        position: absolute;
-        top: 0;
-        left: 0;
-        border-color: transparent;
-        border-style: solid;
-    md-grid-list:first-child::after
-        border-width: 0em;
-        // border-color: #0c0
-    md-grid-list
-        &:first-child::after
-            border-color: $color-tile-upcoming
-        &.label-checkedin:first-child::after
-            border-color: $md-primary
-        &.label-canceled:first-child::after
-            border-color: $md-accent
-        &.label-noshow:first-child::after
-            border-color: $md-warn
+    // md-grid-list:first-child::before, md-grid-list:first-child::after
+    //     content: ' ';
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     border-color: transparent;
+    //     border-style: solid;
+    // md-grid-list:first-child::after
+    //     border-width: 0em;
+    //     // border-color: #0c0
+    // md-grid-list
+    //     &:first-child::after
+    //         border-color: $color-tile-upcoming
+    //     &.label-checkedin:first-child::after
+    //         border-color: $md-primary
+    //     &.label-canceled:first-child::after
+    //         border-color: $md-accent
+    //     &.label-noshow:first-child::after
+    //         border-color: $md-warn
     
     
-    md-grid-list md-grid-tile
-        // background-color rgba(178,223,219, 0.5)
-        background-color #D9EFED
-        button
-            min-width initial
-            padding 0px
-            border-radius 0px
-    .tile-no-show.md-button.md-raised[disabled]
-        background-color $md-warn
-    .tile-cancel.md-button.md-accent[disabled]
-        background-color $md-accent
-    .tile-pet-img
-        background-repeat no-repeat
-        background-position: center center; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size cover
-        
-    div.grid-highlight 
-        background $md-primary-light
+    
+    // .tile-no-show.md-button.md-raised[disabled]
+    //     background-color $md-warn
+    // .tile-cancel.md-button.md-accent[disabled]
+    //     background-color $md-accent
+    
     // .tile-warn::after
     //     content 'hello'
     //     position absolute
     //     top 0
     //     left
     
-.selected_date_mode 
-    border solid 3px
+// .selected_date_mode 
+//     border solid 3px
     
-#box::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-color: transparent;
-    border-style: solid;
-}
+// #box::after {
+//     content: '';
+//     position: absolute;
+//     top: 0;
+//     right: 0;
+//     border-color: transparent;
+//     border-style: solid;
+// }
 
-#box::after {
-    border-width: 1.35em;
-    border-right-color: #0c0;
-    border-top-color: #0c0;
-}
+// #box::after {
+//     border-width: 1.35em;
+//     border-right-color: #0c0;
+//     border-top-color: #0c0;
+// }
 
-#md-date-pane0 > div.md-datepicker-input-mask
-    height 20px
-    
+
+

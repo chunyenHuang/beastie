@@ -15,7 +15,7 @@ const ordersListComponent = {
                 'Snapshot', 'InhouseOrdersDialog', 'ShowSignaturesDialog',
                 'PreviousOrdersDialog', 'Socket', '$mdDialog', '$mdToast',
                 'chooseServiceDialog', '$location', '$anchorScroll', 'Transactions',
-                '$document', 'TransactionsDialog', 'CustomerDetailDialog'
+                '$document', 'TransactionsDialog', 'CustomerDetailDialog', '$mdMedia'
 
             ];
         }
@@ -25,7 +25,7 @@ const ordersListComponent = {
             Snapshot, InhouseOrdersDialog, ShowSignaturesDialog,
             PreviousOrdersDialog, Socket, $mdDialog, $mdToast,
             chooseServiceDialog, $location, $anchorScroll, Transactions,
-            $document, TransactionsDialog, CustomerDetailDialog
+            $document, TransactionsDialog, CustomerDetailDialog, $mdMedia
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -52,6 +52,7 @@ const ordersListComponent = {
             this.$document = $document;
             this.TransactionsDialog = TransactionsDialog;
             this.CustomerDetailDialog = CustomerDetailDialog;
+            this.$mdMedia = $mdMedia;
 
             Socket.on('customerCheckIn', (res) => {
                 console.log('socket');
