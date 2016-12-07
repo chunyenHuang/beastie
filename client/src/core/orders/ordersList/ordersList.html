@@ -24,14 +24,36 @@
                 <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
         </section>
         
-        <section layout hide-sm hide-xs>
-            <md-button class="md-raised"
+        <section layout>
+            <md-button class="md-raised" hide-sm hide-xs
                 ng-repeat="(key, type) in $ctrl.typeList"
                 ng-click="$ctrl.setType(key)"
                 ng-class="{'{{type.css}}': $ctrl.showType==key}">
                 {{type.text}}<br/>
                 <span class="md-display-1">{{type.count}}</span>
             </md-button>
+            
+            <md-menu hide-gt-sm>
+                <md-button aria-label="Open type menu" class="md-raised md-primary" layout
+                    ng-click="$mdOpenMenu()">
+                    <div>
+                        {{$ctrl.typeList[$ctrl.showType].text}}<br/>
+                        <span class="md-display-1">{{$ctrl.typeList[$ctrl.showType].count}}</span>
+                    </div>
+                    <div layout-padding>
+                        <md-icon md-svg-src="menu-down" aria-label="open type menu"></md-icon>
+                    </div>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item ng-repeat="(key, type) in $ctrl.typeList">
+                        <md-button 
+                          ng-click="$ctrl.setType(key)"
+                          ng-class="{'{{type.css}}': $ctrl.showType==key}">
+                          <span md-menu-align-target class="md-subhead">{{type.text | uppercase}} ({{type.count}})</span> 
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </section>
     </nav>
     <md-divider></md-divider>
@@ -45,7 +67,7 @@
         </section>
         <div flex="100 "id="top"></div>
         <div flex="100" flex-md="90" flex-gt-md="80" 
-            ng-repeat="order in $ctrl.orders | orderBy: $ctrl.sortDate track by order._id"
+            ng-repeat-start="order in $ctrl.orders | orderBy: $ctrl.sortDate track by order._id"
             id="{{order._id}}"
             class="js-order-tile animate-show"
             ng-show="$ctrl.showAllTypes||(order.type == $ctrl.showType)"
@@ -58,14 +80,15 @@
                 
                 <md-grid-tile md-colors="{background: 'background-500-0', color:'grey-500'}"
                     md-colspan-gt-sm="2" md-rowspan-gt-sm="3"
-                    md-colspan-sm="6" md-rowspan-sm="2"
-                    md-colspan-xs="2" md-rowspan-sm="1">
+                    md-colspan-sm="6" md-rowspan-sm="1"
+                    md-colspan-xs="2" md-rowspan-sm="1"
+                    layout-margin-sm>
                     <div layout layout-fill layout-align="center">
-                        <div flex-gt-sm="90" flex-sm="100" layout-fill layout="column" layout-align-gt-sm="start end" layout-align-sm="end start">
+                        <div flex-gt-sm="90" flex-sm="100" layout-fill layout="column" layout-align-gt-sm="start end" layout-align-sm="end start" layout-align-xs="end start">
                             <div class="md-display-2" md-colors="{color:'grey-600'}">
                                 {{order.scheduleAt | date:'h:mma'}}
                             </div>
-                            <div class="md-subhead">
+                            <div class="md-subhead" hide-sm hide-xs>
                                 {{order.scheduleAt | date: 'EEE, MMM dd, y'}}
                             </div>
                         </div>
@@ -73,13 +96,13 @@
                 </md-grid-tile>
 
                 <md-grid-tile  md-colspan-gt-sm="2" md-rowspan-gt-sm="2" md-colspan-sm="2" md-rowspan-sm="1">
-                    <md-button layout-fill layout="column" layout-align="center center"
+                    <md-button layout-fill
                         ng-click="$ctrl.edit(order)"
                         ng-hide="order.checkInAt">
                         <span class="md-headline">reschedule</span>
                     </md-button>
                     <div ng-show="order.checkInAt"
-                        ng-class="{'label-rush':order.isRush, 'md-display-4': $ctrl.$mdMedia('gt-sm'), 'md-display-3': true}">
+                        ng-class="{'label-rush':order.isRush, 'md-display-3': $ctrl.$mdMedia('sm')||$ctrl.$mdMedia('xs'), 'md-display-4': $ctrl.$mdMedia('gt-sm')}">
                         {{order.checkInNumber}}</div>
                 </md-grid-tile>
                 <md-grid-tile  md-colspan-gt-sm="2" md-rowspan-gt-sm="1" md-colspan-sm="2" md-rowspan-sm="1">
@@ -95,7 +118,7 @@
                     <md-button layout-fill ng-click="$ctrl.checkIn(order)"
                         ng-if="!order.isCanceled && !order.notShowup"><span class="md-display-1">
                         check In</span></md-button>
-                    <md-button layout-fill ng-click="$ctrl.resetOrder(order)" layout="column" layout-align="center"
+                    <md-button layout-fill ng-click="$ctrl.resetOrder(order)"
                         ng-if="order.isCanceled || order.notShowup"
                         ng-class="{'md-raised':order.isCanceled || order.notShowup, 'md-accent': order.isCanceled, 'tile-cancel': order.isCanceled, 'md-warn':order.notShowup , 'tile-no-show':order.notShowup }">
                         <div class="md-display-1"><span ng-show="order.isCanceled">canceled</span><span ng-show="order.notShowup">no-show</span></div>
@@ -188,15 +211,14 @@
                         {{$ctrl.typeList[order.type].text}}</md-button></md-grid-tile>
 
                 <md-grid-tile ng-if="!order.checkInAt" md-colspan-sm="1" md-rowspan-sm="2">
-                    <!--<md-button layout-fill ng-click="$ctrl.cancel(order._id)" ng-disabled="order.isCanceled"-->
                     <md-button layout-fill ng-click="$ctrl.cancel(order)"
-                        class="md-accent tile-cancel" ng-class="{'md-raised':order.isCanceled}">
+                        class="md-accent" ng-class="{'md-raised':order.isCanceled}">
                         cancel</md-button></md-grid-tile>
 
                 <!--<md-grid-tile md-colors="{background: 'warn-500-0.85'}">-->
                 <md-grid-tile ng-if="!order.checkInAt" md-colspan-sm="1" md-rowspan-sm="2">
-                    <md-button layout-fill ng-click="$ctrl.notShowup(order)" ng-disabled="order.notShowup"
-                        class="md-warn tile-no-show" ng-class="{'md-raised':order.notShowup}">
+                    <md-button layout-fill ng-click="$ctrl.notShowup(order)"
+                        class="md-warn" ng-class="{'md-raised':order.notShowup}">
                         no-show</md-button layout-fill></md-grid-tile>
                 <md-grid-tile  md-colspan-gt-sm="2" md-rowspan-gt-sm="1" md-colspan-sm="2" md-rowspan-sm="1"
                     ng-if="order.checkInAt && !order.checkOutAt" md-colors="{background: 'primary-500-1'}">
@@ -209,6 +231,7 @@
 
             </md-grid-list>
         </div>
+        <div ng-repeat-end hide show-sm ng-show="!$last&&($ctrl.showAllTypes||(order.type == $ctrl.showType))"><md-icon md-svg-src="minus" aria-label="order seperator"></md-icon></div>
     </md-content>
 
 
