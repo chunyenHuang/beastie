@@ -3,19 +3,30 @@
         <h3>{{$ctrl.waiver.name}} {{$ctrl.waiver.zhName}}</h3>
     </div>
     <md-content layout="column" flex="35" class="description">
-        <div class="">
+        <div class="md-padding" flex="none">
             {{$ctrl.waiver.description}}
         </div>
-        <div class="">
+        <div class="md-padding" flex="none">
             {{$ctrl.waiver.zhDescription}}
         </div>
     </md-content>
-    <div layout="row" flex="none">
-        <md-button ng-click="$ctrl.erase()" class="md-warn">Erase</md-button>
-        <div class="" flex layout="row" layout-align="center center">
-            Please Sign inside the box
+    <div layout="row" class="md-padding" flex="none" layout-align="center center">
+        <div class="md-padding" flex layout="row" layout-align="center center">
+            <!-- Please Sign inside the box -->
+            <h3>
+                <md-checkbox ng-click="agree=!agree">
+                    I have read and understand this agreement, and I accept and agree to all of its terms and conditions.
+                </md-checkbox>
+            </h3>
         </div>
-        <md-button ng-click="$ctrl.save()" class="md-primary md-raised" ng-disabled="!$ctrl.showSaveButton">save</md-button>
+        <div class="md-padding" layout="row" layout-align="center center">
+            <md-button
+                ng-click="$ctrl.save()" class="md-primary md-raised"
+                ng-disabled="!agree"
+                >
+                save
+            </md-button>
+        </div>
     </div>
         <!-- <canvas
             id="signature-canvas"
@@ -24,10 +35,12 @@
             ng-mouseup="$ctrl.stopDrawing($event)"
             width="500" height="200"></canvas> -->
     <canvas
-        id="signature-canvas"
-        width="800" height="400"></canvas>
+        id="signature-canvas"></canvas>
+        <!-- width="800" height="400"></canvas> -->
         <!-- {{$ctrl.clickX[$ctrl.clickX.length-1]}}
         {{$ctrl.clickY[$ctrl.clickY.length-1]}} -->
         <!-- <img ng-src="{{$ctrl.signature}}" alt="" /> -->
-
+    <div class="">
+        <md-button ng-click="$ctrl.erase()" class="md-warn">Erase</md-button>
+    </div>
 </div>

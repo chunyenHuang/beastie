@@ -31,7 +31,7 @@ const signatureComponent = {
             console.log(this.$stateParams);
             this.getWaivers();
             this.setSignatureCanvas();
-            this.$timeout(()=>{
+            this.$timeout(() => {
                 this.showSaveButton = true;
             }, 3500);
         }
@@ -41,18 +41,30 @@ const signatureComponent = {
                 type: 'waivers'
             }, (waivers) => {
                 for (var i = 0; i < waivers[0].items.length; i++) {
-                    if(waivers[0].items[i].name == this.$stateParams.name){
+                    if (waivers[0].items[i].name == this.$stateParams.name) {
                         this.waiver = waivers[0].items[i];
                     }
                 }
             });
         }
 
+        isSigned() {
+            console.log(this.emptyCanvas.toDataURL()==this.canvas.toDataURL());
+            return this.emptyCanvas.toDataURL() != this.canvas.toDataURL();
+        }
+
         setSignatureCanvas() {
             this.cleanup();
             this.canvas = this.$document[0].getElementById('signature-canvas');
             this.canvas.style.border = '2px solid';
+            this.canvas.width = 800;
+            this.canvas.height = 400;
             this.context = this.canvas.getContext('2d');
+            this.context.fillStyle = '#b8b8b8';
+            this.context.font = '40px Georgia';
+            this.context.fillText('Please sign here', 250, 150);
+            this.context.fillStyle = '#000000';
+
             // this.context.fillStyle = '#959595';
             // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -99,14 +111,14 @@ const signatureComponent = {
 
             this.canvas.addEventListener('touchstart', (event) => {
                 event.preventDefault();
-                console.log('touchstart');
+                // console.log('touchstart');
                 this._addClick(event);
                 this.isDrawing = true;
                 this._redraw();
             });
             this.canvas.addEventListener('touchmove', (event) => {
                 event.preventDefault();
-                console.log('touchmove');
+                // console.log('touchmove');
                 if (this.isDrawing) {
                     this._addClick(event);
                     this._redraw();
@@ -177,10 +189,10 @@ const signatureComponent = {
                 name: this.waiver.name,
                 description: this.waiver.description,
                 signatures: this.signature
-            }, (res)=>{
+            }, (res) => {
                 this.$state.go('client.customersCheckIn');
                 console.log(res);
-            }, (err)=>{
+            }, (err) => {
                 console.log(err);
             });
         }
@@ -192,7 +204,7 @@ const signatureComponent = {
         }
 
         stopDrawing() {
-            this.$timeout(()=>{
+            this.$timeout(() => {
                 this.isDrawing = false;
             }, 500);
         }
