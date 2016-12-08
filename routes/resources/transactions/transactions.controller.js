@@ -153,6 +153,7 @@ class TransactionsController extends PrinterController {
         console.log(req.body.isPaidByStoreCredit);
         if (!req.body.isPaidByStoreCredit) {
             next();
+            return;
         }
         req.collection = req.db.collection('credits');
         req.collection.update({
@@ -382,6 +383,8 @@ class TransactionsController extends PrinterController {
             if(req.body.isPaidByStoreCredit){
                 credit = '-' + total;
                 total = price(0);
+            } else {
+                credit = '-';
             }
 
             this.device.open(() => {
