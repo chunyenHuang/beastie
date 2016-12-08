@@ -1,4 +1,4 @@
-<md-content layout="column" flex class="md-padding" >
+<md-content layout="column" flex class="md-padding">
     <!-- <h1>new transactions need to be resolve</h1> -->
     <div class="" layout="column" flex="none" ng-show="$ctrl.credits">
         <h3>new credits packages</h3>
@@ -7,7 +7,8 @@
                 {{item.customers[0].phone | tel }}
             </div>
             <div class="">
-                {{item.customers[0].firstname}} {{item.customers[0].lastname}}
+                {{item.customers[0].firstname}}
+                {{item.customers[0].lastname}}
             </div>
             <div class="">
                 {{item.balance | currency}}
@@ -56,18 +57,38 @@
                         {{item.customers[0].phone | tel }}
                     </div>
                     <div class="">
-                        {{item.customers[0].firstname}} {{item.customers[0].lastname}}
+                        {{item.customers[0].firstname}}
+                        {{item.customers[0].lastname}}
                     </div>
                 </div>
                 <div class="" layout="column" flex="35">
                     <div class="" layout="row" flex ng-repeat="service in item.services">
-                        {{service.name}} {{service.zhName}} {{service.price | currency}}
+                        <md-input-container>
+                            <md-select ng-model="item.services[$index]" ng-change="$ctrl.editSelfService(item)" aria-label="change self service">
+                                <md-option
+                                    ng-repeat="option in $ctrl.selfServiceList.basic"
+                                    ng-selected="option.keyID == service.keyID"
+                                    ng-value="option">
+                                    {{option.name}}
+                                    {{option.zhName}}
+                                    {{option.price | currency}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
                     </div>
                 </div>
                 <div class="" layout="column" flex="35">
-                    <div class="" layout="row" flex ng-repeat="addon in item.addons">
-                        {{addon.name}} {{addon.zhName}} {{addon.price | currency}}
-                    </div>
+                    <md-button
+                        ng-click="$ctrl.toggleAddons(addon, item)"
+                        ng-repeat="addon in $ctrl.selfServiceList.addon"
+                        ng-class="{
+                            'selected-addon': $ctrl.isAddonSelected(addon, item)
+                        }" >
+                        {{addon.name}}
+                        {{addon.zhName}}
+                        {{addon.price | currency}}
+                    </md-button>
                 </div>
             </div>
         </md-card>

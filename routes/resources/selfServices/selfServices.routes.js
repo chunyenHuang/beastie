@@ -21,8 +21,8 @@ module.exports = (app) => {
             }
         })
         .get(SelfServices.get.bind(SelfServices))
-        // .put(SelfServices.put.bind(SelfServices))
-        // .post(SelfServices.put.bind(SelfServices))
+        .put(SelfServices.put.bind(SelfServices))
+        .post(SelfServices.put.bind(SelfServices))
         .delete(SelfServices.delete.bind(SelfServices));
 
     // app.route('/selfServices?/:id/print')

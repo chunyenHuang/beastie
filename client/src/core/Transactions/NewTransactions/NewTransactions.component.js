@@ -11,12 +11,14 @@ const newTransactionsComponent = {
             return [
                 '$log', '$timeout', '$state', '$stateParams',
                 '$mdDialog',
+                'ListItems',
                 'Credits', 'SelfServices', 'TransactionsDialog',
                 'Socket'
             ];
         }
         constructor(
             $log, $timeout, $state, $stateParams, $mdDialog,
+            ListItems,
             Credits, SelfServices, TransactionsDialog, Socket
         ) {
             this.$log = $log;
@@ -24,6 +26,7 @@ const newTransactionsComponent = {
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.$mdDialog = $mdDialog;
+            this.ListItems = ListItems;
             this.Credits = Credits;
             this.SelfServices = SelfServices;
             this.TransactionsDialog = TransactionsDialog;
@@ -39,11 +42,24 @@ const newTransactionsComponent = {
         }
         $onInit() {
             this.reload();
+            this.setSelfServices();
         }
 
         reload() {
             this.setUnsolvedCreditsBalance();
             this.setUnsolvedSelfServices();
+        }
+
+        setSelfServices() {
+            this.ListItems.query({
+                type: 'selfServices'
+            }, (listItems) => {
+                this.selfServiceList = {};
+                angular.forEach(listItems[0].items, (item) => {
+                    this.selfServiceList[item.type] = item.subItems;
+                });
+                console.log(this.selfServiceList);
+            });
         }
 
         setUnsolvedCreditsBalance() {
@@ -101,7 +117,7 @@ const newTransactionsComponent = {
             });
         }
 
-        cancelSelfService(item){
+        cancelSelfService(item) {
             const confirm = this.$mdDialog.confirm()
                 .title('Do you want to cancel this self service?')
                 // .textContent(textContent)
@@ -111,13 +127,53 @@ const newTransactionsComponent = {
             this.$mdDialog.show(confirm).then(() => {
                 this.SelfServices.delete({
                     id: item._id
-                }).$promise.then((res)=>{
+                }).$promise.then((res) => {
                     console.log(res);
                     this.selfServices.splice(this.selfServices.indexOf(item), 1);
-                },(err)=>{
+                }, (err) => {
                     console.log(err);
                 });
             }, () => {});
+        }
+
+        isAddonSelected(addon, item) {
+            if (!addon || !item) {
+                return false;
+            }
+            for (var i = 0; i < item.addons.length; i++) {
+                if (item.addons[i].keyID == addon.keyID) {
+                    return item.addons[i];
+                }
+            }
+            return false;
+        }
+
+        editSelfService(item) {
+            let newTotal = 0;
+            for (var i = 0; i < item.addons.length; i++) {
+                newTotal += item.addons[i].price;
+            }
+            for (var i = 0; i < item.services.length; i++) {
+                newTotal += item.services[i].price;
+            }
+            item.total = newTotal;
+            console.log(item);
+            this.SelfServices.update({
+                id: item._id
+            }, item).$promise.then((res) => {
+                console.log(res);
+            });
+        }
+
+        toggleAddons(addon, item) {
+            const matchAddon = this.isAddonSelected(addon, item);
+            if (matchAddon) {
+                item.addons.splice(matchAddon, 1);
+            } else {
+                item.addons.push(addon);
+            }
+            console.log(item);
+            this.editSelfService(item);
         }
     }
 };
