@@ -15,7 +15,8 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(credits.getCredits.bind(this));
+        .get(credits.getCredits.bind(this))
+        .put(credits.counterUpdate.bind(this));
 
     app.route('/credits?/:customer_id/login')
         .all((req, res, next) => {
@@ -29,7 +30,7 @@ module.exports = (app) => {
         .all((req, res, next) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
-        })
+        }, credits._validateCreditPackage.bind(credits))
         .put(credits.purchase.bind(credits))
         .post(credits.purchase.bind(credits));
 

@@ -66,6 +66,15 @@ class customerDetailDialog {
                         case 'customer':
                             this.selectedTab = 1;
                             break;
+                        case 'pets':
+                            this.selectedTab = 2;
+                            break;
+                        case 'transactions':
+                            this.selectedTab = 3;
+                            break;
+                        case 'credits':
+                            this.selectedTab = 4;
+                            break;
                         default:
                             this.selectedTab = 0;
                     }

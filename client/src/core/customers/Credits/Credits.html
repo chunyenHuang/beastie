@@ -1,2 +1,112 @@
-1. be able to view credits
+<!-- 1. be able to view credits
 2. be able to edit credits here for convinience
+
+{{$ctrl.credits}} -->
+<div flex layout="row">
+    <div class="" flex="30" layout="column">
+        <md-card class="md-padding">
+            <div class="" flex layout="column">
+                <div class="">
+                    <h3>
+                        Available Credits {{$ctrl.credits.credit | currency}}
+                    </h3>
+                </div>
+                <div class="" >
+                    <h3>
+                        Unpaid Balance {{$ctrl.credits.balance | currency}}
+                    </h3>
+                </div>
+                <md-button ng-click="$ctrl.cancelUnpaid()" class="md-primay" ng-disabled="$ctrl.credits.balance===0">
+                    void unpaid balance
+                </md-button>
+            </div>
+        </md-card>
+        <md-card class="md-padding">
+            <md-input-container>
+                <label>credits</label>
+                <md-select ng-model="$ctrl.selected" ng-change="$ctrl.selectCredit()">
+                    <md-option>
+                        <em>None</em>
+                    </md-option>
+                    <md-option value="custom">
+                        custom
+                    </md-option>
+                    <md-option ng-repeat="item in $ctrl.list" ng-value="item">
+                        {{item.name}}
+                        {{item.zhName}}
+                        [ {{item.total | currency}} for
+                        {{item.credit | currency}} ]
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container>
+                <label>Due Total</label>
+                <input ng-model="$ctrl.selectedDueTotal" type="number" ng-disabled="$ctrl.selected !='custom'"/>
+            </md-input-container>
+            <div class="" layout="column">
+                <md-button ng-click="$ctrl.purchase()" class="md-primay" ng-disabled="!$ctrl.selectedDueTotal || $ctrl.selectedDueTotal<=0">
+                    purchase & pay
+                </md-button>
+            </div>
+        </md-card>
+    </div>
+    <md-content class="" flex layout="column">
+        <div class="md-padding header" layout="row" flex>
+            <div class="" flex="25">
+                credit name
+            </div>
+            <div class="" flex="25">
+                purchase price
+            </div>
+            <div class="" flex="25">
+                credit earned
+            </div>
+            <div class="" flex>
+                date
+            </div>
+        </div>
+        <div class="md-padding" layout="row" flex ng-repeat="item in $ctrl.credits.purchased | orderBy:'createdAt':true">
+            <div class="" flex="25">
+                {{item.package.name}} {{item.package.zhName}}
+            </div>
+            <div class="" flex="25">
+                {{item.package.total | currency}}
+            </div>
+            <div class="" flex="25">
+                {{item.credit | currency}}
+            </div>
+            <div class="" flex="25">
+                {{item.createdAt | date:'MM/dd/yyyy'}}
+            </div>
+        </div>
+
+        <div class="md-padding header" layout="row" flex>
+            <div class="" flex="25">
+                services
+            </div>
+            <div class="" flex="25">
+                addons
+            </div>
+            <div class="" flex="25">
+                credit used
+            </div>
+            <div class="" flex="25">
+                date
+            </div>
+        </div>
+        <div class="md-padding" layout="row" flex ng-repeat="item in $ctrl.credits.creditUsed | orderBy:'createdAt':true">
+            <div class="" flex="25">
+                {{item.service.services[0].name}}
+            </div>
+            <div class="" flex="25">
+                 {{item.service.addons[0].name}}
+            </div>
+            <div class="" flex="25">
+                -{{item.credit | currency}}
+            </div>
+            <div class="" flex="25">
+                {{item.createdAt | date:'MM/dd/yyyy'}}
+            </div>
+        </div>
+    </me-content>
+</div>

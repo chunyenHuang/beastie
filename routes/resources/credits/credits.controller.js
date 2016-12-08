@@ -1,9 +1,12 @@
 const AbstractController = require('../../abstract/AbstractController.js');
+const TransactionController = require('../transactions/transactions.controller.js');
 const ObjectId = require('mongodb').ObjectID;
 
 class creditsController extends AbstractController {
-    constructor(){
+    constructor() {
         super();
+        this.getCredits = this.getCredits.bind(this);
+        this.counterUpdate = this.counterUpdate.bind(this);
     }
     getTemplate(req, res) {
         const template = {
@@ -24,6 +27,65 @@ class creditsController extends AbstractController {
 
         };
         res.send(template);
+    }
+
+    _validateCreditPackage(req, res, next) {
+        if (!req.body.customer_id) {
+            res.json({
+                message: 'no customer_id'
+            });
+            return;
+        }
+        if (!req.body.package) {
+            res.json({
+                message: 'no package'
+            });
+            return;
+        }
+        if (!req.body.package.total) {
+            res.json({
+                message: 'no package.total'
+            });
+            return;
+        }
+        if (isNaN(parseFloat(req.body.package.total))) {
+            res.json({
+                message: 'package.total is not number'
+            });
+            return;
+        }
+        if (!req.body.package.credit) {
+            res.json({
+                message: 'no package.credit'
+            });
+            return;
+        }
+        if (isNaN(parseFloat(req.body.package.credit))) {
+            res.json({
+                message: 'package.credit is not number'
+            });
+            return;
+        }
+        next();
+    }
+
+    counterUpdate(req, res) {
+        console.log(req.body.customer_id);
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        req.collection.updateOne({
+            customer_id: ObjectId(req.body.customer_id)
+        }, {
+            $set: req.body
+        }, (err) => {
+            if (!err) {
+                res.statusCode = 201;
+                this.getCredits(req, res);
+            } else {
+                res.sendStatus(500);
+            }
+        });
     }
 
     queryCredit(req, res) {
@@ -158,49 +220,15 @@ class creditsController extends AbstractController {
     }
 
     purchase(req, res) {
-        // for ex: total 90 and credit 100 (10 %off)
-        if (!req.body.customer_id) {
-            res.json({
-                message: 'no customer_id'
-            });
-            return;
-        }
-        if (!req.body.package) {
-            res.json({
-                message: 'no package'
-            });
-            return;
-        }
-        if (!req.body.package.total) {
-            res.json({
-                message: 'no package.total'
-            });
-            return;
-        }
-        if (isNaN(parseFloat(req.body.package.total))) {
-            res.json({
-                message: 'package.total is not number'
-            });
-            return;
-        }
-        if (!req.body.package.credit) {
-            res.json({
-                message: 'no package.credit'
-            });
-            return;
-        }
-        if (isNaN(parseFloat(req.body.package.credit))) {
-            res.json({
-                message: 'package.credit is not number'
-            });
-            return;
-        }
-        console.log(req.body.customer_id);
         req.collection.updateOne({
             customer_id: ObjectId(req.body.customer_id)
         }, {
             $push: {
-                purchased: req.body.package
+                purchased: {
+                    package: req.body.package,
+                    credit: req.body.package.credit,
+                    createdAt: new Date()
+                }
             },
             $inc: {
                 balance: parseFloat(req.body.package.total),

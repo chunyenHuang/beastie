@@ -8,6 +8,14 @@ class creditsService {
         const Credits = $resource(url, {
             customer_id: '@customer_id'
         }, {
+            // getCredits: {
+            //     method: 'GET',
+            //     url: url,
+            //     params: {
+            //         customer_id: '@customer_id'
+            //     },
+            //     isArray: false
+            // },
             login: {
                 method: 'POST',
                 url: url + '/login',
