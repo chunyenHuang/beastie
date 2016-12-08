@@ -1,27 +1,76 @@
-<md-content layout="column" flex class="md-padding">
-    <div class="" layout="row">
-        <div class="" layout="column" flex="50">
-            <h3>Company information</h3>
-            <md-input-container class="md-block">
-                <label>name</label>
-                <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
-            </md-input-container>
-            <md-input-container class="md-block">
-                <label>zh name</label>
-                <input type="text" ng-model="$ctrl.company.zhName" aria-label="company-zhName">
-            </md-input-container>
-            <div ng-repeat="phone in $ctrl.company.phones">
+<div class="" layout="row" flex>
+    <div class="" layout="column" flex="15">
+        <md-list flex>
+            <md-list-item class="md-1-line" ng-click="$ctrl.select('company')">
+                Company Info
+            </md-list-item>
+            <md-list-item class="md-1-line" ng-click="$ctrl.select('officeHours')">
+                Office Hours
+            </md-list-item>
+            <md-list-item class="md-1-line" ng-click="$ctrl.select('printer')">
+                Printer
+            </md-list-item>
+        </md-list>
+    </div>
+
+    <md-content layout="column" flex class="md-padding">
+        <div class="" layout="row" flex="none">
+            <div class="" flex>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.update()" class="md-primary md-raised">
+                    Update
+                </md-button>
+            </div>
+        </div>
+        <div class="" layout="row" ng-show="$ctrl.selected == 'company'">
+            <div class="md-padding" layout="column" flex="50">
+                <h3>Company information</h3>
                 <md-input-container class="md-block">
-                    <label>phone</label>
-                    <input type="text" ng-model="phone" aria-label="company-phone {{$index}}">
+                    <label>name</label>
+                    <input type="text" ng-model="$ctrl.company.name" aria-label="company-name">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>zh name</label>
+                    <input type="text" ng-model="$ctrl.company.zhName" aria-label="company-zhName">
+                </md-input-container>
+                <div ng-repeat="phone in $ctrl.company.phones">
+                    <md-input-container class="md-block">
+                        <label>phone</label>
+                        <input type="text" ng-model="phone" aria-label="company-phone {{$index}}">
+                    </md-input-container>
+                </div>
+                <md-input-container class="md-block">
+                    <label>EIN</label>
+                    <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Tax Rate</label>
+                    <input type="text" ng-model="$ctrl.company.tax" aria-label="company-EIN">
+                </md-input-container>
+
+            </div>
+            <div class="md-padding" layout="column" flex="50">
+                <h3>Address</h3>
+                <md-input-container class="md-block">
+                    <label>Street</label>
+                    <input type="text" ng-model="$ctrl.company.address.street" aria-label="address-street">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>City</label>
+                    <input type="text" ng-model="$ctrl.company.address.city" aria-label="address-city">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>State</label>
+                    <input type="text" ng-model="$ctrl.company.address.state" aria-label="address-state">
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Zip Code</label>
+                    <input type="text" ng-model="$ctrl.company.address.zipCode" aria-label="address-zipCode">
                 </md-input-container>
             </div>
-            <md-input-container class="md-block">
-                <label>EIN</label>
-                <input type="text" ng-model="$ctrl.company.EIN" aria-label="company-EIN">
-            </md-input-container>
         </div>
-        <div class="" layout="column" flex>
+        <div class="" layout="column" flex ng-show="$ctrl.selected == 'officeHours'">
             <div class="" layout="row">
                 <div class="" flex="40">
                     <h5>Max Hours a day</h5>
@@ -46,9 +95,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="" layout="column">
-        <h3>Printer</h3>
-        <printer></printer>
-    </div>
-</md-content>
+        <div class="" layout="column" ng-show="$ctrl.selected == 'printer'">
+            <h3>Printer</h3>
+            <printer></printer>
+        </div>
+    </md-content>
+</div>

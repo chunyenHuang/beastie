@@ -24,22 +24,25 @@ const settingsComponent = {
             this.$stateParams = $stateParams;
             this.Settings = Settings;
 
-            this.$scope.$watch('$ctrl.syncDir',(dir)=>{
+            this.$scope.$watch('$ctrl.syncDir', (dir) => {
                 console.log(dir);
             });
         }
 
-        print(dir){
-            console.log(dir);
-        }
-
         $onInit() {
+            this.selected = 'printer';
             this.Settings.query({}, (settings) => {
                 this.settings = settings;
                 this.company = this.findInArray(this.settings, 'type', 'company');
                 this.officeHours = this.findInArray(this.settings, 'type', 'officeHours');
-
             });
+        }
+        select(type) {
+            this.selected = type;
+        }
+
+        print(dir) {
+            console.log(dir);
         }
 
         findInArray(array, key, value) {
@@ -49,6 +52,26 @@ const settingsComponent = {
                 }
             }
             return null;
+        }
+
+        update() {
+            switch (this.selected) {
+                case 'company':
+                    this.Settings.update({
+                        id: this.company._id
+                    }, this.company).$promise.then((res) => {
+                        console.log(res);
+                    });
+                    break;
+                case 'officeHours':
+                    this.Settings.update({
+                        id: this.officeHours._id
+                    }, this.officeHours).$promise.then((res) => {
+                        console.log(res);
+                    });
+                    break;
+                default:
+            }
         }
     }
 };

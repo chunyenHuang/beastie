@@ -43,14 +43,16 @@ class TransactionsDialogService {
                         '$injector', '$timeout', '$window', '$mdDialog',
                         'Transactions', 'Orders', 'SelfServices', 'Customers',
                         'Credits',
-                        'ListItems'
+                        'ListItems',
+                        'Settings'
                     ];
                 }
                 constructor(
                     $injector, $timeout, $window, $mdDialog,
                     Transactions, Orders, SelfServices, Customers,
                     Credits,
-                    ListItems
+                    ListItems,
+                    Settings
                 ) {
                     this.$injector = $injector;
                     this.$timeout = $timeout;
@@ -62,7 +64,13 @@ class TransactionsDialogService {
                     this.Customers = Customers;
                     this.Credits = Credits;
                     this.ListItems = ListItems;
-                    this.tax = 0.09;
+                    this.Settings = Settings;
+
+                    this.Settings.query({
+                        type: 'company'
+                    }).$promise.then((res)=>{
+                        this.tax = res[0].tax;
+                    });
 
                     this.resetTransaction();
                     if (this.order_id) {

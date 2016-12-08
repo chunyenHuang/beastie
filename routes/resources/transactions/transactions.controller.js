@@ -350,10 +350,6 @@ class TransactionsController extends PrinterController {
                     lastname: null
                 };
             }
-            /*
-                4141 S. Nogales St. B105
-                West Covina, CA 91792
-            */
 
             this.device.open(() => {
                 this.printer

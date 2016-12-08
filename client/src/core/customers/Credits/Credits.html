@@ -6,17 +6,32 @@
     <div class="" flex="30" layout="column">
         <md-card class="md-padding">
             <div class="" flex layout="column">
-                <div class="">
+                <div class="" layout="row" flex>
                     <h3>
-                        Available Credits {{$ctrl.credits.credit | currency}}
+                        Available Credits
+                    </h3>
+                    <div class="" flex>
+
+                    </div>
+                    <h3>
+                        {{$ctrl.credits.credit | currency}}
                     </h3>
                 </div>
-                <div class="" >
+                <div class="" layout="row" flex>
                     <h3>
-                        Unpaid Balance {{$ctrl.credits.balance | currency}}
+                        Unpaid Balance
+                    </h3>
+                    <div class="" flex>
+
+                    </div>
+                    <h3>
+                        {{$ctrl.credits.balance | currency}}
                     </h3>
                 </div>
-                <md-button ng-click="$ctrl.cancelUnpaid()" class="md-primay" ng-disabled="$ctrl.credits.balance===0">
+                <md-button ng-click="$ctrl.pay()" class="md-primary md-raised" ng-disabled="$ctrl.credits.balance===0">
+                    Pay balance
+                </md-button>
+                <md-button ng-click="$ctrl.cancelUnpaid()" class="md-warn" ng-disabled="$ctrl.credits.balance===0">
                     void unpaid balance
                 </md-button>
             </div>
