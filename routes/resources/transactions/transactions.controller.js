@@ -13,6 +13,7 @@ class TransactionsController extends PrinterController {
             selfService_id: null,
             order_id: null,
             customer_id: null,
+            isPaidByStoreCredit: false,
             total: null,
             isTaxIncluded: false,
             paymentTransactionsNumber: null,
@@ -23,8 +24,8 @@ class TransactionsController extends PrinterController {
         res.send(template);
     }
 
-    updateInfo(req, res){
-        Object.assign(req.body,{
+    updateInfo(req, res) {
+        Object.assign(req.body, {
             updatedAt: new Date(),
             updatedBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
@@ -72,7 +73,7 @@ class TransactionsController extends PrinterController {
                         return;
                     }
                     if (req.body.credit_id) {
-                        this._parCredit(req, res);
+                        this._payCredit(req, res);
                         return;
                     }
                     res.statusCode = 201;
@@ -128,17 +129,19 @@ class TransactionsController extends PrinterController {
             }
         }, (err) => {
             if (!err) {
-                this._printReceipt(req, res, () => {
-                    req.collection = req.db.collection('selfServices');
-                    req.params.id = req.body.selfService_id;
-                    req.lookup = {
-                        from: 'transactions',
-                        localField: '_id',
-                        foreignField: 'selfService_id',
-                        as: 'transactions'
-                    };
-                    this.get(req, res);
-                    return;
+                this._updatePaidByStoreCredit(req, res, () => {
+                    this._printReceipt(req, res, () => {
+                        req.collection = req.db.collection('selfServices');
+                        req.params.id = req.body.selfService_id;
+                        req.lookup = {
+                            from: 'transactions',
+                            localField: '_id',
+                            foreignField: 'selfService_id',
+                            as: 'transactions'
+                        };
+                        this.get(req, res);
+                        return;
+                    });
                 });
             } else {
                 res.sendStatus(400);
@@ -146,7 +149,31 @@ class TransactionsController extends PrinterController {
         });
     }
 
-    _parCredit(req, res) {
+    _updatePaidByStoreCredit(req, res, next) {
+        console.log(req.body.isPaidByStoreCredit);
+        if (!req.body.isPaidByStoreCredit) {
+            next();
+        }
+        req.collection = req.db.collection('credits');
+        req.collection.update({
+            customer_id: ObjectId(req.body.customer_id)
+        }, {
+            $inc: {
+                credit: -parseFloat(req.body.total)
+            },
+            $push: {
+                creditUsed: {
+                    service: req.body.selfService_id || req.body.order_id,
+                    credit: parseFloat(req.body.total),
+                    createdAt: new Date()
+                }
+            }
+        }, () => {
+            next();
+        });
+    }
+
+    _payCredit(req, res) {
         req.collection = req.db.collection('credits');
         req.collection.update({
             _id: req.body.credit_id,
@@ -282,10 +309,10 @@ class TransactionsController extends PrinterController {
                 }
             }, {
                 $lookup: {
-                    from: 'selfServicesPackages',
-                    localField: 'selfServicePackage_id',
+                    from: 'credits',
+                    localField: 'credit_id',
                     foreignField: '_id',
-                    as: 'selfServicesPackages'
+                    as: 'credits'
                 }
             }, {
                 $lookup: {
@@ -331,7 +358,8 @@ class TransactionsController extends PrinterController {
             };
             let subtotal,
                 taxAmount,
-                total;
+                total,
+                credit;
 
             if (transaction.isTaxIncluded) {
                 subtotal = price(transaction.total / (1 + tax));
@@ -346,9 +374,14 @@ class TransactionsController extends PrinterController {
             // console.log(transaction);
             if (transaction.customers.length === 0) {
                 transaction.customers[0] = {
-                    firstname: null,
-                    lastname: null
+                    firstname: '',
+                    lastname: ''
                 };
+            }
+
+            if(req.body.isPaidByStoreCredit){
+                credit = '-' + total;
+                total = price(0);
             }
 
             this.device.open(() => {
@@ -370,23 +403,28 @@ class TransactionsController extends PrinterController {
                         ' ' + transaction.customers[0].lastname)
                     .text(' ')
                     .text(' ')
+
                     .align('lt')
                     .text('Grooming service')
                     .align('rt')
                     .text(subtotal)
+
                     .align('lt')
                     .text('Tax')
                     .align('rt')
                     .text(taxAmount)
+
+                    .align('lt')
+                    .text('Store Credit')
+                    .align('rt')
+                    .text(credit)
+
                     .align('lt')
                     .text('Total')
                     .align('rt')
                     .text(total)
-                    // .text(' ')
-                    // .align('lt')
-                    // .text('Paid')
-                    // .align('rt')
-                    // .text(price(transaction.total * (1 + tax)))
+
+                    .text(' ')
                     .align('ct')
                     .text(' ')
                     .text(' ')

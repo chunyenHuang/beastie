@@ -11,13 +11,14 @@ const selfServiceFormComponent = {
             return [
                 '$log', '$timeout', '$state', '$stateParams', 'Credits',
                 'AddCreditsDialog',
-                'SelfServices', 'ListItems'
+                'SelfServices', 'ListItems',
+                'Transactions'
             ];
         }
         constructor(
             $log, $timeout, $state, $stateParams,
             Credits, AddCreditsDialog,
-            SelfServices, ListItems
+            SelfServices, ListItems, Transactions
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
@@ -27,6 +28,7 @@ const selfServiceFormComponent = {
             this.AddCreditsDialog = AddCreditsDialog;
             this.SelfServices = SelfServices;
             this.ListItems = ListItems;
+            this.Transactions = Transactions;
 
             this.pinPasswordsLength = 6;
 
@@ -135,7 +137,7 @@ const selfServiceFormComponent = {
             }
         }
 
-        purchase() {
+        purchase(isPaidByStoreCredit) {
             this.SelfServices.purchase(Object.assign(
                 this.selected, {
                     customer_id: this.$stateParams.customer_id,
@@ -143,19 +145,27 @@ const selfServiceFormComponent = {
                 }
             )).$promise.then((res) => {
                 console.log(res);
-                this.backToDashboard();
+                if(isPaidByStoreCredit){
+                    this.checkoutWithCredits(res);
+                } else {
+                    this.backToDashboard();
+                }
             }, (err) => {
                 console.log(err);
             });
         }
 
-        purchaseWithCredits() {
-            this.Credits.use({
-                customer_id: this.$stateParams.customer_id
-            }, {
+        checkoutWithCredits(selfService) {
+            console.log(selfService);
+            this.Transactions.checkout({
+                selfService_id: selfService._id,
                 customer_id: this.$stateParams.customer_id,
-                service: this.selected,
-                useCredit: this.getTotal()
+                isPaidByStoreCredit: true,
+                total: selfService.total,
+                isTaxIncluded: false,
+                paymentTransactionsNumber: null,
+                note: null,
+                isVoidedAt: null
             }).$promise.then((res) => {
                 console.log(res);
                 this.backToDashboard();
