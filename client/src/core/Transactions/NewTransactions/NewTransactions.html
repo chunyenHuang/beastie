@@ -13,28 +13,62 @@
                 {{item.balance | currency}}
             </div>
             <div class="">
+                <md-button class="md-primary" ng-click="$ctrl.cancel(item, 'credit')">
+                    cancel
+                </md-button>
+            </div>
+            <div class="">
                 <md-button class="md-primary" ng-click="$ctrl.pay(item, 'credit')">
                     pay
                 </md-button>
             </div>
         </md-card>
     </div>
-    <div class="" layout="column" flex="none" ng-show="$ctrl.selfServices">
+    <div class="self-services" layout="column" flex="none" ng-show="$ctrl.selfServices">
         <h3>new self services</h3>
-        <md-card class="md-padding" layout="row" flex ng-repeat="item in $ctrl.selfServices" layout-align="space-between center">
-            <div class="">
-                {{item.customers[0].phone | tel }}
+        <md-card class="md-padding md-whiteframe-3dp" layout="column" flex ng-repeat="item in $ctrl.selfServices">
+            <div class="" layout="row" flex layout-align="start center">
+                <div class="" flex="30">
+                    {{item.createdAt | date:'medium' }}
+                </div>
+                <div class="" flex layout="row" layout-align="center center">
+                    {{item.total | currency}}
+                </div>
+                <div class="">
+                    <md-button class="md-warn" ng-click="$ctrl.cancelSelfService(item)">
+                        cancel
+                    </md-button>
+                </div>
+                <div class="">
+                    <md-button class="md-warn" ng-click="$ctrl.cancel(item, 'selfService')">
+                        edit
+                    </md-button>
+                </div>
+                <div class="">
+                    <md-button class="md-primary md-raised" ng-click="$ctrl.pay(item, 'selfService')">
+                        pay
+                    </md-button>
+                </div>
             </div>
-            <div class="">
-                {{item.customers[0].firstname}} {{item.customers[0].lastname}}
-            </div>
-            <div class="">
-                {{item.total | currency}}
-            </div>
-            <div class="">
-                <md-button class="md-primary" ng-click="$ctrl.pay(item, 'selfService')">
-                    pay
-                </md-button>
+            <div class="details" layout="row" flex>
+                <div class="" layout="column" flex="30">
+                    <div class="">
+                        {{item.customers[0].phone | tel }}
+                    </div>
+                    <div class="">
+                        {{item.customers[0].firstname}} {{item.customers[0].lastname}}
+                    </div>
+                </div>
+                <div class="" layout="column" flex="35">
+                    <div class="" layout="row" flex ng-repeat="service in item.services">
+                        {{service.name}} {{service.zhName}} {{service.price | currency}}
+                    </div>
+                </div>
+                <div class="" layout="column" flex="35">
+                    <div class="" layout="row" flex ng-repeat="addon in item.addons">
+                        {{addon.name}} {{addon.zhName}} {{addon.price | currency}}
+                    </div>
+                </div>
             </div>
         </md-card>
     </div>

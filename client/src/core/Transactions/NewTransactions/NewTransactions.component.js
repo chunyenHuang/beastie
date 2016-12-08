@@ -10,18 +10,20 @@ const newTransactionsComponent = {
         static get $inject() {
             return [
                 '$log', '$timeout', '$state', '$stateParams',
+                '$mdDialog',
                 'Credits', 'SelfServices', 'TransactionsDialog',
                 'Socket'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
+            $log, $timeout, $state, $stateParams, $mdDialog,
             Credits, SelfServices, TransactionsDialog, Socket
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$mdDialog = $mdDialog;
             this.Credits = Credits;
             this.SelfServices = SelfServices;
             this.TransactionsDialog = TransactionsDialog;
@@ -97,6 +99,25 @@ const newTransactionsComponent = {
             }, (err) => {
                 console.log(err);
             });
+        }
+
+        cancelSelfService(item){
+            const confirm = this.$mdDialog.confirm()
+                .title('Do you want to cancel this self service?')
+                // .textContent(textContent)
+                .ariaLabel('cancel self service')
+                .ok('YES')
+                .cancel('NO');
+            this.$mdDialog.show(confirm).then(() => {
+                this.SelfServices.delete({
+                    id: item._id
+                }).$promise.then((res)=>{
+                    console.log(res);
+                    this.selfServices.splice(this.selfServices.indexOf(item), 1);
+                },(err)=>{
+                    console.log(err);
+                });
+            }, () => {});
         }
     }
 };

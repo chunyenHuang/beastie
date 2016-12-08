@@ -9,14 +9,15 @@ const selfServiceFormComponent = {
     controller: /* @ngInject */ class SelfServiceFormController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Credits',
+                '$log', '$timeout', '$state', '$stateParams', '$mdDialog',
+                'Credits',
                 'AddCreditsDialog',
                 'SelfServices', 'ListItems',
                 'Transactions'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
+            $log, $timeout, $state, $stateParams, $mdDialog,
             Credits, AddCreditsDialog,
             SelfServices, ListItems, Transactions
         ) {
@@ -24,6 +25,7 @@ const selfServiceFormComponent = {
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$mdDialog = $mdDialog;
             this.Credits = Credits;
             this.AddCreditsDialog = AddCreditsDialog;
             this.SelfServices = SelfServices;
@@ -137,6 +139,29 @@ const selfServiceFormComponent = {
             }
         }
 
+        _alert(callback) {
+            this.$timeout(()=>{
+                this.$mdDialog.hide();
+            }, 2000);
+            this.$mdDialog.show(
+                this.$mdDialog.alert()
+                .clickOutsideToClose(true)
+                .title('Self Service order completes. ')
+                .textContent('Please see the counter for further information.')
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Got it!')
+                // .targetEvent(ev)
+            ).then(()=>{
+                if(callback){
+                    return callback();
+                }
+            }, ()=>{
+                if(callback){
+                    return callback();
+                }
+            });
+        }
+
         purchase(isPaidByStoreCredit) {
             this.SelfServices.purchase(Object.assign(
                 this.selected, {
@@ -145,10 +170,12 @@ const selfServiceFormComponent = {
                 }
             )).$promise.then((res) => {
                 console.log(res);
-                if(isPaidByStoreCredit){
+                if (isPaidByStoreCredit) {
                     this.checkoutWithCredits(res);
                 } else {
-                    this.backToDashboard();
+                    this._alert(()=>{
+                        this.backToDashboard();
+                    });
                 }
             }, (err) => {
                 console.log(err);
@@ -168,7 +195,9 @@ const selfServiceFormComponent = {
                 isVoidedAt: null
             }).$promise.then((res) => {
                 console.log(res);
-                this.backToDashboard();
+                this._alert(()=>{
+                    this.backToDashboard();
+                });
             }, (err) => {
                 console.log(err);
             });
