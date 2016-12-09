@@ -7,7 +7,9 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "globals": {},
+    "globals": {
+        "angular":1
+    },
     "parserOptions": {
         "sourceType": "module"
     },
