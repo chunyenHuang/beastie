@@ -4,7 +4,8 @@ import './PetPhotoGallery.styl';
 const petPhotoGalleryComponent = {
     template,
     bindings: {
-        petId: '<'
+        petId: '<',
+        images: '<'
     },
     controller: /* @ngInject */ class PetPhotoGalleryController {
         static get $inject() {
@@ -16,7 +17,7 @@ const petPhotoGalleryComponent = {
         constructor(
             $log, $timeout, $state, $stateParams, Pets,
             $document
-         ) {
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
@@ -24,57 +25,51 @@ const petPhotoGalleryComponent = {
             this.Pets = Pets;
             this.$document = $document;
         }
-        
-        $onInit() {
-            // console.log(this.petId);
-            // this.imgs = {};
-            // this.Pets.getPicturesPath({
-            //     id: this.petId, 
-            // }, (res)=>{
-            //     console.log(res);
-            //     this.sortImgByDate(res);
-            // })
+
+        $onChanges() {
+            if (this.petId) {
+                this.imgs = {};
+                this.Pets.getPicturesPath({
+                    id: this.petId
+                }, (res) => {
+                    this.sortImgByDate(res);
+                });
+            }
         }
-        
-        $onChanges(){
-            this.imgs = {};
-            this.Pets.getPicturesPath({
-                id: this.petId, 
-            }, (res)=>{
-                console.log(res);
-                this.sortImgByDate(res);
-            })
-        }
-        
+
         sortImgByDate(arr) {
-            if(!arr || !arr.length) { return; }
-            angular.forEach(arr, (item)=>{
+            if (!arr || !arr.length) {
+                return;
+            }
+            angular.forEach(arr, (item) => {
                 let dateStr = this.parseUrlToDate(item);
                 if (!this.imgs[dateStr]) {
                     this.imgs[dateStr] = [item];
                 } else {
                     this.imgs[dateStr].push(item);
                 }
-            })
+            });
         }
-        
+
         parseUrlToDate(url) {
-            if (!url) { return; }
+            if (!url) {
+                return;
+            }
             let miliSec = Number(url.split('-')[1].split('.')[0]);
             let dateStr = new Date(miliSec).toDateString();
             return dateStr;
         }
-        
+
         dateStrtoObj(str) {
-            if (!str) { return; }
+            if (!str) {
+                return;
+            }
             return new Date(str);
         }
-        
-        toggleLargePic(url){
-            if(!this.previewLargeUrl){
+
+        toggleLargePic(url) {
+            if (!this.previewLargeUrl) {
                 this.previewLargeUrl = url;
-                // ng-show="$ctrl.previewLargeUrl"
-                // dom ng-click="$ctrl.previewLargeUrl=null"
                 this.$document[0].getElementById('preview-large').classList.remove('hide');
             } else {
                 this.previewLargeUrl = null;

@@ -2,11 +2,13 @@ import petsComponent from './pets.component';
 import petsListComponent from './petsList';
 
 import petsService from './services/pets.service';
+import petPhotoGallery from './PetPhotoGallery';
 
 const petsModule = angular
     .module('beastie.pets', [])
     .component('pets', petsComponent)
     .component('petsList', petsListComponent)
+    .component('petPhotoGallery', petPhotoGallery)
     .service('Pets', petsService)
     .config(($stateProvider) => {
         'ngInject';

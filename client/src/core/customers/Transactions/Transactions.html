@@ -1,15 +1,12 @@
-<h3>Transactions</h3>
-<!-- <div class="" layout="column" flex layout-align="start center">
-</div> -->
 <div
-    class="md-padding" layout="row" flex
+    class="md-padding" layout="row" flex layout-align="center center"
     ng-repeat="transaction in $ctrl.transactions | orderBy:'createdAt':true"
     >
     <div class="" flex="10">
         {{$index+1}}
     </div>
     <div class="" flex="20">
-        {{transaction.createdAt | date:'MM/dd/yyyy'}}
+        {{transaction.createdAt | date:'medium'}}
     </div>
     <div class="" flex="10">
         <span ng-show="transaction.credit_id">Credit</span>

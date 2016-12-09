@@ -12,17 +12,11 @@
     <md-content layout="column" flex layout-fill>
         <md-tabs md-border-bottom flex layout="column" md-center-tabs md-selected="$ctrl.selectedTab">
           <md-tab label="gallery">
-              <pet-photo-gallery pet-id="$ctrl.customer.pets[0]._id" layout-margin></pet-photo-gallery>
-              <!--<md-content layout="row" layout-align="start start" flex class="gallery">-->
-              <!--    <md-content layout="column" ng-repeat="order in $ctrl.customer.orders" class="gallery-box">-->
-              <!--        <md-subheader>-->
-              <!--            {{order.scheduleAt | date:'yyyy-MM-dd'}}-->
-              <!--        </md-subheader>-->
-              <!--        <md-content layout="column" flex>-->
-              <!--            <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]" ng-click="$ctrl.toggleLargePic(url)"/>-->
-              <!--        </md-content>-->
-              <!--    </md-content>-->
-              <!--</md-content>-->
+                <pet-photo-gallery
+                    ng-repeat="pet in $ctrl.customer.pets"
+                    pet-id="pet._id"
+                    layout-margin>
+                </pet-photo-gallery>
           </md-tab>
           <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
             <md-content class="customer-form" flex layout="column">
