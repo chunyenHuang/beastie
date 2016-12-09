@@ -25,3 +25,19 @@ client-pets-form
     .review
         p
             font-size: 2em
+    .photo-input
+    	width: 0.1px;
+    	height: 0.1px;
+    	opacity: 0;
+    	overflow: hidden;
+    	position: absolute;
+    	z-index: -1;
+    .photo-input + label
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+        background-color: black;
+        display: inline-block;
+    .photo-input:focus + label,
+    .photo-input + label:hover
+        background-color: red;

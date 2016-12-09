@@ -62,14 +62,22 @@
                         </md-radio-button>
                     </md-radio-group>
                 </md-input-container>
-
+<!--
                 <md-button
                     class="md-fab md-primary"
                     aria-label="take a picture"
                     ng-click="$ctrl.takeSnapshot()">
                     <md-icon md-svg-src="camera"></md-icon>
-                </md-button>
+                </md-button> -->
+                <div class="preview">
+                    <img ng-src="{{$ctrl.preview}}" alt="" ng-hide="!$ctrl.preview" />
+                </div>
+                <label for="cameraInput" class="md-accent">
+                    <md-icon md-svg-src="camera"></md-icon>
+                    Take a Picture
+                </label>
                 <input
+                    class="photo-input"
                     onchange="angular.element(this).scope().changePicture(this.files)"
                     type="file"
                     capture="camera"
@@ -107,10 +115,6 @@
                         ng-model="$ctrl.pet.birthday"
                         md-max-date="$ctrl.birthdayLimit.max" md-placeholder="birthday"></md-datepicker>
                 </md-input-container>
-            </div>
-
-            <div class="preview">
-                <img ng-src="{{$ctrl.preview}}" alt="" />
             </div>
         </md-content>
     </md-tab>
