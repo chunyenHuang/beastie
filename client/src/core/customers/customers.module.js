@@ -7,6 +7,7 @@ import customerTransactions from './Transactions';
 import customerInfo from './Info';
 import customerPets from './Pets';
 import customerCredits from './Credits';
+import customerWaivers from './Waivers';
 
 const customersModule = angular
     .module('beastie.core.customers', [])
@@ -16,7 +17,7 @@ const customersModule = angular
     .component('customerInfo', customerInfo)
     .component('customerPets', customerPets)
     .component('customerCredits', customerCredits)
-
+    .component('customerWaivers', customerWaivers)
     .service('Customers', customersService)
     .service('CustomerDetailDialog', CustomerDetailDialogService)
 

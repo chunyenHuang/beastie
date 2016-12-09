@@ -1,15 +1,12 @@
-import template from './WaiverDisplay.html';
-import './WaiverDisplay.styl';
+import template from './Waivers.html';
+import './Waivers.styl';
 
-const waiverDisplayComponent = {
+const waiversComponent = {
     template,
     bindings: {
-        waiver: '<',
-        customerId: '<',
-        orderId: '<',
-        waiverName: '<'
+        customerId: '<'
     },
-    controller: /* @ngInject */ class WaiverDisplayController {
+    controller: /* @ngInject */ class WaiversController {
         static get $inject() {
             return [
                 '$log',
@@ -36,19 +33,14 @@ const waiverDisplayComponent = {
             this.Signatures = Signatures;
         }
         $onChanges() {
-            if (this.waiver) {
-                this.waiver = this.waiver;
-            } else if (this.customerId && this.orderId) {
+            if (this.customerId) {
                 this.Signatures.query({
-                    customer_id: this.customerId,
-                    order_id: this.orderId,
-                    name: this.waiverName
-                }).$promise.then((res) => {
-                    console.log(res[0]);
-                    this.waiver = res[0];
+                    customer_id: this.customerId
+                }).$promise.then((waivers) => {
+                    this.waivers = waivers;
                 });
             }
         }
     }
 };
-export default waiverDisplayComponent;
+export default waiversComponent;
