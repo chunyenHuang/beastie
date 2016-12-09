@@ -8,13 +8,12 @@
     </div>
 </md-toolbar>
 <md-content layout="row" flex class="">
-    <div class="md-padding" layout="column" flex="40">
+    <div class="md-padding" layout="column" flex="50">
         <div layout="row" ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.isActivated" layout-align="start center" flex="none">
-            <div class="">
+            <div class="" flex>
                 {{waiver.name}}
                 {{waiver.zhName}}
             </div>
-            <div class="" flex></div>
             <md-button ng-click="$ctrl.askToSign(waiver.name)" ng-disabled="$ctrl.isSigned(waiver.name)">
                 <span ng-show="!$ctrl.isSigned(waiver.name)">
                     ask to sign
