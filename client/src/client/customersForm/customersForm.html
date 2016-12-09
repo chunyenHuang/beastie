@@ -1,50 +1,37 @@
-<div layout="column" flex>
-
-<div layout="row" layout-align="center" layout-padding layout-wrap style="background-color:beige;" flex="none">
+<div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none">
     <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
         <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
         Back to dashboard
     </md-button>
-    <!--<h1 class="md-display-1">Human</h1>-->
-    <!-- <div flex="100"  layout="row" layout-align="center">
-        <img src="./assets/img/human_avatar_example.png"
-            style="height:100px;" layout-padding></img>
-    </div>
-    <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div> -->
+    <div flex></div>
+    <md-button aria-label="back" ng-click="$ctrl.navigateForm('back')">
+        <md-icon md-svg-src="chevron-left"></md-icon>
+        Back
+    </md-button>
+    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
+        Next <md-icon md-svg-src="chevron-right"></md-icon>
+    </md-button>
 </div>
-
 <md-progress-linear ng-show="$ctrl.customer" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
-<div layout="row" flex>
-<md-content layout="row" flex="grow">
-    <div flex="10"></div>
+
+<md-content layout="column" flex class="content">
     <form name="$ctrl.customers_form" novalidate flex ng-hide="$ctrl.currentFormState=='review'">
         <section ng-show="$ctrl.currentFormState=='name'">
             <div layout="column" flex>
-                <h2 class="md-headline">Let's start with your information</h2>
+                <h2 class="md-headline">
+                    Let's start with your information
+                </h2>
+                <md-input-container class="md-subhead">
+                    <label>Phone Number</label>
+                    <input required name="phone" type="text" ng-model="$ctrl.customer.phone" ng-blur="$ctrl.updateProgressVal()" ui-mask="(999) 999-9999" allowInvalidValue="true" ui-options="{clearOnBlur:false}" aria-label="customer-phone">
+                </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>First Name</label>
-                    <input required md-no-asterisk type="text" name="firstName"
-                        ng-model="$ctrl.customer.firstname"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input focus-if="$ctrl.autofocus=='name'" required md-no-asterisk type="text" name="firstname" ng-model="$ctrl.customer.firstname" ng-blur="$ctrl.updateProgressVal()" ></input>
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>Last Name</label>
-                    <input required type="text" name="last name"
-                        ng-model="$ctrl.customer.lastname"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
-                </md-input-container>
-                <md-input-container class="md-subhead">
-                    <label>Phone Number</label>
-                    <input
-                        required
-                        name="phone"
-                        type="text"
-                        ng-model="$ctrl.customer.phone"
-                        ng-blur="$ctrl.updateProgressVal()"
-                        ui-mask="(999) 999-9999"
-                        allowInvalidValue="true"
-                        ui-options="{clearOnBlur:false}"
-                        aria-label="customer-phone">
+                    <input required type="text" name="last name" ng-model="$ctrl.customer.lastname" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
             </div>
         </section>
@@ -54,210 +41,116 @@
                 <h2 class="md-headline">And your address</h2>
                 <md-input-container class="md-subhead">
                     <label>Address</label>
-                    <input required type="text" name="Address"
-                        ng-model="$ctrl.customer.address.street"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input focus-if="$ctrl.autofocus=='address'" required type="text" name="Address" ng-model="$ctrl.customer.address.street" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>City</label>
-                    <input required type="text" name="city"
-                        ng-model="$ctrl.customer.address.city"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input required type="text" name="city" ng-model="$ctrl.customer.address.city" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
                 <div layout="row">
-                <md-input-container class="md-subhead">
-                    <label>State</label>
-                    <input required type="text" name="state"
-                        ng-init="$ctrl.customer.address.state=($ctrl.customer.address.state)?$ctrl.customer.address.state:'CA'"
-                        ng-model="$ctrl.customer.address.state"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
-                </md-input-container>
-                <md-input-container class="md-subhead">
-                    <label>Zip Code</label>
-                    <input required type="text" name="zip code"
-                        ng-model="$ctrl.customer.address.zipCode"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
-                </md-input-container>
+                    <!-- <md-input-container class="md-subhead">
+                        <label>State</label>
+                        <input required type="text" name="state" ng-init="$ctrl.customer.address.state=($ctrl.customer.address.state)?$ctrl.customer.address.state:'CA'" ng-model="$ctrl.customer.address.state" ng-blur="$ctrl.updateProgressVal()"></input>
+                    </md-input-container> -->
+                    <md-autocomplete flex
+                        md-input-name="autocompleteField"
+                        md-input-minlength="2"
+                        md-input-maxlength="2"
+                        md-selected-item="$ctrl.customer.address.state"
+                        md-search-text="$ctrl.searchText"
+                        md-items="state in $ctrl.states | filter:$ctrl.searchText"
+                        md-item-text="state"
+                        md-require-match
+                        md-floating-label="State">
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{state}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+
+                    <md-input-container class="md-subhead">
+                        <label>Zip Code</label>
+                        <input required type="number" min="10000" max="100000" name="zip code" ng-model="$ctrl.customer.address.zipCode" ng-blur="$ctrl.updateProgressVal()"></input>
+                    </md-input-container>
                 </div>
             </div>
         </section>
 
-        <section ng-show="$ctrl.currentFormState=='emergencyContact'"
-            ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
+        <section ng-show="$ctrl.currentFormState=='emergencyContact'" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
             <div layout="column" flex>
                 <h2 class="md-headline" ng-show="$first">Who to contact if we can't reach you?</h2>
                 <div layout="row">
-                <h3 class="md-subhead"
-                    ng-show="$ctrl.customer.emergencyContact.length>1"
-                    ><strong>Contact {{$index + 1}}</strong>
-                </h3>
-                <div flex ng-show="$ctrl.customer.emergencyContact.length>1"></div>
-                <md-button class="md-fab md-accent" style="margin-right:0px;" aria-label="removeEmergencyContact"
-                    ng-click="$ctrl.removePerson($index)"
-                    ng-hide="$first">
-                    <md-icon md-svg-src="account-minus"></md-icon>
-                </md-button>
+                    <h3 class="md-subhead" ng-show="$ctrl.customer.emergencyContact.length>1">
+                        <strong>
+                            Contact
+                            {{$index + 1}}
+                        </strong>
+                    </h3>
+                    <div flex ng-show="$ctrl.customer.emergencyContact.length>1"></div>
+                    <md-button class="md-fab md-accent" aria-label="removeEmergencyContact" ng-click="$ctrl.removePerson($index)" ng-hide="$first">
+                        <md-icon md-svg-src="account-minus"></md-icon>
+                    </md-button>
                 </div>
                 <md-input-container class="md-subhead">
                     <label>Name</label>
-                    <input required type="text" name="emergencyContactName_{{$index}}"
-                        ng-model="person.name"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input focus-if="$ctrl.autofocus=='emergencyContact'" required type="text" name="emergencyContactName_{{$index}}" ng-model="person.name" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>Relationship</label>
-                    <input required type="text" name="emergencyContactRelationship_{{$index}}"
-                        ng-model="person.relationship"
-                        ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input required type="text" name="emergencyContactRelationship_{{$index}}" ng-model="person.relationship" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
-                <md-input-container class="md-subhead"
-                    ng-repeat="num in person.phones track by $index" layout="row">
-                        <div flex="grow">
-                            <label>Phone Number</label>
-                            <input required type="tel" name="emergencyContactPhoneNumber_{{$parent.$index}}-{{$index}}"
-                                ng-model="person.phones[$index]"
-                                ng-blur="$ctrl.updateProgressVal()"></input>
-                        </div>
-                        <md-button class="md-fab md-mini md-accent" style="margin-top:0px;" aria-label="remove number"
-                            ng-click="$ctrl.removePhone($parent.$index, $index)"
-                            ng-hide="$first">
-                            <md-icon md-svg-src="minus"</md-icon>
-                        </md-button>
-                        <md-button class="md-fab md-mini md-primary" layout-fill aria-label="add number"
-                            ng-click="$ctrl.addPhone($parent.$index)"
-                            ng-show="$last">
-                            <md-icon md-svg-src="plus"></md-icon>
-                        </md-button>
-                </md-input-container>
-                <div layout="row">
-                    <div flex></div>
-                    <!--<md-button class="md-fab md-warn" style="margin-right:0px;" aria-label="removeEmergencyContact"-->
-                    <!--    ng-click="$ctrl.removePerson($index)"-->
-                    <!--    ng-hide="$first">-->
-                    <!--    <md-icon md-svg-src="account-minus"></md-icon>-->
-                    <!--</md-button>-->
-                    <md-button class="md-fab md-primary" style="margin-right:0px;" aria-label="addEmergencyContact"
-                        ng-click="$ctrl.addPerson()"
-                        ng-show="$last">
-                        <md-icon md-svg-src="account-plus"></md-icon>
+                <md-input-container class="md-subhead" ng-repeat="num in person.phones track by $index" layout="row">
+                    <div flex="grow">
+                        <label>Phone Number</label>
+                        <input required name="phone" type="text" ng-model="person.phones[$index]" ng-blur="$ctrl.updateProgressVal()" ui-mask="(999) 999-9999" allowInvalidValue="true" ui-options="{clearOnBlur:false}" aria-label="contact-phone">
+                        <!-- <input required type="tel" name="emergencyContactPhoneNumber_{{$parent.$index}}-{{$index}}" ng-model="person.phones[$index]" ng-blur="$ctrl.updateProgressVal()"></input> -->
+                    </div>
+                    <md-button class="md-fab md-mini md-accent" aria-label="remove number" ng-click="$ctrl.removePhone($parent.$index, $index)" ng-hide="$first">
+                        <md-icon md-svg-src="minus"></md-icon>
                     </md-button>
-                </div>
+                    <md-button class="md-fab md-mini md-primary" layout-fill aria-label="add number" ng-click="$ctrl.addPhone($parent.$index)" ng-show="$last">
+                        <md-icon md-svg-src="plus"></md-icon>
+                    </md-button>
+                </md-input-container>
+            </div>
+            <div layout="row">
+                <div flex></div>
+                <md-button class="md-fab md-primary" aria-label="addEmergencyContact" ng-click="$ctrl.addPerson()" ng-show="$last">
+                    <md-icon md-svg-src="account-plus"></md-icon>
+                </md-button>
             </div>
         </section>
     </form>
 
-    <div ng-show="$ctrl.currentFormState=='review'" flex>
-    <section  layout="row" layout-wrap>
-        <h2 flex="100" class="md-headline"
-            style="margin-bottom:0px;">
-            Please Review Your Info
-        </h2>
-        <div flex="50" >
-            <p>{{$ctrl.customer.firstname}} {{$ctrl.customer.lastname}}</p>
-            <p>{{$ctrl.customer.phone | tel}}</p>
-        </div>
-        <div flex="50" >
-            <p>{{$ctrl.customer.address.street}}</p>
-            <p>
-                {{$ctrl.customer.address.city}}
-                {{$ctrl.customer.address.state}}
-                {{$ctrl.customer.address.zipCode}}
-            </p>
-        </div>
-
-        <div flex="100" class="md-body-2" md-colors="{color: 'primary-600'}"
-            style="padding-top:16px;">
-            Secondary Contacts
-        </div>
-
-        <div flex="50" ng-repeat="person in $ctrl.customer.emergencyContact track by $index"
-            style="padding-top:0px;">
-            <p>{{person.name}} ({{person.relationship}})</p>
-            <p ng-repeat="num in person.phones track by $index">
-                {{num | tel}}
-            </p>
-        </div>
-    </section>
+    <div ng-show="$ctrl.currentFormState=='review'" flex class="review">
+        <section layout="column" flex>
+            <h3>
+                Review Information
+            </h3>
+            <div flex="50">
+                <p>{{$ctrl.customer.firstname}}
+                    {{$ctrl.customer.lastname}}</p>
+                <p>{{$ctrl.customer.phone | tel}}</p>
+            </div>
+            <div flex="50">
+                <p>{{$ctrl.customer.address.street}}</p>
+                <p>
+                    {{$ctrl.customer.address.city}}
+                    {{$ctrl.customer.address.state}}
+                    {{$ctrl.customer.address.zipCode}}
+                </p>
+            </div>
+            <div flex="100" class="md-body-2" md-colors="{color: 'primary-600'}">
+                <h3>
+                    Secondary Contacts
+                </h3>
+            </div>
+            <div flex="50" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
+                <p>{{person.name}}
+                    ({{person.relationship}})</p>
+                <p ng-repeat="num in person.phones track by $index">
+                    {{num | tel}}
+                </p>
+            </div>
+        </section>
     </div>
-
-    <div flex="5"></div>
-
-    <!--<div flex="15" layout="column">-->
-
-    <!--    <md-button  layout-fill aria-label="back"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('back')">-->
-    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
-    <!--    </md-button>-->
-
-    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('next')">-->
-    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
-    <!--    </md-button>-->
-    <!--</div>-->
-    <!--<md-sidenav-->
-    <!--    class="md-sidenav-right"-->
-    <!--    md-component-id="left"-->
-    <!--    md-is-locked-open="true"-->
-    <!--    md-whiteframe="4"-->
-    <!--    flex="15" layout="column">-->
-
-    <!--    <md-button  layout-fill aria-label="back"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('back')">-->
-    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
-    <!--    </md-button>-->
-
-    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('next')">-->
-    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
-    <!--    </md-button>-->
-    <!--</md-sidenav>-->
-    <!--<div layout="row" layout-fill layout-align="center">-->
-    <!--    <md-button class="md-subhead"-->
-    <!--        ng-click="$ctrl.navigateForm('back')">-->
-    <!--        back-->
-    <!--    </md-button>-->
-    <!--    <md-button class="md-subhead"-->
-    <!--        ng-click="$ctrl.navigateForm('next')">-->
-    <!--        next-->
-    <!--    </md-button>-->
-    <!--</div>-->
-
 </md-content>
-    <!--<md-sidenav-->
-    <!--    class="md-sidenav-right"-->
-    <!--    md-component-id="left"-->
-    <!--    md-is-locked-open="true"-->
-    <!--    md-whiteframe="4"-->
-    <!--    flex="15" layout="column">-->
-
-    <!--    <md-button  layout-fill aria-label="back"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('back')">-->
-    <!--        <md-icon flex md-svg-src="chevron-left"></md-icon>-->
-    <!--    </md-button>-->
-
-    <!--    <md-button flex layout-fill class="md-raised md-primary" aria-label="next"-->
-    <!--        style="min-width:initial"-->
-    <!--        ng-click="$ctrl.navigateForm('next')">-->
-    <!--        <md-icon md-svg-src="chevron-right"></md-icon>-->
-    <!--    </md-button>-->
-    <!--</md-sidenav>-->
-    <div layout="column" flex="20">
-        <md-button flex layout-fill class="md-raised md-primary" aria-label="next"
-            style="min-width:initial"
-            ng-disabled="!$ctrl.validateForm()"
-            ng-click="$ctrl.navigateForm('next')">
-            <md-icon md-svg-src="chevron-right" class="s48"></md-icon>
-        </md-button>
-        <md-button flex layout-fill aria-label="back"
-            style="min-width:initial"
-            ng-click="$ctrl.navigateForm('back')">
-            <md-icon md-svg-src="chevron-left" class="s48"></md-icon>
-        </md-button>
-    </div>
-</div>
-</div>

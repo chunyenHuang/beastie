@@ -19,6 +19,7 @@ import 'client/vendorJs/sc-date-time.js';
 import 'client/vendorJs/sc-date-time.css';
 import 'client/node_modules/font-awesome/css/font-awesome.css';
 import 'client/node_modules/angular-local-storage/dist/angular-local-storage';
+import 'client/node_modules/ng-focus-if/focusIf.js';
 
 // configs
 import themeConfig from './themeConfig';
@@ -52,6 +53,7 @@ angular
         'FBAngular',
         'scDateTime',
         'LocalStorageModule',
+        'focus-if',
         userAuth,
         core,
         client
