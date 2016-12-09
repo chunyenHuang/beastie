@@ -41,10 +41,6 @@ class InhouseOrdersController extends PrinterController {
         req.body.customerPhone = req.body.customerPhone || ' ';
         req.body.petName = req.body.petName || 'no pet name';
         req.body.petInfo = req.body.petInfo || ' ';
-
-        // console.log(req.file);
-        console.log(req.body);
-        // const newName = this._setCorrectExtension(req.file.filename, req.file.originalname);
         const newName = req.body.filename;
         req.oldPath = path.join(global.uploads, req.file.filename);
         req.newPath = path.join(global.images, 'inhouseOrders', newName);
@@ -62,8 +58,7 @@ class InhouseOrdersController extends PrinterController {
         }
         // const barcode = req.body.order_id;
         const logoPath = path.join(global.root, 'logos/B1_72-01.png');
-        console.log(logoPath);
-        const rush = (req.body.isRush) ? 'RUSH' : null;
+        const rush = (req.body.isRush == 'true' || req.body.isRush == true) ? 'RUSH' : '';
         this.escpos.Image.load(logoPath, (logo) => {
             this.escpos.Image.load(req.newPath, (image) => {
                 this.device.open(() => {

@@ -217,12 +217,17 @@ class inhouseOrdersDialog {
                     for (let keyID in this.inhouseOrders) {
                         if (this.inhouseOrders[keyID].value.length > 0) {
                             angular.forEach(this.inhouseOrders[keyID].value, (value) => {
-                                const text = value.type + ': ' + value.name +
-                                    ' ' + ((value.name != value.zhName) ? value.zhName : '');
+                                const text =
+                                    this.inhouseOrders[keyID].name + ': ' +
+                                    value.name + ' ' +
+                                    ((value.name != value.zhName && value.zhName) ?
+                                        value.zhName : ''
+                                    );
                                 texts.push(text);
                             });
                         }
                     }
+                    console.log(texts);
 
                     const canvas = this.$document[0].getElementById('inhouse-orders-canvas');
                     canvas.width = 500;
@@ -252,8 +257,6 @@ class inhouseOrdersDialog {
                         // const url = URL.createObjectURL(blob);
                         callback(blob);
                     });
-
-
                 }
 
                 print(callback) {
@@ -264,11 +267,14 @@ class inhouseOrdersDialog {
                             formData.append('filename', this.order_id + '.png');
                             formData.append('order_id', this.order_id);
                             if (this.order) {
-                                console.log(this.orders);
+                                const petInfo =
+                                    ((this.order.pets[0].breed) ? this.order.pets[0].breed : '') +
+                                    ' ' +
+                                    ((this.order.pets[0].color) ? this.order.pets[0].color : '');
                                 formData.append('customerName', this.order.customers[0].firstname + ' ' + this.order.customers[0].lastname);
                                 formData.append('customerPhone', this.order.customers[0].phone);
                                 formData.append('petName', this.order.pets[0].name);
-                                formData.append('petInfo', this.order.pets[0].breed + ' ' + this.order.pets[0].color);
+                                formData.append('petInfo', petInfo);
                                 formData.append('isRush', this.order.isRush);
                                 formData.append('checkInNumber', this.order.checkInNumber);
                                 formData.append('services', this.order.services);

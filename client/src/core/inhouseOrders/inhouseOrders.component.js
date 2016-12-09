@@ -121,15 +121,11 @@ const inhouseOrdersComponent = {
                 this.order.inhouseOrders = this.inhouseOrders;
                 this.order.$update({
                     id: this.order_id
-                }, (res) => {
-                    console.info(res);
-                    // this.formatOrderForm();
+                }, () => {
                     this.print(() => {
                         this.$state.go('core.orders.list');
                     });
-                }, (err) => {
-                    console.error(err);
-                });
+                }, () => {});
             } else {
                 this.print(() => {
                     this.$state.go('core.orders.list');
@@ -142,13 +138,13 @@ const inhouseOrdersComponent = {
             for (let type in this.inhouseOrders) {
                 if (this.inhouseOrders[type].value.length > 0) {
                     angular.forEach(this.inhouseOrders[type].value, (value) => {
-                        const text = type + ': ' + value.name +
+                        const text = this.inhouseOrders[type].type + ': ' + value.name +
                             ' ' + ((value.name != value.zhName) ? value.zhName : '');
                         texts.push(text);
                     });
                 }
             }
-
+            console.warn(texts);
             const canvas = this.$document[0].getElementById('inhouse-orders-canvas');
             canvas.width = 500;
             canvas.height = 500;
@@ -177,8 +173,6 @@ const inhouseOrdersComponent = {
                 // const url = URL.createObjectURL(blob);
                 callback(blob);
             });
-
-
         }
 
         print(callback) {
@@ -196,34 +190,23 @@ const inhouseOrdersComponent = {
                     formData, {
                         headers: {
                             'Content-Type': undefined
-                        },
-                        eventHandlers: {
-                            progress: () => {}
-                        },
-                        uploadEventHandlers: {
-                            progress: (event) => {
-                                console.log(event.loaded / event.total);
-                            }
                         }
+                        // eventHandlers: {
+                        //     progress: () => {}
+                        // },
+                        // uploadEventHandlers: {
+                        //     progress: (event) => {
+                        //         console.log(event.loaded / event.total);
+                        //     }
+                        // }
                     }
-                ).then((res) => {
-                    console.log(res);
+                ).then(() => {
                     callback();
-                }, (err) => {
-                    console.log(err);
+                }, () => {
                     callback();
                 });
             });
         }
-
-        // formatOrderForm() {
-        //     this.format = {};
-        //     for (var prop in this.inhouseOrders) {
-        //         if (this.inhouseOrders[prop].value.length > 0) {
-        //             this.format[prop] = this.inhouseOrders[prop].value;
-        //         }
-        //     }
-        // }
     }
 };
 export default inhouseOrdersComponent;
