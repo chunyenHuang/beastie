@@ -58,7 +58,7 @@ class showSignaturesDialog {
                         console.log(this.waivers);
                     });
                     this.checkSignatures();
-                    this.Socket.on('signaturesFinished', (res) => {
+                    this.Socket.on('signaturesFinished', () => {
                         this.checkSignatures();
                     });
                 }
@@ -96,6 +96,10 @@ class showSignaturesDialog {
                         }
                     }
                     return false;
+                }
+
+                view(waiverName){
+                    this.waiverName = waiverName;
                 }
 
                 cancel() {

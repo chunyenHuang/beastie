@@ -1,0 +1,14 @@
+<md-card class="md-padding">
+    <h2>
+        {{$ctrl.waiver.name}}
+    </h2>
+
+    <p>
+        {{$ctrl.waiver.description}}
+    </p>
+
+    <img ng-src="{{$ctrl.waiver.signatures}}" />
+    <h5>
+        {{$ctrl.waiver.createdAt | date:'medium'}}
+    </h5>
+</md-card>
