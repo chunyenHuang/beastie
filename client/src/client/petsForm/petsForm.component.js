@@ -254,7 +254,6 @@ const petsFormComponent = {
                     this.requiredVaccinations.indexOf(this.pet.vaccinations[i].name) > -1 &&
                     (!this.pet.vaccinations[i].expiredAt && !this.pet.vaccinations[i].issuedAt)
                 ) {
-                    console.log(this.pet.vaccinations[i].name + ' is required. ');
                     this.errorMessage = this.pet.vaccinations[i].name + ' is required. ';
                     return false;
                 }
@@ -269,10 +268,10 @@ const petsFormComponent = {
                 this.selectedTab = 0;
                 return false;
             }
-            if (!this.checkVaccination()) {
-                this.selectedTab = 1;
-                return false;
-            }
+            // if (!this.checkVaccination()) {
+            //     this.selectedTab = 1;
+            //     return false;
+            // }
             if (this.pet['birthday'] == 'Invalid Date') {
                 this.pet['birthday'] = null;
             }

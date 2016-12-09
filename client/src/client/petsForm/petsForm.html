@@ -1,305 +1,289 @@
-<div layout="column" flex id="client-pets-form">
-    <div layout="row" layout-align="center" layout-padding layout-wrap style="background-color:beige;" flex="none">
-        <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
-            <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
-            Back to dashboard
-        </md-button>
-        <div class="error" flex layout="row" layout-align="center center">
-            {{$ctrl.errorMessage}}
-        </div>
-        <!--<h1 class="md-display-1">Human</h1>-->
-        <!-- <div flex="60"  layout="row" layout-align="center">
-            <div class="md-subhead" style="padding-top:0px">Tap to change avatar</div>
-            <img src="./assets/img/human_avatar_example.png"
-                style="height:50px; padding-right: 25px" layout-padding></img>
-            <img src="./assets/img/border-collie.png"
-                style="height:100px;" layout-padding></img>
-        </div>
-        <div layout="row" layout-align="end center">
+<div class="header" layout="row" layout-align="center" layout-padding layout-wrap flex="none">
+    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
+        <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
+        Back to dashboard
+    </md-button>
+    <!-- <div class="error" flex layout="row" layout-align="center center">
+        {{$ctrl.errorMessage}}
+    </div> -->
+    <div flex></div>
+    <md-button
+        class="md-primary md-raised"
+        ng-disabled="!$ctrl.validate()"
+        ng-click="$ctrl.update()">
+        <md-icon md-svg-src="content-save"></md-icon>
+        Update
+    </md-button>
+</div>
+<md-tabs md-border-bottom md-swipe-content=true flex md-selected="$ctrl.selectedTab" ng-init="$ctrl.selectedTab=0">
+    <md-tab label="Basic">
+        <md-content class="md-padding form" flex layout="column">
+            <div class="" layout="row" flex="none">
+                <md-input-container class="md-block" flex="50">
+                    <label>Name</label>
+                    <input focus-if="$ctrl.selectedTab==0" type="text" ng-model="$ctrl.pet.name" aria-label="pet-name" required>
+                </md-input-container>
+                <md-autocomplete flex
+                    md-input-name="autocompleteField"
+                    md-input-minlength="2"
+                    md-input-maxlength="30"
+                    md-selected-item="$ctrl.pet.breed"
+                    md-search-text="$ctrl.searchText"
+                    md-items="item in $ctrl.breeds | filter:$ctrl.searchText"
+                    md-item-text="item.name"
+                    md-require-match
+                    md-floating-label="Breed">
+                    <md-item-template>
+                        <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                </md-autocomplete>
+            </div>
+            <div class="" layout="row" flex="none">
+                <md-input-container class="md-input-has-value hide" flex="50">
+                    <label>Dog or Cat?</label>
+                    <md-radio-group ng-model="$ctrl.pet.species" layout="row" class="padding-6-0">
+                        <md-radio-button value="dog" aria-label="dog">
+                            <md-icon md-svg-src="./assets/svg/dog.svg"></md-icon>
+                        </md-radio-button>
+                        <md-radio-button value="cat" aria-label="cat">
+                            <md-icon md-svg-src="./assets/svg/cat.svg"></md-icon>
+                        </md-radio-button>
+                    </md-radio-group>
+                </md-input-container>
+
+                <md-input-container class="md-input-has-value" flex>
+                    <label>Gender</label>
+                    <md-radio-group ng-model="$ctrl.pet.gender" layout="row" class="padding-6-0">
+                        <md-radio-button value="male" aria-label="gender-male">
+                            <md-icon md-svg-src="gender-male"></md-icon>
+                        </md-radio-button>
+                        <md-radio-button value="female" aria-label="gender-male">
+                            <md-icon md-svg-src="gender-female"></md-icon>
+                        </md-radio-button>
+                    </md-radio-group>
+                </md-input-container>
+
+                <md-button
+                    class="md-fab md-primary"
+                    aria-label="take a picture"
+                    ng-click="$ctrl.takeSnapshot()">
+                    <md-icon md-svg-src="camera"></md-icon>
+                </md-button>
+                <input
+                    onchange="angular.element(this).scope().changePicture(this.files)"
+                    type="file"
+                    capture="camera"
+                    accept="image/*"
+                    id="cameraInput"
+                    name="cameraInput">
+
+            </div>
+            <div class="" layout="row">
+                <md-input-container class="md-input-has-value">
+                    <label>Color</label>
+                    <md-radio-group ng-model="$ctrl.pet.color" layout="row" class="padding-6-0" layout="row" layout-wrap>
+                        <md-radio-button
+                            flex="33"
+                            style="margin:10px 0px;"
+                            ng-repeat="color in $ctrl.colors"
+                            value="{{color.name}}" aria-label="pet-color-{{color.name}}"
+                            >
+                            <md-icon style="color:{{color.value}}; background-color:#999" md-svg-src="checkbox-blank-circle"></md-icon>
+                            <span class="md-body-1">{{color.name}}</span>
+                        </md-radio-button>
+                    </md-radio-group>
+                </md-input-container>
+            </div>
+            <div class="" layout="row" flex="none">
+                <md-input-container flex="50">
+                    <label>Weight</label>
+                    <input type="text" ng-model="$ctrl.pet.weight" aria-label="pet-weight">
+                </md-input-container>
+
+                <md-input-container flex>
+                    <label>Birthday</label>
+                    <md-datepicker
+                        md-open-on-focus
+                        ng-model="$ctrl.pet.birthday"
+                        md-max-date="$ctrl.birthdayLimit.max" md-placeholder="birthday"></md-datepicker>
+                </md-input-container>
+            </div>
+
             <div class="preview">
                 <img ng-src="{{$ctrl.preview}}" alt="" />
             </div>
+        </md-content>
+    </md-tab>
 
-        </div> -->
-    </div>
-    <div layout="row" flex>
-        <div layout="column" flex="80">
-            <md-tabs md-border-bottom md-swipe-content=true flex md-selected="$ctrl.selectedTab" ng-init="$ctrl.selectedTab=0">
-                <md-tab label="Basic">
-                    <md-content class="md-padding form" flex layout="column" layout-wrap>
-                        <div class="" layout="row" flex="none">
-                            <md-input-container class="md-block" flex="50">
-                                <label>Name</label>
-                                <input type="text" ng-model="$ctrl.pet.name" aria-label="pet-name" required>
-                            </md-input-container>
-                            <md-autocomplete flex
-                                md-input-name="autocompleteField"
-                                md-input-minlength="2"
-                                md-input-maxlength="30"
-                                md-selected-item="$ctrl.pet.breed"
-                                md-search-text="$ctrl.searchText"
-                                md-items="item in $ctrl.breeds | filter:$ctrl.searchText"
-                                md-item-text="item.name"
-                                md-require-match
-                                md-floating-label="Breed">
-                                <md-item-template>
-                                    <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
-                                </md-item-template>
-                            </md-autocomplete>
-                        </div>
-                        <div class="" layout="row" flex="none">
-                            <md-input-container class="md-input-has-value hide" flex="50">
-                                <label>Dog or Cat?</label>
-                                <md-radio-group ng-model="$ctrl.pet.species" layout="row" class="padding-6-0">
-                                    <md-radio-button value="dog" aria-label="dog">
-                                        <md-icon md-svg-src="./assets/svg/dog.svg"></md-icon>
-                                    </md-radio-button>
-                                    <md-radio-button value="cat" aria-label="cat">
-                                        <md-icon md-svg-src="./assets/svg/cat.svg"></md-icon>
-                                    </md-radio-button>
-                                </md-radio-group>
-                            </md-input-container>
+    <md-tab label="Vaccines">
+        <!--Canine and Feline Vaccination Guidelines from UC Davis-->
+        <!--http://www.vetmed.ucdavis.edu/vmth/small_animal/internal_medicine/newsletters/vaccination_protocols.cfm-->
+        <md-content class="md-padding form" layout="row" flex layout-wrap>
+            <span flex="100" layout layout-wrap
+                ng-repeat="(prop, vaccineItem) in $ctrl.vaccinations">
+                <div class="" layout="row">
+                    <h2 class="md-headline" flex="100">
+                        {{vaccineItem.name}}
+                        <span ng-show="vaccineItem.rejectOrderIfIsExpired">(required)</span>
+                    </h2>
+                    <md-button ng-click="$ctrl.addVaccine(vaccineItem)">Add</md-button>
+                </div>
+                <span flex="100" layout layout-wrap
+                    ng-repeat="item in $ctrl.pet.vaccinations | orderBy:['issuedAt']:true track by $index"
+                    ng-if="item.name == vaccineItem.name">
+                    <md-input-container class="md-block" flex="10">
+                        <md-icon flex md-svg-src="./assets/svg/needle.svg"></md-icon>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="40" layout>
+                        <label>Last Vaccination Date</label>
+                        <md-datepicker
+                            md-open-on-focus
+                            md-hide-icons="calendar"
+                            ng-model="item.issuedAt"
+                            md-max-date="$ctrl.birthdayLimit.max"
+                            ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)">
+                        </md-datepicker>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                        <label>Good For</label>
+                        <md-select ng-model="item.effectiveDuration" aria-label="{{name}}-vaccine effective duration"
+                            ng-disabled="!item.issuedAt"
+                            ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)">
+                            <md-option value="">
 
-                            <md-input-container class="md-input-has-value" flex>
-                                <label>Gender</label>
-                                <md-radio-group ng-model="$ctrl.pet.gender" layout="row" class="padding-6-0">
-                                    <md-radio-button value="male" aria-label="gender-male">
-                                        <md-icon md-svg-src="gender-male"></md-icon>
-                                    </md-radio-button>
-                                    <md-radio-button value="female" aria-label="gender-male">
-                                        <md-icon md-svg-src="gender-female"></md-icon>
-                                    </md-radio-button>
-                                </md-radio-group>
-                            </md-input-container>
-
-                            <md-button
-                                class="md-fab md-primary"
-                                aria-label="take a picture"
-                                ng-click="$ctrl.takeSnapshot()">
-                                <md-icon md-svg-src="camera"></md-icon>
-                            </md-button>
-                            <input
-                                onchange="angular.element(this).scope().changePicture(this.files)"
-                                type="file"
-                                capture="camera"
-                                accept="image/*"
-                                id="cameraInput"
-                                name="cameraInput">
-
-                        </div>
-                        <div class="" layout="row">
-                            <md-input-container class="md-input-has-value">
-                                <label>Color</label>
-                                <md-radio-group ng-model="$ctrl.pet.color" layout="row" class="padding-6-0" layout="row" layout-wrap>
-                                    <md-radio-button
-                                        flex="33"
-                                        style="margin:10px 0px;"
-                                        ng-repeat="color in $ctrl.colors"
-                                        value="{{color.name}}" aria-label="pet-color-{{color.name}}"
-                                        >
-                                        <md-icon style="color:{{color.value}}; background-color:#999" md-svg-src="checkbox-blank-circle"></md-icon>
-                                        <span class="md-body-1">{{color.name}}</span>
-                                    </md-radio-button>
-                                </md-radio-group>
-                            </md-input-container>
-                        </div>
-                        <div class="" layout="row" flex="none">
-                            <md-input-container flex="50">
-                                <label>Weight</label>
-                                <input type="text" ng-model="$ctrl.pet.weight" aria-label="pet-weight">
-                            </md-input-container>
-
-                            <md-input-container flex>
-                                <label>Birthday</label>
-                                <md-datepicker
-                                    md-open-on-focus
-                                    ng-model="$ctrl.pet.birthday"
-                                    md-max-date="$ctrl.birthdayLimit.max" md-placeholder="birthday"></md-datepicker>
-                            </md-input-container>
-                        </div>
-
-                        <div class="preview">
-                            <img ng-src="{{$ctrl.preview}}" alt="" />
-                        </div>
-                    </md-content>
-                </md-tab>
-
-                <md-tab label="Vaccines">
-                    <!--Canine and Feline Vaccination Guidelines from UC Davis-->
-                    <!--http://www.vetmed.ucdavis.edu/vmth/small_animal/internal_medicine/newsletters/vaccination_protocols.cfm-->
-                    <md-content class="md-padding" layout="row" flex layout-wrap>
-                        <span flex="100" layout layout-wrap
-                            ng-repeat="(prop, vaccineItem) in $ctrl.vaccinations">
-                            <div class="" layout="row">
-                                <h2 class="md-headline" flex="100">
-                                    {{vaccineItem.name}}
-                                    <span ng-show="vaccineItem.rejectOrderIfIsExpired">(required)</span>
-                                </h2>
-                                <md-button ng-click="$ctrl.addVaccine(vaccineItem)">Add</md-button>
-                            </div>
-                            <span flex="100" layout layout-wrap
-                                ng-repeat="item in $ctrl.pet.vaccinations | orderBy:['issuedAt']:true track by $index"
-                                ng-if="item.name == vaccineItem.name">
-                                <md-input-container class="md-block" flex="10">
-                                    <md-icon flex md-svg-src="./assets/svg/needle.svg"></md-icon>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="40" layout>
-                                    <label>Last Vaccination Date</label>
-                                    <md-datepicker
-                                        md-open-on-focus
-                                        md-hide-icons="calendar"
-                                        ng-model="item.issuedAt"
-                                        md-max-date="$ctrl.birthdayLimit.max"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)">
-                                    </md-datepicker>
-                                </md-input-container>
-                                <md-input-container flex="50">
-                                    <label>Good For</label>
-                                    <md-select ng-model="item.effectiveDuration" aria-label="{{name}}-vaccine effective duration"
-                                        ng-disabled="!item.issuedAt"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)">
-                                        <md-option value="">
-
-                                        </md-option>
-                                        <md-option ng-repeat="(value, display) in {1: '1 Year', 3: '3 Years'}" ng-value="value">
-                                            {{display}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="10">
-                                    <md-icon flex md-svg-src="./assets/svg/needle-renew.svg"></md-icon>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="40" layout>
-                                    <label>Vaccine Due Date</label>
-                                    <md-datepicker md-hide-icons="calendar"
-                                        disabled="true"
-                                        ng-model="item.expiredAt"
-                                        md-max-date="$ctrl.birthdayLimit.max"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item)"></md-datepicker>
-                                </md-input-container>
-                                <div flex="50">Days before due:<br />
-                                    <span ng-show="!item.daysBeforeDue">
-                                        Enter vaccination date and duration
-                                    </span>
-                                    {{item.daysBeforeDue}} days
-                                </div>
-                            </span>
+                            </md-option>
+                            <md-option ng-repeat="(value, display) in {1: '1 Year', 3: '3 Years'}" ng-value="value">
+                                {{display}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="10">
+                        <md-icon flex md-svg-src="./assets/svg/needle-renew.svg"></md-icon>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="40" layout>
+                        <label>Vaccine Due Date</label>
+                        <md-datepicker md-hide-icons="calendar"
+                            disabled="true"
+                            ng-model="item.expiredAt"
+                            md-max-date="$ctrl.birthdayLimit.max"
+                            ng-change="$ctrl.setDaysBeforeExpire(item)"></md-datepicker>
+                    </md-input-container>
+                    <div flex="50">Days before due:<br />
+                        <span ng-show="!item.daysBeforeDue">
+                            Enter vaccination date and duration
                         </span>
-                    </md-content>
+                        {{item.daysBeforeDue}} days
+                    </div>
+                </span>
+            </span>
+        </md-content>
 
-                    <!-- <md-content class="md-padding" layout="row" flex layout-wrap>
-                        <span flex="100" layout layout-wrap
-                            ng-repeat="(index, vaccineItem) in $ctrl.vaccinations">
-                            <h2 class="md-headline" flex="100">
-                                {{vaccineItem.name}}
-                                <span ng-show="vaccineItem.rejectOrderIfIsExpired">(required)</span>
-                            </h2>
-                            <span flex="100" layout layout-wrap
-                                ng-repeat="item in $ctrl.pet.vaccinations track by $index"
-                                ng-if="item.name == vaccineItem.name">
-                                <md-input-container class="md-block" flex="10">
-                                    <md-icon flex md-svg-src="./assets/svg/needle.svg"></md-icon>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="40" layout>
-                                    <label>Last Vaccination Date</label>
-                                    <md-datepicker
-                                        md-open-on-focus
-                                        md-hide-icons="calendar"
-                                        ng-model="item.issuedAt"
-                                        md-max-date="$ctrl.birthdayLimit.max"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)">
-                                    </md-datepicker>
-                                </md-input-container>
-                                <md-input-container flex="50">
-                                    <label>Good For</label>
-                                    <md-select ng-model="item.effectiveDuration" aria-label="{{name}}-vaccine effective duration"
-                                        ng-disabled="!item.issuedAt"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)">
-                                        <md-option value="">
+        <!-- <md-content class="md-padding" layout="row" flex layout-wrap>
+            <span flex="100" layout layout-wrap
+                ng-repeat="(index, vaccineItem) in $ctrl.vaccinations">
+                <h2 class="md-headline" flex="100">
+                    {{vaccineItem.name}}
+                    <span ng-show="vaccineItem.rejectOrderIfIsExpired">(required)</span>
+                </h2>
+                <span flex="100" layout layout-wrap
+                    ng-repeat="item in $ctrl.pet.vaccinations track by $index"
+                    ng-if="item.name == vaccineItem.name">
+                    <md-input-container class="md-block" flex="10">
+                        <md-icon flex md-svg-src="./assets/svg/needle.svg"></md-icon>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="40" layout>
+                        <label>Last Vaccination Date</label>
+                        <md-datepicker
+                            md-open-on-focus
+                            md-hide-icons="calendar"
+                            ng-model="item.issuedAt"
+                            md-max-date="$ctrl.birthdayLimit.max"
+                            ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)">
+                        </md-datepicker>
+                    </md-input-container>
+                    <md-input-container flex="50">
+                        <label>Good For</label>
+                        <md-select ng-model="item.effectiveDuration" aria-label="{{name}}-vaccine effective duration"
+                            ng-disabled="!item.issuedAt"
+                            ng-change="$ctrl.setDaysBeforeExpire(item, $parent.$index)">
+                            <md-option value="">
 
-                                        </md-option>
-                                        <md-option ng-repeat="(value, display) in {1: '1 Year', 3: '3 Years'}" ng-value="value">
-                                            {{display}}
-                                        </md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="10">
-                                    <md-icon flex md-svg-src="./assets/svg/needle-renew.svg"></md-icon>
-                                </md-input-container>
-                                <md-input-container class="md-block" flex="40" layout>
-                                    <label>Vaccine Due Date</label>
-                                    <md-datepicker md-hide-icons="calendar"
-                                        disabled="true"
-                                        ng-model="item.expiredAt"
-                                        md-max-date="$ctrl.birthdayLimit.max"
-                                        ng-change="$ctrl.setDaysBeforeExpire(item)"></md-datepicker>
-                                </md-input-container>
-                                <div flex="50">Days before due:<br />
-                                    <span ng-show="!item.daysBeforeDue">
-                                        Enter vaccination date and duration
-                                    </span>
-                                    {{item.daysBeforeDue}} days
-                                </div>
-                            </span>
+                            </md-option>
+                            <md-option ng-repeat="(value, display) in {1: '1 Year', 3: '3 Years'}" ng-value="value">
+                                {{display}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="10">
+                        <md-icon flex md-svg-src="./assets/svg/needle-renew.svg"></md-icon>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex="40" layout>
+                        <label>Vaccine Due Date</label>
+                        <md-datepicker md-hide-icons="calendar"
+                            disabled="true"
+                            ng-model="item.expiredAt"
+                            md-max-date="$ctrl.birthdayLimit.max"
+                            ng-change="$ctrl.setDaysBeforeExpire(item)"></md-datepicker>
+                    </md-input-container>
+                    <div flex="50">Days before due:<br />
+                        <span ng-show="!item.daysBeforeDue">
+                            Enter vaccination date and duration
                         </span>
-                    </md-content> -->
-                </md-tab>
+                        {{item.daysBeforeDue}} days
+                    </div>
+                </span>
+            </span>
+        </md-content> -->
+    </md-tab>
 
-                <md-tab label="Notes">
-                    <md-content class="md-padding" layout="column" >
-                        <h2 class="md-headline">Special Conditions</h2>
-                        <md-input-container flex="100" ng-repeat="conditions in $ctrl.pet.specialConditions track by $index">
-                            <label>Condition {{$index+1}} ({{conditions.createdAt | date: 'mediumDate'}})</label>
-                            <textarea ng-model="conditions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                        </md-input-container>
-                        <div flex="100" layout layout-align="end center">
-                            <md-button class="md-fab md-mini"aria-label="add condition"
-                                ng-click="$ctrl.addTextarea('specialConditions')"
-                                >
-                                <md-icon md-svg-src="plus"></md-icon>
-                            </md-button>
-                        </div>
-                        <h2 class="md-headline">Additional Instructions</h2>
-                        <md-input-container flex="100" ng-repeat="instructions in $ctrl.pet.additionalInstructions track by $index">
-                            <label>Instruction {{$index+1}} ({{instructions.createdAt | date: 'mediumDate'}})</label>
-                            <textarea ng-model="instructions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                        </md-input-container>
-                        <div flex="100" layout layout-align="end center">
-                            <md-button class="md-fab md-mini"aria-label="add Instruction"
-                                ng-click="$ctrl.addTextarea('additionalInstructions')"
-                                >
-                                <md-icon md-svg-src="plus"></md-icon>
-                            </md-button>
-                        </div>
-                    </md-content>
-                </md-tab>
+    <md-tab label="Notes">
+        <md-content class="md-padding form" layout="column" >
+            <h2 class="md-headline">Special Conditions</h2>
+            <md-input-container flex="100" ng-repeat="conditions in $ctrl.pet.specialConditions track by $index">
+                <label>Condition {{$index+1}} ({{conditions.createdAt | date: 'mediumDate'}})</label>
+                <textarea ng-model="conditions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+            </md-input-container>
+            <div flex="100" layout layout-align="end center">
+                <md-button class="md-fab md-mini"aria-label="add condition"
+                    ng-click="$ctrl.addTextarea('specialConditions')"
+                    >
+                    <md-icon md-svg-src="plus"></md-icon>
+                </md-button>
+            </div>
+            <h2 class="md-headline">Additional Instructions</h2>
+            <md-input-container flex="100" ng-repeat="instructions in $ctrl.pet.additionalInstructions track by $index">
+                <label>Instruction {{$index+1}} ({{instructions.createdAt | date: 'mediumDate'}})</label>
+                <textarea ng-model="instructions.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+            </md-input-container>
+            <div flex="100" layout layout-align="end center">
+                <md-button class="md-fab md-mini"aria-label="add Instruction"
+                    ng-click="$ctrl.addTextarea('additionalInstructions')"
+                    >
+                    <md-icon md-svg-src="plus"></md-icon>
+                </md-button>
+            </div>
+        </md-content>
+    </md-tab>
 
-                <!-- <md-tab label="Gallery">
-                    <md-content class="md-padding">
-                        <h2 class="md-headline">Photos go here.</h2>
-                    </md-content>
-                </md-tab> -->
+    <!-- <md-tab label="Gallery">
+        <md-content class="md-padding">
+            <h2 class="md-headline">Photos go here.</h2>
+        </md-content>
+    </md-tab> -->
 
-            </md-tabs>
-        </div>
-        <div layout="column" flex class="step-control">
-            <md-button flex="20" layout="column" class="md-raised"
-                ng-disabled="!$ctrl.validate()"
-                ng-click="$ctrl.update()">
-                <md-icon md-svg-src="content-save" class="s48"></md-icon>
-                Update
-            </md-button>
+</md-tabs>
 
-            <md-button flex layout="column" class="md-raised md-primary" aria-label="next"
-                ng-click="$ctrl.changeTab(+1)" >
-                <md-icon md-svg-src="chevron-right" class="s48"></md-icon>
-                Next Step
-            </md-button>
-            <md-button flex layout="column" class="md-raised" aria-label="back"
-                ng-click="$ctrl.changeTab(-1)">
-                <md-icon md-svg-src="chevron-left" class="s48"></md-icon>
-                Back
-            </md-button>
-        </div>
-    </div>
-</div>
+
+<!-- <div layout="column" flex class="step-control">
+
+    <md-button flex layout="column" class="md-raised md-primary" aria-label="next"
+        ng-click="$ctrl.changeTab(+1)" >
+        <md-icon md-svg-src="chevron-right" class="s48"></md-icon>
+        Next Step
+    </md-button>
+    <md-button flex layout="column" class="md-raised" aria-label="back"
+        ng-click="$ctrl.changeTab(-1)">
+        <md-icon md-svg-src="chevron-left" class="s48"></md-icon>
+        Back
+    </md-button>
+</div> -->
