@@ -56,6 +56,7 @@ const creditsComponent = {
                 });
             }
         }
+
         setCreditsPackages() {
             this.ListItems.query({
                 type: 'creditsPackages'
@@ -98,14 +99,12 @@ const creditsComponent = {
             this.TransactionsDialog({
                 customer_id: this.customerId,
                 credit_id: this.credits._id
-            }).then((res) => {
-                console.log(res);
+            }).then(() => {
                 this.CustomerDetailDialog({
                     customer_id: this.customerId,
                     tab: 'credits'
                 }, () => {});
-            }, (err) => {
-                console.log(err);
+            }, () => {
                 this.CustomerDetailDialog({
                     customer_id: this.customerId,
                     tab: 'credits'
@@ -132,11 +131,7 @@ const creditsComponent = {
             let eqCredits = 0;
             let item;
             const splices = [];
-            console.log(unpaidBalance, eqCredits);
-            console.log(splices);
-            console.log(this.credits.purchased);
-            for (var i = this.credits.purchased.length-1 ; i >= 0; i--) {
-                console.log(i);
+            for (var i = this.credits.purchased.length - 1; i >= 0; i--) {
                 item = this.credits.purchased[i];
                 if (unpaidBalance >= item.package.total) {
                     splices.push(item);
@@ -144,19 +139,16 @@ const creditsComponent = {
                     eqCredits += item.package.credit;
                 }
             }
-            console.log(unpaidBalance, eqCredits);
-            console.log(splices);
             this.credits.balance = 0;
             this.credits.credit -= eqCredits;
             let pos;
-            for (var i = 0; i < splices.length; i++) {
-                pos = this.credits.purchased.indexOf(splices[i]);
+            for (var x = 0; x < splices.length; x++) {
+                pos = this.credits.purchased.indexOf(splices[x]);
                 this.credits.purchased.splice(pos, 1);
             }
-            console.log(this.credits);
             this.Credits.update({
                 customer_id: this.customerId
-            }, this.credits).$promise.then((res)=>{
+            }, this.credits).$promise.then((res) => {
                 console.log(res);
             });
         }

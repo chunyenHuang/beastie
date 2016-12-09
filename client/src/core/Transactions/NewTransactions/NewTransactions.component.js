@@ -31,11 +31,11 @@ const newTransactionsComponent = {
             this.SelfServices = SelfServices;
             this.TransactionsDialog = TransactionsDialog;
 
-            Socket.on('creditsPurchased', (res) => {
+            Socket.on('creditsPurchased', () => {
                 this.reload();
             });
 
-            Socket.on('selfServicesPurchase', (res) => {
+            Socket.on('selfServicesPurchase', () => {
                 this.reload();
             });
 
@@ -58,13 +58,11 @@ const newTransactionsComponent = {
                 angular.forEach(listItems[0].items, (item) => {
                     this.selfServiceList[item.type] = item.subItems;
                 });
-                console.log(this.selfServiceList);
             });
         }
 
         setUnsolvedCreditsBalance() {
             this.Credits.query({}).$promise.then((res) => {
-                console.log(res);
                 this.credits = [];
                 angular.forEach(res, (credit) => {
                     if (parseFloat(credit.balance) > 0) {
@@ -72,8 +70,7 @@ const newTransactionsComponent = {
                     }
                 });
                 console.log(this.credits);
-            }, (err) => {
-                console.log(err);
+            }, () => {
             });
         }
 
@@ -85,9 +82,7 @@ const newTransactionsComponent = {
                         this.selfServices.push(selfService);
                     }
                 });
-                console.log(this.selfServices);
-            }, (err) => {
-                console.log(err);
+            }, () => {
             });
         }
 
@@ -109,8 +104,7 @@ const newTransactionsComponent = {
 
                 default:
             }
-            this.TransactionsDialog(query).then((res) => {
-                console.log(res);
+            this.TransactionsDialog(query).then(() => {
                 this.reload();
             }, (err) => {
                 console.log(err);
@@ -127,8 +121,7 @@ const newTransactionsComponent = {
             this.$mdDialog.show(confirm).then(() => {
                 this.SelfServices.delete({
                     id: item._id
-                }).$promise.then((res) => {
-                    console.log(res);
+                }).$promise.then(() => {
                     this.selfServices.splice(this.selfServices.indexOf(item), 1);
                 }, (err) => {
                     console.log(err);
@@ -172,8 +165,48 @@ const newTransactionsComponent = {
             } else {
                 item.addons.push(addon);
             }
-            console.log(item);
             this.editSelfService(item);
+        }
+
+        cancelUnpaid(credits) {
+            if(!credits){
+                return;
+            }
+            if (credits.balance === 0) {
+                return;
+            }
+            const confirm = this.$mdDialog.confirm()
+                .title('Do you want to cancel this credit purchase?')
+                // .textContent(textContent)
+                .ariaLabel('cancel credits purchase')
+                .ok('YES')
+                .cancel('NO');
+            this.$mdDialog.show(confirm).then(() => {
+                let unpaidBalance = credits.balance;
+                let eqCredits = 0;
+                let item;
+                const splices = [];
+                for (var i = (credits.purchased.length-1) ; i >= 0; i--) {
+                    item = credits.purchased[i];
+                    if (unpaidBalance >= item.package.total) {
+                        splices.push(item);
+                        unpaidBalance -= item.package.total;
+                        eqCredits += item.package.credit;
+                    }
+                }
+                credits.balance = 0;
+                credits.credit -= eqCredits;
+                let pos;
+                for (var x = 0; x < splices.length; x++) {
+                    pos = credits.purchased.indexOf(splices[x]);
+                    credits.purchased.splice(pos, 1);
+                }
+                this.Credits.update({
+                    customer_id: credits.customer_id
+                }, credits).$promise.then(()=>{
+                    this.reload();
+                });
+            }, () => {});
         }
     }
 };

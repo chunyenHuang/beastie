@@ -7,16 +7,18 @@ const addCreditsComponent = {
     controller: /* @ngInject */ class AddCreditsController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Credits', 'ListItems'
+                '$log', '$timeout', '$state', '$stateParams', 'Credits', 'ListItems',
+                '$mdDialog'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams, Credits, ListItems
+            $log, $timeout, $state, $stateParams, Credits, ListItems, $mdDialog
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$mdDialog = $mdDialog;
             this.Credits = Credits;
             this.ListItems = ListItems;
         }
@@ -57,9 +59,34 @@ const addCreditsComponent = {
                 package: this.selected
             }).$promise.then((res) => {
                 console.log(res);
-                this.backToSelfService();
+                this._alert(()=>{
+                    this.backToSelfService();
+                });
             }, (err) => {
                 console.log(err);
+            });
+        }
+
+        _alert(callback) {
+            this.$timeout(()=>{
+                this.$mdDialog.hide();
+            }, 2000);
+            this.$mdDialog.show(
+                this.$mdDialog.alert()
+                .clickOutsideToClose(true)
+                .title('Self Service order completes. ')
+                .textContent('Please see the counter for further information.')
+                .ariaLabel('Alert Dialog Demo')
+                .ok('Got it!')
+                // .targetEvent(ev)
+            ).then(()=>{
+                if(callback){
+                    return callback();
+                }
+            }, ()=>{
+                if(callback){
+                    return callback();
+                }
             });
         }
 

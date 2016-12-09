@@ -56,10 +56,9 @@ class customerDetailDialog {
                         this.Customers.get({
                             id: this.customer_id
                         }, (customer) => {
-                            console.log(customer);
                             this.customer = customer;
                         });
-                    }, 600);
+                    }, 300);
 
                     switch (this.tab) {
                         case 'gallery':
@@ -92,12 +91,10 @@ class customerDetailDialog {
                         if (this.isFromOrdersList) {
                             this.$mdDialog.hide(res);
                         }
-                        console.log(res);
                     });
                 }
 
                 updatePet(pet) {
-                    console.log(pet)
                     if (!pet._id) {
                         return;
                         // this.create(pet);

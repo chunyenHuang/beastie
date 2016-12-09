@@ -125,6 +125,12 @@ const coreComponent = {
                             tab: 'customer'
                         });
                         break;
+                    case 'credits':
+                        this.CustomerDetailDialog({
+                            customer_id: select.customer._id,
+                            tab: 'credits'
+                        });
+                        break;
                     case 'checkIn':
                         this.Customers.checkIn({
                             phone: select.customer.phone
