@@ -17,12 +17,11 @@ const listItemsSelfServicesComponent = {
 
         getTemplate() {
             return {
-                name: ' ',
+                name: null,
                 description: null,
                 zhName: null,
                 zhDescription: null,
-                price: null,
-                estimatedHours: 1,
+                price: 0,
                 isActivated: true,
                 isDeleted: false
             };
@@ -36,6 +35,20 @@ const listItemsSelfServicesComponent = {
             for (var i = 0; i < this.list.items.length; i++) {
                 if (this.list.items[i].type == type) {
                     return this.list.items[i].subItems;
+                }
+            }
+        }
+
+        addNewItem(type) {
+            for (var i = 0; i < this.list.items.length; i++) {
+                if (this.list.items[i].type == type) {
+                    this.list.items[i].subItems;
+                    if (!this.list.items[i].subItems[0].name &&
+                        !this.list.items[i].subItems[0].zhName
+                    ) {
+                        return;
+                    }
+                    this.list.items[i].subItems.unshift(this.getTemplate());
                 }
             }
         }

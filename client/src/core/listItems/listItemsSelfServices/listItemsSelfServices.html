@@ -15,10 +15,10 @@
     </div>
     <div layout="row" flex>
         <md-content layout="column" flex layout-padding>
-            <!-- <md-button ng-click="$ctrl.addNewItem()" flex="none">
+            <md-button ng-click="$ctrl.addNewItem('basic')" flex="none">
                 <md-icon md-svg-src="plus"></md-icon>
                 <span>
-                    Add a new self service
+                    Add a new basic self service
                 </span>
                 <md-icon md-svg-src="plus"></md-icon>
                 <md-tooltip>
@@ -26,76 +26,7 @@
                         Add a new self service~~~
                     </span>
                 </md-tooltip>
-            </md-button> -->
-            <div class="" layout="column" flex="none">
-                <h4>Packages</h4>
-                <div
-                    layout="row"
-                    ng-repeat="item in $ctrl.getByType('packages')"
-                    ng-click="$ctrl.selectedItem = item"
-                    ng-show="!item.isDeleted"
-                    ng-class="{
-                                'list-item': $ctrl.selectedItem != item,
-                                'hightlight': $ctrl.selectedItem == item
-                            }"
-                    layout-align="space-between start"
-                    flex="none">
-                    <div layout="column" flex>
-                        <md-input-container class="md-block">
-                            <label>Name</label>
-                            <input type="text" ng-model="item.name" aria-label="{{item.name}}">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Description</label>
-                            <textarea ng-model="item.description" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                        </md-input-container>
-                    </div>
-                    <div layout="column" flex>
-                        <md-input-container class="md-block">
-                            <label>中文名稱</label>
-                            <input type="text" ng-model="item.zhName" aria-label="{{item.zhName}}">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>中文敘述</label>
-                            <textarea ng-model="item.zhDescription" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                        </md-input-container>
-                    </div>
-                    <div layout="column" flex="20" layout-align="start start">
-                        <md-input-container class="md-block">
-                            <label>Unit Price</label>
-                            <input type="number" step="0.01" ng-model="item.unitPrice" aria-label="unitPrice {{$index}}">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Quantity</label>
-                            <input type="number" step="1" ng-model="item.quantity" aria-label="quantity {{$index}}">
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Discount</label>
-                            <input type="number" step="0.01" ng-model="item.discount" aria-label="discount {{$index}}">
-                        </md-input-container>
-                    </div>
-                    <div layout="column" flex="10" layout-align="start center">
-                        <md-switch ng-model="item.isActivated" aria-label="isActivated" ng-true-value="true" ng-false-value="false">
-                            <md-tooltip>
-                                <span>
-                                    Activate
-                                </span>
-                            </md-tooltip>
-                        </md-switch>
-                        <div flex></div>
-                        <md-button ng-click="item.isDeleted = true" class="md-icon-button md-warn md-raised md-hue-2" aria-label="delete">
-                            <md-icon md-svg-src="delete">
-                                <md-tooltip>
-                                    <span>
-                                        Delete
-                                    </span>
-                                </md-tooltip>
-                            </md-switch>
-                        </md-button>
-                    </div>
-                </div>
-            </div>
-
+            </md-button>
             <div class="" layout="column" flex="none">
                 <h4>Basics</h4>
                 <div
@@ -156,7 +87,18 @@
                     </div>
                 </div>
             </div>
-
+            <md-button ng-click="$ctrl.addNewItem('addon')" flex="none">
+                <md-icon md-svg-src="plus"></md-icon>
+                <span>
+                    Add a new basic self service
+                </span>
+                <md-icon md-svg-src="plus"></md-icon>
+                <md-tooltip>
+                    <span>
+                        Add a new self service~~~
+                    </span>
+                </md-tooltip>
+            </md-button>
             <div class="" layout="column" flex="none">
                 <h4>Addons</h4>
                 <div
