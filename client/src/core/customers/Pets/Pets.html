@@ -13,6 +13,91 @@
                     Update
                 </md-button>
             </div>
+            <md-content class="md-padding form" flex layout="column">
+                <div class="" layout="row" flex="none">
+                    <md-input-container class="md-block" flex="50">
+                        <label>Name</label>
+                        <input focus-if="$ctrl.selectedTab==0" type="text" ng-model="$ctrl.selectedPet.name" aria-label="pet-name" required>
+                    </md-input-container>
+                    <md-autocomplete flex
+                        md-input-name="autocompleteField"
+                        md-input-minlength="2"
+                        md-input-maxlength="30"
+                        md-selected-item="$ctrl.selectedPet.breed"
+                        md-search-text="$ctrl.searchText"
+                        md-items="item in $ctrl.breeds | filter:$ctrl.searchText"
+                        md-item-text="item.name"
+                        md-require-match
+                        md-floating-label="Breed">
+                        <md-item-template>
+                            <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </div>
+                <div class="" layout="row" flex="none">
+                    <md-input-container class="md-input-has-value hide" flex="50">
+                        <label>Dog or Cat?</label>
+                        <md-radio-group ng-model="$ctrl.selectedPet.species" layout="row" class="padding-6-0">
+                            <md-radio-button value="dog" aria-label="dog">
+                                <md-icon md-svg-src="./assets/svg/dog.svg"></md-icon>
+                            </md-radio-button>
+                            <md-radio-button value="cat" aria-label="cat">
+                                <md-icon md-svg-src="./assets/svg/cat.svg"></md-icon>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+
+                    <md-input-container class="md-input-has-value" flex>
+                        <label>Gender</label>
+                        <md-radio-group ng-model="$ctrl.selectedPet.gender" layout="row" class="padding-6-0">
+                            <md-radio-button value="male" aria-label="gender-male">
+                                <md-icon md-svg-src="gender-male"></md-icon>
+                            </md-radio-button>
+                            <md-radio-button value="female" aria-label="gender-male">
+                                <md-icon md-svg-src="gender-female"></md-icon>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+
+                    <!-- <md-button
+                        class="md-fab md-primary"
+                        aria-label="take a picture"
+                        ng-click="$ctrl.takeSnapshot()">
+                        <md-icon md-svg-src="camera"></md-icon>
+                    </md-button> -->
+                </div>
+                <div class="" layout="row">
+                    <md-input-container class="md-input-has-value">
+                        <label>Color</label>
+                        <md-radio-group ng-model="$ctrl.selectedPet.color" layout="row" class="padding-6-0" layout="row" layout-wrap>
+                            <md-radio-button
+                                flex="33"
+                                style="margin:10px 0px;"
+                                ng-repeat="color in $ctrl.colors"
+                                value="{{color.name}}" aria-label="pet-color-{{color.name}}"
+                                >
+                                <md-icon style="color:{{color.value}}; background-color:#999" md-svg-src="checkbox-blank-circle"></md-icon>
+                                <span class="md-body-1">{{color.name}}</span>
+                            </md-radio-button>
+                        </md-radio-group>
+                    </md-input-container>
+                </div>
+                <div class="" layout="row" flex="none">
+                    <md-input-container flex="50">
+                        <label>Weight</label>
+                        <input type="text" ng-model="$ctrl.selectedPet.weight" aria-label="pet-weight">
+                    </md-input-container>
+
+                    <md-input-container flex>
+                        <label>Birthday</label>
+                        <md-datepicker
+                            md-open-on-focus
+                            ng-model="$ctrl.selectedPet.birthday"
+                            md-max-date="$ctrl.birthdayLimit.max" md-placeholder="birthday"></md-datepicker>
+                    </md-input-container>
+                </div>
+            </md-content>
+<!--
             <md-subheader class="md-no-sticky">
                 Information
             </md-subheader>
@@ -45,7 +130,7 @@
                     <label>Birthday</label>
                     <input type="text" ng-model="$ctrl.selectedPet.birthday"/>
                 </md-input-container>
-            </div>
+            </div> -->
             <md-subheader class="md-no-sticky">
                 vaccinations
             </md-subheader>

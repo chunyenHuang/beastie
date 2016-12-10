@@ -7,6 +7,16 @@ class PetsController extends AbstractController {
     constructor() {
         super();
         this._getPetsPicturesPath = this._getPetsPicturesPath.bind(this);
+        this.lookups = [
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'owner'
+                }
+            }
+        ];
     }
     getTemplate(req, res) {
         const template = {
@@ -50,55 +60,74 @@ class PetsController extends AbstractController {
         res.json(template);
     }
 
-    query(req, res) {
-        Object.assign(req.query, {
-            isDeleted: false
-        });
-
-        const query = req.collection.aggregate([
-            {
-                $match: req.query
-            },
-            {
-                $lookup: {
-                    from: 'customers',
-                    localField: 'customer_id',
-                    foreignField: '_id',
-                    as: 'owner'
+    customQuery(req, res) {
+        req.callback = (req, res) => {
+            const results = req.results;
+            (function setPictures(pets, index, func, res) {
+                if (index == pets.length) {
+                    res.statusCode = 200;
+                    res.json(pets);
+                    return;
                 }
-            }
-        ]);
-
-        // const query = req.collection.find(
-        //     req.query
-        // );
-        query.toArray((err, results) => {
-            // fix wrong condition
-            if (!err) {
-                if (results.length > 0) {
-                    (function setPictures(pets, index, func, res) {
-                        if (index == pets.length) {
-                            res.statusCode = 200;
-                            res.json(pets);
-                            return;
-                        }
-                        func(pets[index]._id, (filenames) => {
-                            pets[index].pictures = filenames;
-                            index++;
-                            setPictures(pets, index, func, res);
-                        });
-                    })(results, 0, this._getPetsPicturesPath, res);
-                } else {
-                    // res.sendStatus(404);
-                    res.status(404).send({
-                        error: 'Sorry, we cannot find that!'
-                    });
-                }
-            } else {
-                res.sendStatus(500);
-            }
-        });
+                func(pets[index]._id, (filenames) => {
+                    pets[index].pictures = filenames;
+                    index++;
+                    setPictures(pets, index, func, res);
+                });
+            })(results, 0, this._getPetsPicturesPath, res);
+        };
+        return this.query(req, res);
     }
+
+    // query(req, res) {
+    //     Object.assign(req.query, {
+    //         isDeleted: false
+    //     });
+    //
+    //     const query = req.collection.aggregate([
+    //         {
+    //             $match: req.query
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: 'customers',
+    //                 localField: 'customer_id',
+    //                 foreignField: '_id',
+    //                 as: 'owner'
+    //             }
+    //         }
+    //     ]);
+    //
+    //     // const query = req.collection.find(
+    //     //     req.query
+    //     // );
+    //     query.toArray((err, results) => {
+    //         // fix wrong condition
+    //         if (!err) {
+    //             if (results.length > 0) {
+    //                 (function setPictures(pets, index, func, res) {
+    //                     if (index == pets.length) {
+    //                         res.statusCode = 200;
+    //                         res.json(pets);
+    //                         return;
+    //                     }
+    //                     func(pets[index]._id, (filenames) => {
+    //                         pets[index].pictures = filenames;
+    //                         index++;
+    //                         setPictures(pets, index, func, res);
+    //                     });
+    //                 })(results, 0, this._getPetsPicturesPath, res);
+    //             } else {
+    //                 // res.sendStatus(404);
+    //                 res.status(404).send({
+    //                     error: 'Sorry, we cannot find that!'
+    //                 });
+    //             }
+    //         } else {
+    //             res.sendStatus(500);
+    //         }
+    //     });
+    // }
 
     update(req, res) {
         Object.assign(req.body, {

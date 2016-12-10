@@ -15,7 +15,7 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Orders.query)
+        .get(Orders.customQuery.bind(Orders))
         .post(Orders.post);
 
     app.route('/orders?/:id')

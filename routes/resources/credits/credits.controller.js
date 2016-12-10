@@ -7,6 +7,14 @@ class creditsController extends AbstractController {
         super();
         this.getCredits = this.getCredits.bind(this);
         this.counterUpdate = this.counterUpdate.bind(this);
+        this.lookups = [{
+            $lookup: {
+                from: 'customers',
+                localField: 'customer_id',
+                foreignField: '_id',
+                as: 'customers'
+            }
+        }];
     }
     getTemplate(req, res) {
         const template = {
@@ -87,42 +95,42 @@ class creditsController extends AbstractController {
             }
         });
     }
-
-    queryCredit(req, res) {
-        Object.assign(req.query, {
-            isDeleted: false
-        });
-        console.log(req.query);
-        const query = req.collection.aggregate([
-            {
-                $match: req.query
-            },
-            {
-                $lookup: {
-                    from: 'customers',
-                    localField: 'customer_id',
-                    foreignField: '_id',
-                    as: 'customers'
-                }
-            }
-        ]);
-        query.toArray((err, results) => {
-            // fix wrong condition
-            if (!err) {
-                if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results);
-                } else {
-                    // res.sendStatus(404);
-                    res.status(404).send({
-                        error: 'Sorry, we cannot find that!'
-                    });
-                }
-            } else {
-                res.sendStatus(500);
-            }
-        });
-    }
+    //
+    // queryCredit(req, res) {
+    //     Object.assign(req.query, {
+    //         isDeleted: false
+    //     });
+    //     console.log(req.query);
+    //     const query = req.collection.aggregate([
+    //         {
+    //             $match: req.query
+    //         },
+    //         {
+    //             $lookup: {
+    //                 from: 'customers',
+    //                 localField: 'customer_id',
+    //                 foreignField: '_id',
+    //                 as: 'customers'
+    //             }
+    //         }
+    //     ]);
+    //     query.toArray((err, results) => {
+    //         // fix wrong condition
+    //         if (!err) {
+    //             if (results.length > 0) {
+    //                 res.statusCode = 200;
+    //                 res.json(results);
+    //             } else {
+    //                 // res.sendStatus(404);
+    //                 res.status(404).send({
+    //                     error: 'Sorry, we cannot find that!'
+    //                 });
+    //             }
+    //         } else {
+    //             res.sendStatus(500);
+    //         }
+    //     });
+    // }
 
     login(req, res) {
         if (!req.body.customer_id) {

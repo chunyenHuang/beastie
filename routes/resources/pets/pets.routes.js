@@ -8,7 +8,7 @@ module.exports = (app) => {
             req.collection = req.db.collection(dbCollectionName);
             next();
         })
-        .get(Pets.query.bind(Pets))
+        .get(Pets.customQuery.bind(Pets))
         .post(Pets.post.bind(Pets));
 
     app.route('/pets?/:id')

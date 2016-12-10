@@ -11,6 +11,25 @@ class OrdersController extends AbstractController {
         this._setFromTo = this._setFromTo.bind(this);
         this._getByDate = this._getByDate.bind(this);
         this._getPetsPicturesPath = this._getPetsPicturesPath.bind(this);
+        this.customQuery = this.customQuery.bind(this);
+        this.lookups = [
+            {
+                $lookup: {
+                    from: 'customers',
+                    localField: 'customer_id',
+                    foreignField: '_id',
+                    as: 'customers'
+                }
+            },
+            {
+                $lookup: {
+                    from: 'pets',
+                    localField: 'pet_id',
+                    foreignField: '_id',
+                    as: 'pets'
+                }
+            }
+        ];
     }
     getTemplate(req, res) {
         const template = {
@@ -43,59 +62,65 @@ class OrdersController extends AbstractController {
         res.json(template);
     }
 
-    query(req, res) {
-        Object.assign(req.query, {
-            isDeleted: false
-        });
-        const query = req.collection.aggregate([
-            {
-                $match: req.query
-            },
-            {
-                $lookup: {
-                    from: 'customers',
-                    localField: 'customer_id',
-                    foreignField: '_id',
-                    as: 'customers'
+    customQuery(req, res){
+        console.log('yoyoyo');
+        req.callback = (req, res)=>{
+            let results = req.results;
+            (function setPictures(results, index, func, res) {
+                if (index == results.length) {
+                    res.statusCode = 200;
+                    res.json(results);
+                    return;
                 }
-            },
-            {
-                $lookup: {
-                    from: 'pets',
-                    localField: 'pet_id',
-                    foreignField: '_id',
-                    as: 'pets'
-                }
-            }
-        ]);
-        query.toArray((err, results) => {
-            // fix wrong condition
-            if (!err) {
-                if (results.length > 0) {
-                    (function setPictures(results, index, func, res) {
-                        if (index == results.length) {
-                            res.statusCode = 200;
-                            res.json(results);
-                            return;
-                        }
-                        console.log(results[index].pet_id);
-                        func(results[index].pet_id, (filenames) => {
-                            results[index].pictures = filenames;
-                            index++;
-                            setPictures(results, index, func, res);
-                        });
-                    })(results, 0, this._getPetsPicturesPath, res);
-                } else {
-                    // res.sendStatus(404);
-                    res.status(404).send({
-                        error: 'Sorry, we cannot find that!'
-                    });
-                }
-            } else {
-                res.sendStatus(500);
-            }
-        });
+                console.log(results[index].pet_id);
+                func(results[index].pet_id, (filenames) => {
+                    results[index].pictures = filenames;
+                    index++;
+                    setPictures(results, index, func, res);
+                });
+            })(results, 0, this._getPetsPicturesPath, res);
+        };
+        req.lookups = this.lookups;
+        return this.query(req, res);
     }
+
+    // query(req, res) {
+    //     Object.assign(req.query, {
+    //         isDeleted: false
+    //     });
+    //     const query = req.collection.aggregate([
+    //         {
+    //             $match: req.query
+    //         },
+    //     ]);
+    //     query.toArray((err, results) => {
+    //         // fix wrong condition
+    //         if (!err) {
+    //             if (results.length > 0) {
+    //                 (function setPictures(results, index, func, res) {
+    //                     if (index == results.length) {
+    //                         res.statusCode = 200;
+    //                         res.json(results);
+    //                         return;
+    //                     }
+    //                     console.log(results[index].pet_id);
+    //                     func(results[index].pet_id, (filenames) => {
+    //                         results[index].pictures = filenames;
+    //                         index++;
+    //                         setPictures(results, index, func, res);
+    //                     });
+    //                 })(results, 0, this._getPetsPicturesPath, res);
+    //             } else {
+    //                 // res.sendStatus(404);
+    //                 res.status(404).send({
+    //                     error: 'Sorry, we cannot find that!'
+    //                 });
+    //             }
+    //         } else {
+    //             res.sendStatus(500);
+    //         }
+    //     });
+    // }
 
     get(req, res) {
         const query = req.collection.aggregate([
@@ -241,7 +266,6 @@ class OrdersController extends AbstractController {
                     as: 'pets'
                 }
             }
-
         ]);
 
         query.toArray((err, results) => {

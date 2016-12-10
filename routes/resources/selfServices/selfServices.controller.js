@@ -1,5 +1,16 @@
 const PrinterController = require('../printer/printer.controller.js');
 class SelfServicesController extends PrinterController {
+    constructor() {
+        super();
+        this.lookups = [{
+            $lookup: {
+                from: 'customers',
+                localField: 'customer_id',
+                foreignField: '_id',
+                as: 'customers'
+            }
+        }];
+    }
     getTemplate(req, res) {
         const template = {
             customer_id: null,
@@ -14,61 +25,26 @@ class SelfServicesController extends PrinterController {
         res.send(template);
     }
 
-    query(req, res) {
-        Object.assign(req.query, {
-            isDeleted: false
-        });
-        const query = req.collection.aggregate([
-            {
-                $match: req.query
-            },
-            {
-                $lookup: {
-                    from: 'customers',
-                    localField: 'customer_id',
-                    foreignField: '_id',
-                    as: 'customers'
-                }
-            }
-        ]);
-        query.toArray((err, results) => {
-            // fix wrong condition
-            if (!err) {
-                if (results.length > 0) {
-                    res.statusCode = 200;
-                    res.json(results);
-                } else {
-                    // res.sendStatus(404);
-                    res.status(404).send({
-                        error: 'Sorry, we cannot find that!'
-                    });
-                }
-            } else {
-                res.sendStatus(500);
-            }
-        });
-    }
-
     purchase(req, res) {
-        if(!req.body.customer_id){
+        if (!req.body.customer_id) {
             res.json({
                 message: 'no customer_id'
             });
             return;
         }
-        if(!req.body.total){
+        if (!req.body.total) {
             res.json({
                 message: 'no total'
             });
             return;
         }
-        if(!req.body.services){
+        if (!req.body.services) {
             res.json({
                 message: 'no services'
             });
             return;
         }
-        if(req.body.services.length ===0){
+        if (req.body.services.length === 0) {
             res.json({
                 message: 'services can not be nothing.'
             });

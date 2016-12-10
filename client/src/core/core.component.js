@@ -60,7 +60,6 @@ const coreComponent = {
         $onInit() {
             // this.newCustomer(123456789);
             // this.openInhouseOrdersDialog();
-            // this.testStartup();
         }
 
         toggleFullscreen() {
@@ -79,22 +78,7 @@ const coreComponent = {
         }
 
         openInhouseOrdersDialog() {
-            this.InhouseOrdersDialog().then((res) => {
-
-            }, (err) => {
-
-            });
-        }
-
-        testStartup() {
-            this.Customers.query({
-                phone: 8888888888
-            }, (res) => {
-                this.oldCustomer(res[0]._id);
-            }, () => {
-                // quick create a new customer
-                this.newCustomer(phone);
-            });
+            this.InhouseOrdersDialog();
         }
 
         startup() {
