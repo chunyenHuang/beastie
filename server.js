@@ -1,6 +1,3 @@
-/*
-    Modules
-*/
 const express = require('express');
 const compression = require('compression');
 const mongodb = require('mongodb');
@@ -12,10 +9,10 @@ const errorHandler = require('errorhandler');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
-const CronJob = require('cron').CronJob;
 const multer = require('multer');
 const colors = require('colors');
 
+const ServerMiddlewares = require('./serverMiddlewares');
 /*
     Configuration
 */
@@ -89,15 +86,6 @@ app.set('socket-io', io);
 app.set('port', port);
 
 /*
-    const io = req.app.get('socket-io');
-    io.sockets.emit('socket-name', {
-        message: 'something',
-        data: data
-        ....
-    });
-*/
-
-/*
     Express Configuration
 */
 if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'dev') {
@@ -130,47 +118,7 @@ app.use((req, res, next) => {
         next();
     }
 });
-
-function transformRequestMiddleware(req, res, next) {
-    if (req.body) {
-        const ObjectId = require('mongodb').ObjectID;
-        for (let prop in req.body) {
-            if (prop.indexOf('_id') > -1) {
-                req.body[prop] = ObjectId(req.body[prop]);
-            }
-            if (prop.search(/At$/) > -1) {
-                if (req.body[prop]) {
-                    req.body[prop] = new Date(req.body[prop]);
-                }
-            }
-        }
-    }
-    if (req.query) {
-        const ObjectId = require('mongodb').ObjectID;
-        for (let prop in req.query) {
-            if (prop.indexOf('_id') > -1) {
-                req.query[prop] = ObjectId(req.query[prop]);
-            }
-            if (prop.search(/At$/) > -1) {
-                if (req.body[prop]) {
-                    req.body[prop] = new Date(req.body[prop]);
-                }
-            }
-        }
-    }
-    if (req.params) {
-        const ObjectId = require('mongodb').ObjectID;
-        for (let prop in req.params) {
-            if (prop.indexOf('_id') > -1) {
-                req.params[prop] = ObjectId(req.params[prop]);
-            }
-        }
-    }
-    console.log(req.params);
-    next();
-}
-
-app.use(transformRequestMiddleware);
+app.use(ServerMiddlewares.transformRequest);
 
 if (process.env.NODE_ENV == 'development') {
     const webpack = require('webpack');
@@ -216,83 +164,13 @@ app.use(express.static(path.join(__dirname, 'files'), {
 }));
 
 
-/*
-    Routes
-*/
+// load modules
+const routes = require('./routes');
+routes(app);
 
-app.get('/*', (req, res, next) => {
-    res.setHeader('Last-Modified', (new Date()).toUTCString());
-    next();
-});
-
-// Auths
-const authRoutes = path.join(__dirname, '/routes/auths');
-fs.readdirSync(authRoutes).forEach((file) => {
-    const route = path.join(authRoutes, file);
-    require(route)(app);
-});
-
-// Middlewares
-// app.use(require('./routes/middlewares/userAuth'));
-
-// Resources
-const routes = path.join(__dirname, '/routes/resources');
-fs.readdirSync(routes).forEach((file) => {
-    if (file != '.DS_Store') {
-        if (!process.env.CLOUD9) {
-            const route = path.join(routes, file);
-            console.log('route: ' + file);
-            require(route)(app);
-        } else if (
-            file != 'printer' &&
-            file != 'inhouseOrders'
-        ) {
-            const route = path.join(routes, file);
-            console.log('route: ' + file);
-            require(route)(app);
-        }
-    }
-});
-
-/*
- * Schedule Backup
- * '* * * * * *'
- * You will see this message every second
- *
- * '00 30 11 * * 1-5'
- * Runs every weekday (Monday through Friday)
- * at 11:30:00 AM. It does not run on Saturday
- * or Sunday.
- */
-const backupTime = [
-    '00 00 10 * * 0-7',
-    '00 00 11 * * 0-7',
-    '00 05 11 * * 0-7',
-    '00 00 12 * * 0-7',
-    '00 00 13 * * 0-7',
-    '00 00 14 * * 0-7',
-    '00 00 15 * * 0-7',
-    '00 00 20 * * 0-7'
-];
-const Backup = require('./scripts/backup');
-
-for (var i = 0; i < backupTime.length; i++) {
-    const job = new CronJob({
-        cronTime: backupTime[i],
-        onTick: () => {
-            const today = new Date();
-            console.log('----------------------------')
-            console.log(today);
-            console.log('----------------------------')
-            Backup();
-        },
-        start: false,
-        timeZone: 'America/Los_Angeles'
-    });
-    job.start();
-}
-
-// Backup();
+// load modules
+const modules = require('./modules');
+modules(app);
 
 // Errors
 app.use(errorHandler());
@@ -325,35 +203,4 @@ if (process.env.CLOUD9) {
         });
     });
 }
-
-// Running w/ https
-// https
-//     .createServer({
-//         key: fs.readFileSync('./ssl/server.key'),
-//         cert: fs.readFileSync('./ssl/server.crt')
-//     }, app)
-//     .listen(sslport, () => {
-//         // eslint-disable-next-line no-console
-//         console.log('Running HTTPS on port ' + sslport);
-//     });
-//
-// http
-//     .createServer(
-//         (request, response) => {
-//             const correctedHost = request.headers['host'].replace(port, sslport);
-//             const httpsURI = correctedHost + request.url;
-//             // eslint-disable-next-line no-console
-//             console.log('Redirecting to: ' + httpsURI);
-//             response.writeHead(301, {
-//                 Location: 'https://' + httpsURI
-//             });
-//             response.end();
-//         }
-//     )
-//     .listen(port, () => {
-//         // eslint-disable-next-line no-console
-//         console.log('Running HTTP on port ' + port);
-//     });
-
-
 module.exports = app;

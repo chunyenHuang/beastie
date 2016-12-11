@@ -9,15 +9,21 @@ const dbClient = mongodb.MongoClient;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 const root = path.join(__dirname, '../');
 const seedPath = path.join(root, 'seeds');
+const mkdirp = require('mkdirp');
+
+const today = new Date();
+let formatName = today.toLocaleString();
+formatName = formatName.split('/').join('-');
+
 const collections = [
     'customers', 'pets', 'listItems', 'settings', 'users'
 ];
-fs.readdirSync(seedPath).forEach((file) => {
-    const filename = file.split('.')[0];
-    if (collections.indexOf(filename) == -1) {
-        collections.push(filename);
-    }
-});
+// fs.readdirSync(seedPath).forEach((file) => {
+//     const filename = file.split('.')[0];
+//     if (collections.indexOf(filename) == -1) {
+//         collections.push(filename);
+//     }
+// });
 
 (function writeDBtoFile(index) {
     if (index == collections.length) {
@@ -31,15 +37,17 @@ fs.readdirSync(seedPath).forEach((file) => {
             };
             if (!err) {
                 const filename = collections[index] + '.json';
-                const filePath = path.join(seedPath, filename);
+                const filePath = path.join(seedPath, formatName, filename);
 
                 index += 1;
-                fs.writeFile(filePath, JSON.stringify(results), (err) => {
-                    if (err) return console.log(err);
-                    if (!err) {
-                        console.log('Copy collection from MongoDB: ' + collections[index]);
-                        return writeDBtoFile(index);
-                    }
+                mkdirp(path.join(seedPath, formatName), ()=>{
+                    fs.writeFile(filePath, JSON.stringify(results), (err) => {
+                        if (err) return console.log(err);
+                        if (!err) {
+                            console.log('Copy collection from MongoDB: ' + collections[index]);
+                            return writeDBtoFile(index);
+                        }
+                    });
                 });
             }
         });

@@ -48,56 +48,65 @@ const Backup = (callback) => {
             }
         });
     });
-
     /*
         mongodb
     */
-    const collections = [];
-    fs.readdirSync(seedsPath).forEach((file) => {
-        let collection = file.split('.');
-        collection = collection[0];
-        collections.push(collection);
-    });
-    // console.log(collections);
-
-    const today = new Date();
-    let formatName = today.toLocaleString();
-    formatName = formatName.split('/').join('-');
-    const backupLocation = mongoDBPath + '/' + formatName;
-    mkdirp(backupLocation, (err) => {
-        if (err) {
-            return console.log(err);
-        }
-        (function writeDBtoFile(index) {
-            if (index == collections.length) {
-                if (callback) {
-                    callback();
-                }
-                return console.log('DB backup is finished.');
-                // return process.exit();
+    let db;
+    dbClient.connect(dbUrl, (err, database) => {
+        db = database;
+        db.listCollections().toArray((err, dbCollections)=>{
+            console.log(dbCollections);
+            const collections = [];
+            for (var i = 0; i < dbCollections.length; i++) {
+                collections.push(dbCollections[i].name);
             }
-            dbClient.connect(dbUrl, (err, db) => {
-                db.collection(collections[index]).find({}).toArray((err, results) => {
-                    if (err) {
-                        return console.log(err);
-                    } else {
-                        const filename = collections[index] + '.json';
-                        const filePath = path.join(backupLocation, filename);
-                        index += 1;
-                        fs.writeFile(filePath, JSON.stringify(results), (err) => {
-                            if (err) {
-                                return console.log(err);
-                            }
-                            if (!err) {
-                                console.log('Complete backup: ' + collections[index]);
-                                return writeDBtoFile(index);
-                            }
-                        });
+            console.log(collections);
+            // throw 'stop';
+            const today = new Date();
+            let formatName = today.toLocaleString();
+            formatName = formatName.split('/').join('-');
+            const backupLocation = mongoDBPath + '/' + formatName;
+            mkdirp(backupLocation, (err) => {
+                if (err) {
+                    return console.log(err);
+                }
+                (function writeDBtoFile(index) {
+                    console.log(index, collections.length);
+                    if (index == collections.length) {
+                        console.log('DB backup is finished.');
+                        if (callback) {
+                            return callback();
+                        }
+                        return;
+                        // return process.exit();
                     }
-                });
+                    db.collection(collections[index]).find({}).toArray((err, results) => {
+                        if (err) {
+                            return console.log(err);
+                        } else {
+                            const filename = collections[index] + '.json';
+                            const filePath = path.join(backupLocation, filename);
+                            index += 1;
+                            fs.writeFile(filePath, JSON.stringify(results), (err) => {
+                                if (err) {
+                                    return console.log(err);
+                                }
+                                if (!err) {
+                                    console.log('Complete backup: ' + collections[index]);
+                                    return writeDBtoFile(index);
+                                }
+                            });
+                        }
+                    });
+                })(0);
             });
-        })(0);
+        });
     });
+    // fs.readdirSync(seedsPath).forEach((file) => {
+    //     let collection = file.split('.');
+    //     collection = collection[0];
+    //     collections.push(collection);
+    // });
 };
 // Backup();
 module.exports = Backup;

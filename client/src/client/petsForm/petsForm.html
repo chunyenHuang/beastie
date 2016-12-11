@@ -34,7 +34,9 @@
                     md-require-match
                     md-floating-label="Breed">
                     <md-item-template>
-                        <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">{{item.name}}</span>
+                        <span md-highlight-text="$ctrl.searchText" md-highlight-flags="^i">
+                            {{item.name}} {{item.zhName}}
+                        </span>
                     </md-item-template>
                 </md-autocomplete>
             </div>

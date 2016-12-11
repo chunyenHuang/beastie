@@ -9,19 +9,31 @@ const dbClient = mongodb.MongoClient;
 const ObjectId = mongodb.ObjectId;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
 
-
-const source = 'seeds';
-// Load Datas
 const initDatas = {};
 const routes = [];
-const root = path.join(__dirname, '../');
-const routePath = path.join(root, source);
-fs.readdirSync(routePath).forEach((file) => {
-    const filename = file.split('.')[0];
-    const route = path.join(routePath, file);
-    initDatas[filename] = require(route);
-    routes.push(filename);
-});
+const seedsPath = path.join(__dirname, '../seeds');
+fs
+    .readdirSync(seedsPath)
+    .forEach((file) => {
+        if (file == 'dev-only') {
+            return;
+        }
+        const filePath = path.join(seedsPath, file);
+        if (!fs.statSync(filePath).isDirectory()) {
+            return;
+        }
+        fs
+            .readdirSync(filePath)
+            .forEach((jsonFile) => {
+                if (!jsonFile.endsWith('.json')) {
+                    return;
+                }
+                const filename = jsonFile.split('.')[0];
+                const route = path.join(filePath, jsonFile);
+                initDatas[filename] = require(route);
+                routes.push(filename);
+            });
+    });
 
 dbClient.connect(dbUrl, (err, db) => {
     (function insert(index) {
@@ -32,7 +44,6 @@ dbClient.connect(dbUrl, (err, db) => {
         const collection = routes[index];
         var count = 0;
         db.collection(collection).remove({}, (err) => {
-            console.log();
             if (!err && initDatas[collection].length === 0) {
                 index++;
                 return insert(index);

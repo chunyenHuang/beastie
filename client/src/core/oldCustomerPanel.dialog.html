@@ -29,7 +29,12 @@
             </md-button>
         </div>
     </div>
-    <md-content layout="column" flex class="md-padding">
+    <md-content layout="column" flex class="md-padding" ng-show="$ctrl.todayOrders.length === 0 && $ctrl.newOrders.length===0">
+        <md-subheader class="md-no-sticky">
+            customer has no active orders
+        </md-subheader>
+    </md-content>
+    <md-content layout="column" flex class="md-padding" ng-show="$ctrl.todayOrders.length != 0 || $ctrl.newOrders.length!=0">
         <md-subheader class="md-no-sticky">Today's Orders</md-subheader>
         <div layout="row" flex="none" ng-repeat="order in $ctrl.todayOrders | orderBy:'scheduleAt'" layout-align="start center">
             <div class="" flex="10">
