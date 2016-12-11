@@ -40,7 +40,7 @@ class ordersService {
                     // return cpData;
                     return angular.toJson(cpData);
                 },
-                transformResponse: (res)=>{
+                transformResponse: (res) => {
                     if (!res) {
                         return 'error';
                     } else {
@@ -52,7 +52,7 @@ class ordersService {
                         res = angular.fromJson(res);
                         if (res._id) {
                             // this._setOrderType(res);
-                            this.updateCache(res, ()=>{
+                            this.updateCache(res, () => {
                                 return res;
                             });
                             return res;
@@ -90,7 +90,7 @@ class ordersService {
             }
         });
 
-        for(let prop in Orders){
+        for (let prop in Orders) {
             this[prop] = Orders[prop];
         }
         console.log(this)
@@ -98,25 +98,27 @@ class ordersService {
 
     _getCache(date) {
         date = date || new Date();
-        return this.getByDate({date: date}).$promise;
+        return this.getByDate({
+            date: date
+        }).$promise;
     }
 
     getCache(date) {
         date = date || new Date();
         const dateStr = date.toDateString();
-        return new Promise((resolve)=>{
+        return new Promise((resolve) => {
             if (this.orders && this.orders[dateStr]) {
                 resolve(this.orders[dateStr])
             } else {
                 this.orders = this.orders || {};
-                this._getCache(date).then((res)=>{
+                this._getCache(date).then((res) => {
                     let objFromArr =
-                    Object.assign({}, ...res.map((el)=>{
-                        let output = {};
-                        output[el._id] = el;
-                        return output;
-                    }))
-                    angular.forEach(objFromArr, (obj)=>{
+                        Object.assign({}, ...res.map((el) => {
+                            let output = {};
+                            output[el._id] = el;
+                            return output;
+                        }))
+                    angular.forEach(objFromArr, (obj) => {
                         this._setOrderType(obj);
                     })
                     this.orders[dateStr] = objFromArr;
@@ -136,7 +138,7 @@ class ordersService {
             return;
         }
     }
-    updateCache(order, callback){
+    updateCache(order, callback) {
         if (!order) {
             return;
         } else {
@@ -147,6 +149,9 @@ class ordersService {
                 if (callback) {
                     return callback();
                 }
+            }
+            if (callback) {
+                return callback();
             }
             return;
         }
@@ -167,7 +172,7 @@ class ordersService {
     _setOrderType(order) {
         if (order.isCanceled || order.notShowup || !order.checkInAt) {
             if (!order.isCanceled && !order.notShowup) {
-                return order.type='upcoming';
+                return order.type = 'upcoming';
             }
             return order.type = null;
         }
@@ -206,7 +211,7 @@ class ordersService {
     }
 
 
-       /*
+    /*
         what's the data structure here?
 
 

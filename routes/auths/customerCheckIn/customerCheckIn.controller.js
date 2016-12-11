@@ -111,7 +111,7 @@ class CustomerCheckInController extends AbstractController {
                                 checkInAt: order.checkInAt,
                                 checkInNumber: order.checkInNumber
                             };
-                            res.statusCode = 500;
+                            res.statusCode = 200;
                             res.json(response);
                         }
                     });

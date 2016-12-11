@@ -86,6 +86,8 @@ const ordersListComponent = {
                 this.$location.hash(id);
                 this.$anchorScroll();
             }
+            this.$location.hash(null);
+
         }
 
         isHighlited(id) {

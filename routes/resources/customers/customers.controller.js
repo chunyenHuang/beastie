@@ -5,6 +5,7 @@ class CustomersController extends AbstractController {
         const template = {
             firstname: null,
             lastname: null,
+            email: null,
             address: {
                 street: null,
                 city: null,
