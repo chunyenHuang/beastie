@@ -78,14 +78,14 @@
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}"
                 >
                 
-                <md-grid-tile md-colors="{background: 'background-500-0', color:'grey-500'}"
+                <md-grid-tile md-colors="{background: 'background-500-0', color:'grey-600'}"
                     md-colspan-gt-sm="2" md-rowspan-gt-sm="3"
                     md-colspan-sm="6" md-rowspan-sm="1"
                     md-colspan-xs="2" md-rowspan-sm="1"
                     layout-margin-sm>
                     <div layout layout-fill layout-align="center">
                         <div flex-gt-sm="90" flex-sm="100" layout-fill layout="column" layout-align-gt-sm="start end" layout-align-sm="end start" layout-align-xs="end start">
-                            <div class="md-display-2" md-colors="{color:'grey-600'}">
+                            <div class="md-display-2" md-colors="{color:'grey-800'}">
                                 {{order.scheduleAt | date:'h:mma'}}
                             </div>
                             <div class="md-subhead" hide-sm hide-xs>
@@ -120,7 +120,8 @@
                         check In</span></md-button>
                     <md-button layout-fill ng-click="$ctrl.resetOrder(order)"
                         ng-if="order.isCanceled || order.notShowup"
-                        ng-class="{'md-raised':order.isCanceled || order.notShowup, 'md-accent': order.isCanceled, 'tile-cancel': order.isCanceled, 'md-warn':order.notShowup , 'tile-no-show':order.notShowup }">
+                        md-theme="altTheme"
+                        ng-class="{'md-raised':order.isCanceled || order.notShowup, 'md-warn md-hue-2': order.isCanceled, 'md-primary':order.notShowup }">
                         <div class="md-display-1"><span ng-show="order.isCanceled">canceled</span><span ng-show="order.notShowup">no-show</span></div>
                         <div class="md-subhead">click to reset</div>
                         </md-button></md-grid-tile>
@@ -212,13 +213,13 @@
 
                 <md-grid-tile ng-if="!order.checkInAt" md-colspan-sm="1" md-rowspan-sm="2">
                     <md-button layout-fill ng-click="$ctrl.cancel(order)"
-                        class="md-accent" ng-class="{'md-raised':order.isCanceled}">
+                        class="md-warn md-hue-2" ng-class="{'md-raised':order.isCanceled}">
                         cancel</md-button></md-grid-tile>
 
                 <!--<md-grid-tile md-colors="{background: 'warn-500-0.85'}">-->
                 <md-grid-tile ng-if="!order.checkInAt" md-colspan-sm="1" md-rowspan-sm="2">
-                    <md-button layout-fill ng-click="$ctrl.notShowup(order)"
-                        class="md-warn" ng-class="{'md-raised':order.notShowup}">
+                    <md-button layout-fill ng-click="$ctrl.notShowup(order)" md-theme="altTheme"
+                        class="md-primary" ng-class="{'md-raised':order.notShowup}">
                         no-show</md-button layout-fill></md-grid-tile>
                 <md-grid-tile  md-colspan-gt-sm="2" md-rowspan-gt-sm="1" md-colspan-sm="2" md-rowspan-sm="1"
                     ng-if="order.checkInAt && !order.checkOutAt" md-colors="{background: 'primary-500-1'}">
