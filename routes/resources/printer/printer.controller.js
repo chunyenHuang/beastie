@@ -11,9 +11,7 @@ class PrinterController extends AbstractController {
             this.device = new escpos.USB();
             this.printer = new escpos.Printer(this.device);
         } catch (err) {
-            console.log('-----------------------------------');
-            console.log('Please Connect the Receipt Printer.');
-            console.log('-----------------------------------');
+            console.log('------------ Please Connect the Receipt Printer.');
         }
 
     }

@@ -40,8 +40,8 @@ dbClient.connect(dbUrl, (err, db) => {
                 foreignField: 'customer_id',
                 as: 'pets'
             }
-            }
-        ]);
+        }
+    ]);
     query.toArray((err, results) => {
         if (!err) {
             if (results.length > 0) {
