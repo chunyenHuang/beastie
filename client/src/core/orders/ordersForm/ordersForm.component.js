@@ -243,6 +243,7 @@ const ordersFormComponent = {
         }
 
         submitOrder() {
+            console.log(this.candidates);
             this.isSubmitting = true;
             let newOrder;
             for (let prop in this.candidates) {
@@ -254,6 +255,7 @@ const ordersFormComponent = {
                     break;
                 }
             }
+            console.log(newOrder);
             if (newOrder) {
                 delete newOrder['$promise'];
                 delete newOrder['$resolved'];
@@ -269,6 +271,7 @@ const ordersFormComponent = {
                     });
                 } else {
                     this.Orders.save(newOrder, (res) => {
+                        console.log(res);
                         this.Orders.updateCache(res, ()=>{
                             this.candidates[newOrder.pet_id] = false;
                             return this.submitOrder();

@@ -7,19 +7,25 @@ export default (locals, parent) => ({
     controller: /* @ngInject */ class OpenDocumentController {
         static get $inject() {
             return [
-                '$timeout', '$document', '$mdDialog', 'Customers', 'SharedUtil'
+                '$timeout', '$document', '$mdDialog', 'Customers', 'Orders', 'SharedUtil'
             ];
         }
         constructor(
-            $timeout, $document, $mdDialog, Customers, SharedUtil
+            $timeout, $document, $mdDialog, Customers, Orders, SharedUtil
         ) {
             this.$timeout = $timeout;
             this.$document = $document;
             this.$mdDialog = $mdDialog;
             this.Customers = Customers;
+            this.Orders = Orders;
             this.daysBetween = SharedUtil.daysBetween;
             this.isToday = SharedUtil.isToday;
-            Customers.get({
+
+            this.setCustomer();
+        }
+
+        setCustomer() {
+            this.Customers.get({
                 id: this.customer_id
             }, (customer) => {
                 this.customer = customer;
@@ -42,6 +48,7 @@ export default (locals, parent) => ({
                     !order.checkOutAt
                 ) {
                     if (this.isToday(order.scheduleAt)) {
+                        console.log(order);
                         this.todayOrders.push(order);
                     } else if (this.daysBetween(order.scheduleAt) > 0) {
                         this.newOrders.push(order);
@@ -56,6 +63,31 @@ export default (locals, parent) => ({
             selectItem.customer = this.customer;
             console.log(selectItem);
             this.$mdDialog.hide(selectItem);
+        }
+
+        cancelConfirm(order, force) {
+            if (!order) {
+                return;
+            }
+            this.cancelPending = order;
+            if (force) {
+                this.Orders.update({
+                    id: order._id
+                }, {
+                    isCanceled: true,
+                    notShowup: false,
+                    checkInAt: null,
+                    isPaid: false,
+                    checkOutAt: null
+                }, (data) => {
+                    this.cancelPending = null;
+                    this.setCustomer();
+                });
+            } else {
+                this.$timeout(() => {
+                    this.cancelPending = null;
+                }, 3000);
+            }
         }
 
         cancel() {

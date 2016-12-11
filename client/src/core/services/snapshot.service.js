@@ -97,14 +97,15 @@ class snapshotService {
                     const context = canvas.getContext('2d');
                     canvas.width = this.video.videoWidth;
                     canvas.height = this.video.videoHeight;
+                    console.log(canvas.width, canvas.height);
                     context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
-                    const dataUrl = canvas.toDataURL('image/png');
+                    const dataUrl = canvas.toDataURL('image/png', 0.5); // value
                     canvas.toBlob((blob) => {
                         this.$mdDialog.hide({
                             dataUrl: dataUrl,
                             blob: blob
                         });
-                    });
+                    }, 'image/png', 0.5);
 
                 }
             },

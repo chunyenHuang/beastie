@@ -1,4 +1,4 @@
-<div id="old-customer-panel-dialog" class="" layout="column" flex layout-fill>
+<div id="old-customer-panel-dialog" class="" layout="column" flex>
     <md-toolbar class="md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
         <div class="">
             Customer Panel
@@ -10,13 +10,13 @@
             <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
         </div>
     </md-toolbar>
-    <md-content layout="column" flex class="md-padding">
+    <div layout="row" flex="none" class="md-padding">
         <div class="" layout="row" flex="none" layout-align="center center">
             <h3>
                 {{$ctrl.customer.firstname}} {{$ctrl.customer.lastname}} - {{$ctrl.customer.phone}}
             </h3>
         </div>
-        <md-divider></md-divider>
+        <div class="" flex></div>
         <div class="" layout="row" flex="none" layout-align="center center">
             <md-button ng-click="$ctrl.selectAndConfirm('newOrder')" class="md-primary md-raised">
                 New Order
@@ -28,30 +28,61 @@
                 Credits
             </md-button>
         </div>
-
-        <md-divider></md-divider>
-        <div class="md-padding" layout="column" flex>
-            <div layout="row" ng-repeat="order in $ctrl.todayOrders | orderBy:'scheduleAt'" layout-align="start center">
-                <div class="" flex>
-                    {{order.scheduleAt | date:'MM-dd-yyyy @ h:mma'}}
-                </div>
-                <div class="">
-                    <md-button ng-click="$ctrl.selectAndConfirm('checkIn', order)">
-                        check in
-                    </md-button>
-                </div>
+    </div>
+    <md-content layout="column" flex class="md-padding">
+        <md-subheader class="md-no-sticky">Today's Orders</md-subheader>
+        <div layout="row" flex="none" ng-repeat="order in $ctrl.todayOrders | orderBy:'scheduleAt'" layout-align="start center">
+            <div class="" flex="10">
             </div>
-            <div layout="row" ng-repeat="order in $ctrl.newOrders |  orderBy:'scheduleAt'" layout-align="start center">
-                <div class="" flex>
-                    {{order.scheduleAt | date:'MM-dd-yyyy @ h:mma'}}
-                </div>
-                <div class="">
-                    <md-button ng-click="$ctrl.selectAndConfirm('editOrder', order)">
-                        Edit
-                    </md-button>
-                </div>
+            <div class="" flex>
+                {{order.scheduleAt | date:'MM-dd-yyyy @ h:mma'}}
             </div>
-
+            <div class="">
+                <md-button
+                    ng-click="$ctrl.selectAndConfirm('checkIn', order)"
+                    class="md-primary" ng-hide="$ctrl.cancelPending == order">
+                    <span ng-show="!order.checkInNumber"> Check In</span>
+                    <span ng-show="order.checkInNumber"> View</span>
+                </md-button>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.selectAndConfirm('editOrder', order)" class="md-accent" ng-hide="$ctrl.cancelPending == order">
+                    Edit
+                </md-button>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.cancelConfirm(order)" class="md-warn" ng-hide="$ctrl.cancelPending == order">
+                    cancel
+                </md-button>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.cancelConfirm(order, true)" class="md-warn md-raised" ng-show="$ctrl.cancelPending == order">
+                    confirm cancel
+                </md-button>
+            </div>
+        </div>
+        <md-subheader class="md-no-sticky">Incoming Orders</md-subheader>
+        <div layout="row" flex="none" ng-repeat="order in $ctrl.newOrders |  orderBy:'scheduleAt'" layout-align="start center">
+            <div class="" flex="10">
+            </div>
+            <div class="" flex>
+                {{order.scheduleAt | date:'MM-dd-yyyy @ h:mma'}}
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.selectAndConfirm('editOrder', order)" class="md-accent" ng-hide="$ctrl.cancelPending == order">
+                    Edit
+                </md-button>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.cancelConfirm(order)" class="md-warn" ng-disabled="$ctrl.cancelPending == order" ng-hide="$ctrl.cancelPending == order">
+                    cancel
+                </md-button>
+            </div>
+            <div class="">
+                <md-button ng-click="$ctrl.cancelConfirm(order, true)" class="md-warn md-raised" ng-show="$ctrl.cancelPending == order">
+                    confirm cancel
+                </md-button>
+            </div>
         </div>
     </md-content>
 </div>
