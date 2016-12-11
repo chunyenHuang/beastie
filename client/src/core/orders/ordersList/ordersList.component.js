@@ -87,7 +87,6 @@ const ordersListComponent = {
                 this.$anchorScroll();
             }
             this.$location.hash(null);
-
         }
 
         isHighlited(id) {
@@ -111,6 +110,7 @@ const ordersListComponent = {
             key = key || 'all';
             this.showType = key;
             key === 'all' ? this.showAllTypes = true : this.showAllTypes = false;
+            key === 'checkInAt' || 'processing' ? this.orderBy = 'checkInNumber' : this.orderBy = 'scheduleAt';
             if (key === 'upcoming') {
                 this.$timeout(() => {
                     this.scrollToId('top');
@@ -147,7 +147,7 @@ const ordersListComponent = {
                     css: 'md-primary'
                 }
             };
-            this.sortDate = 'scheduleAt';
+            this.orderBy = 'scheduleAt';
             this.orderFlags = {
                 isCanceled: false,
                 notShowup: false,
@@ -376,11 +376,14 @@ const ordersListComponent = {
                             this.orders.splice(index, 1, updatedOrder);
                             this.countOrderType();
                             this.$timeout(() => {
+                                this.$stateParams['#'] = updatedOrder._id;
+                            }, 250);
+                            this.$timeout(() => {
                                 this.setType('checkInAt');
                             }, 750);
                             this.$timeout(() => {
                                 this.scrollToId(updatedOrder._id);
-                            }, 1300);
+                            }, 1500);
                         });
                     });
                 });

@@ -24,7 +24,7 @@ const ordersModule = angular
                 template: '<orders layout="column" flex></orders>'
             })
             .state('core.orders.list', {
-                url: '/list?type',
+                url: '/list?type&#',
                 // component: 'orders'
                 template: '<orders-list layout="column" flex></orders-list>'
             

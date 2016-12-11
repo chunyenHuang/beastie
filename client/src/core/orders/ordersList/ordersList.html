@@ -67,7 +67,7 @@
         </section>
         <div flex="100 "id="top"></div>
         <div flex="100" flex-md="90" flex-gt-md="80" 
-            ng-repeat-start="order in $ctrl.orders | orderBy: $ctrl.sortDate track by order._id"
+            ng-repeat-start="order in $ctrl.orders | orderBy: $ctrl.orderBy track by order._id"
             id="{{order._id}}"
             class="js-order-tile animate-show"
             ng-show="$ctrl.showAllTypes||(order.type == $ctrl.showType)"
