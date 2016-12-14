@@ -66,6 +66,8 @@ const Backup = (callback) => {
             const today = new Date();
             let formatName = today.toLocaleString();
             formatName = formatName.split('/').join('-');
+            formatName = formatName.split(':').join('-');
+            formatName = formatName.split(',').join('-');
             const backupLocation = mongoDBPath + '/' + formatName;
             mkdirp(backupLocation, (err) => {
                 if (err) {
