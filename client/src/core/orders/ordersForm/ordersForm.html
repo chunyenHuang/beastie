@@ -79,7 +79,7 @@
                 <md-subheader>Pets</md-subheader>
                 <div layout="row" class="md-padding" ng-repeat="pet in $ctrl.pets" ng-click="($ctrl.pets.length>1)?($ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]):false" flex="none">
                     <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" ></md-checkbox>
-                    <img ng-src="/images/pets/{{pet._id}}.png" alt="no picture yet"/>
+                    <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/>
                 </div>
             </md-content>
             <md-input-container class="md-block" flex-gt-sm>

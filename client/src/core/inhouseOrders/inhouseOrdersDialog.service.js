@@ -70,7 +70,7 @@ class inhouseOrdersDialog {
                                 this.populateInhouseOrders();
                             });
                             this.Orders.query({
-                                pet_id: this.order.pet_id,
+                                pet_id: this.order.pet_id
                                 // isCanceled: false,
                                 // isPaid: true,
                                 // notShowup: false

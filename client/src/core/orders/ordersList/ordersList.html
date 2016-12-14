@@ -1,14 +1,14 @@
 <div id="orders-list" layout="column" flex>
     <nav layout layout-align="space-between center" flex="none" >
         <section layout>
-            <md-button class="md-raised" 
+            <md-button class="md-raised"
                 ng-repeat="mode in $ctrl.dateModeList"
                 ng-click="$ctrl.changeDate(0, $ctrl.getToday())"
                 ng-class="{'md-primary':$ctrl.isToday($ctrl.date)}">
                 {{mode}}
             </md-button>
         </section>
-        
+
         <section layout>
             <md-button ng-click="$ctrl.changeDate(-1)" aria-label="yesterday" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
                 <md-icon class="s48" md-svg-src="chevron-left"></md-icon></md-button>
@@ -23,7 +23,7 @@
             <md-button ng-click="$ctrl.changeDate(1)" aria-label="tomorrow" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
                 <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
         </section>
-        
+
         <section layout>
             <md-button class="md-raised" hide-sm hide-xs
                 ng-repeat="(key, type) in $ctrl.typeList"
@@ -32,7 +32,7 @@
                 {{type.text}}<br/>
                 <span class="md-display-1">{{type.count}}</span>
             </md-button>
-            
+
             <md-menu hide-gt-sm>
                 <md-button aria-label="Open type menu" class="md-raised md-primary" layout
                     ng-click="$mdOpenMenu()">
@@ -46,10 +46,10 @@
                 </md-button>
                 <md-menu-content width="4">
                     <md-menu-item ng-repeat="(key, type) in $ctrl.typeList">
-                        <md-button 
+                        <md-button
                           ng-click="$ctrl.setType(key)"
                           ng-class="{'{{type.css}}': $ctrl.showType==key}">
-                          <span md-menu-align-target class="md-subhead">{{type.text | uppercase}} ({{type.count}})</span> 
+                          <span md-menu-align-target class="md-subhead">{{type.text | uppercase}} ({{type.count}})</span>
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
@@ -66,18 +66,18 @@
             </div>
         </section>
         <div flex="100 "id="top"></div>
-        <div flex="100" flex-md="90" flex-gt-md="80" 
+        <div flex="100" flex-md="90" flex-gt-md="80"
             ng-repeat-start="order in $ctrl.orders | orderBy: $ctrl.orderBy track by order._id"
             id="{{order._id}}"
             class="js-order-tile animate-show"
             ng-show="$ctrl.showAllTypes||(order.type == $ctrl.showType)"
             ng-class="{'grid-highlight': $ctrl.isHighlited(order._id)}">
             <!--ng-class="{'grid-highlight': $ctrl.isToday(order.scheduleAt) && $ctrl.dateMode!=='today'}">-->
-            <md-grid-list md-cols="2" md-cols-sm="6" md-cols-gt-sm="9" md-gutter="0.4em" 
+            <md-grid-list md-cols="2" md-cols-sm="6" md-cols-gt-sm="9" md-gutter="0.4em"
                 md-row-height-gt-sm="8:7" md-row-height-sm="10:7" md-row-height-xs="2:1"
                 ng-class="{'label-checkedin':order.checkInAt, 'label-canceled':order.isCanceled, 'label-noshow':order.notShowup}"
                 >
-                
+
                 <md-grid-tile md-colors="{background: 'background-500-0', color:'grey-600'}"
                     md-colspan-gt-sm="2" md-rowspan-gt-sm="3"
                     md-colspan-sm="6" md-rowspan-sm="1"
@@ -165,13 +165,14 @@
                     ng-if="order.checkInAt && !order.checkOutAt && !$ctrl.$mdMedia('gt-sm')">
                     <md-button layout-fill ng-disabled="!order.checkInAt" ng-click="$ctrl.takeSnapshot(order.pets[0]._id, order)">
                         <md-icon class="s30" md-svg-src="camera" aria-label="take photos"></md-icon></md-button></md-grid-tile>
-                
+
                 <md-grid-tile md-colspan-gt-sm="2" md-rowspan-gt-sm="2" md-colspan-sm="2" md-rowspan-sm="2">
                     <md-button ng-click="$ctrl.customerDetail(order.customers[0]._id, order, 'gallery')" layout-fill>
-                        <div class="tile-pet-img" layout-fill
+                        <!-- <div class="tile-pet-img" layout-fill
                             ng-show="order.pictures.length"
                             ng-style="{'background-image':'url('+order.pictures[order.pictures.length-1]+')'}">
-                        </div>
+                        </div> -->
+                        <img ng-src="{{order.pictures[order.pictures.length-1]}}" alt="">
                         <div layout-fill layout layout-align="center center"
                             ng-hide="order.pictures.length">
                             <md-icon class="s100 pet-img-placeholder" md-svg-src="dog-saint-bernard" aria-label="pet photo"></md-icon>

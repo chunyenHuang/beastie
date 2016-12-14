@@ -69,7 +69,8 @@ class TransactionsDialogService {
                     this.Settings.query({
                         type: 'company'
                     }).$promise.then((res)=>{
-                        this.tax = res[0].tax;
+                        this.tax = parseFloat(res[0].tax);
+                        console.log(this.tax);
                     });
 
                     this.resetTransaction();
