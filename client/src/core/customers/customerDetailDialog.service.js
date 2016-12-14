@@ -52,13 +52,11 @@ class customerDetailDialog {
 
                     this.pictures = {};
 
-                    this.$timeout(() => {
-                        this.Customers.get({
-                            id: this.customer_id
-                        }, (customer) => {
-                            this.customer = customer;
-                        });
-                    }, 300);
+                    this.Customers.get({
+                        id: this.customer_id
+                    }, (customer) => {
+                        this.customer = customer;
+                    });
 
                     switch (this.tab) {
                         case 'gallery':

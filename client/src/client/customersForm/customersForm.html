@@ -33,6 +33,10 @@
                     <label>Last Name</label>
                     <input required type="text" name="last name" ng-model="$ctrl.customer.lastname" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Email</label>
+                    <input required type="email" name="email" ng-model="$ctrl.customer.email" ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
             </div>
         </section>
 
@@ -69,7 +73,7 @@
 
                     <md-input-container class="md-subhead">
                         <label>Zip Code</label>
-                        <input required type="number" min="10000" max="100000" name="zip code" ng-model="$ctrl.customer.address.zipCode" ng-blur="$ctrl.updateProgressVal()"></input>
+                        <input required type="text" name="zip code" ng-model="$ctrl.customer.address.zipCode" ng-blur="$ctrl.updateProgressVal()"></input>
                     </md-input-container>
                 </div>
             </div>

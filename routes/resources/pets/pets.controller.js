@@ -209,6 +209,43 @@ class PetsController extends AbstractController {
         });
     }
 
+    uploadVaccinationDocument(req, res) {
+        if (!req.file) {
+            res.statusCode = 400;
+            res.json({
+                message: 'no file.'
+            });
+            return;
+        }
+        if (!req.body.filename) {
+            res.statusCode = 400;
+            res.json({
+                message: 'no filename ( pet_id + "-" + vaccine.keyID + ".extension")'
+            });
+            return;
+        }
+        const newName = req.body.filename;
+        req.oldPath = path.join(global.uploads, req.file.filename);
+        req.newPath = path.join(global.images, 'vaccinations', newName);
+        this._moveFile(req, res, () => {
+            const query = req.collection.find({
+                _id: ObjectId(req.params.id),
+                isDeleted: false
+            });
+            query.toArray((err, results) => {
+                let vaccine;
+                for (var i = 0; i < results[0].vaccinations.length; i++) {
+                    vaccine = results[0].vaccinations[i];
+                    if(vaccine.keyID == vaccine.keyID){
+                        vaccine.document = path.join('images/vaccinations', newName);
+                    }
+                }
+                req.body = results[0];
+                return this.update(req, res);
+            });
+        });
+    }
+
     getPicturesPath(req, res) {
         this._getPetsPicturesPath(req.params.id, (filenames) => {
             res.statusCode = 200;

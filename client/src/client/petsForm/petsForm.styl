@@ -1,4 +1,6 @@
 client-pets-form
+    .alert
+        color: #f51c4d
     .error
         color: #f51c4d
         font-size: 1.2em
@@ -10,8 +12,9 @@ client-pets-form
         button
             margin: 0px
     .form
-        padding: 50px
-        font-size: 1.5em
+        padding-left: 50px
+        padding-right: 50px
+        font-size: 1.5em!important
     .header
         background-color:beige
         min-height: 80px
@@ -20,7 +23,14 @@ client-pets-form
         padding-right: 50px
     md-input-container
         .md-input
-            margin-top: 10px
+            margin-top: 10px!important
+        .md-datepicker-input
+            font-size: 1.2em
+
+    .vaccine-item
+        padding: 10px 0px 20px 30px
+        border: 1px dashed #a8a8a8
+        margin-bottom: 15px
 
     .review
         p
@@ -41,3 +51,23 @@ client-pets-form
     .photo-input:focus + label,
     .photo-input + label:hover
         background-color: red;
+
+    .upload-input
+    	width: 0.1px;
+    	height: 0.1px;
+    	opacity: 0;
+    	overflow: hidden;
+    	position: absolute;
+    	z-index: -1;
+    .upload-input + label
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+        background-color: black;
+        display: inline-block;
+    .upload-input:focus + label,
+    .upload-input + label:hover
+        background-color: red;
+
+    .preview-document
+        min-height: 400px
