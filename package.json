@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "----------Installation-----------": "",
-    "install:all": "npm i && npm run global && node seeder",
+    "install:all": "npm i && npm run global",
     "preinstall": "",
     "postinstall": "cd client && npm i",
     "reinstall": "npm cache clean && rm -rf node_modules && npm run global && npm install",
@@ -24,7 +24,7 @@
     "dev:front-c9": "NODE_ENV=development CLOUD9=true node server.js",
     "dev:back": "NODE_ENV=dev nodemon server.js",
     "----------Production----------": "",
-    "beastie": "npm install --production && npm run build && npm start",
+    "beastie": "npm install --production && npm start",
     "build": "webpack --config webpack.dist.config.js",
     "start": "nodemon server.js",
     "----------other----------": "",
