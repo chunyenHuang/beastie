@@ -1,0 +1,101 @@
+<nav layout-padding layout>
+    <div flex></div>
+    <md-nav-bar md-selected-nav-item="$ctrl.mode" nav-bar-aria-label="navigation links">
+        <md-nav-item 
+            ng-repeat="mode in $ctrl.modes"
+            md-nav-click="$ctrl.setMode(mode)" name="{{mode}}">{{mode}}
+        </md-nav-item>
+    </md-nav-bar>
+    <div flex></div>
+</nav>
+
+<md-content layout="column">
+    <md-button ng-click="$ctrl.test()"></md-button>
+<div layout layout-wrap flex layout-padding
+    ng-if="$ctrl.Transactions.finalDataSets">
+    
+    <div flex layout layout-align="center" layout-padding>
+        <div layout="column" layout-align="start start" >
+            <div class="md-subhead">TOTAL</div>
+            <div class="md-display-3">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.total) | number}}</div> 
+        </div>
+        <div layout="column" layout-align="start start" class="md-subhead">
+            <div>Cash: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.cash) }}</div> 
+            <div>Card: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.card) }}</div>
+            <div>---</div>
+            <div>Orders: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.order_id) }}</div> 
+            <div>Self services: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.selfService_id) }}</div> 
+            <div>Credits: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.credit_id) }}</div>
+        </div>
+    </div>
+    
+    <div layout="row" layout-align="center center" flex="nogrow" class="md-headline">
+        <md-button ng-click="$ctrl.changeTime(-1)" aria-label="yesterday" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
+                <md-icon class="s48" md-svg-src="chevron-left"></md-icon></md-button>
+        
+        <md-button ng-click="$ctrl.calOpen=!$ctrl.calOpen">
+            
+            <span class="md-headline">
+            <div ng-show="$ctrl.mode == 'day'">
+                {{$ctrl.date | date: 'EEEE'}}<br/>
+                {{$ctrl.date | date: 'M/dd/y'}}
+            </div>
+            
+            <div ng-show="$ctrl.mode == 'last 7 days'">
+                {{$ctrl.range.from | date: 'M/dd/y'}}<br/>
+                |<br/>
+                {{$ctrl.range.to | date: 'M/dd/y'}}
+            </div>
+            
+            <div ng-show="$ctrl.mode == 'month'">
+                {{$ctrl.date | date: 'MMMM'}}<br/>
+                {{$ctrl.date | date: 'yyyy'}}
+            </div>
+            
+            <div ng-show="$ctrl.mode == 'year'">
+                {{$ctrl.range.from | date: 'MMM yyyy'}}<br/>
+                |<br/>
+                {{$ctrl.date | date: 'MMM yyyy'}}
+            </div>
+            </span>
+            <md-datepicker hide ng-model="$ctrl.date" md-is-open="$ctrl.calOpen"
+                ng-change="$ctrl.$onInit()"></md-datepicker>
+        </md-button>
+        
+        <md-button ng-click="$ctrl.changeTime(1)" aria-label="tomorrow" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
+                <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
+    </div>
+    
+    <div flex layout layout-align="center" layout-padding>
+        <div layout="column" layout-align="start start" >
+            <div class="md-subhead">TOTAL</div>
+            <div class="md-display-3">{{ $ctrl._getCount($ctrl.Transactions.finalDataSets.total) | number}}</div> 
+        </div>
+        <div layout="column" layout-align="start start" class="md-subhead">
+            <div>Cash: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.cash) }}</div> 
+            <div>Card: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.card) }}</div>
+            <div>---</div>
+            <div>Orders: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.order_id) }}</div> 
+            <div>Self services: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.selfService_id) }}</div> 
+            <div>Credits: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.credit_id) }}</div>
+        </div>
+    </div> 
+    
+    <!--<div layout="column" layout-align="center center" flex>-->
+    <!--    <div>ORDERS</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.order_id) }}</div> -->
+    <!--    <div>SELFSERVICES</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.selfService_id) }}</div> -->
+    <!--    <div>CREDITS</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.credit_id) }}</div> -->
+    <!--</div>-->
+</div>
+
+<div layout layout-wrap>
+    <div flex="10"></div>
+    <div flex>
+        <canvas flex id="myChart" width="400" height="150"></canvas>
+    </div>
+    <div flex="10"></div>
+</div>
+<!--<div class="" ng-repeat="data in $ctrl.Transactions.datas">-->
+<!--    {{$index}} - {{data}}-->
+<!--</div>-->
+</md-content>
