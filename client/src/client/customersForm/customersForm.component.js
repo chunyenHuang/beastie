@@ -4,7 +4,8 @@ import './customersForm.styl';
 const customersFormComponent = {
     template,
     bindings: {
-        customerId: '<'
+        customerId: '<',
+        mode: '@'
     },
     controller: /* @ngInject */ class customersFormController {
         static get $inject() {

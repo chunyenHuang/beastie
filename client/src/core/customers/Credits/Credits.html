@@ -66,7 +66,7 @@
         </md-card>
     </div>
     <md-content class="" flex layout="column">
-        <div class="md-padding header" layout="row" flex>
+        <div class="md-padding header" layout="row" flex="none">
             <div class="" flex="25">
                 credit name
             </div>
@@ -80,7 +80,7 @@
                 date
             </div>
         </div>
-        <div class="md-padding" layout="row" flex ng-repeat="item in $ctrl.credits.purchased | orderBy:'createdAt':true">
+        <div class="md-padding" layout="row" flex="none" ng-repeat="item in $ctrl.credits.purchased | orderBy:'createdAt':true">
             <div class="" flex="25">
                 {{item.package.name}} {{item.package.zhName}}
             </div>
@@ -95,7 +95,7 @@
             </div>
         </div>
 
-        <div class="md-padding header" layout="row" flex>
+        <div class="md-padding header" layout="row" flex="none">
             <div class="" flex="25">
                 services
             </div>
@@ -109,7 +109,7 @@
                 date
             </div>
         </div>
-        <div class="md-padding" layout="row" flex ng-repeat="item in $ctrl.credits.creditUsed | orderBy:'createdAt':true">
+        <div class="md-padding" layout="row" flex="none" ng-repeat="item in $ctrl.credits.creditUsed | orderBy:'createdAt':true">
             <div class="" flex="25">
                 {{item.service.services[0].name}}
             </div>

@@ -26,6 +26,9 @@ export default (locals, parent) => ({
         go(inputNumbers) {
             this.phone = inputNumbers || this.phone;
             if (this.validate(inputNumbers)) {
+                if (this.history.indexOf(this.phone) > -1) {
+                    this.history.splice(this.history.indexOf(this.phone), 1);
+                }
                 this.history.unshift(this.phone);
                 this.localStorageService.set('beastie-query-history', this.history);
                 this.$mdDialog.hide(this.phone);
@@ -33,7 +36,7 @@ export default (locals, parent) => ({
                 return;
             }
         }
-        
+
         quickSelect(phone) {
             this.$mdDialog.hide(phone);
         }

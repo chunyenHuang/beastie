@@ -23,6 +23,7 @@ const images = path.join(root, 'files/images');
 const inhouseOrders = path.join(images, 'inhouseOrders');
 const orders = path.join(images, 'orders');
 const pets = path.join(images, 'pets');
+const vaccinations = path.join(images, 'vaccinations');
 const customers = path.join(images, 'customers');
 
 /*
@@ -31,7 +32,7 @@ const customers = path.join(images, 'customers');
 const DirPaths = [
     files,
     mongoDBPath,
-    uploads, images, inhouseOrders, orders, pets, customers
+    uploads, images, inhouseOrders, orders, pets, customers, vaccinations
 ];
 
 const Backup = (callback) => {
@@ -65,6 +66,8 @@ const Backup = (callback) => {
             const today = new Date();
             let formatName = today.toLocaleString();
             formatName = formatName.split('/').join('-');
+            formatName = formatName.split(':').join('-');
+            formatName = formatName.split(',').join('-');
             const backupLocation = mongoDBPath + '/' + formatName;
             mkdirp(backupLocation, (err) => {
                 if (err) {

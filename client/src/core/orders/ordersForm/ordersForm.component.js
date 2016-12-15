@@ -125,6 +125,7 @@ const ordersFormComponent = {
             this.Pets.get({
                 id: pet_id
             }, (pet) => {
+                console.log(pet);
                 this.pets = [pet];
                 this.candidates = (this.candidates) ? this.candidates : {};
                 angular.forEach(this.pets, (pet) => {
@@ -137,6 +138,7 @@ const ordersFormComponent = {
             this.Pets.query({
                 customer_id: this.customer_id
             }, (pets) => {
+                console.log(pets);
                 this.pets = pets;
                 this.candidates = (this.candidates) ? this.candidates : {};
                 angular.forEach(this.pets, (pet) => {

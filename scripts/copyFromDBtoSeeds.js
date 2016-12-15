@@ -14,6 +14,8 @@ const mkdirp = require('mkdirp');
 const today = new Date();
 let formatName = today.toLocaleString();
 formatName = formatName.split('/').join('-');
+formatName = formatName.split(':').join('-');
+formatName = formatName.split(',').join('-');
 
 const collections = [
     'customers', 'pets', 'listItems', 'settings', 'users'

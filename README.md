@@ -6,10 +6,12 @@ Customer Management System for Pet shop
 node
 npm
 mongoDB
+nssm (window service)
 
 ##### Installation
 ```
 npm run install:all
+npm run init
 ```
 ##### Development
 ```
@@ -18,7 +20,8 @@ npm run dev:back
 ```
 ##### Production
 ```
-npm run beastie
+npm run build
+npm run start
 ```
 
 ##### ssl
@@ -35,11 +38,8 @@ openssl x509 -req -days 36500 -in server.csr -signkey   server.key -out server.c
 ##### Templates
 ```
 /client/src
-gulp module --name AngularModuleName --parent ParentFolder
-gulp component --name AngularModuleName --parent ParentFolder
-
-/routes
-gulp route --name RouteName --parent ParentFolder
+types [module, component, service, dialogService, route]
+gulp temp --type [type] --name [name] --parent [parentFolder]
 ```
 
 # Notes

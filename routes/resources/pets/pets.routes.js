@@ -35,5 +35,12 @@ module.exports = (app) => {
         })
         .put(Pets.upload.bind(Pets))
         .post(Pets.upload.bind(Pets));
+    app.route('/pets?/:id/uploadVaccinationDocuments?')
+        .all((req, res, next) => {
+            req.collection = req.db.collection(dbCollectionName);
+            next();
+        })
+        .put(Pets.uploadVaccinationDocument.bind(Pets))
+        .post(Pets.uploadVaccinationDocument.bind(Pets));
 
 };

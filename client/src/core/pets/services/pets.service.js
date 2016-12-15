@@ -14,13 +14,16 @@ class petsService {
                     id: '@id'
                 },
                 transformResponse: (res) => {
+                    if (!res || res == 'Not Found') {
+                        return;
+                    }
                     res = angular.fromJson(res);
                     res.birthday = new Date(res.birthday);
                     for (var i = 0; i < res.vaccinations.length; i++) {
                         res.vaccinations[i].issuedAt = new Date(res.vaccinations[i].issuedAt);
                         res.vaccinations[i].expiredAt = new Date(res.vaccinations[i].expiredAt);
                     }
-                    console.warn(res);
+                    // console.warn(res);
                     return res;
                 }
             },
@@ -96,9 +99,24 @@ class petsService {
                     console.log(data);
                     return formData;
                 }
+            },
+            uploadVaccinationDocuments: {
+                method: 'PUT',
+                url: '/pets/:id/uploadVaccinationDocuments',
+                params: {
+                    id: '@id'
+                },
+                headers: {
+                    'Content-Type': undefined
+                },
+                transformRequest: (data) => {
+                    const formData = new FormData();
+                    for (let prop in data) {
+                        formData.append(prop, data[prop]);
+                    }
+                    return formData;
+                }
             }
-
-
         });
         return Pets;
     }

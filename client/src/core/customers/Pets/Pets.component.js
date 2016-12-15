@@ -35,6 +35,15 @@ const petsComponent = {
                 this.selectedPet = this.pets[0];
             }
         }
+
+        changePet(pet) {
+            this.$timeout(()=>{
+                this.selectedPet = null;
+            });
+            this.$timeout(()=>{
+                this.selectedPet = pet;
+            },5);
+        }
     }
 };
 export default petsComponent;

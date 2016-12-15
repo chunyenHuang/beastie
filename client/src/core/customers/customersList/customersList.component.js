@@ -28,9 +28,10 @@ const customersListComponent = {
                 this.Task.off();
                 this.customers = customers;
                 // console.log(this.customers[0]);
-                // this.select({
-                //     _id: '58451388d3c7554fb9b01d4e'
-                // });
+                this.select({
+                    _id: '5844ccf6c1979e3e641136b0',
+                    tab: 'pets'
+                });
             });
         }
 

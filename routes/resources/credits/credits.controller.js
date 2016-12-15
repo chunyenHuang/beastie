@@ -78,59 +78,59 @@ class creditsController extends AbstractController {
     }
 
     counterUpdate(req, res) {
-        console.log(req.body.customer_id);
-        if (req.body._id) {
-            delete req.body._id;
-        }
-        req.collection.updateOne({
-            customer_id: ObjectId(req.body.customer_id)
-        }, {
-            $set: req.body
-        }, (err) => {
-            if (!err) {
-                res.statusCode = 201;
-                this.getCredits(req, res);
-            } else {
-                res.sendStatus(500);
+            console.log(req.body.customer_id);
+            if (req.body._id) {
+                delete req.body._id;
             }
-        });
-    }
-    //
-    // queryCredit(req, res) {
-    //     Object.assign(req.query, {
-    //         isDeleted: false
-    //     });
-    //     console.log(req.query);
-    //     const query = req.collection.aggregate([
-    //         {
-    //             $match: req.query
-    //         },
-    //         {
-    //             $lookup: {
-    //                 from: 'customers',
-    //                 localField: 'customer_id',
-    //                 foreignField: '_id',
-    //                 as: 'customers'
-    //             }
-    //         }
-    //     ]);
-    //     query.toArray((err, results) => {
-    //         // fix wrong condition
-    //         if (!err) {
-    //             if (results.length > 0) {
-    //                 res.statusCode = 200;
-    //                 res.json(results);
-    //             } else {
-    //                 // res.sendStatus(404);
-    //                 res.status(404).send({
-    //                     error: 'Sorry, we cannot find that!'
-    //                 });
-    //             }
-    //         } else {
-    //             res.sendStatus(500);
-    //         }
-    //     });
-    // }
+            req.collection.updateOne({
+                customer_id: ObjectId(req.body.customer_id)
+            }, {
+                $set: req.body
+            }, (err) => {
+                if (!err) {
+                    res.statusCode = 201;
+                    this.getCredits(req, res);
+                } else {
+                    res.sendStatus(500);
+                }
+            });
+        }
+        //
+        // queryCredit(req, res) {
+        //     Object.assign(req.query, {
+        //         isDeleted: false
+        //     });
+        //     console.log(req.query);
+        //     const query = req.collection.aggregate([
+        //         {
+        //             $match: req.query
+        //         },
+        //         {
+        //             $lookup: {
+        //                 from: 'customers',
+        //                 localField: 'customer_id',
+        //                 foreignField: '_id',
+        //                 as: 'customers'
+        //             }
+        //         }
+        //     ]);
+        //     query.toArray((err, results) => {
+        //         // fix wrong condition
+        //         if (!err) {
+        //             if (results.length > 0) {
+        //                 res.statusCode = 200;
+        //                 res.json(results);
+        //             } else {
+        //                 // res.sendStatus(404);
+        //                 res.status(404).send({
+        //                     error: 'Sorry, we cannot find that!'
+        //                 });
+        //             }
+        //         } else {
+        //             res.sendStatus(500);
+        //         }
+        //     });
+        // }
 
     login(req, res) {
         if (!req.body.customer_id) {
@@ -209,6 +209,7 @@ class creditsController extends AbstractController {
     }
 
     getCredits(req, res) {
+        console.log(req.params.customer_id);
         const query = req.collection.find({
             customer_id: ObjectId(req.params.customer_id),
             isDeleted: false
@@ -228,6 +229,30 @@ class creditsController extends AbstractController {
     }
 
     purchase(req, res) {
+        const query = req.collection.find({
+            customer_id: req.body.customer_id,
+            isDeleted: false
+        });
+        query.toArray((err, results) => {
+            if (results.length == 0) {
+                req.collection.insert({
+                    customer_id: req.body.customer_id,
+                    purchased: [],
+                    balance: 0,
+                    credit: 0,
+                    isDeleted: false
+                }, (err) => {
+                    if (!err) {
+                        this._purchase(req, res);
+                    }
+                });
+            } else {
+                this._purchase(req, res);
+            }
+        });
+    }
+
+    _purchase(req, res) {
         req.collection.updateOne({
             customer_id: ObjectId(req.body.customer_id)
         }, {
@@ -242,6 +267,8 @@ class creditsController extends AbstractController {
                 balance: parseFloat(req.body.package.total),
                 credit: parseFloat(req.body.package.credit)
             }
+        }, {
+            upsert: true
         }, (err) => {
             if (!err) {
                 const io = req.app.get('socket-io');

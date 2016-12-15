@@ -6,8 +6,9 @@
         ng-repeat="service in $ctrl.services" flex="80"
         class="md-raised" ng-class="{'md-primary':$ctrl.service==service}"
         ng-click="$ctrl.setService(service)">
-        <div class="md-headline">{{service.name}}</div>
-        <div class="md-headline">{{service.zhName}}</div>
+        <div class="md-headline">
+            {{service.name}} {{service.zhName}} {{service.price | currency}}
+        </div>
     </md-button>
 </md-content>
 <md-divider></md-divider>

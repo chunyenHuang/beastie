@@ -16,7 +16,7 @@
 
 <md-content layout="column" flex class="content">
     <form name="$ctrl.customers_form" novalidate flex ng-hide="$ctrl.currentFormState=='review'">
-        <section ng-show="$ctrl.currentFormState=='name'">
+        <section ng-show="$ctrl.currentFormState=='name' || $ctrl.mode=='component'">
             <div layout="column" flex style="-webkit-overflow-scrolling: auto;">
                 <h2 class="md-headline">
                     Let's start with your information
@@ -33,10 +33,14 @@
                     <label>Last Name</label>
                     <input required type="text" name="last name" ng-model="$ctrl.customer.lastname" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
+                <md-input-container class="md-subhead">
+                    <label>Email</label>
+                    <input required type="email" name="email" ng-model="$ctrl.customer.email" ng-blur="$ctrl.updateProgressVal()"></input>
+                </md-input-container>
             </div>
         </section>
 
-        <section ng-show="$ctrl.currentFormState=='address'">
+        <section ng-show="$ctrl.currentFormState=='address' || $ctrl.mode=='component'">
             <div layout="column" flex style="-webkit-overflow-scrolling: auto;">
                 <h2 class="md-headline">And your address</h2>
                 <md-input-container class="md-subhead">
@@ -69,13 +73,13 @@
 
                     <md-input-container class="md-subhead">
                         <label>Zip Code</label>
-                        <input required type="number" min="10000" max="100000" name="zip code" ng-model="$ctrl.customer.address.zipCode" ng-blur="$ctrl.updateProgressVal()"></input>
+                        <input required type="text" name="zip code" ng-model="$ctrl.customer.address.zipCode" ng-blur="$ctrl.updateProgressVal()"></input>
                     </md-input-container>
                 </div>
             </div>
         </section>
 
-        <section ng-show="$ctrl.currentFormState=='emergencyContact'" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
+        <section ng-show="$ctrl.currentFormState=='emergencyContact' || $ctrl.mode=='component'" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
             <div layout="column" flex>
                 <h2 class="md-headline" ng-show="$first">Who to contact if we can't reach you?</h2>
                 <div layout="row">
@@ -121,7 +125,7 @@
         </section>
     </form>
 
-    <div ng-show="$ctrl.currentFormState=='review'" flex class="review">
+    <div ng-show="$ctrl.currentFormState=='review' && $ctrl.mode!='component'" flex class="review">
         <section layout="column" flex>
             <h3>
                 Review Information

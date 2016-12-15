@@ -43,6 +43,9 @@ const creditsComponent = {
 
             this.selectedDueTotal = 0;
         }
+        $onInit() {
+            this.setCreditsPackages();
+        }
         $onChanges() {
             if (this.customerId) {
                 this.Credits.get({
@@ -50,9 +53,6 @@ const creditsComponent = {
                 }, (res) => {
                     console.log(res);
                     this.credits = res;
-                    if (!this.list) {
-                        this.setCreditsPackages();
-                    }
                 });
             }
         }
@@ -62,6 +62,7 @@ const creditsComponent = {
                 type: 'creditsPackages'
             }, (listItems) => {
                 this.list = listItems[0].items;
+                console.log(this.list);
             });
         }
 
@@ -89,6 +90,7 @@ const creditsComponent = {
                 package: creditPackage
             }).$promise.then((res) => {
                 console.log(res);
+                this.credits = res;
                 this.pay();
             }, (err) => {
                 console.log(err);
