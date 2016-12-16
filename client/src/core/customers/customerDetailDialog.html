@@ -20,7 +20,12 @@
           </md-tab>
           <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
             <md-content class="customer-form" flex layout="column">
-                <customer-info customer="$ctrl.customer" layout="column" flex></customer-info>
+                <!-- <customer-info customer="$ctrl.customer" layout="column" flex></customer-info> -->
+                <client-customers-form
+                    customer-id="$ctrl.customer_id"
+                    mode="component"
+                    layout="column" flex>
+                </client-customers-form>
             </md-content>
           </md-tab>
           <md-tab label="pets">

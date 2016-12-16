@@ -28,7 +28,6 @@ const infoComponent = {
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
-
         }
     }
 };

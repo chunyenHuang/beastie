@@ -1,26 +1,35 @@
-<div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none">
-    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
+<div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none" ng-hide="$ctrl.mode=='component'">
+    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary" >
         <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
         Back to dashboard
     </md-button>
     <div flex></div>
-    <md-button aria-label="back" ng-click="$ctrl.navigateForm('back')">
+    <md-button aria-label="back" ng-click="$ctrl.navigateForm('back')" ng-hide="$ctrl.mode=='component'">
         <md-icon md-svg-src="chevron-left"></md-icon>
         Back
     </md-button>
-    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
+    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.update()">
         Next <md-icon md-svg-src="chevron-right"></md-icon>
     </md-button>
 </div>
-<md-progress-linear ng-show="$ctrl.customer" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
+<md-progress-linear ng-show="$ctrl.customer && $ctrl.mode!='component'" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
+<div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none" ng-show="$ctrl.mode=='component'">
+    <div flex></div>
+    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
+        update
+    </md-button>
+</div>
 
 <md-content layout="column" flex class="content">
-    <form name="$ctrl.customers_form" novalidate flex ng-hide="$ctrl.currentFormState=='review'">
+    <form name="$ctrl.customers_form" novalidate flex ng-hide="$ctrl.currentFormState=='review' && $ctrl.mode!='component'">
         <section ng-show="$ctrl.currentFormState=='name' || $ctrl.mode=='component'">
             <div layout="column" flex style="-webkit-overflow-scrolling: auto;">
-                <h2 class="md-headline">
+                <h2 class="md-headline" ng-hide="$ctrl.mode=='component'">
                     Let's start with your information
                 </h2>
+                <h4 ng-show="$ctrl.mode=='component'">
+                    Information
+                </h4>
                 <md-input-container class="md-subhead">
                     <label>Phone Number</label>
                     <input required name="phone" type="text" ng-model="$ctrl.customer.phone" ng-blur="$ctrl.updateProgressVal()" ui-mask="(999) 999-9999" allowInvalidValue="true" ui-options="{clearOnBlur:false}" aria-label="customer-phone">
@@ -42,7 +51,13 @@
 
         <section ng-show="$ctrl.currentFormState=='address' || $ctrl.mode=='component'">
             <div layout="column" flex style="-webkit-overflow-scrolling: auto;">
-                <h2 class="md-headline">And your address</h2>
+                <h2 class="md-headline" ng-hide="$ctrl.mode=='component'">
+                    And your address
+                </h2>
+                <h4 ng-show="$ctrl.mode=='component'">
+                    Address
+                </h4>
+
                 <md-input-container class="md-subhead">
                     <label>Address</label>
                     <input focus-if="$ctrl.autofocus=='address'" required type="text" name="Address" ng-model="$ctrl.customer.address.street" ng-blur="$ctrl.updateProgressVal()"></input>
@@ -81,7 +96,12 @@
 
         <section ng-show="$ctrl.currentFormState=='emergencyContact' || $ctrl.mode=='component'" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
             <div layout="column" flex>
-                <h2 class="md-headline" ng-show="$first">Who to contact if we can't reach you?</h2>
+                <h2 class="md-headline" ng-show="$first" ng-hide="$ctrl.mode=='component'">
+                    Who to contact if we can't reach you?
+                </h2>
+                <h4 ng-show="$ctrl.mode=='component'">
+                    Emergency Contact
+                </h4>
                 <div layout="row">
                     <h3 class="md-subhead" ng-show="$ctrl.customer.emergencyContact.length>1">
                         <strong>

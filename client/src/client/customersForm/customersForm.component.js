@@ -23,10 +23,14 @@ const customersFormComponent = {
             this.Pets = Pets;
             this.states =
                 ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
-                'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-                'WY').split(' ').map((state) => {
+                    'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
+                    'WY').split(' ').map((state) => {
                     return state;
                 });
+        }
+
+        $onInit() {
+            // this.mode = 'component';
         }
 
         $onChanges() {
@@ -89,9 +93,9 @@ const customersFormComponent = {
             const createCustomerForm = new Promise(
                 (resolve) => {
                     // this.$stateParams.customer_id ? let
+                    this.customer_id = this.$stateParams.customer_id || this.customerId;
                     this.Customers.get({
-                        id: this.$stateParams.customer_id ?
-                            this.$stateParams.customer_id : 'template'
+                        id: this.customer_id ? this.customer_id : 'template'
                     }, (customer) => {
                         // sync from here
                         this.customer = customer;
@@ -176,6 +180,9 @@ const customersFormComponent = {
                     id: this.customer._id
                 }, this.customer, (res) => {
                     console.log(res);
+                    if (this.mode == 'component') {
+                        return;
+                    }
                     this.$state.go('client.dashboard', {
                         customer_id: this.customer._id
                     });
@@ -184,6 +191,9 @@ const customersFormComponent = {
                 console.log('new customer');
                 this.Customers.save(this.customer, (res) => {
                     console.log(res);
+                    if (this.mode == 'component') {
+                        return;
+                    }
                     this.$state.go('client.petsForm', {
                         customer_id: res._id
                     });
