@@ -1,13 +1,16 @@
 import transactionsComponent from './Transactions.component';
+import dashboardComponent from './Dashboard';
 import newTransactions from './NewTransactions';
 import list from './List';
 
 import transactionsService from './services/Transactions.service';
 import TransactionsDialogService from './services/TransactionsDialog.service';
 
+
 const transactionsModule = angular
     .module('beastie.transactions', [])
     .component('transactions', transactionsComponent)
+    .component('transactionsDashboard', dashboardComponent)
     .component('transactionsNew', newTransactions)
     .component('transactionsList', list)
     .service('Transactions', transactionsService)
@@ -31,6 +34,12 @@ const transactionsModule = angular
                 url: '/list',
                 template: `
                 <transactions-list layout="column" flex></transactions-list>
+                `
+            })
+            .state('core.transactions.dashboard', {
+                url: '/dashboard',
+                template: `
+                <transactions-dashboard layout="column" flex></transactions-dashboard>
                 `
             });
     })

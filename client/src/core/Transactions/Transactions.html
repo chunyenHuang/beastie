@@ -1,7 +1,6 @@
-<div class="md-padding" layout="row" flex="none">
-    <h3>Transactions</h3>
+<div layout="row" flex="none" md-colors="{background: 'accent-100'}">
+    <h3 layout-padding >Transactions</h3>
     <div class="" flex>
-
     </div>
     <md-button ng-click="$ctrl.$state.go('core.transactions.new')">
         New Unsolved
@@ -9,7 +8,11 @@
     <md-button ng-click="$ctrl.$state.go('core.transactions.list')">
         All
     </md-button>
+    <md-button ng-click="$ctrl.$state.go('core.transactions.dashboard')">
+        Dashboard
+    </md-button>
 </div>
 <div ui-view layout="column" flex>
     Loading...
 </div>
+
