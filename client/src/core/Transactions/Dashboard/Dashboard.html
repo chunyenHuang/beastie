@@ -1,35 +1,14 @@
-<nav layout-padding layout>
-    <div flex></div>
+<md-content layout="column" id="transaction-dashboard" flex>
+<nav layout-margin layout="column" layout-align="center center" flex="none">
+    <!--<div flex></div>-->
     <md-nav-bar md-selected-nav-item="$ctrl.mode" nav-bar-aria-label="navigation links">
         <md-nav-item 
             ng-repeat="mode in $ctrl.modes"
             md-nav-click="$ctrl.setMode(mode)" name="{{mode}}">{{mode}}
         </md-nav-item>
     </md-nav-bar>
-    <div flex></div>
-</nav>
-
-<md-content layout="column">
-    <md-button ng-click="$ctrl.test()"></md-button>
-<div layout layout-wrap flex layout-padding
-    ng-if="$ctrl.Transactions.finalDataSets">
-    
-    <div flex layout layout-align="center" layout-padding>
-        <div layout="column" layout-align="start start" >
-            <div class="md-subhead">TOTAL</div>
-            <div class="md-display-3">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.total) | number}}</div> 
-        </div>
-        <div layout="column" layout-align="start start" class="md-subhead">
-            <div>Cash: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.cash) }}</div> 
-            <div>Card: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.card) }}</div>
-            <div>---</div>
-            <div>Orders: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.order_id) }}</div> 
-            <div>Self services: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.selfService_id) }}</div> 
-            <div>Credits: {{ $ctrl._getSum($ctrl.Transactions.finalDataSets.credit_id) }}</div>
-        </div>
-    </div>
-    
-    <div layout="row" layout-align="center center" flex="nogrow" class="md-headline">
+    <!--<div flex></div>-->
+    <div layout="row" layout-align="center center" flex="nogrow" class="md-headline" layout-fill>
         <md-button ng-click="$ctrl.changeTime(-1)" aria-label="yesterday" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
                 <md-icon class="s48" md-svg-src="chevron-left"></md-icon></md-button>
         
@@ -37,65 +16,130 @@
             
             <span class="md-headline">
             <div ng-show="$ctrl.mode == 'day'">
-                {{$ctrl.date | date: 'EEEE'}}<br/>
+                {{$ctrl.date | date: 'EEEE'}},
                 {{$ctrl.date | date: 'M/dd/y'}}
             </div>
             
             <div ng-show="$ctrl.mode == 'last 7 days'">
-                {{$ctrl.range.from | date: 'M/dd/y'}}<br/>
-                |<br/>
+                {{$ctrl.range.from | date: 'M/dd/y'}}
+                -
                 {{$ctrl.range.to | date: 'M/dd/y'}}
             </div>
             
             <div ng-show="$ctrl.mode == 'month'">
-                {{$ctrl.date | date: 'MMMM'}}<br/>
+                {{$ctrl.date | date: 'MMMM'}},
                 {{$ctrl.date | date: 'yyyy'}}
             </div>
             
             <div ng-show="$ctrl.mode == 'year'">
-                {{$ctrl.range.from | date: 'MMM yyyy'}}<br/>
-                |<br/>
+                {{$ctrl.range.from | date: 'MMM yyyy'}}
+                -
                 {{$ctrl.date | date: 'MMM yyyy'}}
             </div>
             </span>
-            <md-datepicker hide ng-model="$ctrl.date" md-is-open="$ctrl.calOpen"
+            <md-datepicker ng-model="$ctrl.date" md-is-open="$ctrl.calOpen"
                 ng-change="$ctrl.$onInit()"></md-datepicker>
         </md-button>
         
         <md-button ng-click="$ctrl.changeTime(1)" aria-label="tomorrow" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
                 <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
     </div>
-    
-    <div flex layout layout-align="center" layout-padding>
-        <div layout="column" layout-align="start start" >
-            <div class="md-subhead">TOTAL</div>
-            <div class="md-display-3">{{ $ctrl._getCount($ctrl.Transactions.finalDataSets.total) | number}}</div> 
-        </div>
-        <div layout="column" layout-align="start start" class="md-subhead">
-            <div>Cash: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.cash) }}</div> 
-            <div>Card: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.card) }}</div>
-            <div>---</div>
-            <div>Orders: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.order_id) }}</div> 
-            <div>Self services: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.selfService_id) }}</div> 
-            <div>Credits: {{ $ctrl._getCount($ctrl.Transactions.finalDataSets.credit_id) }}</div>
-        </div>
-    </div> 
-    
-    <!--<div layout="column" layout-align="center center" flex>-->
-    <!--    <div>ORDERS</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.order_id) }}</div> -->
-    <!--    <div>SELFSERVICES</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.selfService_id) }}</div> -->
-    <!--    <div>CREDITS</div> <div class="md-display-1">{{ $ctrl._getSum($ctrl.Transactions.finalDataSets.credit_id) }}</div> -->
-    <!--</div>-->
+</nav>
+<div layout="column" layout-fill layout-align="center center" class="md-display-2" flex
+    md-colors="{color: 'grey-700'}"
+    ng-show="!$ctrl.Transactions.finalDataSets && !ctrl.Transactions.datas">
+    <div>No Data on {{$ctrl.range.from | date: 'EEEE, MMM dd yyyy'}}</div>
+    <div>Was the Store Closed on That Day?</div>
 </div>
 
-<div layout layout-wrap>
-    <div flex="10"></div>
-    <div flex>
-        <canvas flex id="myChart" width="400" height="150"></canvas>
-    </div>
-    <div flex="10"></div>
+<div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
+    ng-if="$ctrl.Transactions.finalDataSets">
+        
+        <div layout flex="100">
+            <md-button flex="grow" class="md-raised"
+                ng-click="$ctrl.showRevenue = !$ctrl.showRevenue">
+                <span layout layout-align="start">
+                    <span ng-show="!$ctrl.showRevenue"><md-icon class="" md-svg-src="chevron-up"></md-icon></span>
+                    <span ng-show="$ctrl.showRevenue"><md-icon class="" md-svg-src="chevron-down"></md-icon></span>
+                    revenue (${{ $ctrl._getSum($ctrl.Transactions.finalDataSets.total) | number}})
+                </span>
+            </md-button>
+            <md-button flex="noshrink" layout layout-align="center center" class="md-accent md-raised md-hue-1"
+                ng-show="$ctrl.showRevenue"
+                ng-click="$ctrl.toggleShowSubset('ui-click')">
+                <md-icon class="p-r-6px" md-svg-src="eye"></md-icon>
+                <span ng-show="$ctrl.show == 'subsetOne'">showing payment types</span>
+                <span ng-show="$ctrl.show == 'subsetTwo'">showing service types</span>
+            </md-button>
+        </div>
+        <div layout="column" layout-align="start start" ng-show="$ctrl.showRevenue"
+            ng-repeat="(key, data) in $ctrl.Transactions.finalDataSets"
+            ng-if="key!='customer_id'">
+            <div class="md-subhead" layout layout-align="start center">
+                {{$ctrl.genLabel(key)}}
+                <span ng-show="$ctrl[$ctrl.show].indexOf($ctrl.genLabel(key))>-1">
+                    <md-icon class="p-l-6px" md-svg-src="eye" md-colors="{color:'accent'}"></md-icon>
+                </span>
+            </div>
+            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">${{ $ctrl._getSum(data) | number}}</div>
+            <div class="md-subhead">${{ $ctrl._getSum(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
+        </div>
 </div>
+<div ng-show="$ctrl.showRevenue" >
+    <div style="width: 80%; margin: auto;">
+        <canvas id="revenueChart" width="400" height="150"></canvas>
+    </div>
+</div>
+
+
+<div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
+    ng-if="$ctrl.Transactions.finalDataSets">
+       
+        <div layout flex="100">
+            <md-button flex="grow" class="md-raised"
+                ng-click="[$ctrl.showCount = !$ctrl.showCount]">
+                <span layout layout-align="start">
+                    <span ng-show="!$ctrl.showCount"><md-icon class="" md-svg-src="chevron-up"></md-icon></span>
+                    <span ng-show="$ctrl.showCount"><md-icon class="" md-svg-src="chevron-down"></md-icon></span>
+                    count ({{ $ctrl._getCount($ctrl.Transactions.finalDataSets.total) | number}})
+                </span>
+            </md-button>
+            <md-button flex="noshrink" layout layout-align="center center" class="md-accent md-raised md-hue-1"
+                ng-show="$ctrl.showCount"
+                ng-click="$ctrl.toggleShowSubset()">
+                <md-icon class="p-r-6px" md-svg-src="eye"></md-icon>
+                <span ng-show="$ctrl.show == 'subsetOne'">showing payment types</span>
+                <span ng-show="$ctrl.show == 'subsetTwo'">showing service types</span>
+            </md-button>
+        </div>
+        
+        <div layout="column" layout-align="start start" ng-show="$ctrl.showCount"
+            ng-repeat="(key, data) in $ctrl.Transactions.finalDataSets"
+            ng-if="key!='customer_id'">
+            <div class="md-subhead" layout layout-align="start center">
+                {{$ctrl.genLabel(key)}}
+                <span ng-show="$ctrl[$ctrl.show].indexOf($ctrl.genLabel(key))>-1">
+                    <md-icon class="p-l-6px" md-svg-src="eye" md-colors="{color:'accent'}"></md-icon>
+                </span>
+            </div>
+            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">{{ $ctrl._getCount(data) | number}}</div> 
+            <div class="md-subhead">{{ $ctrl._getCount(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
+        </div>
+</div>
+<div ng-show="$ctrl.showCount" >
+    <div style="width: 80%; margin: auto;">
+        <canvas id="countChart" width="400" height="150"></canvas>
+    </div>
+</div>
+<!--<div layout layout-wrap ng-show="$ctrl.showCount">-->
+<!--    <div flex="10"></div>-->
+<!--    <div flex>-->
+<!--        <canvas flex id="countChart" width="400" height="150"></canvas>-->
+<!--    </div>-->
+<!--    <div flex="10"></div>-->
+<!--</div>-->
+<!--<md-button ng-click="$ctrl.test()">test</md-button>-->
 <!--<div class="" ng-repeat="data in $ctrl.Transactions.datas">-->
 <!--    {{$index}} - {{data}}-->
 <!--</div>-->
-</md-content>
+</md-content >

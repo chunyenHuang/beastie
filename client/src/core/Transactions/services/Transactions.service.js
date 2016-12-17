@@ -7,6 +7,8 @@ class transactionsService {
         this.SharedUtil = SharedUtil;
         this.$filter = $filter;
         this.Settings = Settings;
+        this._setDate = SharedUtil._setDate;
+        this._parseDate = SharedUtil._parseDate;
 
         const Transactions = $resource('/transactions/:id', {
             id: '@id'
@@ -61,12 +63,11 @@ class transactionsService {
     }
     
     init(range, mode, callback){
-        return new Promise((resolve)=>{
+        return new Promise((resolve, reject)=>{
             this.query({
                 dateField: 'createdAt',
                 from: range.from,
                 to: new Date(new Date(range.to).setDate(new Date(range.to).getDate()+1))
-                // to: range.to
             }).$promise.then((res)=>{
                 // console.info(res);
                 this.datas = res;
@@ -75,36 +76,68 @@ class transactionsService {
                     this.genEmptyDataSets(()=>{
                         this.assignDataIntoDataSets(mode, ()=>{
                             this.toFinalDataSets();
+                            if(callback) callback();
                             resolve();
                         });
                     });
                 });
-                
-            //     if (mode == 'day') {
-            //         this.genXAxisArr(range, mode, ()=>{
-            //             this.genEmptyDataSets(()=>{
-            //                 this.assignDataIntoDataSets(mode, ()=>{
-            //                     this.toFinalDataSets();
-            //                     resolve();
-            //                 });
-            //             });
-            //         })
-            //     }
-            //     console.log(this.datas);
-            //   // transform
-            //   if (mode == 'year') {
-            //       this.genXAxisArr(range, mode, ()=>{
-            //           this.genEmptyDataSets()
-            //       })
-            //   }
-               if(callback){callback()}
             }, ()=>{
                 this.datas = null;
-                resolve();
-                // console.log('in error callback');
+                this.finalDataSets = null;
+                reject();
             });
         });
     }
+    findStoreOpenDays(range) {
+        return new Promise((resolve, reject)=>{
+            this.getOfficeHours(()=>{
+                this.genOpenDaysArr(()=>{
+                    this.countOpenDaysInRange(range);
+                    resolve();
+                });
+            });
+        });
+    }
+    genOpenDaysArr(callback) {
+        this.openDaysArr = [];
+        angular.forEach(this.officeHours, (value, key)=>{
+            if (value.to-value.from !== 0) {
+                this.openDaysArr.push(value.id);
+            }
+        });
+        if (callback) callback();
+    }
+    getOfficeHours(callback) {
+        if (this.officeHours) {
+            if (callback) callback();
+        }
+        if (!this.officeHours) {
+            this.Settings.query({
+                type: 'officeHours'
+            }).$promise.then((res)=>{
+                this.officeHours = res[0].officeHours;
+                if (callback) callback();
+            });
+        }
+    }
+    countOpenDaysInRange(range) {
+        this.openDays = 0;
+        let diff = this._parseDate(this._setDate(1, range.to)) - 
+            this._parseDate(range.from);
+        const dInMilisec = 86400000;
+        this.openDays = this.openDays + 
+            Math.floor(Math.round(diff / dInMilisec) / 7) * (this.openDaysArr.length);
+        let remainder = Math.round(diff / dInMilisec) % 7;
+        let remainderDaysArr = Array(remainder).fill(range.from.getDay())
+            .map((value, index)=>value+index);
+        for (let i=0; i<remainderDaysArr.length; i++) {
+            if (this.openDaysArr.indexOf(remainderDaysArr[i]) > -1) {
+                this.openDays++;
+            }
+        }
+        console.info(this.openDays);
+    }
+    
     genXAxisArr(range, mode, callback) {
         if (mode && mode != 'day' && mode != 'year') {
             this.xAxisArr = this._genDayArr(range.from, range.to);
@@ -125,7 +158,7 @@ class transactionsService {
             this.xAxisArr = this._genMonthArr(range.from, range.to);
             if(callback) callback();
         }
-        console.warn(this.xAxisArr);
+        // console.warn(this.xAxisArr);
     }
     _genDayArr(from, to) {
         let dFirst = new Date(from);
@@ -175,7 +208,7 @@ class transactionsService {
             }
         });
         this.DataSets = this.xAxisArr.map(()=>angular.copy(typesInDataSets));
-        console.log(this.DataSets);
+        // console.log(this.DataSets);
         if(callback) {callback()}
     }
     
@@ -205,7 +238,7 @@ class transactionsService {
                 }
             });
         });
-        console.log(this.DataSets);
+        // console.log(this.DataSets);
         if (callback) {callback()};
     }
     
@@ -220,10 +253,10 @@ class transactionsService {
                this.finalDataSets[key].push(value); 
             });
         });
-        const totals = this.finalDataSets.total.map((array) => {
-            return array.reduce((a,b)=> a+b,0);
-        });
-        console.log(totals);
+        // const totals = this.finalDataSets.total.map((array) => {
+        //     return array.reduce((a,b)=> a+b,0);
+        // });
+        // console.log(totals);
         // console.log(this.finalDataSets);
     }
     

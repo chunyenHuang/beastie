@@ -23,6 +23,7 @@ function themeConfig($mdThemingProvider) {
         })
         .accentPalette('green', {
             'default': '500',
+            'hue-1': '100',
             'hue-3': '700'
         });
     $mdThemingProvider.theme('input', 'default')

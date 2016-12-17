@@ -59,7 +59,13 @@ class SharedUtil {
             return false;
         }
     }
-
+    
+    _setDate(offset, date) {
+        date = date || new Date();
+        return new Date(new Date(date)
+            .setDate(new Date(date).getDate() + offset));
+    }
+    
     daysBetweenParsedDate(d1, d2) {
         d2 = d2 || new Date();
         let diff = this._parseDate(d1).valueOf() - this._parseDate(d2).valueOf();

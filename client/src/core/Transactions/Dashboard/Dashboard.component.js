@@ -46,6 +46,7 @@ const dashboardComponent = {
             this.Transactions = Transactions;
             this.Settings = Settings;
             this._parseDate = SharedUtil._parseDate;
+            this._setDate = SharedUtil._setDate;
             this.$mdColors = $mdColors;
             
             
@@ -64,6 +65,12 @@ const dashboardComponent = {
             } else {
                 this.mode = 'last 7 days';
             }
+            
+            this.subsetOne = ['total', 'cash', 'card'];
+            this.subsetTwo = ['total', 'order', 'selfService', 'credit'];
+            this.show = 'subsetOne';
+            
+            this.showRevenue = true;
         }
         
 // today
@@ -114,11 +121,11 @@ const dashboardComponent = {
             let d = new Date(date);
             return new Date(new Date(d.setMonth(d.getMonth() + 1)).setDate(0));
         }
-        _setDate(offset, date) {
-            date = date || new Date();
-            return new Date(new Date(date)
-                .setDate(new Date(date).getDate() + offset));
-        }
+        // _setDate(offset, date) {
+        //     date = date || new Date();
+        //     return new Date(new Date(date)
+        //         .setDate(new Date(date).getDate() + offset));
+        // }
         _setMonth(offset, date) {
             date = date || new Date();
             return new Date(new Date(date)
@@ -153,11 +160,26 @@ const dashboardComponent = {
             }
             this.$onInit();
         }
-        test() {
-            if (this.myChart) {
-                console.log(this.myChart.data.datasets);
-                this.myChart.data.datasets.pop();
-                this.myChart.update();
+        toggleShowSubset(uiTrigger) {
+            if(this.revenueChart && this.countChart) {
+                if (uiTrigger)
+                    this.show = this.show == 'subsetOne' ? 'subsetTwo' : 'subsetOne';
+                
+                let dataRevenue = [];
+                for (let i=0; i<this.revenueDataset.length; i++) {
+                    if (this[this.show].indexOf(this.revenueDataset[i].label) >= 0) 
+                        dataRevenue.push(this.revenueDataset[i]);
+                }
+                this.revenueChart.data.datasets = dataRevenue;
+                this.revenueChart.update();
+                
+                let dataCount = [];
+                for (let i=0; i<this.countDataset.length; i++) {
+                    if (this[this.show].indexOf(this.countDataset[i].label) >= 0) 
+                        dataCount.push(this.countDataset[i]);
+                }
+                this.countChart.data.datasets = dataCount;
+                this.countChart.update();
             }
         }
         setXLabel() {
@@ -166,7 +188,7 @@ const dashboardComponent = {
                 return this.Transactions.xAxisArr;
             let dateFormat = '';
             if (this.mode == 'month') 
-                dateFormat = 'shortDate';
+                dateFormat = 'EEE M/dd';
             if (this.mode == 'last 7 days')
                 dateFormat = 'EEE M/dd';
             if (this.mode == 'year')
@@ -176,188 +198,145 @@ const dashboardComponent = {
             })
             return newXAxis;
         }
+        genLabel(str) {
+            if (!str) return;
+            return str.split('_id')[0];
+        }
         $onInit(){
             Chart.defaults.global.defaultFontColor = this.$mdColors.getThemeColor('default-primary');
             Chart.defaults.global.defaultFontSize = 16;
             Chart.defaults.global.elements.point = {
                 radius: 5,
                 pointStyle: 'circle',
-                borderWidth: 2,
+                borderWidth: 1,
                 borderColor: 'rgba(0,0,0,0.1)',
                 hitRadius: 7, 
                 hoverRadius: 7,
-                hoverBorderWidth: 2,
+                hoverBorderWidth: 1,
             }
             
-            this.calOpen = false;
-            if (this.myChart) {
-                if(this.myChart !== undefined || this.myChart !== null) {
-                    this.myChart.destroy();
+            var revenueChartEl = document.getElementById("revenueChart");
+            var countChartEl = document.getElementById("countChart");
+            
+            if (this.revenueChart) {
+                if(this.revenueChart !== undefined || this.revenueChart !== null) {
+                    this.revenueChart.destroy();
+                }
+            }
+            if (this.countChart) {
+                if(this.countChart !== undefined || this.countChart !== null) {
+                    this.countChart.destroy();
                 }
             }
             
             this.setRange(this.mode, this.date);
+            this.calOpen = false;
             console.log(this.range);
             
-            this.Transactions.init(this.range, this.mode).then(()=>{
-                if (!this.Transactions.datas) {
-                    console.log('no data!');
-                    new Chart(ctx, {});
-                    return;
-                }
+            Promise.all([
+                this.Transactions.findStoreOpenDays(this.range), 
+                this.Transactions.init(this.range, this.mode)
+            ])
+            // this.Transactions.init(this.range, this.mode)
+            .catch(()=>{
+                console.log('no data!');
+                return;
+            }).then(()=>{
+                // the following code runs even the promise is rejected...
+                if (!this.Transactions.datas) return;
                 
-                console.log(this._getSum(this.Transactions.finalDataSets.total));
-                console.log(this._getSum(this.Transactions.finalDataSets.card));
-                console.log(this._getSum(this.Transactions.finalDataSets.cash));
+                // this.countOpenDaysInRange();
                 
                 let counter = 0;
-                let dataset = [];
+                let revenueDataset = [];
+                let countDataset = [];
                 angular.forEach(this.Transactions.finalDataSets, (val, key)=>{
                     let colors = ['red', 'deep-purple', 'light-blue', 'green', 'amber', 'blue-grey', 'brown', 'blue-grey'];
                     let pointStyles = ['circle', 'triangle', 'rect', 'rectRot', 'cross', 'crossRot', 'star', 'line', 'dash'];
                     let data = {
-                        label: key + ' ($)',
+                        label: this.genLabel(key),
                         backgroundColor: this.$mdColors.getThemeColor(colors[counter]+'-500-0.6'),
                         borderColor: this.$mdColors.getThemeColor(colors[counter]+'-500-1'),
                         pointStyle: pointStyles[counter],
-                        data: val.map((array)=>{
-                            return array.reduce((a,b) => a+b, 0);
-                        }),
                         fill: false,
                         lineTension: 0,
                         borderCapStyle: 'butt',
                         spanGaps: false
                     }
-                    dataset.push(data);
+                    let revenueData = val.map((array)=>{
+                        return array.reduce((a,b) => a+b, 0);
+                    });
+                    let countData = val.map((array) => array.length);
+                    
+                    countDataset.push(Object.assign({}, data, {data: countData}));
+                    revenueDataset.push(Object.assign({}, data, {data: revenueData}));
+                    
                     counter ++;
                 });
+                this.revenueDataset = revenueDataset;
+                this.countDataset = countDataset;
                 
-                
-                this.myChart = new Chart(ctx, {
-                type: 'line',
-                options: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            usePointStyle: true,
-                            padding:16
+                this.revenueChart = new Chart(revenueChartEl, {
+                    type: 'line',
+                    options: {
+                        // responsive: false,
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: true,
+                                padding:16
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                },
+                                scaleLabel: {
+                                    labelString: 'Revenue (dollor)',
+                                    display: true,
+                                }
+                            }],
+                            
                         }
                     },
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero:true
-                            }
-                        }]
-                    }
-                },
-                data: {
-                    labels: this.setXLabel(),
-                    datasets: dataset,
-                    // datasets: [
-                    //     {
-                    //         label: "My First dataset",
-                    //         fill: false,
-                    //         lineTension: 0.1,
-                    //         backgroundColor: "rgba(75,192,192,0.4)",
-                    //         borderColor: "rgba(75,192,192,1)",
-                    //         borderCapStyle: 'butt',
-                    //         borderDash: [],
-                    //         borderDashOffset: 0.0,
-                    //         borderJoinStyle: 'miter',
-                    //         // pointBorderColor: "rgba(75,192,192,1)",
-                    //         // pointBackgroundColor: "#fff",
-                    //         // pointBorderWidth: 5,
-                    //         // pointHoverRadius: 5,
-                    //         // pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    //         // pointHoverBorderColor: "rgba(220,220,220,1)",
-                    //         // pointHoverBorderWidth: 2,
-                    //         // pointRadius: 1,
-                    //         // pointHitRadius: 10,
-                    //         pointStyle: 'triangle',
-                    //         data: this.Transactions.finalDataSets.total.map((array) => {
-                    //             return array.reduce((a,b) => a+b, 0);
-                    //         }),
-                    //         spanGaps: true,
-                    //     },
-                    //     {
-                    //         label: "My First dataset",
-                    //         fill: false,
-                    //         lineTension: 0.1,
-                    //         backgroundColor: "rgba(75,192,192,0.4)",
-                    //         // borderColor: "rgba(75,192,192,1)",
-                    //         borderCapStyle: 'butt',
-                    //         borderDash: [],
-                    //         borderDashOffset: 0.0,
-                    //         borderJoinStyle: 'miter',
-                    //         // pointBorderColor: "rgba(75,192,192,1)",
-                    //         pointBackgroundColor: "#fff",
-                    //         pointBorderWidth: 1,
-                    //         pointHoverRadius: 5,
-                    //         // pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    //         // pointHoverBorderColor: "rgba(220,220,220,1)",
-                    //         pointHoverBorderWidth: 2,
-                    //         pointRadius: 1,
-                    //         pointHitRadius: 10,
-                    //         data: this.Transactions.finalDataSets.card.map((array) => {
-                    //             return array.reduce((a,b) => a+b, 0);
-                    //         }),
-                    //         spanGaps: false,
-                    //     },
-                    //     {
-                    //         label: "My First dataset",
-                    //         fill: false,
-                    //         lineTension: 0.1,
-                    //         // backgroundColor: "rgba(75,192,192,0.4)",
-                    //         // borderColor: "rgba(75,192,192,1)",
-                    //         borderCapStyle: 'butt',
-                    //         borderDash: [],
-                    //         borderDashOffset: 0.0,
-                    //         borderJoinStyle: 'miter',
-                    //         // pointBorderColor: "rgba(75,192,192,1)",
-                    //         // pointBackgroundColor: "#fff",
-                    //         pointBorderWidth: 1,
-                    //         pointHoverRadius: 5,
-                    //         // pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    //         // pointHoverBorderColor: "rgba(220,220,220,1)",
-                    //         pointHoverBorderWidth: 2,
-                    //         pointRadius: 1,
-                    //         pointHitRadius: 10,
-                    //         data: this.Transactions.finalDataSets.cash.map((array) => {
-                    //             return array.reduce((a,b) => a+b, 0);
-                    //         }),
-                    //         spanGaps: false,
-                    //     },
-                    //     // {
-                    //     //     label: "My Second dataset",
-                    //     //     fill: false,
-                    //     //     lineTension: 0.1,
-                    //     //     backgroundColor: "rgba(75,192,192,0.4)",
-                    //     //     borderColor: "rgba(0, 0, 0,1)",
-                    //     //     borderCapStyle: 'butt',
-                    //     //     borderDash: [],
-                    //     //     borderDashOffset: 0.0,
-                    //     //     borderJoinStyle: 'miter',
-                    //     //     pointBorderColor: "rgba(75,192,192,1)",
-                    //     //     pointBackgroundColor: "#fff",
-                    //     //     pointBorderWidth: 1,
-                    //     //     pointHoverRadius: 5,
-                    //     //     pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                    //     //     pointHoverBorderColor: "rgba(220,220,220,1)",
-                    //     //     pointHoverBorderWidth: 2,
-                    //     //     pointRadius: 1,
-                    //     //     pointHitRadius: 10,
-                    //     //     data: [40, 40, 40, 40, 40, 40, 40],
-                    //     //     spanGaps: false,
-                    //     // }
-                    // ]
-                },
+                    data: {
+                        labels: this.setXLabel(),
+                        // datasets: revenueDataset,
+                    },
                 
-            });
-            });
+                });
             
-            var ctx = document.getElementById("myChart");
-            
+                this.countChart = new Chart(countChartEl, {
+                    type: 'bar',
+                    options: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                usePointStyle: false,
+                                boxWidth: 16,
+                                padding:16
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                },
+                                scaleLabel: {
+                                    labelString: 'Occurance (count)',
+                                    display: true,
+                                }
+                            }]
+                        }
+                    },
+                    data: {
+                        labels: this.setXLabel(),
+                        // datasets: countDataset,
+                    }
+                });
+                this.toggleShowSubset();
+            });
         }
         
     }
