@@ -8,14 +8,14 @@
         <md-icon md-svg-src="chevron-left"></md-icon>
         Back
     </md-button>
-    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.update()">
+    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
         Next <md-icon md-svg-src="chevron-right"></md-icon>
     </md-button>
 </div>
 <md-progress-linear ng-show="$ctrl.customer && $ctrl.mode!='component'" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
 <div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none" ng-show="$ctrl.mode=='component'">
     <div flex></div>
-    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
+    <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.update()">
         update
     </md-button>
 </div>
