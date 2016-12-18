@@ -1,5 +1,5 @@
 <md-content layout="column" id="transaction-dashboard" flex>
-<nav layout-margin layout="column" layout-align="center center" flex="none">
+<nav layout-margin layout="column" layout-align="center center" flex="none" >
     <!--<div flex></div>-->
     <md-nav-bar md-selected-nav-item="$ctrl.mode" nav-bar-aria-label="navigation links">
         <md-nav-item 
@@ -8,12 +8,11 @@
         </md-nav-item>
     </md-nav-bar>
     <!--<div flex></div>-->
-    <div layout="row" layout-align="center center" flex="nogrow" class="md-headline" layout-fill>
+    <div layout="row" layout-align="center center" flex="nogrow" class="md-headline" >
         <md-button ng-click="$ctrl.changeTime(-1)" aria-label="yesterday" ng-class="{'nav-date':$ctrl.$mdMedia('max-width: 1200px')}">
                 <md-icon class="s48" md-svg-src="chevron-left"></md-icon></md-button>
         
         <md-button ng-click="$ctrl.calOpen=!$ctrl.calOpen">
-            
             <span class="md-headline">
             <div ng-show="$ctrl.mode == 'day'">
                 {{$ctrl.date | date: 'EEEE'}},
@@ -45,6 +44,7 @@
                 <md-icon class="s48" md-svg-src="chevron-right"></md-icon></md-button>
     </div>
 </nav>
+
 <div layout="column" layout-fill layout-align="center center" class="md-display-2" flex
     md-colors="{color: 'grey-700'}"
     ng-show="!$ctrl.Transactions.finalDataSets && !ctrl.Transactions.datas">
@@ -53,7 +53,7 @@
 </div>
 
 <div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
-    ng-if="$ctrl.Transactions.finalDataSets">
+    ng-show="$ctrl.Transactions.finalDataSets">
         
         <div layout flex="100">
             <md-button flex="grow" class="md-raised"
@@ -85,7 +85,7 @@
             <div class="md-subhead">${{ $ctrl._getSum(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
         </div>
 </div>
-<div ng-show="$ctrl.showRevenue" >
+<div ng-show="$ctrl.showRevenue" flex="none">
     <div style="width: 80%; margin: auto;">
         <canvas id="revenueChart" width="400" height="150"></canvas>
     </div>
@@ -93,7 +93,7 @@
 
 
 <div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
-    ng-if="$ctrl.Transactions.finalDataSets">
+    ng-show="$ctrl.Transactions.finalDataSets">
        
         <div layout flex="100">
             <md-button flex="grow" class="md-raised"
