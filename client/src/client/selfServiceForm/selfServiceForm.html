@@ -40,6 +40,7 @@
             <div class="" layout="column">
                 <md-button
                     ng-repeat="item in $ctrl.list.basic"
+                    ng-show="item.isActivated && !item.isDeleted"
                     ng-click="$ctrl.select(item, 'services')"
                     class="list-item md-accent"
                     ng-class="{
@@ -57,6 +58,7 @@
             <div class="" layout="column">
                 <md-button
                     ng-repeat="item in $ctrl.list.addon"
+                    ng-show="item.isActivated && !item.isDeleted"
                     ng-click="$ctrl.select(item, 'addons')"
                     class="list-item md-accent"
                     ng-class="{

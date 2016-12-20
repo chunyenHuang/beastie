@@ -87,6 +87,19 @@
                 </md-button>
             </div>
             <div flex></div>
-        </md-content>
+        </div>
+        <div layout="column" class="md-padding" layout-align="start center">
+            <!-- <h4>Discount</h4> -->
+            <md-button
+                class="md-primary"
+                ng-repeat="discount in $ctrl.discounts"
+                ng-class="{
+                    'md-raised': $ctrl.selectedDiscount == discount
+                }"
+                ng-click="$ctrl.selectDiscount(discount)">
+                {{discount.label}}
+            </md-button>
+        </div>
+
     </div>
 </div>

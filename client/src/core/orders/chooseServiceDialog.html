@@ -4,6 +4,7 @@
 <md-content layout="row" flex layout-wrap layout-align="center center">
     <md-button layout="column" layout-margin
         ng-repeat="service in $ctrl.services" flex="80"
+        ng-show="service.isActivated && !service.isDeleted"
         class="md-raised" ng-class="{'md-primary':$ctrl.service==service}"
         ng-click="$ctrl.setService(service)">
         <div class="md-headline">

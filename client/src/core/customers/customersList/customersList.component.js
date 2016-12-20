@@ -28,10 +28,10 @@ const customersListComponent = {
                 this.Task.off();
                 this.customers = customers;
                 // console.log(this.customers[0]);
-                this.select({
-                    _id: '5844ccf6c1979e3e641136b0',
-                    tab: 'pets'
-                });
+                // this.select({
+                //     _id: '5844ccf6c1979e3e641136b0',
+                //     tab: 'pets'
+                // });
             });
         }
 

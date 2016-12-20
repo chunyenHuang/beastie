@@ -209,7 +209,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="" layout="column" ng-show="$ctrl.showDocument == item.document">
+                <div class="" layout="column" ng-show="item.document && $ctrl.showDocument == item.document">
                     <iframe src="{{item.document}}" class="preview-document"></iframe>
                 </div>
             </div>

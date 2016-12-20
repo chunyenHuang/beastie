@@ -24,7 +24,7 @@ const routes = (serverApp) => {
         });
 
     // Middlewares
-    // serverApp.use(require('./routes/middlewares/userAuth'));
+    serverApp.use(require('./middlewares/userAuth'));
 
     // Resources
     const routes = path.join(routeRootPath, 'resources');

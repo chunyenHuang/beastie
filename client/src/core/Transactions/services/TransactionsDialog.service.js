@@ -70,7 +70,6 @@ class TransactionsDialogService {
                         type: 'company'
                     }).$promise.then((res)=>{
                         this.tax = parseFloat(res[0].tax);
-                        console.log(this.tax);
                     });
 
                     this.resetTransaction();
@@ -91,7 +90,6 @@ class TransactionsDialogService {
                         this.SelfServices.get({
                             id: this.selfService_id
                         }, (selfService) => {
-                            console.log(selfService);
                             this.transaction = Object.assign(this.transaction, {
                                 total: selfService.total,
                                 selfService_id: selfService._id,
@@ -112,6 +110,24 @@ class TransactionsDialogService {
                             this.oriMoney = angular.copy(credit.balance);
                         });
                     }
+
+                    this.discounts = [{
+                        value: 1,
+                        label: 'No discount'
+                    },{
+                        value: 0.90,
+                        label: '10% off'
+                    },{
+                        value: 0.85,
+                        label: '15% off'
+                    },{
+                        value: 0.80,
+                        label: '20% off'
+                    },{
+                        value: 0.75,
+                        label: '25% off'
+                    }];
+                    this.selectedDiscount = this.discounts[0];
                 }
 
                 cleanup() {
@@ -138,15 +154,11 @@ class TransactionsDialogService {
                 }
 
                 updateTotal(inputNumbers) {
-                    console.log(this.oriMoney);
-                    console.log(inputNumbers);
                     if (inputNumbers) {
                         this.transaction.total = parseFloat(inputNumbers);
                     } else {
-                        console.log(inputNumbers);
                         this.transaction.total = angular.copy(this.oriMoney);
                     }
-                    console.log(this.transaction.total);
                 }
 
                 getTotalWithTax(total) {
@@ -159,19 +171,21 @@ class TransactionsDialogService {
                     return total;
                 }
 
+                selectDiscount(discount){
+                    this.selectedDiscount = discount;
+                    const calculation = this.oriMoney*discount.value;
+                    this.updateTotal(calculation);
+                }
+
                 confirm() {
                     const obj = Object.assign(this.transaction, {
                         total: this.getTotalWithTax(this.transaction.total)
                     });
-                    console.log(this);
-                    console.log(obj);
-
                     this.Transactions.checkout(obj, (res) => {
-                        console.log(res);
                         this.cleanup();
                         this.$mdDialog.hide(res);
                     }, (err) => {
-                        console.log(err);
+                        this.$log.error(err);
                     });
                 }
 

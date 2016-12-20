@@ -23,7 +23,11 @@
                 </h3>
             </div>
         </div>
-        <md-card class="md-padding md-whiteframe-3dp" layout="column" flex="none" ng-repeat="item in $ctrl.list">
+        <md-card
+            class="md-padding md-whiteframe-3dp"
+            layout="column" flex="none"
+            ng-repeat="item in $ctrl.list"
+            ng-show="item.isActivated && !item.isDeleted">
             <div class="" layout="column">
                 <md-button
                     ng-click="$ctrl.selected = item"
