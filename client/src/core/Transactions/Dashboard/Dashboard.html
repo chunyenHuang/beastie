@@ -53,7 +53,7 @@
 </div>
 
 <div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
-    ng-show="$ctrl.Transactions.finalDataSets">
+    ng-if="$ctrl.Transactions.finalDataSets">
         
         <div layout flex="100">
             <md-button flex="grow" class="md-raised"
@@ -61,7 +61,7 @@
                 <span layout layout-align="start">
                     <span ng-show="!$ctrl.showRevenue"><md-icon class="" md-svg-src="chevron-up"></md-icon></span>
                     <span ng-show="$ctrl.showRevenue"><md-icon class="" md-svg-src="chevron-down"></md-icon></span>
-                    revenue (${{ $ctrl._getSum($ctrl.Transactions.finalDataSets.total) | number}})
+                    revenue (${{ $ctrl.getSum($ctrl.Transactions.finalDataSets.total) | number}})
                 </span>
             </md-button>
             <md-button flex="noshrink" layout layout-align="center center" class="md-accent md-raised md-hue-1"
@@ -81,8 +81,8 @@
                     <md-icon class="p-l-6px" md-svg-src="eye" md-colors="{color:'accent'}"></md-icon>
                 </span>
             </div>
-            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">${{ $ctrl._getSum(data) | number}}</div>
-            <div class="md-subhead">${{ $ctrl._getSum(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
+            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">${{ $ctrl.getSum(data) | number}}</div>
+            <div class="md-subhead">${{ $ctrl.getSum(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
         </div>
 </div>
 <div ng-show="$ctrl.showRevenue" flex="none">
@@ -93,7 +93,7 @@
 
 
 <div layout layout-wrap  layout-padding layout-align="space-around" flex="none" 
-    ng-show="$ctrl.Transactions.finalDataSets">
+    ng-if="$ctrl.Transactions.finalDataSets">
        
         <div layout flex="100">
             <md-button flex="grow" class="md-raised"
@@ -101,7 +101,7 @@
                 <span layout layout-align="start">
                     <span ng-show="!$ctrl.showCount"><md-icon class="" md-svg-src="chevron-up"></md-icon></span>
                     <span ng-show="$ctrl.showCount"><md-icon class="" md-svg-src="chevron-down"></md-icon></span>
-                    count ({{ $ctrl._getCount($ctrl.Transactions.finalDataSets.total) | number}})
+                    count ({{ $ctrl.getCount($ctrl.Transactions.finalDataSets.total) | number}})
                 </span>
             </md-button>
             <md-button flex="noshrink" layout layout-align="center center" class="md-accent md-raised md-hue-1"
@@ -122,8 +122,8 @@
                     <md-icon class="p-l-6px" md-svg-src="eye" md-colors="{color:'accent'}"></md-icon>
                 </span>
             </div>
-            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">{{ $ctrl._getCount(data) | number}}</div> 
-            <div class="md-subhead">{{ $ctrl._getCount(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
+            <div ng-class="{'md-display-1': key!='total', 'md-display-3': key=='total'}">{{ $ctrl.getCount(data) | number}}</div> 
+            <div class="md-subhead">{{ $ctrl.getCount(data) / $ctrl.Transactions.openDays | number:1}} /day</div>
         </div>
 </div>
 <div ng-show="$ctrl.showCount" >

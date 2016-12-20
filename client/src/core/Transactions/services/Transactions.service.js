@@ -274,11 +274,6 @@ class transactionsService {
         if(callback){callback()};
     }
     
-    
-    _sortByCategory(data, next) {
-        
-    }
-    
 }
 
 export default transactionsService;

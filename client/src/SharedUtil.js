@@ -65,6 +65,16 @@ class SharedUtil {
         return new Date(new Date(date)
             .setDate(new Date(date).getDate() + offset));
     }
+    _setMonth(offset, date) {
+        date = date || new Date();
+        return new Date(new Date(date)
+            .setMonth(new Date(date).getMonth() + offset));
+    }
+    _setYear(offset, date) {
+        date = date || new Date();
+        return new Date(new Date(date)
+            .setFullYear(new Date(date).getFullYear() + offset));
+    }
     
     daysBetweenParsedDate(d1, d2) {
         d2 = d2 || new Date();

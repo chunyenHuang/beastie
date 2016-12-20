@@ -47,11 +47,10 @@ const dashboardComponent = {
             this.Settings = Settings;
             this._parseDate = SharedUtil._parseDate;
             this._setDate = SharedUtil._setDate;
+            this._setMonth = SharedUtil._setMonth;
+            this._setYear = SharedUtil._setYear;
             this.$mdColors = $mdColors;
             
-            
-            // this.offsetFrom = -6;
-            // this.offsetTo = 1;
             this.modes = ['day', 'last 7 days', 'month', 'year'];
             this.date = new Date();
             this.range = {};
@@ -121,31 +120,17 @@ const dashboardComponent = {
             let d = new Date(date);
             return new Date(new Date(d.setMonth(d.getMonth() + 1)).setDate(0));
         }
-        // _setDate(offset, date) {
-        //     date = date || new Date();
-        //     return new Date(new Date(date)
-        //         .setDate(new Date(date).getDate() + offset));
-        // }
-        _setMonth(offset, date) {
-            date = date || new Date();
-            return new Date(new Date(date)
-                .setMonth(new Date(date).getMonth() + offset));
-        }
-        _setYear(offset, date) {
-            return new Date(new Date(date)
-                .setFullYear(new Date(date).getFullYear() + offset));
-        }
         setMode(mode) {
             this.mode = mode;
             this.$onInit();
         }
-        _getSum(finalDataSets) {
+        getSum(finalDataSets) {
             let dataForPlot = finalDataSets.map((array)=>{
                 return array.reduce((a,b) => a+b, 0);
             });
             return dataForPlot.reduce((a,b) => a+b, 0);
         }
-        _getCount(finalDataSets) {
+        getCount(finalDataSets) {
             let dataForPlot = finalDataSets.map((array)=>{
                 return array.length;
             });
@@ -182,7 +167,7 @@ const dashboardComponent = {
                 this.countChart.update();
             }
         }
-        setXLabel() {
+        _setXLabel() {
             if (!this.Transactions.xAxisArr) return;
             if (this.mode == 'day') 
                 return this.Transactions.xAxisArr;
@@ -202,7 +187,7 @@ const dashboardComponent = {
             if (!str) return;
             return str.split('_id')[0];
         }
-        $onInit(){
+        chartConfig() {
             Chart.defaults.global.defaultFontColor = this.$mdColors.getThemeColor('default-primary');
             Chart.defaults.global.defaultFontSize = 16;
             Chart.defaults.global.elements.point = {
@@ -213,41 +198,10 @@ const dashboardComponent = {
                 hitRadius: 7, 
                 hoverRadius: 7,
                 hoverBorderWidth: 1,
-            }
-            
-            var revenueChartEl = document.getElementById("revenueChart");
-            var countChartEl = document.getElementById("countChart");
-            
-            if (this.revenueChart) {
-                if(this.revenueChart !== undefined || this.revenueChart !== null) {
-                    this.revenueChart.destroy();
-                }
-            }
-            if (this.countChart) {
-                if(this.countChart !== undefined || this.countChart !== null) {
-                    this.countChart.destroy();
-                }
-            }
-            
-            this.setRange(this.mode, this.date);
-            this.calOpen = false;
-            console.log(this.range);
-            
-            Promise.all([
-                this.Transactions.findStoreOpenDays(this.range), 
-                this.Transactions.init(this.range, this.mode)
-            ])
-            // this.Transactions.init(this.range, this.mode)
-            .catch(()=>{
-                console.log('no data!');
-                return;
-            }).then(()=>{
-                // the following code runs even the promise is rejected...
-                if (!this.Transactions.datas) return;
-                
-                // this.countOpenDaysInRange();
-                
-                let counter = 0;
+            };
+        }
+        genChartDatasets() {
+            let counter = 0;
                 let revenueDataset = [];
                 let countDataset = [];
                 angular.forEach(this.Transactions.finalDataSets, (val, key)=>{
@@ -275,8 +229,11 @@ const dashboardComponent = {
                 });
                 this.revenueDataset = revenueDataset;
                 this.countDataset = countDataset;
-                
-                this.revenueChart = new Chart(revenueChartEl, {
+        }
+        genChart() {
+            let revenueChartEl = document.getElementById("revenueChart");
+            let countChartEl = document.getElementById("countChart");
+            this.revenueChart = new Chart(revenueChartEl, {
                     type: 'line',
                     options: {
                         // responsive: false,
@@ -301,7 +258,7 @@ const dashboardComponent = {
                         }
                     },
                     data: {
-                        labels: this.setXLabel(),
+                        labels: this._setXLabel(),
                         // datasets: revenueDataset,
                     },
                 
@@ -331,10 +288,44 @@ const dashboardComponent = {
                         }
                     },
                     data: {
-                        labels: this.setXLabel(),
+                        labels: this._setXLabel(),
                         // datasets: countDataset,
                     }
                 });
+        }
+        
+        $onInit(){
+            this.chartConfig();
+            
+            if (this.revenueChart) {
+                if(this.revenueChart !== undefined || this.revenueChart !== null) {
+                    this.revenueChart.destroy();
+                }
+            }
+            if (this.countChart) {
+                if(this.countChart !== undefined || this.countChart !== null) {
+                    this.countChart.destroy();
+                }
+            }
+            
+            this.setRange(this.mode, this.date);
+            this.calOpen = false;
+            console.log(this.range);
+            
+            Promise.all([
+                this.Transactions.findStoreOpenDays(this.range), 
+                this.Transactions.init(this.range, this.mode)
+            ])
+            // this.Transactions.init(this.range, this.mode)
+            .catch(()=>{
+                console.log('no data!');
+                return;
+            }).then(()=>{
+                // the following code runs even the promise is rejected...
+                if (!this.Transactions.datas) return;
+                
+                this.genChartDatasets();
+                this.genChart();
                 this.toggleShowSubset();
             });
         }
