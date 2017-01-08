@@ -9,28 +9,25 @@ const clientComponent = {
     controller: /* @ngInject */ class ClientController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams',
-                'Client', 'Socket', 'Fullscreen', 'Settings'
+                '$log', '$timeout', '$state', '$stateParams', '$document',
+                'Client', 'Socket', 'Fullscreen', 'Settings', 'UserAuth'
             ];
         }
         constructor(
-            $log, $timeout, $state, $stateParams,
-            Client, Socket, Fullscreen, Settings
+            $log, $timeout, $state, $stateParams, $document,
+            Client, Socket, Fullscreen, Settings, UserAuth
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$document = $document;
             this.Client = Client;
             this.Socket = Socket;
             this.Fullscreen = Fullscreen;
-            Settings.query({
-                type: 'company'
-            }).$promise.then((res) => {
-                this.title = res[0].name;
-                this.titleZh = res[0].zhName;
-            });
             this.fullscreenIcon = 'fullscreen';
+            this.UserAuth = UserAuth;
+            this.Settings = Settings;
 
             this.Socket.on('signaturesInit', (res) => {
                 this.$state.go('client.signature', {
@@ -39,6 +36,10 @@ const clientComponent = {
                     name: res.name
                 });
             });
+
+            // this.$document[0].body.addEventListener('touchmove', (event) => {
+            //     event.preventDefault();
+            // });
         }
         toggleFullscreen() {
             if (this.Fullscreen.isEnabled()) {
@@ -52,8 +53,28 @@ const clientComponent = {
         }
 
         $onInit() {
-            this.$state.go('client.customersCheckIn');
-            // this.$state.go('client.signature');
+            this.UserAuth
+                .get({}).$promise
+                .then((res) => {
+                    if (
+                        res.role == 'deviceClient'
+                    ) {
+                        this.$state.go('client.customersCheckIn');
+                        this.Settings.query({
+                            type: 'company'
+                        }).$promise.then((res) => {
+                            console.log(res);
+                            this.title = res[0].name;
+                            this.titleZh = res[0].zhName;
+                        }, (err) => {
+                            console.log(err);
+                        });
+                    } else {
+                        this.$state.go('userAuth');
+                    }
+                }, () => {
+                    this.$state.go('userAuth');
+                });
         }
     }
 };

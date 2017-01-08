@@ -9,13 +9,23 @@ const customersFormComponent = {
     },
     controller: /* @ngInject */ class customersFormController {
         static get $inject() {
-            return ['$log', '$timeout', '$state', '$stateParams', 'Customers', '$scope', 'Pets'];
+            return [
+                '$log', '$timeout', '$state', '$stateParams', '$window',
+                '$document',
+                'Customers', '$scope', 'Pets'
+            ];
         }
-        constructor($log, $timeout, $state, $stateParams, Customers, $scope, Pets) {
+        constructor(
+            $log, $timeout, $state, $stateParams, $window, $document,
+            Customers, $scope, Pets
+        ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$state = $state;
             this.$stateParams = $stateParams;
+            this.$scope = $scope;
+            this.$document = $document;
+            this.$window = $window;
             this.Customers = Customers;
             this.currentFormState = 'name';
             this.autofocus = 'name';
@@ -36,6 +46,12 @@ const customersFormComponent = {
         $onChanges() {
             this.getForm();
             this.getTemplate();
+        }
+
+        $onDestroy() {
+            if(this.customer){
+                this.customer = null;
+            }
         }
 
         backToDashboard() {
@@ -90,10 +106,11 @@ const customersFormComponent = {
             });
         }
         getForm() {
+            this.customer_id = this.$stateParams.customer_id || this.customerId;
+
             const createCustomerForm = new Promise(
                 (resolve) => {
                     // this.$stateParams.customer_id ? let
-                    this.customer_id = this.$stateParams.customer_id || this.customerId;
                     this.Customers.get({
                         id: this.customer_id ? this.customer_id : 'template'
                     }, (customer) => {
@@ -199,6 +216,14 @@ const customersFormComponent = {
                     });
                 });
             }
+        }
+
+        inputOnFocus($event) {
+            console.log($event);
+            $event.preventDefault();
+            console.log('onfocus');
+            // this.$window.scrollTo(0, 0);
+            // this.$document[0].body.scrollTop = 0;
         }
     }
 };

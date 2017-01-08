@@ -25,16 +25,17 @@ const userAuthComponent = {
         }
 
         $onInit() {
-            this.UserAuth.get({}, (res) => {
-                if(res.statusCode != 401){
-                    this.goStateByRole(res.role);
-                }
-            });
+            this.UserAuth
+                .get({}, (res) => {
+                    if (res.statusCode != 401) {
+                        this.goStateByRole(res.role);
+                    }
+                });
         }
 
         login() {
             this.UserAuth.save(this.user, (res) => {
-                if(res.role){
+                if (res.role) {
                     this.goStateByRole(res.role);
                 }
             });

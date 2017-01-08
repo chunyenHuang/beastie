@@ -2,7 +2,7 @@ import template from './Credits.html';
 import './Credits.styl';
 
 const creditsComponent = {
-    template,
+    template:`<h1>Credits</h1>`,
     bindings: {
 
     },
@@ -22,6 +22,7 @@ const creditsComponent = {
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Credits = Credits;
+            console.log('123');
         }
     }
 };

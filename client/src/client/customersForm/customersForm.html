@@ -44,7 +44,7 @@
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>Email</label>
-                    <input required type="email" name="email" ng-model="$ctrl.customer.email" ng-blur="$ctrl.updateProgressVal()"></input>
+                    <input ng-focus="$ctrl.inputOnFocus($event)" required type="email" name="email" ng-model="$ctrl.customer.email" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
             </div>
         </section>

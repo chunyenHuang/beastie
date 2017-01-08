@@ -4,7 +4,9 @@ class userAuthService {
         return ['$resource'];
     }
     constructor($resource) {
-        const UserAuth = $resource('/userAuth/:id', {id:'@id'});
+        const UserAuth = $resource('/userAuth/:id', {
+            id: '@id'
+        });
         return UserAuth;
     }
 }

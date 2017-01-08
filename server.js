@@ -60,10 +60,7 @@ const sslport = parseInt(port) + 1;
 let server;
 let serverHttps;
 let io;
-if (process.env.CLOUD9) {
-    server = http.Server(app);
-    io = require('socket.io')(server);
-} else {
+if (process.env.HTTPS) {
     server = http.createServer((request, response) => {
         const correctedHost = request.headers['host'].replace(port, sslport);
         const httpsURI = correctedHost + request.url;
@@ -81,6 +78,9 @@ if (process.env.CLOUD9) {
     }, app);
 
     io = require('socket.io')(serverHttps);
+} else {
+    server = http.Server(app);
+    io = require('socket.io')(server);
 }
 app.set('socket-io', io);
 app.set('port', port);
@@ -131,7 +131,6 @@ if (process.env.NODE_ENV == 'development') {
         path.join(__dirname, 'client/src/index.js')
     ];
     const compiler = webpack(config);
-    // compiler.apply(new DashboardPlugin(dashboard.setData));
     const webpackMiddleware = webpackDevMiddleware(compiler, {
         // path: 'http://localhost:'+port,
         publicPath: config.output.publicPath,
@@ -151,6 +150,9 @@ if (process.env.NODE_ENV == 'development') {
     app.use(webpackHotMiddleware(compiler, {
         log: () => {}
     }));
+
+    // app.use(ServerMiddlewares.webpack);
+    // app.use(ServerMiddlewares.webpackHotMiddleware);
 } else {
     app.use(express.static(path.join(__dirname, 'dist'), {
         maxAge: 31557600000
@@ -162,7 +164,6 @@ if (process.env.NODE_ENV == 'development') {
 app.use(express.static(path.join(__dirname, 'files'), {
     maxAge: 31557600000
 }));
-
 
 // load modules
 const routes = require('./routes');
@@ -180,27 +181,23 @@ app.use(errorHandler());
 //     let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
 //     console.log('Listening on port %d in %s mode', app.get('port'), mode);
 // });
-if (process.env.CLOUD9) {
-    server.listen(app.get('port'), () => {
-        let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
-        console.log(mode.green);
-        require('dns').lookup(require('os').hostname(), (err, add, fam) => {
-            console.log((add + ':' + app.get('port')).yellow);
-        });
-        // console.log(server.address().address );
+
+const listenPort = () => {
+    let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
+    // eslint-disable-next-line no-console
+    console.log(mode.green);
+    require('dns').lookup(require('os').hostname(), (err, add) => {
+        // eslint-disable-next-line no-console
+        console.log(('https://' + add + ':' + sslport).yellow);
     });
-} else {
+};
+if (process.env.HTTPS) {
     server.listen(port, () => {
         // eslint-disable-next-line no-console
         console.log('Running HTTP on port ' + port);
     });
-    serverHttps.listen(sslport, () => {
-        // eslint-disable-next-line no-console
-        let mode = (process.env.NODE_ENV) ? process.env.NODE_ENV : 'production';
-        console.log(mode.green);
-        require('dns').lookup(require('os').hostname(), (err, add, fam) => {
-            console.log(('https://' + add + ':' + sslport).yellow);
-        });
-    });
+    serverHttps.listen(sslport, listenPort);
+} else {
+    server.listen(app.get('port'), listenPort);
 }
 module.exports = app;

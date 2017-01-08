@@ -1,6 +1,17 @@
+const path = require('path');
+
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
+const config = require('./webpack.dev.config');
+config.entry.app = [
+    'webpack-hot-middleware/client?reload=true',
+    'babel-polyfill',
+    path.join(__dirname, 'client/src/index.js')
+];
+const compiler = webpack(config);
 const ServerMiddlewares = class ServerMiddlewares {
-    constructor() {
-    }
+    constructor() {}
     transformRequest(req, res, next) {
         if (req.body) {
             const ObjectId = require('mongodb').ObjectID;
@@ -40,5 +51,31 @@ const ServerMiddlewares = class ServerMiddlewares {
         next();
     }
 
+    get webpack() {
+        const webpackMiddleware = webpackDevMiddleware(compiler, {
+            // path: 'http://localhost:'+port,
+            publicPath: config.output.publicPath,
+            contentBase: path.join(__dirname, 'client/src/'),
+            quiet: true,
+            noInfo: true,
+            stats: {
+                colors: true,
+                hash: false,
+                timings: true,
+                chunks: false,
+                chunkModules: false,
+                modules: false
+            }
+        });
+
+        return webpackMiddleware;
+    }
+
+    webpackHotMiddleware() {
+        return webpackHotMiddleware(compiler, {
+            log: () => {}
+        });
+    }
 }
+
 module.exports = new ServerMiddlewares();

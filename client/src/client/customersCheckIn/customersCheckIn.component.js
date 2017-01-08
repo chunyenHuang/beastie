@@ -23,7 +23,11 @@ const customersCheckInComponent = {
         }
 
         $onInit() {
-            console.log('customer check in');
+            // console.log('customer check in');
+        }
+
+        $onDestroy(){
+
         }
 
         checkIn(number) {
@@ -32,7 +36,7 @@ const customersCheckInComponent = {
                 this.Customers.checkIn({
                     phone: number
                 }, (res) => {
-                    console.log(res);
+                    // console.log(res);
                     this.$state.go('client.dashboard', {
                         customer_id: res._id || res.customer_id
                     });

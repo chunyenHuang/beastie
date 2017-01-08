@@ -18,12 +18,15 @@ html,
 body
     margin 0
     padding 0
-    height 100vh
+    height 100%
     width 100%
+    overflow: auto;
     overflow-x: hidden!important
+    -webkit-overflow-scrolling: touch;
+    position: fixed;
     font-family: $font-family
     -webkit-user-select:none
-    
+
     // .md-dialog-is-showing
     //     overflow: visible
     // md-backdrop
@@ -43,6 +46,6 @@ body
 .s100
     width 100px
     height 100px
-    
+
 .cap-text
     text-transform:capitalize
