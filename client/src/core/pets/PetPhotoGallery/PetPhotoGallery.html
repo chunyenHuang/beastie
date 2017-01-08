@@ -13,8 +13,11 @@
             </md-grid-tile>
         </md-grid-list>
     </div>
-    <div id="preview-large" class="hide" ng-style="{'background-image':'url('+$ctrl.previewLargeUrl+')'}"
+    <!-- <div id="preview-large" class="hide" ng-style="{'background-image':'url('+$ctrl.previewLargeUrl+')'}"
         ng-click="$ctrl.toggleLargePic()">
-        <!--<img ng-src="{{$ctrl.previewLargeUrl}}" alt=""  ng-click="$ctrl.toggleLargePic()"/>-->
+    </div> -->
+    <div id="preview-large" layout="row" layout-align="center center" class="hide" ng-click="$ctrl.toggleLargePic()">
+        <img ng-src="{{$ctrl.previewLargeUrl}}" alt=""  />
     </div>
+
 </div>
