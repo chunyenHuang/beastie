@@ -88,9 +88,8 @@ app.set('port', port);
 /*
     Express Configuration
 */
-if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'dev') {
-    app.use(logger('dev'));
-} else {
+app.use(logger('dev'));
+if (process.env.NODE_ENV != 'development' || process.env.NODE_ENV != 'dev') {
     const accessLogStream = fs.createWriteStream(__dirname + '/server.log', {
         flags: 'a'
     });

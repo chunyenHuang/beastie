@@ -5,11 +5,11 @@ const printer = new escpos.Printer(device);
 
 const AbstractController = require('../../abstract/AbstractController.js');
 class PrinterController extends AbstractController {
-    constructor(){
+    constructor() {
         super();
     }
     check(req, res) {
-        if(!device){
+        if (!device) {
             console.log('No USB devices.');
             res.statusCode = 500;
             res.json({
@@ -17,7 +17,7 @@ class PrinterController extends AbstractController {
             });
             return;
         }
-        if(!printer) {
+        if (!printer) {
             console.log('No Printer devices.');
             res.statusCode = 500;
             res.json({
@@ -25,7 +25,7 @@ class PrinterController extends AbstractController {
             });
             return;
         }
-        if(!device.open){
+        if (!device.open) {
             console.log('Can not open device.');
             res.statusCode = 500;
             res.json({
@@ -33,20 +33,50 @@ class PrinterController extends AbstractController {
             });
             return;
         }
-        device.open((err) => {
-            if(err){
+        device.openAll((err) => {
+            if (err) {
                 console.log(err);
                 res.statusCode = 500;
                 res.json({
-                    message: 'Printer has error. Please reboot.'
-                });
-            } else {
-                res.statusCode = 200;
-                res.json({
-                    message: 'Printer is Good.'
+                    message: 'Device.open has error. Please reboot.'
                 });
             }
+            let devices = device.getDevices();
+            for (let i = 0; i < devices; i++) {
+                console.log(devices[i]);
+                console.log('Printing on device', (i + 1));
+                setTimeout(() => {
+                    device.setDevice(i);
+                    printer.font('a')
+                        .align('ct')
+                        .style('bu')
+                        .size(1, 1)
+                        .text('This is the printer #' + (i + 1))
+                        .cut();
+                }, 500 * i);
+            }
+
+            setTimeout(() => {
+                device.closeAll(() => {
+                    console.log('Closed all');
+                })
+            }, 1000 * devices);
         });
+
+        // device.open((err) => {
+        //     if (err) {
+        //         console.log(err);
+        //         res.statusCode = 500;
+        //         res.json({
+        //             message: 'Printer has error. Please reboot.'
+        //         });
+        //     } else {
+        //         res.statusCode = 200;
+        //         res.json({
+        //             message: 'Printer is Good.'
+        //         });
+        //     }
+        // });
     }
 
     test(req, res) {
