@@ -36,10 +36,6 @@ const clientComponent = {
                     name: res.name
                 });
             });
-
-            // this.$document[0].body.addEventListener('touchmove', (event) => {
-            //     event.preventDefault();
-            // });
         }
         toggleFullscreen() {
             if (this.Fullscreen.isEnabled()) {
@@ -63,11 +59,8 @@ const clientComponent = {
                         this.Settings.query({
                             type: 'company'
                         }).$promise.then((res) => {
-                            console.log(res);
                             this.title = res[0].name;
                             this.titleZh = res[0].zhName;
-                        }, (err) => {
-                            console.log(err);
                         });
                     } else {
                         this.$state.go('userAuth');

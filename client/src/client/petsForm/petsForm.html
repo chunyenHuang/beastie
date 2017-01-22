@@ -133,10 +133,13 @@
                     <div class="" flex="40" layout>
                         <md-input-container class="md-block" >
                             <label>Issued At</label>
+                            <!--
+                            md-hide-icons="calendar" -->
                             <md-datepicker
-                                md-open-on-focus md-hide-icons="calendar"
-                                ng-model="item.issuedAt" md-max-date="$ctrl.birthdayLimit.max"
-                                ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)"></md-datepicker>
+                                md-open-on-focus
+                                ng-model="item.issuedAt"
+                                ng-change="$ctrl.setDaysBeforeExpire(item, vaccineItem.name)">
+                            </md-datepicker>
                         </md-input-container>
                     </div>
                     <div class="" flex="20" layout="row" layout-align="center start" ng-show="item.issuedAt">

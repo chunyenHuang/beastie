@@ -51,7 +51,6 @@ const creditsComponent = {
                 this.Credits.get({
                     customer_id: this.customerId
                 }, (res) => {
-                    console.log(res);
                     this.credits = res;
                 });
             }
@@ -62,7 +61,6 @@ const creditsComponent = {
                 type: 'creditsPackages'
             }, (listItems) => {
                 this.list = listItems[0].items;
-                console.log(this.list);
             });
         }
 
@@ -89,11 +87,8 @@ const creditsComponent = {
                 customer_id: this.customerId,
                 package: creditPackage
             }).$promise.then((res) => {
-                console.log(res);
                 this.credits = res;
                 this.pay();
-            }, (err) => {
-                console.log(err);
             });
         }
 
@@ -150,9 +145,7 @@ const creditsComponent = {
             }
             this.Credits.update({
                 customer_id: this.customerId
-            }, this.credits).$promise.then((res) => {
-                console.log(res);
-            });
+            }, this.credits).$promise.then(() => {});
         }
 
     }

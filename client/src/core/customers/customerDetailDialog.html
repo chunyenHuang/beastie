@@ -1,61 +1,42 @@
-<!--<div id="preview-large" class="hide">-->
-<!--    <img src="{{$ctrl.previewLargeUrl}}" alt=""  ng-click="$ctrl.toggleLargePic()"/>-->
-<!--</div>-->
-<div layout="column" layout-align="start center" flex>
-    <md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
-        <!-- <h5>Customer - Pet - Detail</h5> -->
-        <div flex></div>
-        <div class="">
-            <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+<md-dialog id="customer-detail-dialog">
+    <md-toolbar>
+        <div class="header md-primary md-padding" layout="row" layout-align="start center">
+            <div flex></div>
+            <div class="">
+                <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+            </div>
         </div>
     </md-toolbar>
-    <md-content layout="column" flex layout-fill>
+    <md-dialog-content layout="column" flex>
         <md-tabs md-border-bottom flex layout="column" md-center-tabs md-selected="$ctrl.selectedTab">
-          <md-tab label="gallery">
-                <pet-photo-gallery
-                    ng-repeat="pet in $ctrl.customer.pets"
-                    pet-id="pet._id"
-                    layout-margin>
-                </pet-photo-gallery>
-          </md-tab>
-          <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
-            <md-content class="customer-form" flex layout="column">
-                <!-- <customer-info customer="$ctrl.customer" layout="column" flex></customer-info> -->
-                <client-customers-form
-                    customer-id="$ctrl.customer_id"
-                    mode="component"
-                    layout="column" flex>
-                </client-customers-form>
-            </md-content>
-          </md-tab>
-          <md-tab label="pets">
-              <md-content layout="column" flex class="md-padding">
-                  <customer-pets pets="$ctrl.customer.pets" layout="column" flex></customer-pets>
-              </md-content>
-          </md-tab>
-          <md-tab label="transactions">
-            <md-content class="md-padding">
-                <customer-transactions customer-id="$ctrl.customer._id" layout="column" flex></customer-transactions>
-            </md-content>
-          </md-tab>
-          <md-tab label="credits">
-            <md-content class="md-padding">
-                <customer-credits customer-id="$ctrl.customer._id" layout="column" flex></customer-credits>
-            </md-content>
-          </md-tab>
-          <md-tab label="waivers">
-            <md-content class="md-padding">
-                <customer-waivers customer-id="$ctrl.customer._id" layout="column" flex></customer-waivers>
-            </md-content>
-          </md-tab>
-
-          <!-- <md-tab label="history">
-            <md-content class="md-padding">
-              <h1 class="md-display-2">history</h1>
-              {{$ctrl.customer.orders}}
-            </md-content>
-          </md-tab> -->
-
+            <md-tab label="gallery">
+                <pet-photo-gallery ng-repeat="pet in $ctrl.customer.pets" pet-id="pet._id" layout-margin></pet-photo-gallery>
+            </md-tab>
+            <md-tab label="{{$ctrl.customer.firstname}}" flex layout="column">
+                <md-content class="customer-form" flex layout="column">
+                    <client-customers-form customer-id="$ctrl.customer_id" mode="component" layout="column" flex></client-customers-form>
+                </md-content>
+            </md-tab>
+            <md-tab label="pets">
+                <md-content layout="column" flex class="md-padding">
+                    <customer-pets pets="$ctrl.customer.pets" layout="column" flex></customer-pets>
+                </md-content>
+            </md-tab>
+            <md-tab label="transactions">
+                <md-content class="md-padding">
+                    <customer-transactions customer-id="$ctrl.customer._id" layout="column" flex></customer-transactions>
+                </md-content>
+            </md-tab>
+            <md-tab label="credits">
+                <md-content class="md-padding">
+                    <customer-credits customer-id="$ctrl.customer._id" layout="column" flex></customer-credits>
+                </md-content>
+            </md-tab>
+            <md-tab label="waivers">
+                <md-content class="md-padding">
+                    <customer-waivers customer-id="$ctrl.customer._id" layout="column" flex></customer-waivers>
+                </md-content>
+            </md-tab>
         </md-tabs>
-    </md-content>
-</div>
+    </md-dialog-content>
+</md-dialog>

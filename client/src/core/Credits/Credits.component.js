@@ -22,7 +22,6 @@ const creditsComponent = {
             this.$state = $state;
             this.$stateParams = $stateParams;
             this.Credits = Credits;
-            console.log('123');
         }
     }
 };

@@ -42,7 +42,6 @@ const selfServiceFormComponent = {
 
         $onInit() {
             this.setSelfServices();
-            // this.data = null;
         }
 
         $onDestroy() {
@@ -74,9 +73,6 @@ const selfServiceFormComponent = {
                 pinPasswords: pinPasswords
             }, (res) => {
                 this.data = res;
-                console.log(this.data);
-            }, (err) => {
-                console.log(err);
             });
         }
 
@@ -88,7 +84,6 @@ const selfServiceFormComponent = {
                 angular.forEach(listItems[0].items, (item) => {
                     this.list[item.type] = item.subItems;
                 });
-                console.log(this.list);
             });
         }
 
@@ -169,7 +164,6 @@ const selfServiceFormComponent = {
                     total: this.getTotal()
                 }
             )).$promise.then((res) => {
-                console.log(res);
                 if (isPaidByStoreCredit) {
                     this.checkoutWithCredits(res);
                 } else {
@@ -177,13 +171,10 @@ const selfServiceFormComponent = {
                         this.backToDashboard();
                     });
                 }
-            }, (err) => {
-                console.log(err);
             });
         }
 
         checkoutWithCredits(selfService) {
-            console.log(selfService);
             this.Transactions.checkout({
                 selfService_id: selfService._id,
                 customer_id: this.$stateParams.customer_id,
@@ -193,16 +184,12 @@ const selfServiceFormComponent = {
                 paymentTransactionsNumber: null,
                 note: null,
                 isVoidedAt: null
-            }).$promise.then((res) => {
-                console.log(res);
+            }).$promise.then(() => {
                 this._alert(()=>{
                     this.backToDashboard();
                 });
-            }, (err) => {
-                console.log(err);
             });
         }
-
     }
 };
 export default selfServiceFormComponent;

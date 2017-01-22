@@ -1,11 +1,13 @@
-function themeConfig($mdThemingProvider) {
+function themeConfig($mdThemingProvider, $mdInkRippleProvider) {
     'ngInject';
-    var customMap = $mdThemingProvider.extendPalette('brown', {
+    $mdInkRippleProvider.disableInkRipple();
+
+    const customMap = $mdThemingProvider.extendPalette('brown', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
     });
-    var customWhiteMap = $mdThemingProvider.extendPalette('grey', {
+    const customWhiteMap = $mdThemingProvider.extendPalette('grey', {
         'contrastDefaultColor': 'light',
         'contrastDarkColors': ['50'],
         '50': 'ffffff'
@@ -32,7 +34,7 @@ function themeConfig($mdThemingProvider) {
         .primaryPalette('grey', {
             'default': '600',
             'hue-2': '800'
-        })
-      
+        });
+
 }
 export default themeConfig;

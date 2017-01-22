@@ -122,7 +122,6 @@ const petsFormComponent = {
         uploadVaccination(file) {
             this.vaccinationsDocuments = this.vaccinationsDocuments || {};
             this.vaccinationsDocuments[this.currentVaccine.keyID] = file;
-            console.log(this.vaccinationsDocuments);
             this.$timeout(() => {
                 this.vaccinationsDocuments = this.vaccinationsDocuments;
             });
@@ -151,9 +150,6 @@ const petsFormComponent = {
                         this.requiredVaccinations.push(results[0].items[i].name);
                     }
                 }
-                // this._applyVaccineToPet();
-                // this._genVaccinationsNameList(this.pet.vaccinations);
-                // this._applyVaccineToPet();
             });
         }
 
@@ -161,10 +157,8 @@ const petsFormComponent = {
             this.Pets.get({
                 id: id
             }, (pet) => {
-                // pet.birthday = new Date(pet.birthday);
                 this.pet = pet;
                 this.setLists();
-                // this._parseVaccinationDate();
             }, () => {
                 this.setNewPet();
             });
@@ -207,24 +201,6 @@ const petsFormComponent = {
             this.pet.vaccinations.splice(this.pet.vaccinations.indexOf(vaccine), 1);
         }
 
-        // _applyVaccineToPet() {
-        //     for (let i in this.vaccinations) {
-        //         if (this.petVaccinationsNameList.indexOf(this.vaccinations[i].name) < 0) {
-        //             if (!this.pet.vaccinations || !angular.isArray(this.pet.vaccinations)) {
-        //                 this.pet.vaccinations = [];
-        //             }
-        //             this.pet.vaccinations.push({
-        //                 keyID: new Date().getTime(),
-        //                 name: this.vaccinations[i].name,
-        //                 issuedAt: null,
-        //                 expiredAt: null,
-        //                 effectiveDuration: 3,
-        //                 createdAt: new Date()
-        //             });
-        //         }
-        //     }
-        // }
-
         _genVaccinationsNameList(vaccinations) {
             if (!angular.isArray(vaccinations)) {
                 return;
@@ -247,7 +223,6 @@ const petsFormComponent = {
         }
 
         setDaysBeforeExpire(item, vaccineName) {
-            console.log(item);
             item.effectiveDuration = parseInt(item.effectiveDuration);
             let copyIssuedAt = angular.copy(item.issuedAt);
             let effectiveYear = copyIssuedAt.setFullYear(item.issuedAt.getFullYear() +
@@ -255,23 +230,6 @@ const petsFormComponent = {
             let effectiveDate = new Date(effectiveYear)
                 .setDate(item.issuedAt.getDate() - 1);
             item.expiredAt = new Date(effectiveDate);
-
-            if (item.daysBeforeDue < this.vaccinations[vaccineName].remindCustomerWithinDays) {
-                // const prompt = this.$mdDialog.prompt()
-                //     .title(item.name + ' Vaccine Due In ' + item.daysBeforeDue + ' Days!')
-                //     // .textContent('Bowser is a common name.')
-                //     // .placeholder('Phone Number')
-                //     // .ariaLabel('Phone Number')
-                //     // .ok('Go')
-                //     .cancel('Got It')
-                //     .clickOutsideToClose(false);
-                //
-                // this.$mdDialog.show(prompt);
-            }
-            // this.dateToday = Date.now();
-            // let dateDiff = effectiveTill - this.dateToday;
-            // // 1 day = 8.64e+7 milliseconds
-            // item.daysBeforeExpire = Math.floor(dateDiff/8.64e+7) + 1;
         }
 
         getDaysBeforeDue(date) {
@@ -320,20 +278,6 @@ const petsFormComponent = {
 
         }
 
-        checkVaccination() {
-            // for (var i = 0; i < this.pet.vaccinations.length; i++) {
-            //     if (
-            //         this.requiredVaccinations.indexOf(this.pet.vaccinations[i].name) > -1 &&
-            //         (!this.pet.vaccinations[i].expiredAt && !this.pet.vaccinations[i].issuedAt)
-            //     ) {
-            //         this.errorMessage = this.pet.vaccinations[i].name + ' is required. ';
-            //         return false;
-            //     }
-            // }
-            // this.errorMessage = null;
-            // return true;
-        }
-
         removeEmptyVaccination() {
             const vaccinations = [];
             for (var i = 0; i < this.pet.vaccinations.length; i++) {
@@ -349,16 +293,11 @@ const petsFormComponent = {
         }
 
         update() {
-            console.log(this.pet);
             this._clearTextarea();
             if (!this.validate()) {
                 this.selectedTab = 0;
                 return false;
             }
-            // if (!this.checkVaccination()) {
-            //     this.selectedTab = 1;
-            //     return false;
-            // }
             /*
                 TODO: remove empty vaccinations
                 TODO: handle component mode
@@ -367,7 +306,6 @@ const petsFormComponent = {
                 this.pet['birthday'] = null;
             }
             this.removeEmptyVaccination();
-            console.log(this.pet);
             if (!this.pet._id) {
                 this.Pets.save(this.pet, (res) => {
                     this._uploadPicture(res._id, () => {
@@ -385,7 +323,7 @@ const petsFormComponent = {
             } else {
                 this.Pets.update({
                     id: this.pet._id
-                }, this.pet, (res) => {
+                }, this.pet, () => {
                     this._uploadPicture(this.pet._id, () => {
                         this._uploadVaccinationDocuments(this.pet._id, () => {
                             if (this.mode != 'component') {
@@ -412,12 +350,9 @@ const petsFormComponent = {
                 pet_id: pet_id,
                 file: this.inputPicture,
                 filename: pet_id + '-' + timestamp + '.png'
-            }, (res) => {
-                // this will return url for the last pictures
-                console.log(res);
+            }, () => {
                 callback();
-            }, (err) => {
-                console.log(err);
+            }, () => {
                 callback();
             });
         }
@@ -434,7 +369,6 @@ const petsFormComponent = {
                     filename: pet_id + '-' + keyID + '.' + extension
                 });
             }
-            console.log(documents);
             (function upload(pet_id, documents, index, callback, bindning) {
                 if (index == documents.length) {
                     return callback();
@@ -463,7 +397,6 @@ const petsFormComponent = {
             if (this.showDocument == vaccine.document) {
                 return this.showDocument = null;
             }
-            // this.$window.open(document);
             this.showDocument = vaccine.document;
         }
     }

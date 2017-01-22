@@ -31,7 +31,6 @@ const dashboardComponent = {
                 this.Customers.getWithPets({
                     id: this.$stateParams.customer_id
                 }, (res) => {
-                    console.log(res);
                     this.customer = res;
                     angular.forEach(this.customer.pets, (pet) => {
                         this.preview[pet._id] = 'images/pets/' + pet._id + '.png';
@@ -71,7 +70,6 @@ const dashboardComponent = {
         }
 
         updateMyPet(petId) {
-            console.log(petId);
             this.$state.go('client.petsForm', {
                 pet_id: petId,
                 customer_id: this.$stateParams.customer_id

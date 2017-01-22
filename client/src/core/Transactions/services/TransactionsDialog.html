@@ -1,33 +1,25 @@
-<div class="" layout="column" flex layout-fill>
-    <md-toolbar class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
-        <div flex></div>
-        <div class>
-            <span>New Transaction</span>
-        </div>
-        <div flex></div>
-        <div class="">
-            <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
+<md-dialog id="transactions-dialog">
+    <md-toolbar>
+        <div class="header md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
+            <div flex></div>
+            <div class>
+                <span>New Transaction</span>
+            </div>
+            <div flex></div>
+            <div class="">
+                <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
+            </div>
         </div>
     </md-toolbar>
-    <div class="" layout="row" flex>
+    <md-dialog-content layout="row" flex>
         <div layout="column" flex>
-            <keypad
-                limit=10
-                type="money"
-                on-update="$ctrl.updateTotal(inputNumbers)"
-                right-bottom-button="."
-                init-value="$ctrl.total"
-                ></keypad>
+            <keypad limit=10 type="money" on-update="$ctrl.updateTotal(inputNumbers)" right-bottom-button="." init-value="$ctrl.total"></keypad>
         </div>
-        <div
-            class="detail"
-            layout="column"
-            layout-align="start center"
-            layout-margin>
+        <div class="detail" layout="column" layout-align="start center" layout-margin>
             <md-subheader>
                 Sub Total
             </md-subheader>
-            <div class="md-display-1" >
+            <div class="md-display-1">
                 <span ng-class="{
                     'strikethrough': $ctrl.oriMoney != $ctrl.transaction.total
                 }">
@@ -50,39 +42,29 @@
                 Tax ({{$ctrl.tax*100}}%)
             </md-subheader>
             <div class="select-buttons" layout="row" flex>
-                <md-button class="md-raised"
-                    ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
-                    ng-class="{'md-primary': $ctrl.transaction.isTaxIncluded}">
+                <md-button class="md-raised" ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded" ng-class="{'md-primary': $ctrl.transaction.isTaxIncluded}">
                     Add Tax
                 </md-button>
-                <md-button class="md-raised"
-                    ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded"
-                    ng-class="{'md-primary': !$ctrl.transaction.isTaxIncluded}">
+                <md-button class="md-raised" ng-click="$ctrl.transaction.isTaxIncluded = !$ctrl.transaction.isTaxIncluded" ng-class="{'md-primary': !$ctrl.transaction.isTaxIncluded}">
                     No Tax
                 </md-button>
             </div>
             <md-subheader>
                 Total
             </md-subheader>
-            <div class="md-display-1" >
+            <div class="md-display-1">
                 <span>
                     {{$ctrl.getTotalWithTax($ctrl.transaction.total) | currency}}
                 </span>
             </div>
 
-
             <!-- <div><md-icon md-svg-src="dots-horizontal" aria-label="take photos"></md-icon></div> -->
-            <div class="flex">
-
-            </div>
+            <div class="flex"></div>
             <div class="select-buttons" layout="row">
-                <md-button class="md-raised md-warn"
-                    ng-click="$ctrl.cancel()">
+                <md-button class="md-raised md-warn" ng-click="$ctrl.cancel()">
                     cancel
                 </md-button>
-                <md-button class="md-raised md-accent"
-                    ng-click="$ctrl.confirm()"
-                    >
+                <md-button class="md-raised md-accent" ng-click="$ctrl.confirm()">
                     confirm
                 </md-button>
             </div>
@@ -90,16 +72,11 @@
         </div>
         <div layout="column" class="md-padding" layout-align="start center">
             <!-- <h4>Discount</h4> -->
-            <md-button
-                class="md-primary"
-                ng-repeat="discount in $ctrl.discounts"
-                ng-class="{
+            <md-button class="md-primary" ng-repeat="discount in $ctrl.discounts" ng-class="{
                     'md-raised': $ctrl.selectedDiscount == discount
-                }"
-                ng-click="$ctrl.selectDiscount(discount)">
+                }" ng-click="$ctrl.selectDiscount(discount)">
                 {{discount.label}}
             </md-button>
         </div>
-
-    </div>
-</div>
+    </md-dialog-content>
+</md-dialog>

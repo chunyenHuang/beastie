@@ -22,11 +22,6 @@ const dayScheduleComponent = {
             this.$document = $document;
             this.$stateParams = $stateParams;
             this.Settings = Settings;
-
-            // this.officeHours = {
-            //     start: 10,
-            //     end: 20
-            // };
         }
 
         $onInit() {
@@ -50,7 +45,6 @@ const dayScheduleComponent = {
         }
 
         $onChanges() {
-            console.log(this.orders);
             if(this.orders){
                 this.reloadSchedule();
                 this.calculateHours();
@@ -120,7 +114,6 @@ const dayScheduleComponent = {
 
         setEvents() {
             for (var i = 0; i < this.orders.length; i++) {
-                console.log(this.orders);
                 this.appendOrderEvent(this.orders[i], this.colors[i]);
             }
         }
@@ -159,7 +152,7 @@ const dayScheduleComponent = {
         }
 
         removeEvents() {
-            const elements = document.getElementsByClassName('day-schedule-event');
+            const elements = this.$document[0].getElementsByClassName('day-schedule-event');
             while (elements.length > 0) {
                 elements[0].parentNode.removeChild(elements[0]);
             }

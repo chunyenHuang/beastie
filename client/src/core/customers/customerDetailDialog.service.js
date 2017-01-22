@@ -11,16 +11,10 @@ class customerDetailDialog {
     constructor($document, $mdDialog) {
         this.$document = $document;
         this.$mdDialog = $mdDialog;
-        // this.Signatures = Signatures;
-        if (!$document[0].getElementById('customer-detail-dialog')) {
-            const div = $document[0].createElement('div');
-            div.setAttribute('id', 'customer-detail-dialog');
-            $document[0].body.appendChild(div);
-        }
         const showDialog = (locals) => {
             return $mdDialog.show(
                 this.dialog(locals,
-                    $document[0].getElementById('customer-detail-dialog')
+                    $document[0].body
                 )
             );
         };
@@ -103,14 +97,11 @@ class customerDetailDialog {
                         if (this.isFromOrdersList) {
                             this.$mdDialog.hide(res);
                         }
-                        console.log(res);
                     });
                 }
 
                 create(customer) {
-                    this.Customers.save(customer, (res) => {
-                        console.log(res);
-                    });
+                    this.Customers.save(customer, () => {});
                 }
 
                 getTemplate(callback) {
@@ -122,8 +113,6 @@ class customerDetailDialog {
                 toggleLargePic(url) {
                     if (!this.previewLargeUrl) {
                         this.previewLargeUrl = url;
-                        // ng-show="$ctrl.previewLargeUrl"
-                        // dom ng-click="$ctrl.previewLargeUrl=null"
                         this.$document[0].getElementById('preview-large').classList.remove('hide');
                     } else {
                         this.previewLargeUrl = null;

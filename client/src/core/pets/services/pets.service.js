@@ -27,45 +27,6 @@ class petsService {
                     return res;
                 }
             },
-            // save: {
-            //     method: 'POST',
-            //     url: '/pets',
-            //     // headers: {
-            //     //     'Content-Type': undefined
-            //     // },
-            //     // transformRequest: (data) => {
-            //     //     console.log(data);
-            //     //     const formData = new FormData();
-            //     //     for (let prop in data) {
-            //     //         if (
-            //     //             prop.indexOf('$') == -1 &&
-            //     //             prop != 'toJSON'
-            //     //         ) {
-            //     //             formData.append(prop, data[prop]);
-            //     //         }
-            //     //     }
-            //     //     return formData;
-            //     // }
-            // },
-            // update: {
-            //     method: 'PUT',
-            //     url: '/pets/:id',
-            //     params: {
-            //         id: '@id'
-            //     },
-            //     // headers: {
-            //     //     'Content-Type': undefined
-            //     // },
-            //     transformRequest: (data) => {
-            //         // data['vaccinations'] = angular.toJson(data['vaccinations']);
-            //         // data['previousHistory'] = angular.toJson(data['previousHistory']);
-            //         // data['specialConditions'] = angular.toJson(data['specialConditions']);
-            //         // data['additionalInstructions'] = angular.toJson(data['additionalInstructions']);
-            //         console.warn(data);
-            //         console.warn(angular.toJson(data));
-            //         return angular.toJson(data);
-            //     }
-            // },
             update: {
                 method: 'PUT',
                 url: '/pets/:id',
@@ -96,7 +57,6 @@ class petsService {
                     for (let prop in data) {
                         formData.append(prop, data[prop]);
                     }
-                    console.log(data);
                     return formData;
                 }
             },

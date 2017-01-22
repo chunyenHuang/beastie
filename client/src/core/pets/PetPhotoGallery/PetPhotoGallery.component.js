@@ -11,7 +11,7 @@ const petPhotoGalleryComponent = {
         static get $inject() {
             return [
                 '$log', '$timeout', '$state', '$stateParams', 'Pets',
-                '$document',
+                '$document'
             ];
         }
         constructor(

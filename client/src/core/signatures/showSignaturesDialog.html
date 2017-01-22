@@ -1,48 +1,51 @@
-<md-toolbar layout="row" layout-align="start center" class="md-padding header md-hue-2">
-    <h3>Ask your customer to sign?</h3>
-    <div class="" flex>
-
-    </div>
-    <div class="">
-        <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
-    </div>
-</md-toolbar>
-<md-content layout="row" flex class="">
-    <div class="md-padding" layout="column" flex="50">
-        <div layout="row" ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.isActivated" layout-align="start center" flex="none">
-            <div class="" flex>
-                {{waiver.name}}
-                {{waiver.zhName}}
+<md-dialog id="show-signatures-dialog">
+    <md-toolbar>
+        <div layout="row" layout-align="start center" class="md-padding header md-hue-2">
+            <h3>Ask your customer to sign?</h3>
+            <div class="" flex></div>
+            <div class="">
+                <md-icon ng-click="$ctrl.cancel()" md-svg-src="close"></md-icon>
             </div>
-            <md-button ng-click="$ctrl.askToSign(waiver.name)" ng-disabled="$ctrl.isSigned(waiver.name)">
-                <span ng-show="!$ctrl.isSigned(waiver.name)">
-                    ask to sign
-                </span>
-                <span ng-show="$ctrl.isSigned(waiver.name)">
-                    signed
-                </span>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout="row" flex class="">
+        <div class="md-padding" layout="column" flex="50">
+            <div layout="row" ng-repeat="waiver in $ctrl.waivers" ng-show="waiver.isActivated" layout-align="start center" flex="none">
+                <div class="" flex>
+                    {{waiver.name}}
+                    {{waiver.zhName}}
+                </div>
+                <md-button ng-click="$ctrl.askToSign(waiver.name)" ng-disabled="$ctrl.isSigned(waiver.name)">
+                    <span ng-show="!$ctrl.isSigned(waiver.name)">
+                        ask to sign
+                    </span>
+                    <span ng-show="$ctrl.isSigned(waiver.name)">
+                        signed
+                    </span>
+                </md-button>
+                <md-button ng-click="$ctrl.view(waiver.name)" ng-disabled="!$ctrl.isSigned(waiver.name)">
+                    <span ng-show="!$ctrl.isSigned(waiver.name)">
+                        -
+                    </span>
+                    <span ng-show="$ctrl.isSigned(waiver.name)">
+                        View
+                    </span>
+                </md-button>
+            </div>
+        </div>
+        <md-content layout="column" flex>
+            <waiver-display customer-id="$ctrl.customer_id" order-id="$ctrl.order_id" waiver-name="$ctrl.waiverName" layout="column" flex></waiver-display>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <div layout="row" layout-align="start center" flex="none">
+            <md-button ng-click="$ctrl.cancel(waiver.name)">
+                cancel
             </md-button>
-            <md-button ng-click="$ctrl.view(waiver.name)" ng-disabled="!$ctrl.isSigned(waiver.name)">
-                <span ng-show="!$ctrl.isSigned(waiver.name)">
-                    -
-                </span>
-                <span ng-show="$ctrl.isSigned(waiver.name)">
-                    View
-                </span>
+            <div class="" flex></div>
+            <md-button ng-click="$ctrl.done(waiver.name)">
+                done
             </md-button>
         </div>
-    </div>
-    <md-content layout="column" flex>
-        <waiver-display customer-id="$ctrl.customer_id" order-id="$ctrl.order_id" waiver-name="$ctrl.waiverName" layout="column" flex></waiver-display>
-    </md-content>
-</md-content>
-<md-divider></md-divider>
-<div layout="row" layout-align="start center" flex="none">
-    <md-button ng-click="$ctrl.cancel(waiver.name)">
-        cancel
-    </md-button>
-    <div class="" flex></div>
-    <md-button ng-click="$ctrl.done(waiver.name)">
-        done
-    </md-button>
-</div>
+    </md-dialog-actions>
+</md-dialog>

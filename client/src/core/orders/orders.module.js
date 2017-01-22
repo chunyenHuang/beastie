@@ -4,7 +4,7 @@ import ordersListComponent from './ordersList';
 import previousOrdersDialogService from './previousOrdersDialog.service';
 import ServicesDialogService from './servicesDialog.service';
 import ordersService from './services/orders.service';
-import chooseServiceDialogService from './chooseServiceDialog.service'
+import chooseServiceDialogService from './chooseServiceDialog.service';
 
 const ordersModule = angular
     .module('beastie.orders', [])
@@ -27,7 +27,6 @@ const ordersModule = angular
                 url: '/list?type&#',
                 // component: 'orders'
                 template: '<orders-list layout="column" flex></orders-list>'
-            
             })
             .state('core.orders.form', {
                 url: '/form?customer_id&order_id',

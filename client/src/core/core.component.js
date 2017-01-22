@@ -51,7 +51,6 @@ const coreComponent = {
             });
 
             Socket.on('reLogin', () => {
-                console.log('login please');
                 this.$state.go('userAuth');
             });
         }

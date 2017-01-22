@@ -1,41 +1,10 @@
 <div class="md-padding" layout="row" layout-align="center center">
-    <!-- <div class="" flex>
-        {{$ctrl.countDown}}
-    </div> -->
     <div class="" flex>
         <h2>Welcome Back~ {{$ctrl.customer.firstname}}</h2>
     </div>
-    <!-- <md-button ng-click="$ctrl.makeAppointment()">Make an Appointment</md-button> -->
     <md-button class="md-accent md-raised" ng-click="$ctrl.selfService()">Self Service</md-button>
     <md-button class="md-warn md-raised" ng-click="$ctrl.$state.go('client.customersCheckIn')">Logout</md-button>
 </div>
-<!-- <md-divider></md-divider>
-<div class="" layout="row" layout-align="center center">
-</div>
-<md-divider></md-divider> -->
-<md-content layout="column" flex class="md-padding">
-    <pet-photo-gallery
-        layout="column" flex
-        ng-repeat="pet in $ctrl.customer.pets"
-        pet-id="pet._id"
-        layout-margin>
-    </pet-photo-gallery>
-</md-content>
-<!-- <div class="main" layout="column" flex>
-    <div class="" layout="row" flex="none" layout-align="center center">
-        <h5>My Visits: {{$ctrl.orders.length}}</h5>
-    </div>
-    <md-content layout="row" layout-align="start center" flex>
-        <div class="order-box" layout="column" ng-repeat="order in $ctrl.orders">
-            <md-subheader>
-                {{order.scheduleAt | date:'yyyy-MM-dd'}}
-            </md-subheader>
-            <div class="" layout="row" flex>
-                <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]"/>
-            </div>
-        </div>
-    </md-content>
-</div> -->
 <md-divider></md-divider>
 <div class="footer md-padding" layout="row" layout-align="center center">
     <md-button ng-click="$ctrl.updateMyInfo()">My Info</md-button>
@@ -46,6 +15,12 @@
     </md-button>
     <md-button ng-click="$ctrl.addPet()">Add a Pet</md-button>
 </div>
-
-<!-- <md-divider></md-divider>
-{{$ctrl.customer}} -->
+<md-divider></md-divider>
+<md-content layout="column" flex class="md-padding">
+    <pet-photo-gallery
+        layout="column" flex
+        ng-repeat="pet in $ctrl.customer.pets"
+        pet-id="pet._id"
+        layout-margin>
+    </pet-photo-gallery>
+</md-content>

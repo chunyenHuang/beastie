@@ -16,10 +16,6 @@ const customersComponent = {
             this.Customers = Customers;
             this.$state = $state;
         }
-        $onInit() {
-            // this.$state.go('core.customers.list');
-            // this.resourceTest();
-        }
     }
 };
 export default customersComponent;

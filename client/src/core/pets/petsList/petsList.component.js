@@ -24,7 +24,6 @@ const petsListComponent = {
         $onInit() {
             this.Pets.query({}, (results) => {
                 this.pets = results;
-                console.log(this.pets);
             });
         }
     }

@@ -26,11 +26,9 @@ const listItemsComponent = {
         $onInit() {
             this.ListItems.query({}, (listItems) => {
                 this.listItems = listItems;
-                console.log(this.listItems);
             });
         }
         go(list) {
-            // this.$state.current.name
             this.$state.go('core.listItems.' + list.type);
         }
     }

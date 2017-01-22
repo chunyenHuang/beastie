@@ -25,10 +25,6 @@ const albumsComponent = {
             this.Snapshot = Snapshot;
         }
 
-        $onInit(){
-            // this.takeSnapshot();
-        }
-
         takeSnapshot() {
             this.Snapshot().then((image) => {
                 this.pet.picture = image;

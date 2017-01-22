@@ -7,8 +7,6 @@ class snapshotService {
     }
     constructor($document, $window, $mdDialog) {
         this.$document = $document;
-        // this.$window = $window;
-        $mdDialog = $mdDialog;
         let appendDiv = this.$document[0].getElementById('snapshot-div');
         if (!appendDiv) {
             appendDiv = this.$document[0].createElement('div');
@@ -42,7 +40,6 @@ class snapshotService {
                     $window.navigator.getUserMedia = $window.navigator.getUserMedia ||
                         $window.navigator.webkitGetUserMedia || $window.navigator.mozGetUserMedia ||
                         $window.navigator.msGetUserMedia || $window.navigator.oGetUserMedia;
-                    console.log($window.navigator.getUserMedia);
                     if ($window.navigator.getUserMedia) {
                         $window.navigator.getUserMedia({
                             video: {
@@ -60,22 +57,16 @@ class snapshotService {
                                 }
                             }
                         }, (stream) => {
-                            console.log(stream);
                             this.video = $document[0].getElementById('camera');
-                            console.log(this.video);
                             this.video.src = $window.URL.createObjectURL(stream);
                             this.video.onloadedmetadata = (err) => {
                                 if (err) {
-                                    return console.log(err);
+                                    return;
                                 }
                                 this.video.play();
                             };
 
-                        }, (err) => {
-                            console.log(err);
-                        });
-                    } else {
-                        console.log('can not load camera');
+                        }, () => {});
                     }
                 }
 
@@ -97,7 +88,6 @@ class snapshotService {
                     const context = canvas.getContext('2d');
                     canvas.width = this.video.videoWidth;
                     canvas.height = this.video.videoHeight;
-                    console.log(canvas.width, canvas.height);
                     context.drawImage(this.video, 0, 0, canvas.width, canvas.height);
                     const dataUrl = canvas.toDataURL('image/png', 0.5); // value
                     canvas.toBlob((blob) => {

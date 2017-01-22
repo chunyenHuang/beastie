@@ -19,32 +19,18 @@ const customersCheckInComponent = {
             this.$stateParams = $stateParams;
             this.Customers = Customers;
             this.nextState = $state.current.name.replace('customersCheckIn', 'customersForm');
-            // console.log(this.nextState);
-        }
-
-        $onInit() {
-            // console.log('customer check in');
-        }
-
-        $onDestroy(){
-
         }
 
         checkIn(number) {
-            // console.log(number);
             if (number.length == 10) {
                 this.Customers.checkIn({
                     phone: number
                 }, (res) => {
-                    // console.log(res);
                     this.$state.go('client.dashboard', {
                         customer_id: res._id || res.customer_id
                     });
                 }, (err) => {
-                    // console.log(err);
-                    // console.log(err.status);
                     if (err.status == 400) {
-                        // new customer
                         this.$state.go('client.customersForm', {
                             phoneNumber: number
                         });

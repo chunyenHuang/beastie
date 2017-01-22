@@ -144,7 +144,6 @@ const inhouseOrdersComponent = {
                     });
                 }
             }
-            console.warn(texts);
             const canvas = this.$document[0].getElementById('inhouse-orders-canvas');
             canvas.width = 500;
             canvas.height = 500;
@@ -191,14 +190,6 @@ const inhouseOrdersComponent = {
                         headers: {
                             'Content-Type': undefined
                         }
-                        // eventHandlers: {
-                        //     progress: () => {}
-                        // },
-                        // uploadEventHandlers: {
-                        //     progress: (event) => {
-                        //         console.log(event.loaded / event.total);
-                        //     }
-                        // }
                     }
                 ).then(() => {
                     callback();

@@ -3,9 +3,7 @@ import './orders.styl';
 
 const ordersComponent = {
     template,
-    bindings: {
-
-    },
+    bindings: {},
     controller: /* @ngInject */ class OrdersController {
         static get $inject() {
             return [
@@ -21,9 +19,7 @@ const ordersComponent = {
             this.$stateParams = $stateParams;
         }
 
-        $onInit() {
-            // this.$state.go('core.orders.list');
-        }
+        $onInit() {}
     }
 };
 export default ordersComponent;

@@ -1,23 +1,28 @@
-<md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
-    <!-- <h5>Customer - Pet - Detail</h5> -->
-    <div flex>
-        Click anywhre within image to take a snapshot.
-    </div>
-    <div class="">
-        <md-icon md-svg-src="close" ng-click="$ctrl.hide()"></md-icon>
-    </div>
-</md-toolbar>
-<canvas class="hide" id="snapshot"></canvas>
-<div class="button-group" layout="row" layout-align="space-between center" ng-show="!isTaken">
-    <div flex></div>
-    <span></span>
-    <div flex></div>
-</div>
-<div class="button-group" layout="row" layout-align="space-between center" ng-show="isTaken">
-    <md-button ng-click="$ctrl.retake(); isTaken=false">Retake</md-button>
-    <md-button ng-click="$ctrl.finish()">Finish</md-button>
-</div>
-<video flex autoplay="true" id="camera" ng-click="
-            $ctrl.takePhoto();
-            isTaken=true
-        "></video>
+<md-dialog id="snapshot-div">
+    <md-toolbar>
+        <div class="header md-primary md-padding" layout="row" layout-align="start center">
+            <div flex>
+                Click anywhre within image to take a snapshot.
+            </div>
+            <div class="">
+                <md-icon md-svg-src="close" ng-click="$ctrl.hide()"></md-icon>
+            </div>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <canvas class="hide" id="snapshot"></canvas>
+        <div class="button-group" layout="row" layout-align="space-between center" ng-show="!isTaken">
+            <div flex></div>
+            <span></span>
+            <div flex></div>
+        </div>
+        <div class="button-group" layout="row" layout-align="space-between center" ng-show="isTaken">
+            <md-button ng-click="$ctrl.retake(); isTaken=false">Retake</md-button>
+            <md-button ng-click="$ctrl.finish()">Finish</md-button>
+        </div>
+        <video flex autoplay="true" id="camera" ng-click="
+                $ctrl.takePhoto();
+                isTaken=true
+            "></video>
+    </md-dialog-content>
+</md-dialog>

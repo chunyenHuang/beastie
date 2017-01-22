@@ -1,16 +1,16 @@
-<div class="main">
-    <md-toolbar class="md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
-        <div class="">
-            Previous Orders
-        </div>
-        <div flex>
-
-        </div>
-        <div class="">
-            <md-icon ng-click="$ctrl.close()" md-svg-src="close"></md-icon>
+<md-dialog id="previous-orders-dialog">
+    <md-toolbar >
+        <div class="md-primary md-hue-2 md-padding" layout="row" layout-align="start center">
+            <div class="">
+                Previous Orders
+            </div>
+            <div flex></div>
+            <div class="">
+                <md-icon ng-click="$ctrl.close()" md-svg-src="close"></md-icon>
+            </div>
         </div>
     </md-toolbar>
-    <md-content layout="row" layout-align="start center" flex>
+    <md-dialog-content layout="row" layout-align="start center" flex>
         <div class="order-box" layout="column" ng-repeat="order in $ctrl.orders">
             <md-subheader>
                 {{order.scheduleAt | date:'yyyy-MM-dd'}}
@@ -19,5 +19,5 @@
                 <img ng-src="{{url}}" alt="loading..." ng-repeat="url in $ctrl.pictures[order._id]"/>
             </md-content>
         </div>
-    </md-content>
-</div>
+    </md-dialog-content>
+</md-dialog>

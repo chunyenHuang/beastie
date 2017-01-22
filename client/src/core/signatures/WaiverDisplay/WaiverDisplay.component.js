@@ -36,15 +36,12 @@ const waiverDisplayComponent = {
             this.Signatures = Signatures;
         }
         $onChanges() {
-            if (this.waiver) {
-                this.waiver = this.waiver;
-            } else if (this.customerId && this.orderId) {
+            if (this.customerId && this.orderId) {
                 this.Signatures.query({
                     customer_id: this.customerId,
                     order_id: this.orderId,
                     name: this.waiverName
                 }).$promise.then((res) => {
-                    console.log(res[0]);
                     this.waiver = res[0];
                 });
             }

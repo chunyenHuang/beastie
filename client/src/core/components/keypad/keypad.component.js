@@ -45,7 +45,9 @@ const keypadComponent = {
         }
         $onInit() {
             this.keypadItems = this.getKeypadItems();
-            if (this.initValue) {this.keyPress(this.initValue)};
+            if (this.initValue) {
+                this.keyPress(this.initValue);
+            }
         }
         $onChanges() {}
         $onDestroy() {}
@@ -64,7 +66,7 @@ const keypadComponent = {
             if (this.isLimit() && typeof (val) == 'number') {
                 val = '';
             }
-            if (val==='.') {
+            if (val === '.') {
                 if (!this.pressed) {
                     val = '0.';
                 }

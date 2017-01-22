@@ -125,7 +125,6 @@ const ordersFormComponent = {
             this.Pets.get({
                 id: pet_id
             }, (pet) => {
-                console.log(pet);
                 this.pets = [pet];
                 this.candidates = (this.candidates) ? this.candidates : {};
                 angular.forEach(this.pets, (pet) => {
@@ -138,7 +137,6 @@ const ordersFormComponent = {
             this.Pets.query({
                 customer_id: this.customer_id
             }, (pets) => {
-                console.log(pets);
                 this.pets = pets;
                 this.candidates = (this.candidates) ? this.candidates : {};
                 angular.forEach(this.pets, (pet) => {
@@ -245,7 +243,6 @@ const ordersFormComponent = {
         }
 
         submitOrder() {
-            console.log(this.candidates);
             this.isSubmitting = true;
             let newOrder;
             for (let prop in this.candidates) {
@@ -257,15 +254,13 @@ const ordersFormComponent = {
                     break;
                 }
             }
-            console.log(newOrder);
             if (newOrder) {
                 delete newOrder['$promise'];
                 delete newOrder['$resolved'];
                 if (newOrder._id) {
                     this.Orders.update({
                         id: newOrder._id
-                    }, newOrder, (res) => {
-                        console.info(res);
+                    }, newOrder, () => {
                         this.candidates[newOrder.pet_id] = false;
                         return this.submitOrder();
                     }, () => {
@@ -273,7 +268,6 @@ const ordersFormComponent = {
                     });
                 } else {
                     this.Orders.save(newOrder, (res) => {
-                        console.log(res);
                         this.Orders.updateCache(res, ()=>{
                             this.candidates[newOrder.pet_id] = false;
                             return this.submitOrder();

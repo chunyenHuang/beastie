@@ -32,15 +32,15 @@ const customersFormComponent = {
             this.$scope = $scope;
             this.Pets = Pets;
             this.states =
-                ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
+                (
+                    'AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
                     'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' +
-                    'WY').split(' ').map((state) => {
+                    'WY'
+                )
+                .split(' ')
+                .map((state) => {
                     return state;
                 });
-        }
-
-        $onInit() {
-            // this.mode = 'component';
         }
 
         $onChanges() {
@@ -49,7 +49,7 @@ const customersFormComponent = {
         }
 
         $onDestroy() {
-            if(this.customer){
+            if (this.customer) {
                 this.customer = null;
             }
         }
@@ -195,8 +195,7 @@ const customersFormComponent = {
             if (this.customer._id) {
                 this.Customers.update({
                     id: this.customer._id
-                }, this.customer, (res) => {
-                    console.log(res);
+                }, this.customer, () => {
                     if (this.mode == 'component') {
                         return;
                     }
@@ -205,9 +204,7 @@ const customersFormComponent = {
                     });
                 });
             } else {
-                console.log('new customer');
                 this.Customers.save(this.customer, (res) => {
-                    console.log(res);
                     if (this.mode == 'component') {
                         return;
                     }
@@ -216,14 +213,6 @@ const customersFormComponent = {
                     });
                 });
             }
-        }
-
-        inputOnFocus($event) {
-            console.log($event);
-            $event.preventDefault();
-            console.log('onfocus');
-            // this.$window.scrollTo(0, 0);
-            // this.$document[0].body.scrollTop = 0;
         }
     }
 };

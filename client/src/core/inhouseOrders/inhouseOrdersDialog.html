@@ -1,52 +1,40 @@
-<div layout="column" id="inhouse-orders" layout-align="start center">
-    <md-toolbar class="header md-primary md-padding" layout="row" layout-align="start center">
-        <h5>Inhouse Orders</h5>
-        <div flex></div>
-        <div class="">
-            <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+<md-dialog id="inhouse-orders-dialog">
+    <md-toolbar>
+        <div class="header md-primary md-padding" layout="row" layout-align="start center">
+            <h5>Inhouse Orders</h5>
+            <div flex></div>
+            <div class="">
+                <md-icon md-svg-src="close" ng-click="$ctrl.cancel()"></md-icon>
+            </div>
         </div>
     </md-toolbar>
-    <md-content layout="column" flex>
+    <md-dialog-content>
         <div class="" layout="row" flex>
             <md-content layout="column" flex="35">
                 <div class="md-padding" layout="column" flex="none">
                     <div class="preview" layout="column" layout-align="center center">
-                        <div class=""
-                            ng-show="!$ctrl.selectedPreviouseOrderPictures || $ctrl.selectedPreviouseOrderPictures.length===0">
+                        <div class="" ng-show="!$ctrl.selectedPreviouseOrderPictures || $ctrl.selectedPreviouseOrderPictures.length===0">
                             Picture Preview
                         </div>
-                        <img
-                            ng-hide="$ctrl.selectedPreviouseOrderPictures.length===0"
-                            ng-src="{{$ctrl.selectedPreviouseOrderPictures[$ctrl.previewIndex]}}"
-                            alt="" />
+                        <img ng-hide="$ctrl.selectedPreviouseOrderPictures.length===0" ng-src="{{$ctrl.selectedPreviouseOrderPictures[$ctrl.previewIndex]}}" alt=""/>
                     </div>
-                    <div class="control" layout="row" flex="none" layout-align="center center" ng-show="!$ctrl.selectedPreviouseOrderPictures || $ctrl.selectedPreviouseOrderPictures.length===0">
-
-                    </div>
+                    <div class="control" layout="row" flex="none" layout-align="center center" ng-show="!$ctrl.selectedPreviouseOrderPictures || $ctrl.selectedPreviouseOrderPictures.length===0"></div>
                     <div class="control" layout="row" flex="none" layout-align="center center" ng-hide="!$ctrl.selectedPreviouseOrderPictures || $ctrl.selectedPreviouseOrderPictures.length===0">
-                        <md-button ng-click="$ctrl.changePreview(-1)"> < </md-button>
+                        <md-button ng-click="$ctrl.changePreview(-1)">< </md-button>
                         <div class="" flex layout="row" layout-align="center center">
-                            {{$ctrl.previewIndex + 1 }} / {{$ctrl.selectedPreviouseOrderPictures.length}}
+                            {{$ctrl.previewIndex + 1 }}
+                            /
+                            {{$ctrl.selectedPreviouseOrderPictures.length}}
                         </div>
-                        <md-button ng-click="$ctrl.changePreview(1)"> > </md-button>
-                        <!-- <md-icon md-svg-src="arrow-left-box"></md-icon>
-                        <md-icon md-svg-src="arrow-right-box" ng-click="$ctrl.changePreview(1)"></md-icon> -->
+                        <md-button ng-click="$ctrl.changePreview(1)">
+                            >
+                        </md-button>
                     </div>
                 </div>
                 <md-content class="md-padding" layout="column" flex>
-                    <!-- <md-button
-                        layout="row" layout-align="center center"
-                        class="md-primary"
-                        ng-class="{
-                            'md-raised': !$ctrl.selectedPreviouseOrder
-                        }"
-                        ng-click="$ctrl.applyPreviousOrder()">
-                        <div class="">
-                            new
-                        </div>
-                    </md-button> -->
                     <md-button
-                        layout="row" layout-align="center center"
+                        layout="row"
+                        layout-align="center center"
                         flex="none"
                         class="md-primary"
                         ng-class="{
@@ -63,19 +51,14 @@
             </md-content>
             <md-content class="" layout="column" flex>
                 <div class="rush" layout="row" layout-align="center center" flex="none" ng-show="$ctrl.order_id">
-                    <md-checkbox
-                        ng-true-value="true"
-                        ng-false-value="false"
-                        ng-model="$ctrl.order.isRush"
-                        ng-change="$ctrl.updateOrder()" aria-label="Checkbox 1">
+                    <md-checkbox ng-true-value="true" ng-false-value="false" ng-model="$ctrl.order.isRush" ng-change="$ctrl.updateOrder()" aria-label="Checkbox 1">
                         <h5>Is this a Rush order?</h5>
                     </md-checkbox>
                 </div>
-                <div class="padding-box"
-                    ng-show="type.type!='time'"
-                    ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
+                <div class="padding-box" ng-show="type.type!='time'" ng-repeat="type in $ctrl.list | orderBy: 'type'" layout="column" layout-align="start center" flex="none">
                     <h3>
-                        {{type.zhName}} {{type.name}}
+                        {{type.zhName}}
+                        {{type.name}}
                     </h3>
                     <div class="button-container">
                         <md-button
@@ -87,20 +70,23 @@
                                 'md-accent': $ctrl.isInOrder(type.keyID, item),
                                 'md-raised': $ctrl.isInOrder(type.keyID, item)
                             }">
-                            {{item.zhName}} {{item.name}}
+                            {{item.zhName}}
+                            {{item.name}}
                         </md-button>
                     </div>
                 </div>
             </md-content>
         </div>
-    </md-content>
-    <md-divider></md-divider>
-    <div layout="row" class="footer" layout-align="center center">
-        <md-button ng-click="$ctrl.reset()" class="md-warn">reset</md-button>
-        <div class="flex" layout="row" layout-align="center center">
-            {{$ctrl.message}}
+    </md-dialog-content>
+    <md-dialog-actions>
+        <md-divider></md-divider>
+        <div layout="row" class="footer" layout-align="center center" flex>
+            <md-button ng-click="$ctrl.reset()" class="md-warn">reset</md-button>
+            <div layout="row" flex="20" layout-align="center center">
+                {{$ctrl.message}}
+            </div>
+            <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">Print</md-button>
+            <canvas id="inhouse-orders-canvas" class="hide"></canvas>
         </div>
-        <md-button ng-click="$ctrl.submit()" class="md-primary md-raised">Print</md-button>
-    </div>
-</div>
-<canvas id="inhouse-orders-canvas" class="hide"></canvas>
+    </md-dialog-actions>
+</md-dialog>

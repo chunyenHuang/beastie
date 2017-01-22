@@ -16,18 +16,12 @@ export default class ListItemsBaseController {
         this.ListItems = ListItems;
     }
 
-    // $onInit() {
-    //     this.getListItem();
-    // }
-
     getListItem(type) {
         type = type || this.type;
         this.ListItems.query({
             type: type
         }, (list) => {
             this.list = list[0];
-            console.log(this.list);
-            console.log(this.list.items);
         });
     }
 
@@ -58,8 +52,6 @@ export default class ListItemsBaseController {
     update() {
         this.list.$update({
             id: this.list._id
-        }, (res) => {
-            console.log(res);
-        });
+        }, () => {});
     }
 }

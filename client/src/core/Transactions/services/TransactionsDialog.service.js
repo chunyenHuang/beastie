@@ -8,18 +8,11 @@ class TransactionsDialogService {
         ];
     }
     constructor($document, $mdDialog) {
-        this.$document = $document;
-        this.$mdDialog = $mdDialog;
-        if (!$document[0].getElementById('transactions-dialog')) {
-            const div = $document[0].createElement('div');
-            div.setAttribute('id', 'transactions-dialog');
-            $document[0].body.appendChild(div);
-        }
         const showDialog = (locals) => {
             return $mdDialog.show(
                 this.dialog(
                     locals,
-                    $document[0].getElementById('transactions-dialog')
+                    $document[0].body
                 )
             );
         };

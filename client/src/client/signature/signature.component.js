@@ -28,7 +28,6 @@ const signatureComponent = {
         }
 
         $onInit() {
-            console.log(this.$stateParams);
             this.getWaivers();
             this.setSignatureCanvas();
             this.$timeout(() => {
@@ -49,7 +48,6 @@ const signatureComponent = {
         }
 
         isSigned() {
-            console.log(this.emptyCanvas.toDataURL()==this.canvas.toDataURL());
             return this.emptyCanvas.toDataURL() != this.canvas.toDataURL();
         }
 
@@ -65,31 +63,7 @@ const signatureComponent = {
             this.context.fillText('Please sign here', 250, 150);
             this.context.fillStyle = '#000000';
 
-            // this.context.fillStyle = '#959595';
-            // this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-            // this.$swipe.bind(angular.element(this.canvas), {
-            //     start: (event) => {
-            //         console.log('start');
-            //         console.log(event);
-            //         this.startDrawing(event);
-            //     },
-            //     move: (event) => {
-            //         console.log('move');
-            //         this.draw(event);
-            //     },
-            //     end: (event) => {
-            //         console.log('end');
-            //         this.stopDrawing(event);
-            //     },
-            //     cancel: () => {
-            //         console.log('cancel');
-            //         this.stopDrawing(event);
-            //     }
-            // });
-
             this.canvas.addEventListener('mousedown', (event) => {
-                // console.log(this.$swipe);
                 event.preventDefault();
                 this._addClick(event);
                 this.isDrawing = true;
@@ -125,26 +99,8 @@ const signatureComponent = {
                 }
             });
             this.canvas.addEventListener('touchend', () => {
-                console.log('touchend');
                 this.isDrawing = false;
             });
-
-            // this.$document[0].body.addEventListener('touchstart', function (e) {
-            //     console.log(e);
-            //     if (e.target == this.canvas) {
-            //         e.preventDefault();
-            //     }
-            // }, false);
-            // this.$document[0].body.addEventListener('touchend', function (e) {
-            //     if (e.target == this.canvas) {
-            //         e.preventDefault();
-            //     }
-            // }, false);
-            // this.$document[0].body.addEventListener('touchmove', function (e) {
-            //     if (e.target == this.canvas) {
-            //         e.preventDefault();
-            //     }
-            // }, false);
         }
 
         cleanup() {
@@ -180,7 +136,6 @@ const signatureComponent = {
         }
 
         save() {
-            console.log(this.Signatures);
             const dataURL = this.canvas.toDataURL();
             this.signature = dataURL;
             this.Signatures.save({
@@ -189,11 +144,8 @@ const signatureComponent = {
                 name: this.waiver.name,
                 description: this.waiver.description,
                 signatures: this.signature
-            }, (res) => {
+            }, () => {
                 this.$state.go('client.customersCheckIn');
-                console.log(res);
-            }, (err) => {
-                console.log(err);
             });
         }
 
@@ -210,13 +162,10 @@ const signatureComponent = {
         }
 
         _addClick(event) {
-            console.log(event);
             const pos = this.getMousePos(event);
             this.clickX.push(pos.x);
             this.clickY.push(pos.y);
             this.clickDrag.push(this.isDrawing);
-            console.log(pos.x, pos.y);
-
         }
 
         draw(event) {

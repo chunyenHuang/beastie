@@ -30,7 +30,7 @@ const transactionsComponent = {
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.Transactions = Transactions
+            this.Transactions = Transactions;
         }
         $onChanges(){
             if(this.customerId){
@@ -38,16 +38,6 @@ const transactionsComponent = {
                     customer_id: this.customerId
                 }).$promise.then((res)=>{
                     this.transactions = res;
-                    // credit_id: null,
-                    // selfService_id: null,
-                    // order_id: null,
-                    // customer_id: null,
-                    // total: null,
-                    // isTaxIncluded: false,
-                    // paymentTransactionsNumber: null,
-                    // note: null,
-                    // isVoidedAt: null,
-                    // createdAt: null
                 });
             }
         }

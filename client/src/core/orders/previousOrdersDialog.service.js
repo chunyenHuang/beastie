@@ -11,16 +11,10 @@ class previousOrdersDialog {
     constructor($document, $mdDialog) {
         this.$document = $document;
         this.$mdDialog = $mdDialog;
-        // this.Signatures = Signatures;
-        if (!$document[0].getElementById('previous-orders-dialog')) {
-            const div = $document[0].createElement('div');
-            div.setAttribute('id', 'previous-orders-dialog');
-            $document[0].body.appendChild(div);
-        }
         const showDialog = (locals) => {
             return $mdDialog.show(
                 this.dialog(locals,
-                    $document[0].getElementById('previous-orders-dialog')
+                    $document[0].body
                 )
             );
         };

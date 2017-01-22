@@ -47,7 +47,6 @@ const addCreditsComponent = {
                 type: 'creditsPackages'
             }, (listItems) => {
                 this.list = listItems[0].items;
-                console.log(this.list);
             });
         }
 
@@ -57,13 +56,10 @@ const addCreditsComponent = {
             }, {
                 customer_id: this.$stateParams.customer_id,
                 package: this.selected
-            }).$promise.then((res) => {
-                console.log(res);
+            }).$promise.then(() => {
                 this._alert(()=>{
                     this.backToSelfService();
                 });
-            }, (err) => {
-                console.log(err);
             });
         }
 
@@ -78,7 +74,6 @@ const addCreditsComponent = {
                 .textContent('Please see the counter for further information.')
                 .ariaLabel('Alert Dialog Demo')
                 .ok('Got it!')
-                // .targetEvent(ev)
             ).then(()=>{
                 if(callback){
                     return callback();

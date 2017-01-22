@@ -30,7 +30,6 @@ const petsComponent = {
             this.$stateParams = $stateParams;
         }
         $onChanges() {
-            console.log(this.pets);
             if (this.pets) {
                 this.selectedPet = this.pets[0];
             }

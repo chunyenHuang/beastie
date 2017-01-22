@@ -9,18 +9,10 @@ class showSignaturesDialog {
         ];
     }
     constructor($document, $mdDialog) {
-        this.$document = $document;
-        this.$mdDialog = $mdDialog;
-        // this.Signatures = Signatures;
-        if (!$document[0].getElementById('show-signatures-dialog')) {
-            const div = $document[0].createElement('div');
-            div.setAttribute('id', 'show-signatures-dialog');
-            $document[0].body.appendChild(div);
-        }
         const showDialog = (locals) => {
             return $mdDialog.show(
                 this.dialog(locals,
-                    $document[0].getElementById('show-signatures-dialog')
+                    $document[0].body
                 )
             );
         };
@@ -55,7 +47,6 @@ class showSignaturesDialog {
                         type: 'waivers'
                     }, (list) => {
                         this.waivers = list[0].items;
-                        console.log(this.waivers);
                     });
                     this.checkSignatures();
                     this.Socket.on('signaturesFinished', () => {
@@ -63,42 +54,38 @@ class showSignaturesDialog {
                     });
                 }
 
-                checkSignatures(){
+                checkSignatures() {
                     this.Signatures.query({
                         customer_id: this.customer_id
-                    }, (res)=>{
+                    }, (res) => {
                         this.signed = res;
                     });
                 }
 
-                askToSign(waiverName){
+                askToSign(waiverName) {
                     this.Signatures.init({
                         customer_id: this.customer_id,
                         order_id: this.order_id,
                         name: waiverName
-                    }, (res)=>{
-                        console.log(res);
-                    }, (err)=>{
-                        console.log(err);
                     });
                 }
 
-                isSigned(waiverName){
-                    if(!this.signed){
+                isSigned(waiverName) {
+                    if (!this.signed) {
                         return;
                     }
                     for (var i = 0; i < this.signed.length; i++) {
-                        if(
+                        if (
                             this.signed[i].name == waiverName &&
                             this.signed[i].order_id == this.order_id
-                        ){
+                        ) {
                             return true;
                         }
                     }
                     return false;
                 }
 
-                view(waiverName){
+                view(waiverName) {
                     this.waiverName = waiverName;
                 }
 

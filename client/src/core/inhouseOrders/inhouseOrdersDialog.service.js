@@ -11,16 +11,10 @@ class inhouseOrdersDialog {
     constructor($document, $mdDialog) {
         this.$document = $document;
         this.$mdDialog = $mdDialog;
-        // this.Signatures = Signatures;
-        if (!$document[0].getElementById('inhouse-orders-dialog')) {
-            const div = $document[0].createElement('div');
-            div.setAttribute('id', 'inhouse-orders-dialog');
-            $document[0].body.appendChild(div);
-        }
         const showDialog = (locals) => {
             return $mdDialog.show(
                 this.dialog(locals,
-                    $document[0].getElementById('inhouse-orders-dialog')
+                    $document[0].body
                 )
             );
         };
@@ -75,7 +69,6 @@ class inhouseOrdersDialog {
                                 // isPaid: true,
                                 // notShowup: false
                             }).$promise.then((orders) => {
-                                console.log(orders);
                                 this.previousOrders = orders;
                             });
                         });
@@ -102,8 +95,6 @@ class inhouseOrdersDialog {
                         id: this.order_id
                     }, {
                         isRush: this.order.isRush
-                    }, (res) => {
-                        console.log(res);
                     });
                 }
 
@@ -118,7 +109,6 @@ class inhouseOrdersDialog {
                         if (reset) {
                             value = [];
                         }
-                        console.warn(listItem);
                         this.inhouseOrders[listItem.keyID] = {
                             type: listItem.type,
                             multiple: listItem.multiple,
@@ -188,7 +178,6 @@ class inhouseOrdersDialog {
                 }
 
                 submit() {
-                    console.log(this.inhouseOrders);
                     if (this.order_id) {
                         this.order.inhouseOrders = this.inhouseOrders;
                         if (this.order.scheduleAt) {
@@ -197,13 +186,9 @@ class inhouseOrdersDialog {
                         this.order.$update({
                             id: this.order_id
                         }, (res) => {
-                            // this.formatOrderForm();
-                            // this.$mdDialog.hide(res);
                             this.print(() => {
                                 this.$mdDialog.hide(res);
                             });
-                        }, (err) => {
-                            console.error(err);
                         });
                     } else {
                         this.print(() => {
@@ -227,7 +212,6 @@ class inhouseOrdersDialog {
                             });
                         }
                     }
-                    console.log(texts);
 
                     const canvas = this.$document[0].getElementById('inhouse-orders-canvas');
                     canvas.width = 500;
@@ -298,11 +282,9 @@ class inhouseOrdersDialog {
                                     }
                                 }
                             }
-                        ).then((res) => {
-                            console.log(res);
+                        ).then(() => {
                             callback();
-                        }, (err) => {
-                            console.log(err);
+                        }, () => {
                             callback();
                         });
                     });

@@ -7,7 +7,8 @@ const customersListComponent = {
     controller: /* @ngInject */ class CustomersListController {
         static get $inject() {
             return [
-                '$log', '$timeout', '$state', '$stateParams', 'Customers', 'Task', 'CustomerDetailDialog'
+                '$log', '$timeout', '$state', '$stateParams',
+                'Customers', 'Task', 'CustomerDetailDialog'
             ];
         }
         constructor(
@@ -27,20 +28,14 @@ const customersListComponent = {
             this.Customers.query({}, (customers) => {
                 this.Task.off();
                 this.customers = customers;
-                // console.log(this.customers[0]);
-                // this.select({
-                //     _id: '5844ccf6c1979e3e641136b0',
-                //     tab: 'pets'
-                // });
             });
         }
 
-        select(customer){
-            console.log(customer._id);
+        select(customer) {
             this.CustomerDetailDialog({
                 customer_id: customer._id,
                 tab: 'customer'
-            }, ()=>{
+            }, () => {
 
             });
         }
