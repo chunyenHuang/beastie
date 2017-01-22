@@ -40,7 +40,7 @@ const clientModule = angular
                 `
             })
             .state('client.customersForm', {
-                url: '/customersForm?customer_id&phoneNumber',
+                url: '/customersForm?customer_id&phoneNumber&currentFormState',
                 template: '<client-customers-form layout="column" flex></client-customers-form>'
             })
             .state('client.petsForm', {

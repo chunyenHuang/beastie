@@ -48,7 +48,6 @@ export default (locals, parent) => ({
                     !order.checkOutAt
                 ) {
                     if (this.isToday(order.scheduleAt)) {
-                        console.log(order);
                         this.todayOrders.push(order);
                     } else if (this.daysBetween(order.scheduleAt) > 0) {
                         this.newOrders.push(order);
@@ -61,7 +60,6 @@ export default (locals, parent) => ({
             selectItem = selectItem || {};
             selectItem.type = type;
             selectItem.customer = this.customer;
-            console.log(selectItem);
             this.$mdDialog.hide(selectItem);
         }
 
@@ -79,7 +77,7 @@ export default (locals, parent) => ({
                     checkInAt: null,
                     isPaid: false,
                     checkOutAt: null
-                }, (data) => {
+                }, () => {
                     this.cancelPending = null;
                     this.setCustomer();
                 });

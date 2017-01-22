@@ -26,6 +26,10 @@ const petPhotoGalleryComponent = {
             this.$document = $document;
         }
 
+        $onInit() {
+            // this.$document[0].body.append(this.$document[0].getElementById('preview-large'));
+        }
+
         $onChanges() {
             if (this.petId) {
                 this.imgs = {};

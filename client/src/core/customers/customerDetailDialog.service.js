@@ -110,16 +110,6 @@ class customerDetailDialog {
                     }, callback);
                 }
 
-                toggleLargePic(url) {
-                    if (!this.previewLargeUrl) {
-                        this.previewLargeUrl = url;
-                        this.$document[0].getElementById('preview-large').classList.remove('hide');
-                    } else {
-                        this.previewLargeUrl = null;
-                        this.$document[0].getElementById('preview-large').classList.add('hide');
-                    }
-                }
-
                 cancel() {
                     this.$mdDialog.cancel('cancel');
                 }

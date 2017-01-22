@@ -42,7 +42,8 @@ const dashboardComponent = {
 
         selfService() {
             this.$state.go('client.selfServiceForm', {
-                customer_id: this.$stateParams.customer_id
+                customer_id: this.$stateParams.customer_id,
+                currentFormState: 'name'
             });
         }
 

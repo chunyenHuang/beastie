@@ -5,7 +5,8 @@ const customersFormComponent = {
     template,
     bindings: {
         customerId: '<',
-        mode: '@'
+        mode: '@',
+        currentFormState: '<'
     },
     controller: /* @ngInject */ class customersFormController {
         static get $inject() {
@@ -166,6 +167,9 @@ const customersFormComponent = {
                     this.currentFormState = formStates[index + -1];
                     this.autofocus = formStates[index + -1];
                 }
+            } else if (click == 'reset') {
+                this.currentFormState = formStates[0];
+                this.autofocus = formStates[0];
             }
         }
 

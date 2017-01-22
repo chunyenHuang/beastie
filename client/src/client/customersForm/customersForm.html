@@ -1,5 +1,5 @@
 <div layout="row" layout-align="center center" layout-padding layout-wrap class="header" flex="none" ng-hide="$ctrl.mode=='component'">
-    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary" >
+    <md-button ng-click="$ctrl.backToDashboard()" class="md-primary">
         <md-icon md-svg-src="arrow-left-bold-circle"></md-icon>
         Back to dashboard
     </md-button>
@@ -9,7 +9,8 @@
         Back
     </md-button>
     <md-button class="md-raised md-primary" aria-label="next" ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.navigateForm('next')">
-        Next <md-icon md-svg-src="chevron-right"></md-icon>
+        Next
+        <md-icon md-svg-src="chevron-right"></md-icon>
     </md-button>
 </div>
 <md-progress-linear ng-show="$ctrl.customer && $ctrl.mode!='component'" md-mode="determinate" value="{{$ctrl.progressValue}}"></md-progress-linear>
@@ -36,7 +37,7 @@
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>First Name</label>
-                    <input focus-if="$ctrl.autofocus=='name'" required md-no-asterisk type="text" name="firstname" ng-model="$ctrl.customer.firstname" ng-blur="$ctrl.updateProgressVal()" ></input>
+                    <input focus-if="$ctrl.autofocus=='name'" required md-no-asterisk type="text" name="firstname" ng-model="$ctrl.customer.firstname" ng-blur="$ctrl.updateProgressVal()"></input>
                 </md-input-container>
                 <md-input-container class="md-subhead">
                     <label>Last Name</label>
@@ -71,7 +72,8 @@
                         <label>State</label>
                         <input required type="text" name="state" ng-init="$ctrl.customer.address.state=($ctrl.customer.address.state)?$ctrl.customer.address.state:'CA'" ng-model="$ctrl.customer.address.state" ng-blur="$ctrl.updateProgressVal()"></input>
                     </md-input-container> -->
-                    <md-autocomplete flex
+                    <md-autocomplete
+                        flex
                         md-input-name="autocompleteField"
                         md-input-minlength="2"
                         md-input-maxlength="2"
@@ -147,15 +149,20 @@
 
     <div ng-show="$ctrl.currentFormState=='review' && $ctrl.mode!='component'" flex class="review">
         <section layout="column" flex>
-            <h3>
-                Review Information
-            </h3>
-            <div flex="50">
+            <div class="" layout="row" flex layout-align="start center">
+                <h3>
+                    Review Information
+                </h3>
+                <md-button aria-label="edit" ng-click="$ctrl.navigateForm('reset')">
+                    Edit
+                </md-button>
+            </div>
+            <div>
                 <p>{{$ctrl.customer.firstname}}
                     {{$ctrl.customer.lastname}}</p>
                 <p>{{$ctrl.customer.phone | tel}}</p>
             </div>
-            <div flex="50">
+            <div>
                 <p>{{$ctrl.customer.address.street}}</p>
                 <p>
                     {{$ctrl.customer.address.city}}
@@ -163,12 +170,12 @@
                     {{$ctrl.customer.address.zipCode}}
                 </p>
             </div>
-            <div flex="100" class="md-body-2" md-colors="{color: 'primary-600'}">
+            <div class="md-body-2" md-colors="{color: 'primary-600'}" ng-show="$ctrl.customer.emergencyContact.length>0">
                 <h3>
                     Secondary Contacts
                 </h3>
             </div>
-            <div flex="50" ng-repeat="person in $ctrl.customer.emergencyContact track by $index">
+            <div ng-repeat="person in $ctrl.customer.emergencyContact track by $index" ng-show="$ctrl.customer.emergencyContact.length>0">
                 <p>{{person.name}}
                     ({{person.relationship}})</p>
                 <p ng-repeat="num in person.phones track by $index">

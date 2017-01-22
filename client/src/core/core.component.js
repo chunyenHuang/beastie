@@ -117,17 +117,14 @@ const coreComponent = {
                         this.Customers.checkIn({
                             phone: select.customer.phone
                         }, (res) => {
-                            console.log(res);
                             this.$state.go('core.orders.list', {
-                                '#': res.order_id,
-                                'type': 'checkInAt'
+                                '#': res.order_id
+                                // 'type': 'checkInAt'
                             }, {
                                 reload: true,
                                 inherit: false,
                                 notify: true
                             });
-                        }, (err) => {
-                            console.log(err);
                         });
                         break;
                     case 'editOrder':
