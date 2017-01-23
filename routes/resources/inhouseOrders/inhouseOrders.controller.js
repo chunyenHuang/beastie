@@ -19,10 +19,27 @@ class InhouseOrdersController extends PrinterController {
             res.sendStatus(400);
             return;
         }
-        req.body.order_id = req.body.order_id || 'no order_id';
-        req.body.customerName = req.body.customerName || 'no customer name';
+        req.body.checkInNumber = req.body.checkInNumber || ' ';
+        req.body.order_id = req.body.order_id || ' ';
+        req.body.customerName = req.body.customerName || ' ';
         req.body.customerPhone = req.body.customerPhone || ' ';
-        req.body.petName = req.body.petName || 'no pet name';
+        if (req.body.customerPhone.length == 10) {
+            let phone = '(';
+            for (var i = 0; i < req.body.customerPhone.length; i++) {
+                phone = phone + req.body.customerPhone[i].toString();
+                switch (i) {
+                    case 2:
+                        phone = phone + ') ';
+                        break;
+                    case 5:
+                        phone = phone + '-';
+                        break;
+                    default:
+                }
+            }
+            req.body.customerPhone = phone;
+        }
+        req.body.petName = req.body.petName || ' ';
         req.body.petInfo = req.body.petInfo || ' ';
         const newName = req.body.filename;
         req.oldPath = path.join(global.uploads, req.file.filename);
@@ -59,12 +76,12 @@ class InhouseOrdersController extends PrinterController {
                         .raster(image)
                         .text(' ')
                         .text(' ')
-                        .text('customer')
+                        .text('[ customer ]')
                         .text(' ')
                         .text(req.body.customerName)
                         .text(req.body.customerPhone)
                         .text(' ')
-                        .text('pet')
+                        .text('[ pet ]')
                         .text(' ')
                         .text(req.body.petName)
                         .text(req.body.petInfo)
