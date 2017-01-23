@@ -1,22 +1,5 @@
 const path = require('path');
-const fs = require('fs');
-// const escpos = require('escpos');
-// let device;
-// let printer;
-// try {
-//     device = new escpos.USB();
-//     printer = new escpos.Printer(device);
-// } catch (err) {
-//     console.log('-----------------------------------');
-//     console.log('Please Connect the Receipt Printer.');
-//     console.log('-----------------------------------');
-// }
 const PrinterController = require('../printer/printer.controller.js');
-// const escpos = PrinterController.escpos;
-// const device = PrinterController.device;
-// const printer = PrinterController.printer;
-
-// const AbstractController = require('../../abstract/AbstractController.js');
 class InhouseOrdersController extends PrinterController {
     constructor() {
         super();
@@ -52,15 +35,12 @@ class InhouseOrdersController extends PrinterController {
     }
 
     _print(req, res, next) {
-        if (!this.device) {
-            next();
-            return;
-        }
-        // const barcode = req.body.order_id;
         const logoPath = path.join(global.root, 'logos/B1_72-01.png');
         const rush = (req.body.isRush == 'true' || req.body.isRush == true) ? 'RUSH' : '';
         this.escpos.Image.load(logoPath, (logo) => {
             this.escpos.Image.load(req.newPath, (image) => {
+                this.device = new this.escpos.USB();
+                this.printer = new this.escpos.Printer(this.device);
                 this.device.open(() => {
                     const today = new Date();
                     this.printer
@@ -99,21 +79,6 @@ class InhouseOrdersController extends PrinterController {
                         .text(' ')
                         .text(' ')
                         .cut();
-
-                    // .text(req.body.order_id)
-
-                    // .text('中文測試到底可不可以', 'Big5')
-                    // .barcode(barcode, 'EAN13')
-                    // .image(image, 's8')
-                    // .image(image, 'd8')
-                    // .image(image, 's24')
-                    // .image(image, 'd24')
-                    // .raster(image, 'dw')
-                    // .raster(image, 'dh')
-                    // .raster(image, 'dwdh')
-                    // .qrimage('https://github.com/song940/node-escpos', function(err){
-                    //   this.cut();
-                    // });
 
                     next();
                 });

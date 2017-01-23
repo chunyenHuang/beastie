@@ -58,8 +58,6 @@ class TransactionsController extends PrinterController {
             createdAt: new Date(),
             createdBy: ((req.currentUser) ? req.currentUser._id : 'dev-test')
         });
-        console.log('-----');
-        console.log(req.body);
         req.collection.insert(req.body,
             (err, docsInserted) => {
                 req.params.transaction_id = docsInserted.ops[0]._id;
@@ -79,7 +77,6 @@ class TransactionsController extends PrinterController {
                     res.statusCode = 201;
                     res.send();
                 } else {
-                    console.log(err);
                     res.send({
                         message: 'fail to checkout'
                     });
@@ -290,11 +287,6 @@ class TransactionsController extends PrinterController {
 
     _printReceipt(req, res, next) {
         req.collection = req.db.collection('transactions');
-        if (!this.device) {
-            console.log('printer is not connected');
-            next();
-            return;
-        }
         const query = req.collection.aggregate([
             {
                 $match: {
@@ -386,6 +378,8 @@ class TransactionsController extends PrinterController {
             } else {
                 credit = '-';
             }
+            this.device = new this.escpos.USB();
+            this.printer = new this.escpos.Printer(this.device);
 
             this.device.open(() => {
                 this.printer

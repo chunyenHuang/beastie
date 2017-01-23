@@ -6,16 +6,16 @@ class PrinterController extends AbstractController {
     constructor() {
         super();
         try {
-            const escpos = require('escpos');
-            this.escpos = escpos;
-            this.device = new escpos.USB();
-            this.printer = new escpos.Printer(this.device);
+            this.escpos = require('escpos');
         } catch (err) {
             console.log('------------ Please Connect the Receipt Printer.');
         }
 
     }
     check(req, res) {
+        this.device = new this.escpos.USB();
+        this.printer = new this.escpos.Printer(this.device);
+
         if(
             !this.device ||
             !this.printer
@@ -50,6 +50,9 @@ class PrinterController extends AbstractController {
         });
     }
     test(req, res) {
+        this.device = new this.escpos.USB();
+        this.printer = new this.escpos.Printer(this.device);
+        
         if(!this.device){
             res.statusCode = 500;
             res.json({
