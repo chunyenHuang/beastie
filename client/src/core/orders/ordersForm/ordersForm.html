@@ -70,26 +70,30 @@
                         {{$ctrl.customer.firstname}} {{$ctrl.customer.lastname}}
                     </p>
                     <p>
-                        {{$ctrl.customer.phone}}
+                        {{$ctrl.customer.phone | tel}}
                     </p>
                 </div>
             </md-content>
 
             <md-content layout="column" class="pet-select" flex>
                 <md-subheader>Pets</md-subheader>
-                <div layout="row" class="md-padding" ng-repeat="pet in $ctrl.pets" ng-click="($ctrl.pets.length>1)?($ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]):false" flex="none">
-                    <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" ></md-checkbox>
-                    <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/>
+                <div class="customer-field">
+                    <div layout="row" ng-repeat="pet in $ctrl.pets" ng-click="($ctrl.pets.length>1)?($ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]):false">
+                        <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" >
+                            <strong>{{pet.name}}</strong>
+                        </md-checkbox>
+                        <!-- <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/> -->
+                    </div>
                 </div>
             </md-content>
-            <md-input-container class="md-block" flex-gt-sm>
+            <!-- <md-input-container class="md-block" flex-gt-sm>
                 <label>Services</label>
                 <md-select ng-model="$ctrl.order.services" ng-model-options="{trackBy: '$value.name'}">
                     <md-option ng-repeat="serivce in $ctrl.services" ng-value="serivce">
                         {{serivce.name}} {{serivce.zhName}}
                     </md-option>
                 </md-select>
-            </md-input-container>
+            </md-input-container> -->
             <md-input-container class="md-block" flex>
                 <label>Notes</label>
                 <textarea ng-model="$ctrl.order.notes" md-maxlength="150" rows="3" md-select-on-focus></textarea>
