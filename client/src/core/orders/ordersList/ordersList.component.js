@@ -369,16 +369,12 @@ const ordersListComponent = {
         checkIn(order) {
             this.isHostTrigger = true;
             let orderDate = new Date(order.scheduleAt);
-            let index = this.orders.indexOf(order);
             if (orderDate.toDateString() === new Date().toDateString()) {
                 this.resetOrder(order, () => {
                     this.Customers.checkIn({
                         phone: order.customers[0].phone
                     }, (results) => {
-                        console.log('--checkIn---');
-                        console.log(results);
                         angular.forEach(results, (result) => {
-                            // let updatedOrder = Object.assign(order, result);
                             this.Orders.updateCache(result, () => {
                                 const pos = this.orders.findIndex((order)=>{
                                     return (order._id == result._id);

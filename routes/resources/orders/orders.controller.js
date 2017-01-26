@@ -296,7 +296,6 @@ class OrdersController extends AbstractController {
                             res.json(results);
                             return;
                         }
-                        console.log(results[index].pet_id);
                         func(results[index].pet_id, (filenames) => {
                             results[index].pictures = filenames;
                             index++;
@@ -331,19 +330,4 @@ class OrdersController extends AbstractController {
         callback(filenames);
     }
 }
-
-// quick fix for date range query
-// for(let prop in req.query){
-//     if (prop.search(/At$/)>-1) {
-//         req.query[prop] = JSON.parse(req.query[prop]);
-//         for (let innerProp in req.query[prop]) {
-//             // mongodb compare stuff...
-//             let re = /^\$eq|^\$gt|^\$gte|^\$lt|^\$lte|^\$ne|^\$in|^\$nin/;
-//             if (innerProp.search(re)>-1) {
-//                 req.query[prop][innerProp] = new Date(req.query[prop][innerProp])
-//             }
-//         }
-//     }
-// }
-
 module.exports = OrdersController;
