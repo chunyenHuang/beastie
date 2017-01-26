@@ -69,6 +69,10 @@ angular
     .config(resourceConfig)
     .config(languageConfig)
     .config(iconConfig)
+    .config(($compileProvider) => {
+        'ngInject';
+        $compileProvider.preAssignBindingsEnabled(true);
+    })
     .filter('orderObjectBy', () => {
         return (items, field, reverse) => {
             const filtered = [];

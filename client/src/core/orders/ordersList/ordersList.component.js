@@ -60,20 +60,37 @@ const ordersListComponent = {
                 angular.forEach(results, (res)=>{
                     if (this.Orders.orders &&
                         this.Orders.orders[todayStr] &&
-                        this.Orders.orders[todayStr][res.order_id]) {
-                        let updatedOrder = Object.assign({},
-                            this.Orders.orders[todayStr][res.order_id], {
-                                checkInAt: res.checkInAt,
-                                checkInNumber: res.checkInNumber
+                        this.Orders.orders[todayStr][res._id]
+                    ) {
+                        this.Orders.updateCache(res, () => {
+                            const pos = this.orders.findIndex((order)=>{
+                                return (order._id == res._id);
                             });
-                        this.Orders._setOrderType(updatedOrder);
-                        this.Orders.orders[todayStr][res.order_id] = updatedOrder;
-                        if (this.isHostTrigger) {
-                            this.isHostTrigger = false;
-                        } else if (this.date.toDateString() === todayStr && !this.isHostTrigger) {
-                            this.isClientTrigger = true;
-                            this.changeDate(0, this.date);
-                        }
+                            this.orders.splice(pos, 1, res);
+                            this.countOrderType();
+                            this.$timeout(() => {
+                                this.$stateParams['#'] = res._id;
+                            }, 100);
+                            this.$timeout(() => {
+                                this.setType('checkInAt');
+                            }, 200);
+                            this.$timeout(() => {
+                                this.scrollToId(res._id);
+                            }, 500);
+                        });
+                        // let updatedOrder = Object.assign({},
+                        //     this.Orders.orders[todayStr][res.order_id], {
+                        //         checkInAt: res.checkInAt,
+                        //         checkInNumber: res.checkInNumber
+                        //     });
+                        // this.Orders._setOrderType(updatedOrder);
+                        // this.Orders.orders[todayStr][res.order_id] = updatedOrder;
+                        // if (this.isHostTrigger) {
+                        //     this.isHostTrigger = false;
+                        // } else if (this.date.toDateString() === todayStr && !this.isHostTrigger) {
+                        //     this.isClientTrigger = true;
+                        //     this.changeDate(0, this.date);
+                        // }
                     }
                 });
                 const toast = this.$mdToast.simple()
@@ -373,25 +390,25 @@ const ordersListComponent = {
                 this.resetOrder(order, () => {
                     this.Customers.checkIn({
                         phone: order.customers[0].phone
-                    }, (results) => {
-                        angular.forEach(results, (result) => {
-                            this.Orders.updateCache(result, () => {
-                                const pos = this.orders.findIndex((order)=>{
-                                    return (order._id == result._id);
-                                });
-                                this.orders.splice(pos, 1, result);
-                                this.countOrderType();
-                                this.$timeout(() => {
-                                    this.$stateParams['#'] = result._id;
-                                }, 100);
-                                this.$timeout(() => {
-                                    this.setType('checkInAt');
-                                }, 200);
-                                this.$timeout(() => {
-                                    this.scrollToId(result._id);
-                                }, 500);
-                            });
-                        });
+                    }, () => {
+                        // angular.forEach(results, (result) => {
+                        //     this.Orders.updateCache(result, () => {
+                        //         const pos = this.orders.findIndex((order)=>{
+                        //             return (order._id == result._id);
+                        //         });
+                        //         this.orders.splice(pos, 1, result);
+                        //         this.countOrderType();
+                        //         this.$timeout(() => {
+                        //             this.$stateParams['#'] = result._id;
+                        //         }, 100);
+                        //         this.$timeout(() => {
+                        //             this.setType('checkInAt');
+                        //         }, 200);
+                        //         this.$timeout(() => {
+                        //             this.scrollToId(result._id);
+                        //         }, 500);
+                        //     });
+                        // });
                     });
                 });
             } else {

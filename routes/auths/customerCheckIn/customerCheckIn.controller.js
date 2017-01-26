@@ -65,33 +65,37 @@ class CustomerCheckInController extends AbstractController {
             this._updateCustomerLastLoginAt(req, res, () => {
                 this._getTodayNextNumber(req, res, (todayOrders) => {
                     let currentCheckInNumber = 0;
-                    const orders = [];
+                    let orders = [];
+                    let checked = [];
                     for (var i = 0; i < todayOrders.length; i++) {
                         if (todayOrders[i].checkInNumber) {
                             if (todayOrders[i].checkInNumber > currentCheckInNumber) {
                                 currentCheckInNumber = todayOrders[i].checkInNumber;
                             }
-                        } else if (
+                        }
+
+                        if (
                             (todayOrders[i].customer_id.toString() == req.customer._id.toString())
                         ) {
-                            orders.push(todayOrders[i]);
+                            if(todayOrders[i].checkInNumber){
+                                checked.push(todayOrders[i]);
+                            } else {
+                                orders.push(todayOrders[i]);
+                            }
                         }
                     }
-                    if (orders.length === 0) {
+                    if (orders.length === 0 && checked.length!=0) {
                         res.statusCode = 200;
-                        res.json(req.customer);
+                        res.json(checked);
                         return;
                     }
                     let checkInNumber = (currentCheckInNumber + 1);
-
 
                     let responses = 0;
                     orders.forEach((order) => {
                         order.checkInAt = req.today;
                         order.checkInNumber = checkInNumber;
                         checkInNumber++;
-                        console.log(order._id);
-                        console.log(order.checkInNumber);
 
                         req.db.collection('orders').update({
                             _id: order._id,
@@ -105,6 +109,7 @@ class CustomerCheckInController extends AbstractController {
                         }, () => {
                             responses++;
                             if (responses == orders.length) {
+                                orders = orders.concat(checked);
                                 const io = req.app.get('socket-io');
                                 io.sockets.emit('customerCheckIn', orders);
                                 res.statusCode = 200;
