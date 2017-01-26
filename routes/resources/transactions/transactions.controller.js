@@ -372,87 +372,91 @@ class TransactionsController extends PrinterController {
                 };
             }
 
-            if(req.body.isPaidByStoreCredit){
+            if (req.body.isPaidByStoreCredit) {
                 credit = '-' + total;
                 total = price(0);
             } else {
                 credit = '-';
             }
-            this.device = new this.escpos.USB();
-            this.printer = new this.escpos.Printer(this.device);
+            // disable printer for now
+            req.params.id = req.params.transaction_id || req.params.id;
+            return next();
 
-            this.device.open(() => {
-                this.printer
-                    .font('A')
-                    .align('ct')
-                    .style('b')
-                    .size(1, 1)
-                    .text(' ')
-                    .text('A+ Pet Grooming')
-                    .text('4141 S. Nogales St. B105')
-                    .text('West Covina, CA 91792')
-                    .align('lt')
-                    .text(' ')
-                    .text(' ')
-                    .text('transaction # ' + transaction._id)
-                    .text(' ')
-                    .text('customer      ' + transaction.customers[0].firstname +
-                        ' ' + transaction.customers[0].lastname)
-                    .text(' ')
-                    .text(' ')
-
-                    .align('lt')
-                    .text('Grooming service')
-                    .align('rt')
-                    .text(subtotal)
-
-                    .align('lt')
-                    .text('Tax')
-                    .align('rt')
-                    .text(taxAmount)
-
-                    .align('lt')
-                    .text('Store Credit')
-                    .align('rt')
-                    .text(credit)
-
-                    .align('lt')
-                    .text('Total')
-                    .align('rt')
-                    .text(total)
-
-                    .text(' ')
-                    .align('ct')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(today.toLocaleDateString())
-                    .text(today.toLocaleTimeString())
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .text(' ')
-                    .cut();
-
-
-                // .text(req.body.order_id)
-                // .text('中文測試到底可不可以', 'Big5')
-                // .barcode(barcode, 'EAN13')
-                // .image(image, 's8')
-                // .image(image, 'd8')
-                // .image(image, 's24')
-                // .image(image, 'd24')
-                // .raster(image, 'dw')
-                // .raster(image, 'dh')
-                // .raster(image, 'dwdh')
-                // .qrimage('https://github.com/song940/node-escpos', function(err){
-                //   this.cut();
-                // });
-                req.params.id = req.params.transaction_id || req.params.id;
-                next();
-                // res.sendStatus(200);
-            });
+            // this.device = new this.escpos.USB();
+            // this.printer = new this.escpos.Printer(this.device);
+            //
+            // this.device.open(() => {
+            //     this.printer
+            //         .font('A')
+            //         .align('ct')
+            //         .style('b')
+            //         .size(1, 1)
+            //         .text(' ')
+            //         .text('A+ Pet Grooming')
+            //         .text('4141 S. Nogales St. B105')
+            //         .text('West Covina, CA 91792')
+            //         .align('lt')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text('transaction # ' + transaction._id)
+            //         .text(' ')
+            //         .text('customer      ' + transaction.customers[0].firstname +
+            //             ' ' + transaction.customers[0].lastname, 'Big5')
+            //         .text(' ')
+            //         .text(' ')
+            //
+            //         .align('lt')
+            //         .text('Grooming service')
+            //         .align('rt')
+            //         .text(subtotal)
+            //
+            //         .align('lt')
+            //         .text('Tax')
+            //         .align('rt')
+            //         .text(taxAmount)
+            //
+            //         .align('lt')
+            //         .text('Store Credit')
+            //         .align('rt')
+            //         .text(credit)
+            //
+            //         .align('lt')
+            //         .text('Total')
+            //         .align('rt')
+            //         .text(total)
+            //
+            //         .text(' ')
+            //         .align('ct')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(today.toLocaleDateString())
+            //         .text(today.toLocaleTimeString())
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .text(' ')
+            //         .cut();
+            //
+            //
+            //     // .text(req.body.order_id)
+            //     // .text('中文測試到底可不可以', 'Big5')
+            //     // .barcode(barcode, 'EAN13')
+            //     // .image(image, 's8')
+            //     // .image(image, 'd8')
+            //     // .image(image, 's24')
+            //     // .image(image, 'd24')
+            //     // .raster(image, 'dw')
+            //     // .raster(image, 'dh')
+            //     // .raster(image, 'dwdh')
+            //     // .qrimage('https://github.com/song940/node-escpos', function(err){
+            //     //   this.cut();
+            //     // });
+            //     req.params.id = req.params.transaction_id || req.params.id;
+            //     next();
+            //     // res.sendStatus(200);
+            // });
         });
 
     }
