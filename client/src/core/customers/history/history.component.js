@@ -35,7 +35,7 @@ const historyComponent = {
         $onChanges(){
             if(this.customerId){
                 this.Orders.query({
-                    // customer_id: this.customerId
+                    customer_id: this.customerId
                 }).$promise.then((res)=>{
                     console.log(res);
                     this.history = res;
