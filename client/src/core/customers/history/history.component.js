@@ -1,12 +1,12 @@
-import template from './Transactions.html';
-import './Transactions.styl';
+import template from './history.html';
+import './history.styl';
 
-const transactionsComponent = {
+const historyComponent = {
     template,
     bindings: {
         customerId: '<'
     },
-    controller: /* @ngInject */ class TransactionsController {
+    controller: /* @ngInject */ class historyController {
         static get $inject() {
             return [
                 '$log',
@@ -14,7 +14,7 @@ const transactionsComponent = {
                 '$scope',
                 '$state',
                 '$stateParams',
-                'Transactions'
+                'Orders'
             ];
         }
         constructor(
@@ -23,24 +23,25 @@ const transactionsComponent = {
             $scope,
             $state,
             $stateParams,
-            Transactions
+            Orders
         ) {
             this.$log = $log;
             this.$timeout = $timeout;
             this.$scope = $scope;
             this.$state = $state;
             this.$stateParams = $stateParams;
-            this.Transactions = Transactions;
+            this.Orders = Orders;
         }
         $onChanges(){
             if(this.customerId){
-                this.Transactions.query({
-                    customer_id: this.customerId
+                this.Orders.query({
+                    // customer_id: this.customerId
                 }).$promise.then((res)=>{
-                    this.transactions = res;
+                    console.log(res);
+                    this.history = res;
                 });
             }
         }
     }
 };
-export default transactionsComponent;
+export default historyComponent;

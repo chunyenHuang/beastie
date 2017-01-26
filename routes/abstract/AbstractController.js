@@ -198,7 +198,7 @@ module.exports = class AbstractController {
 
     _setLookup(req, res, next) {
         req.aggregations = [];
-        if (!req.query.nolookup && !req.query.nolookups) {
+        if (req.query.nolookup && req.query.nolookups) {
             return next();
         }
         req.lookups = req.lookups || this.lookups || [];

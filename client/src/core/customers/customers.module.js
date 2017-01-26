@@ -3,7 +3,7 @@ import customersListComponent from './customersList';
 import customersService from './customers.service';
 import CustomerDetailDialogService from './customerDetailDialog.service';
 
-import customerTransactions from './Transactions';
+import customerHistory from './history';
 import customerInfo from './Info';
 import customerPets from './Pets';
 import customerCredits from './Credits';
@@ -13,7 +13,7 @@ const customersModule = angular
     .module('beastie.core.customers', [])
     .component('customers', customersComponent)
     .component('customersList', customersListComponent)
-    .component('customerTransactions', customerTransactions)
+    .component('customerHistory', customerHistory)
     .component('customerInfo', customerInfo)
     .component('customerPets', customerPets)
     .component('customerCredits', customerCredits)

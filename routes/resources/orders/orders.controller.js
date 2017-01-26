@@ -12,7 +12,7 @@ class OrdersController extends AbstractController {
         this._getByDate = this._getByDate.bind(this);
         this._getPetsPicturesPath = this._getPetsPicturesPath.bind(this);
         this.customQuery = this.customQuery.bind(this);
-        this.lookups = [
+        this.lookups = ([
             {
                 $lookup: {
                     from: 'customers',
@@ -28,8 +28,17 @@ class OrdersController extends AbstractController {
                     foreignField: '_id',
                     as: 'pets'
                 }
+            },
+            {
+                $lookup: {
+                    from: 'transactions',
+                    localField: '_id',
+                    foreignField: 'order_id',
+                    as: 'transactions'
+                }
             }
-        ];
+        ]);
+
     }
     getTemplate(req, res) {
         const template = {
@@ -80,6 +89,7 @@ class OrdersController extends AbstractController {
                 });
             })(results, 0, this._getPetsPicturesPath, res);
         };
+        console.log(this.lookups);
         req.lookups = this.lookups;
         return this.query(req, res);
     }
