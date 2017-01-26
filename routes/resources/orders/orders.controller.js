@@ -330,7 +330,6 @@ class OrdersController extends AbstractController {
         });
         callback(filenames);
     }
-
 }
 
 // quick fix for date range query

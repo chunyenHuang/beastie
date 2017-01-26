@@ -27,7 +27,7 @@ const customersCheckInComponent = {
                     phone: number
                 }, (res) => {
                     this.$state.go('client.dashboard', {
-                        customer_id: res._id || res.customer_id
+                        customer_id: res[0]._id || res[0].customer_id
                     });
                 }, (err) => {
                     if (err.status == 400) {

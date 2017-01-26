@@ -17,6 +17,7 @@ class customersService {
             checkIn: {
                 method: 'GET',
                 url: '/customerCheckIn/:phone',
+                isArray: true,
                 params: {
                     phone: '@phone'
                 }

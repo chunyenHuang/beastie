@@ -53,27 +53,31 @@ const ordersListComponent = {
             this.CustomerDetailDialog = CustomerDetailDialog;
             this.$mdMedia = $mdMedia;
 
-            Socket.on('customerCheckIn', (res) => {
-                let todayStr = new Date(res.checkInAt).toDateString();
-                if (this.Orders.orders &&
-                    this.Orders.orders[todayStr] &&
-                    this.Orders.orders[todayStr][res.order_id]) {
-                    let updatedOrder = Object.assign({},
-                        this.Orders.orders[todayStr][res.order_id], {
-                            checkInAt: res.checkInAt,
-                            checkInNumber: res.checkInNumber
-                        });
-                    this.Orders._setOrderType(updatedOrder);
-                    this.Orders.orders[todayStr][res.order_id] = updatedOrder;
-                    if (this.isHostTrigger) {
-                        this.isHostTrigger = false;
-                    } else if (this.date.toDateString() === todayStr && !this.isHostTrigger) {
-                        this.isClientTrigger = true;
-                        this.changeDate(0, this.date);
+            Socket.on('customerCheckIn', (results) => {
+                console.log('customerCheckIn');
+                console.log(results);
+                let todayStr = new Date(results[0].checkInAt).toDateString();
+                angular.forEach(results, (res)=>{
+                    if (this.Orders.orders &&
+                        this.Orders.orders[todayStr] &&
+                        this.Orders.orders[todayStr][res.order_id]) {
+                        let updatedOrder = Object.assign({},
+                            this.Orders.orders[todayStr][res.order_id], {
+                                checkInAt: res.checkInAt,
+                                checkInNumber: res.checkInNumber
+                            });
+                        this.Orders._setOrderType(updatedOrder);
+                        this.Orders.orders[todayStr][res.order_id] = updatedOrder;
+                        if (this.isHostTrigger) {
+                            this.isHostTrigger = false;
+                        } else if (this.date.toDateString() === todayStr && !this.isHostTrigger) {
+                            this.isClientTrigger = true;
+                            this.changeDate(0, this.date);
+                        }
                     }
-                }
+                });
                 const toast = this.$mdToast.simple()
-                    .textContent('A Customer Jsut Checked-In!')
+                    .textContent('A Customer Just Checked-In!')
                     .highlightAction(true)
                     .highlightClass('md-accent')
                     .position('top right');
@@ -370,20 +374,27 @@ const ordersListComponent = {
                 this.resetOrder(order, () => {
                     this.Customers.checkIn({
                         phone: order.customers[0].phone
-                    }, (res) => {
-                        let updatedOrder = Object.assign(order, res);
-                        this.Orders.updateCache(updatedOrder, () => {
-                            this.orders.splice(index, 1, updatedOrder);
-                            this.countOrderType();
-                            this.$timeout(() => {
-                                this.$stateParams['#'] = updatedOrder._id;
-                            }, 250);
-                            this.$timeout(() => {
-                                this.setType('checkInAt');
-                            }, 750);
-                            this.$timeout(() => {
-                                this.scrollToId(updatedOrder._id);
-                            }, 1500);
+                    }, (results) => {
+                        console.log('--checkIn---');
+                        console.log(results);
+                        angular.forEach(results, (result) => {
+                            // let updatedOrder = Object.assign(order, result);
+                            this.Orders.updateCache(result, () => {
+                                const pos = this.orders.findIndex((order)=>{
+                                    return (order._id == result._id);
+                                });
+                                this.orders.splice(pos, 1, result);
+                                this.countOrderType();
+                                this.$timeout(() => {
+                                    this.$stateParams['#'] = result._id;
+                                }, 100);
+                                this.$timeout(() => {
+                                    this.setType('checkInAt');
+                                }, 200);
+                                this.$timeout(() => {
+                                    this.scrollToId(result._id);
+                                }, 500);
+                            });
                         });
                     });
                 });

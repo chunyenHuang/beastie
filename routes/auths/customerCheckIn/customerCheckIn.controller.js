@@ -65,55 +65,52 @@ class CustomerCheckInController extends AbstractController {
             this._updateCustomerLastLoginAt(req, res, () => {
                 this._getTodayNextNumber(req, res, (todayOrders) => {
                     let currentCheckInNumber = 0;
-                    let order;
+                    const orders = [];
                     for (var i = 0; i < todayOrders.length; i++) {
                         if (todayOrders[i].checkInNumber) {
                             if (todayOrders[i].checkInNumber > currentCheckInNumber) {
                                 currentCheckInNumber = todayOrders[i].checkInNumber;
                             }
-                        }
-                        if (todayOrders[i].customer_id.toString() == req.customer._id.toString()) {
-                            order = todayOrders[i];
+                        } else if (
+                            (todayOrders[i].customer_id.toString() == req.customer._id.toString())
+                        ) {
+                            orders.push(todayOrders[i]);
                         }
                     }
-                    if (!order) {
+                    if (orders.length === 0) {
                         res.statusCode = 200;
                         res.json(req.customer);
                         return;
                     }
-                    const checkInNumber = (currentCheckInNumber + 1);
+                    let checkInNumber = (currentCheckInNumber + 1);
 
-                    req.db.collection('orders').update({
-                        _id: order._id,
-                        checkInAt: null,
-                        checkInNumber: null
-                    }, {
-                        $set: {
-                            checkInAt: req.today,
-                            checkInNumber: checkInNumber
-                        }
-                    }, (err, results) => {
-                        if (results.result.nModified != 0) {
-                            const response = {
-                                order_id: order._id,
-                                customer_id: req.customer._id,
+
+                    let responses = 0;
+                    orders.forEach((order) => {
+                        order.checkInAt = req.today;
+                        order.checkInNumber = checkInNumber;
+                        checkInNumber++;
+                        console.log(order._id);
+                        console.log(order.checkInNumber);
+
+                        req.db.collection('orders').update({
+                            _id: order._id,
+                            checkInAt: null,
+                            checkInNumber: null
+                        }, {
+                            $set: {
                                 checkInAt: req.today,
-                                checkInNumber: checkInNumber
-                            };
-                            const io = req.app.get('socket-io');
-                            io.sockets.emit('customerCheckIn', response);
-                            res.statusCode = 200;
-                            res.json(response);
-                        } else {
-                            const response = {
-                                order_id: order._id,
-                                customer_id: req.customer._id,
-                                checkInAt: order.checkInAt,
                                 checkInNumber: order.checkInNumber
-                            };
-                            res.statusCode = 200;
-                            res.json(response);
-                        }
+                            }
+                        }, () => {
+                            responses++;
+                            if (responses == orders.length) {
+                                const io = req.app.get('socket-io');
+                                io.sockets.emit('customerCheckIn', orders);
+                                res.statusCode = 200;
+                                res.json(orders);
+                            }
+                        });
                     });
                 });
             });
