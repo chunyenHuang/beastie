@@ -77,14 +77,22 @@ class CustomerCheckInController extends AbstractController {
                         if (
                             (todayOrders[i].customer_id.toString() == req.customer._id.toString())
                         ) {
-                            if(todayOrders[i].checkInNumber){
+                            if (todayOrders[i].checkInNumber) {
                                 checked.push(todayOrders[i]);
                             } else {
                                 orders.push(todayOrders[i]);
                             }
                         }
                     }
-                    if (orders.length === 0 && checked.length!=0) {
+                    if (orders.length === 0 && checked.length === 0) {
+                        res.statusCode = 500;
+                        res.send({
+                            customer_id: req.customer._id,
+                            message: 'This customer has no orders for today.'
+                        });
+                    }
+
+                    if (orders.length === 0 && checked.length != 0) {
                         res.statusCode = 200;
                         res.json(checked);
                         return;

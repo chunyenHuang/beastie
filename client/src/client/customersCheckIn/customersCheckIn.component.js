@@ -26,10 +26,12 @@ const customersCheckInComponent = {
                 this.Customers.checkIn({
                     phone: number
                 }, (res) => {
+                    console.log(res);
                     this.$state.go('client.dashboard', {
-                        customer_id: res[0]._id || res[0].customer_id
+                        customer_id: res[0].customer_id
                     });
                 }, (err) => {
+                    console.log(err);
                     if (err.status == 400) {
                         this.$state.go('client.customersForm', {
                             phoneNumber: number
