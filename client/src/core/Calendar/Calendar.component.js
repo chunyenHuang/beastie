@@ -132,6 +132,9 @@ const calendarComponent = {
                     ],
                     dayRender: (function (ctrl) {
                         return function (date, cell) {
+                            if(!ctrl.gotoDate){
+                                return;
+                            }
                             if (
                                 new Date(ctrl.gotoDate).toISOString().split('T')[0] ===
                                 date.format()

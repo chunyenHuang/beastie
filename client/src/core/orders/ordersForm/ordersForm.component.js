@@ -30,7 +30,7 @@ const ordersFormComponent = {
             this.scheduleTime = [9, 0];
             this.Settings.query({
                 type: 'officeHours'
-            }, (res)=>{
+            }, (res) => {
                 this.officeHours = res[0].officeHours;
                 // console.log(this.officeHours);
             });
@@ -215,31 +215,31 @@ const ordersFormComponent = {
             // console.log('hour', hour);
         }
 
-        validateTime(){
-            if(!this.order){
+        validateForm() {
+            console.log(this.order);
+            console.log(this.candidates);
+            if (!this.order) {
                 return false;
-            } else if (!this.order.scheduleAt){
+            } else if (!this.order.scheduleAt) {
                 return false;
             }
             const scheduleAt = new Date(this.order.scheduleAt).getHours();
             let selectedDay;
             for (let prop in this.officeHours) {
-                if(
+                if (
                     new Date(this.order.scheduleAt).getDay() ==
                     this.officeHours[prop].id
-                ){
+                ) {
                     selectedDay = this.officeHours[prop];
                     break;
                 }
             }
-            if (scheduleAt < selectedDay.from){
+            if (scheduleAt < selectedDay.from) {
                 return false;
             } else if (scheduleAt >= selectedDay.to) {
                 return false;
-            } else {
-                return true;
             }
-
+            return true;
         }
 
         submitOrder() {
@@ -268,7 +268,7 @@ const ordersFormComponent = {
                     });
                 } else {
                     this.Orders.save(newOrder, (res) => {
-                        this.Orders.updateCache(res, ()=>{
+                        this.Orders.updateCache(res, () => {
                             this.candidates[newOrder.pet_id] = false;
                             return this.submitOrder();
                         });
@@ -280,11 +280,8 @@ const ordersFormComponent = {
                 this.$state.go('core.orders.list');
             }
         }
-        updateDate(date){
-            console.log('update date');
-            console.log(this.order.scheduleAt);
+        updateDate(date) {
             date = new Date(date);
-            console.log(date.getTimezoneOffset());
             this.order.scheduleAt = new Date(
                 date.getUTCFullYear(),
                 date.getUTCMonth(),
@@ -292,9 +289,8 @@ const ordersFormComponent = {
                 this.order.scheduleAt.getHours(),
                 this.order.scheduleAt.getMinutes()
             );
-            this.$timeout(()=>{
-                this.order.scheduleAt=this.order.scheduleAt;
-                console.log(this.order.scheduleAt);
+            this.$timeout(() => {
+                this.order.scheduleAt = this.order.scheduleAt;
             });
         }
     }
