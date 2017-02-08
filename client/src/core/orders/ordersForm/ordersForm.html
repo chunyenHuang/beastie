@@ -1,6 +1,5 @@
 <md-content layout="column" flex id="orders-form" layout-fill>
-    <div layout="row" class="md-padding header" flex="none">
-        <!-- <h1>Orders</h1> -->
+    <!-- <div layout="row" class="md-padding header" flex="none">
         <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
         <div flex></div>
         <h1 ng-show="$ctrl.order.scheduleAt">
@@ -12,8 +11,7 @@
             ng-click="$ctrl.submitOrder()" class="md-primary md-raised">
             submit
         </md-button>
-    </div>
-    <md-divider></md-divider>
+    </div> -->
     <div class="" layout="row" flex>
         <calendar
             goto-date="$ctrl.order.scheduleAt"
@@ -23,6 +21,25 @@
             select-event="false"
             layout="column" flex="80"></calendar>
         <div class="" layout="column">
+            <div class="" layout="row" flex="none">
+                <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
+                <div flex></div>
+                <md-button
+                    ng-disabled="!$ctrl.validateForm()"
+                    ng-click="$ctrl.submitOrder()" class="md-primary md-raised">
+                    submit
+                </md-button>
+            </div>
+            <md-divider></md-divider>
+            <div class="schedule-at-date" layout="column" layout-align="center center">
+                <h3 ng-show="$ctrl.order.scheduleAt">
+                    <!-- {{$ctrl.order.scheduleAt | date:'EEEE h:mma @ MMMM d, y'}} -->
+                    {{$ctrl.order.scheduleAt | date:'EEEE h:mma'}}
+                </h3>
+                <h3 ng-show="$ctrl.order.scheduleAt">
+                    {{$ctrl.order.scheduleAt | date:'MMMM d, y'}}
+                </h3>
+            </div>
             <time-date-picker
                 ng-model="$ctrl.order.scheduleAt"
                 display-mode="full"
