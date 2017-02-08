@@ -107,7 +107,7 @@ const calendarComponent = {
                         let lastClicked;
                         return function (event) {
                             const order = ctrl.findOrder(event.id);
-                            ctrl.selected = order;
+                            ctrl.updateSelected(order);
                             if (lastClicked) {
                                 lastClicked.toggleClass('selected');
                             }
@@ -200,12 +200,19 @@ const calendarComponent = {
             return order;
         }
 
-        addNewOrder(event, mdOpenMenu) {
+        viewOrder(event, mdOpenMenu) {
             console.log(event);
             // this.$mdMenu.hide();
             this.$timeout(() => {
                 mdOpenMenu(event);
             }, 300);
+        }
+
+        updateSelected(order) {
+            console.log(order);
+            this.$timeout(() => {
+                this.selected = order;
+            });
         }
 
         editOrder() {

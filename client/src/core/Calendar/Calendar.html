@@ -1,21 +1,60 @@
 <div class="" layout="column" flex>
     <div id="beastie-calendar" layout="column" flex></div>
 </div>
-<div id="add-new-order" ng-show="$ctrl.selectEvent">
+<div
+    id="view-order"
+    ng-style="{
+        'max-height': (collapse)?'40px':'300px'
+    }"
+    class=""
+    ng-show="$ctrl.selected && $ctrl.selectEvent">
+    <div class="collapse-button" layout="row" layout-align="center center">
+        <md-button ng-show="collapse" ng-click="collapse = !collapse" flex>
+            <md-icon md-svg-icon="arrow-up-drop-circle-outline"></md-icon>
+            expand
+            <md-icon md-svg-icon="arrow-up-drop-circle-outline"></md-icon>
+        </md-button>
+        <md-button ng-show="!collapse" ng-click="collapse = !collapse" flex>
+            <md-icon md-svg-icon="arrow-down-drop-circle-outline"></md-icon>
+            collapse
+            <md-icon md-svg-icon="arrow-down-drop-circle-outline"></md-icon>
+        </md-button>
+    </div>
+    <div class="" ng-show="!collapse" layout="column" flex layout-align="center center">
+        <div class="info" layout="column" flex layout-align="center center">
+            <div class="">
+                {{$ctrl.selected.scheduleAt | date:'EEEE h:mma'}}
+            </div>
+            <div class="">
+                {{$ctrl.selected.scheduleAt | date:'MMMM d, y'}}
+            </div>
+            <div class="">
+                {{$ctrl.selected.customers[0].firstname}}
+                {{$ctrl.selected.customers[0].lastname}}
+            </div>
+            <div class="">
+                {{$ctrl.selected.customers[0].phone | tel}}
+            </div>
+            <div class="">
+                pet:
+                {{$ctrl.selected.pets[0].name}}
+            </div>
+        </div>
+        <md-button ng-click="$ctrl.editOrder()" flex>
+            <md-icon md-svg-icon="tooltip-edit"></md-icon>
+            edit
+        </md-button>
+    </div>
+</div>
+<!-- <div id="add-new-order" ng-show="$ctrl.selectEvent">
     <md-menu>
         <md-button
-            ng-click="$ctrl.addNewOrder($event, $mdOpenMenu)"
+            ng-click="$ctrl.viewOrder($event, $mdOpenMenu)"
             class="md-fab md-primary"
             aria-label="add new order">
             <md-icon md-svg-src="bookmark"></md-icon>
         </md-button>
         <md-menu-content width="4">
-            <!-- <md-menu-item>
-                <md-input-container class="md-block">
-                    <label>phone</label>
-                    <input type="text" ng-model="item.name" aria-label="{{list.type}}-{{item.type}}-name">
-                </md-input-container>
-            </md-menu-item> -->
             <md-menu-item layout="row" layout-align="center center">
                 {{$ctrl.selected.customers[0].firstname}} {{$ctrl.selected.customers[0].lastname}}
             </md-menu-item>
@@ -30,4 +69,4 @@
             </md-menu-item>
         </md-menu-content>
     </md-menu>
-</div>
+</div> -->
