@@ -216,8 +216,6 @@ const ordersFormComponent = {
         }
 
         validateForm() {
-            console.log(this.order);
-            console.log(this.candidates);
             if (!this.order) {
                 return false;
             } else if (!this.order.scheduleAt) {
