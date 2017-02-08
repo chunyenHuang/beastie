@@ -73,7 +73,7 @@ const calendarComponent = {
                         center: ((!this.hideTitle) ? 'title' : ''),
                         right: 'month,agendaWeek,agendaDay'
                     },
-                    defaultView: this.defaultView || 'agendaWeek',
+                    defaultView: this.defaultView || 'month' || 'agendaWeek',
                     navLinks: true,
                     contentHeight: 'auto',
                     timeFormat: 'H:mm',
@@ -132,7 +132,7 @@ const calendarComponent = {
                     ],
                     dayRender: (function (ctrl) {
                         return function (date, cell) {
-                            if(!ctrl.gotoDate){
+                            if (!ctrl.gotoDate) {
                                 return;
                             }
                             if (

@@ -104,7 +104,7 @@ const ordersFormComponent = {
                 this.getCustomer(this.$stateParams.customer_id);
                 this.scheduleTimeIsAm = true;
                 const today = new Date();
-                today.setHours(9, 0, 0);
+                today.setHours(10, 0, 0);
                 this.defaultDate = new Date(today);
                 // console.info(this.defaultDate);
             } else {
@@ -150,6 +150,10 @@ const ordersFormComponent = {
                 id: 'template'
             }, (template) => {
                 this.order = template;
+                const today = new Date();
+                today.setHours(10, 0, 0);
+                this.order.scheduleAt = today;
+                console.log(this.order);
             });
         }
 
@@ -232,9 +236,9 @@ const ordersFormComponent = {
                     break;
                 }
             }
-            if (scheduleAt < selectedDay.from) {
+            if (selectedDay && (scheduleAt < selectedDay.from)) {
                 return false;
-            } else if (scheduleAt >= selectedDay.to) {
+            } else if (selectedDay && (scheduleAt >= selectedDay.to)) {
                 return false;
             }
             return true;
@@ -279,13 +283,14 @@ const ordersFormComponent = {
             }
         }
         updateDate(date) {
+            // console.log(this.order.scheduleAt);
             date = new Date(date);
             this.order.scheduleAt = new Date(
                 date.getUTCFullYear(),
                 date.getUTCMonth(),
                 date.getUTCDate(),
-                this.order.scheduleAt.getHours(),
-                this.order.scheduleAt.getMinutes()
+                new Date(this.order.scheduleAt).getHours(),
+                new Date(this.order.scheduleAt).getMinutes()
             );
             this.$timeout(() => {
                 this.order.scheduleAt = this.order.scheduleAt;
