@@ -1,5 +1,7 @@
-<div id="beastie-calendar" layout="column" flex></div>
-<div id="add-new-order">
+<div class="" layout="column" flex>
+    <div id="beastie-calendar" layout="column" flex></div>
+</div>
+<div id="add-new-order" ng-show="$ctrl.selectEvent">
     <md-menu>
         <md-button
             ng-click="$ctrl.addNewOrder($event, $mdOpenMenu)"
@@ -7,22 +9,23 @@
             aria-label="add new order">
             <md-icon md-svg-src="bookmark"></md-icon>
         </md-button>
-        <md-menu-content>
+        <md-menu-content width="4">
             <!-- <md-menu-item>
                 <md-input-container class="md-block">
                     <label>phone</label>
                     <input type="text" ng-model="item.name" aria-label="{{list.type}}-{{item.type}}-name">
                 </md-input-container>
             </md-menu-item> -->
-            <md-menu-item>
+            <md-menu-item layout="row" layout-align="center center">
                 {{$ctrl.selected.customers[0].firstName}}
                     {{$ctrl.selected.customers[0].lastName}}
             </md-menu-item>
-            <md-menu-item>
+            <md-menu-item layout="row" layout-align="center center">
                 {{$ctrl.selected.customers[0].phone | tel}}
             </md-menu-item>
-            <md-menu-item>
-                <md-button ng-click="doSomething()">
+            <md-menu-item layout="row" layout-align="center center">
+                <md-button ng-click="$ctrl.editOrder()" flex>
+                    <md-icon md-svg-icon="tooltip-edit"></md-icon>
                     edit
                 </md-button>
             </md-menu-item>

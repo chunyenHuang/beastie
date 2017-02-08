@@ -12,7 +12,7 @@ const calendarModule = angular
             .state('core.calendar', {
                 url: '/calendar',
                 template: `
-                    <calendar layout="column" flex></calendar>
+                    <calendar select-event="true" layout="column" flex></calendar>
                 `
             });
     })

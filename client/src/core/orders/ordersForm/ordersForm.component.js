@@ -280,6 +280,23 @@ const ordersFormComponent = {
                 this.$state.go('core.orders.list');
             }
         }
+        updateDate(date){
+            console.log('update date');
+            console.log(this.order.scheduleAt);
+            date = new Date(date);
+            console.log(date.getTimezoneOffset());
+            this.order.scheduleAt = new Date(
+                date.getUTCFullYear(),
+                date.getUTCMonth(),
+                date.getUTCDate(),
+                this.order.scheduleAt.getHours(),
+                this.order.scheduleAt.getMinutes()
+            );
+            this.$timeout(()=>{
+                this.order.scheduleAt=this.order.scheduleAt;
+                console.log(this.order.scheduleAt);
+            });
+        }
     }
 };
 export default ordersFormComponent;

@@ -3,19 +3,26 @@ calendar
     #beastie-calendar
         margin-top: 5px
         font-size: 1.5em!important
+        max-width: 100%
+        max-height: 100vh
     .fc-view
-        // width: 100%;
-        position: absolute;
-        top: 60px;
-        height: calc(100vh - 60px)
+        width: 100%;
+    .fc-view-container
+        width: auto;
         overflow-y: auto;
+    .fc-view-container .fc-view
+        overflow-x: scroll;
+    .fc-nonbusiness
+        background: #383838!important
     // .fc-event-container
-
     #add-new-order
         position: fixed;
         right: 15px
         bottom: 15px
         z-index: 50!important
+    .selected-date
+        background-color: #bddaf0!important
+
     .selected
         color: #fffef1!important
         background-color: #126aaf!important

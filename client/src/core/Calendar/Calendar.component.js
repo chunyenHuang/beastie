@@ -4,7 +4,12 @@ import './Calendar.styl';
 const calendarComponent = {
     template,
     bindings: {
-
+        defaultView: '@',
+        gotoDate: '<',
+        hideTitle: '<',
+        selectDate: '<',
+        selectEvent: '<',
+        onUpdate: '&'
     },
     controller: /* @ngInject */ class CalendarController {
         static get $inject() {
@@ -35,18 +40,27 @@ const calendarComponent = {
             this.$mdMenu = $mdMenu;
             this.Orders = Orders;
             this.$ = $;
-
-            this.selected;
         }
 
-        $onInit() {
+        $onInit() {}
+
+        $onChanges() {
+            if (this.orders) {
+                this.goTo();
+                return;
+            }
             this.Orders.query({}).$promise.then((orders) => {
                 this.orders = orders;
                 this.initCalendar(orders);
             });
         }
 
-        $onChanges() {}
+        goTo() {
+            if (this.gotoDate) {
+                this.Calendar.fullCalendar('gotoDate', new Date(this.gotoDate));
+                this.Calendar.fullCalendar('render');
+            }
+        }
 
         initCalendar(orders) {
             this.Calendar = this.$(this.$document[0].getElementById('beastie-calendar'));
@@ -56,31 +70,40 @@ const calendarComponent = {
                 this.Calendar.fullCalendar({
                     header: {
                         left: 'prev,next today myCustomButton',
-                        center: 'title',
+                        center: ((!this.hideTitle) ? 'title' : ''),
                         right: 'month,agendaWeek,agendaDay'
                     },
-                    defaultView: 'agendaWeek',
+                    defaultView: this.defaultView || 'agendaWeek',
                     navLinks: true,
                     contentHeight: 'auto',
                     timeFormat: 'H:mm',
                     scrollTime: '10:00:00',
                     minTime: '10:00:00',
                     maxTime: '21:00:00',
-                    // selectable: true,
+                    selectable: true,
+                    titleFormat: 'MMM D YYYY',
                     // unselectAuto: true,
-                    // dayClick: (function () {
-                    //     let lastClicked;
-                    //     return function () {
-                    //         if (lastClicked) {
-                    //             lastClicked.toggleClass('selected');
-                    //         }
-                    //         lastClicked = this;
-                    //         this.toggleClass('selected');
-                    //     };
-                    // })(),
+                    dayClick: (function (ctrl) {
+                        if (!ctrl.selectDate) {
+                            return;
+                        }
+                        return function (date) {
+                            ctrl.onUpdate({
+                                date
+                            });
+                            if (ctrl.lastClickedDay) {
+                                ctrl.lastClickedDay.toggleClass('selected-date');
+                            }
+                            ctrl.lastClickedDay = $(this);
+                            ctrl.lastClickedDay.toggleClass('selected-date');
+                        };
+                    })(this),
                     // slotEventOverlap: false,
                     eventLimit: 1,
                     eventClick: (function (ctrl) {
+                        if (!ctrl.selectEvent) {
+                            return;
+                        }
                         let lastClicked;
                         return function (event) {
                             const order = ctrl.findOrder(event.id);
@@ -107,8 +130,20 @@ const calendarComponent = {
                             end: '21:00'
                         }
                     ],
+                    dayRender: (function (ctrl) {
+                        return function (date, cell) {
+                            if (
+                                new Date(ctrl.gotoDate).toISOString().split('T')[0] ===
+                                date.format()
+                            ) {
+                                ctrl.lastClickedDay = $(cell);
+                                ctrl.lastClickedDay.toggleClass('selected-date');
+                            }
+                        };
+                    })(this),
                     eventSources: this.getEvents(orders)
                 });
+                this.goTo();
                 this.Calendar.fullCalendar('render');
             });
         }
@@ -170,8 +205,12 @@ const calendarComponent = {
             }, 300);
         }
 
-
-
+        editOrder() {
+            console.log(this.selected);
+            this.$state.go('core.orders.form', {
+                order_id: this.selected._id
+            });
+        }
     }
 };
 export default calendarComponent;

@@ -19,27 +19,33 @@
         font-weight: bold
     .time-date
         // .vertical
+        width: 20rem
+        max-height: 16rem
         input
             background-color: rgb(255, 255, 255)
             border 0px
         .am-pm-btn
-            margin-top: 0px
-            margin-left: -70px
+            // margin-top: 180px
+            margin-left: -300px
             color: white
             background-color: rgb(198, 89, 96)
     .time-date.vertical.full-mode > .control
-        height: 23rem
+        height: 16rem
     .time-date.full-mode > .control
-        height: 23rem
-        > .full-title
+        height: 16rem
+        .full-title
             display: none;
     .time-date > .control > .slider > .date-control
-        height: 22rem
+        display: none
+        height: 16rem
     .time-date > .control > .slider > .time-control
-        height: 22rem
+        height: 16rem
+        width: 100%
         .buttons
-            height: 40px
-            z-index: 5
+            width:1rem
+            bottom 1rem
+            // display: absolute
+            // z-index: 5
     .time-date.vertical.full-mode > .control > .full-title
         display: none;
     .time-date.full-mode > .buttons
@@ -54,7 +60,7 @@
             padding: 0px
             margin: 0px
 #time-picker
-    margin-top 30px
+    margin-top 50px
     md-icon
         transform: scale(2,2);
     button

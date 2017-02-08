@@ -14,45 +14,15 @@
         </md-button>
     </div>
     <md-divider></md-divider>
-    <div class="" layout="row" flex="none" layout-align="center">
-        <day-schedule orders="$ctrl.selectedDateOrders">
-        </day-schedule>
-    </div>
-    <div layout="row" class="md-padding" layout-align="start start">
-        <!-- <div layout="column" flex="25" class="">
-            <div class="selected-date-orders" layout="row">
-                <div class="" flex="30" layout="row" layout-align="end">
-                    <h3>
-                        {{$ctrl.order.scheduleAt | date:'MM/dd'}}
-                    </h3>
-                </div>
-                <div class="">
-                    <h3>
-                        Orders: {{$ctrl.selectedDateOrders.length}}
-                    </h3>
-                </div>
-            </div>
-
-            <div class="" layout="column" flex ng-show="$ctrl.selectedDateOrders.length>0">
-                <div layout="row" flex="none" ng-repeat="order in $ctrl.selectedDateOrders | orderBy: 'scheduleAt'">
-                    <div class="" flex="30" layout="row" layout-align="end">
-                        <md-subheader>
-                            {{order.scheduleAt | date:'h:mma'}}
-                        </md-subheader>
-                    </div>
-                    <p ng-hide="$ctrl.order._id == order._id">
-                        {{order.customers[0].firstname}} ({{order.pets[0].name}})
-                    </p>
-                    <p ng-show="$ctrl.order._id == order._id">
-                        <span class="current-order-text">Current Order</span>
-                    </p>
-
-                </div>
-            </div>
-        </div> -->
-        <div layout="row" flex="70" layout-align="end center">
-            <!-- orientation="true" -->
-
+    <div class="" layout="row" flex>
+        <calendar
+            goto-date="$ctrl.order.scheduleAt"
+            on-update="$ctrl.updateDate(date)"
+            default-view="month"
+            select-date="true"
+            select-event="false"
+            layout="column" flex="80"></calendar>
+        <div class="" layout="column">
             <time-date-picker
                 ng-model="$ctrl.order.scheduleAt"
                 display-mode="full"
@@ -60,10 +30,9 @@
                 mindate="{{$ctrl.scheduleDate.min}}"
                 maxdate="{{$ctrl.scheduleDate.max}}"
                 autosave
-                ></time-date-picker>
-        </div>
-        <div layout="column" flex>
-            <md-content layout="column" class="pet-select" flex >
+                >
+            </time-date-picker>
+            <md-content layout="column" class="pet-select">
                 <md-subheader>Customer</md-subheader>
                 <div class="customer-field">
                     <p>
@@ -82,23 +51,17 @@
                         <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" >
                             <strong>{{pet.name}}</strong>
                         </md-checkbox>
-                        <!-- <img ng-src="{{pet.pictures[0]}}" alt="no picture yet"/> -->
                     </div>
                 </div>
             </md-content>
-            <!-- <md-input-container class="md-block" flex-gt-sm>
-                <label>Services</label>
-                <md-select ng-model="$ctrl.order.services" ng-model-options="{trackBy: '$value.name'}">
-                    <md-option ng-repeat="serivce in $ctrl.services" ng-value="serivce">
-                        {{serivce.name}} {{serivce.zhName}}
-                    </md-option>
-                </md-select>
-            </md-input-container> -->
-            <md-input-container class="md-block" flex>
+            <!-- <md-input-container class="md-block" flex>
                 <label>Notes</label>
                 <textarea ng-model="$ctrl.order.notes" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                <!-- <input type="text" name="name" value="" ng-model="$ctrl.order.notes" placeholder="note"/> -->
-            </md-input-container>
+            </md-input-container> -->
         </div>
     </div>
+    <!-- <div class="" layout="row" flex="none" layout-align="center">
+        <day-schedule orders="$ctrl.selectedDateOrders">
+        </day-schedule>
+    </div> -->
 </md-content\>
