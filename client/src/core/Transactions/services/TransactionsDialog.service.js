@@ -61,7 +61,7 @@ class TransactionsDialogService {
 
                     this.Settings.query({
                         type: 'company'
-                    }).$promise.then((res)=>{
+                    }).$promise.then((res) => {
                         this.tax = parseFloat(res[0].tax);
                     });
 
@@ -70,7 +70,9 @@ class TransactionsDialogService {
                         this.Orders.get({
                             id: this.order_id
                         }, (order) => {
-                            const price = order.total || order.services.price;
+                            const price = order.serviceAddons.reduce((total, element) => {
+                                return total + element.price;
+                            }, order.services.price);;
                             this.transaction = Object.assign(this.transaction, {
                                 total: price,
                                 order_id: order._id,
@@ -107,16 +109,16 @@ class TransactionsDialogService {
                     this.discounts = [{
                         value: 1,
                         label: 'No discount'
-                    },{
+                    }, {
                         value: 0.90,
                         label: '10% off'
-                    },{
+                    }, {
                         value: 0.85,
                         label: '15% off'
-                    },{
+                    }, {
                         value: 0.80,
                         label: '20% off'
-                    },{
+                    }, {
                         value: 0.75,
                         label: '25% off'
                     }];
@@ -131,7 +133,7 @@ class TransactionsDialogService {
                     this.resetTransaction();
                 }
 
-                resetTransaction(){
+                resetTransaction() {
                     this.transaction = {
                         // credit_id: null,
                         // selfService_id: null,
@@ -164,9 +166,9 @@ class TransactionsDialogService {
                     return total;
                 }
 
-                selectDiscount(discount){
+                selectDiscount(discount) {
                     this.selectedDiscount = discount;
-                    const calculation = this.oriMoney*discount.value;
+                    const calculation = this.oriMoney * discount.value;
                     this.updateTotal(calculation);
                 }
 

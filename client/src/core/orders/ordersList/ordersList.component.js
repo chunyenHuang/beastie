@@ -57,13 +57,13 @@ const ordersListComponent = {
                 console.log('customerCheckIn');
                 console.log(results);
                 let todayStr = new Date(results[0].checkInAt).toDateString();
-                angular.forEach(results, (res)=>{
+                angular.forEach(results, (res) => {
                     if (this.Orders.orders &&
                         this.Orders.orders[todayStr] &&
                         this.Orders.orders[todayStr][res._id]
                     ) {
                         this.Orders.updateCache(res, () => {
-                            const pos = this.orders.findIndex((order)=>{
+                            const pos = this.orders.findIndex((order) => {
                                 return (order._id == res._id);
                             });
                             this.orders.splice(pos, 1, res);
@@ -330,10 +330,18 @@ const ordersListComponent = {
             } else if (!order.services) {
                 total = order.total || '';
             } else {
-                total = order.total || order.services.price || '';
+                total = this.calculateTotal(order);
             }
+            order.total = total;
             return total;
         }
+
+        calculateTotal(order) {
+            return order.serviceAddons.reduce((total, element) => {
+                return total + element.price;
+            }, order.services.price);
+        }
+
 
         changeTotal(order) {
             let index = this.orders.indexOf(order);

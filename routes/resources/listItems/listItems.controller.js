@@ -66,6 +66,23 @@ class ListItemsController extends AbstractController {
     }
 
     save(req, res) {
+        /*
+            {
+                "type": "serviceAddons",
+                "hasSubItems": false,
+                "items": [
+                    {
+                        "name": "fuzzy hair",
+                        "description": "too hard to cut",
+                        "zhName": "毛髮太多",
+                        "zhDescription": "",
+                        "total": 5,
+                        "keyID": 12312941245,
+                        "isActived": true
+                    }
+                ]
+            }
+        */
         Object.assign(req.body, {
             isDeleted: false,
             createdAt: new Date(),

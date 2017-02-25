@@ -3,6 +3,7 @@ import listItemsService from './services/listItems.service';
 import listItemsComponent from './listItems.component';
 import listItemsInhouseOrdersComponent from './listItemsInhouseOrders';
 import listItemsServicesComponent from './listItemsServices';
+import listItemsServiceAddonsComponent from './listItemsServiceAddons';
 import listItemsWaiversComponent from './listItemsWaivers';
 import listItemsVaccinationsComponent from './listItemsVaccinations';
 import listItemsBreedsComponent from './listItemsBreeds';
@@ -16,6 +17,7 @@ const listItemsModule = angular
     .component('listItems', listItemsComponent)
     .component('listItemsInhouseOrders', listItemsInhouseOrdersComponent)
     .component('listItemsServices', listItemsServicesComponent)
+    .component('listItemsServiceAddons', listItemsServiceAddonsComponent)
     .component('listItemsWaivers', listItemsWaiversComponent)
     .component('listItemsVaccinations', listItemsVaccinationsComponent)
     .component('listItemsBreeds', listItemsBreedsComponent)
@@ -25,45 +27,48 @@ const listItemsModule = angular
     .config(($stateProvider) => {
         'ngInject';
         $stateProvider
-        .state('core.listItems', {
-            url: '/listItems',
-            template: '<list-items layour="column" flex></list-items>'
-        })
-        .state('core.listItems.inhouseOrders', {
-            url: '/inhouseOrders',
-            template: '<list-items-inhouse-orders layout="column" flex></list-items-inhouse-orders>'
-        })
-        .state('core.listItems.services', {
-            url: '/services',
-            template: '<list-items-services layout="column" flex></list-items-services>'
-        })
-        .state('core.listItems.waivers', {
-            url: '/waivers',
-            template: '<list-items-waivers layout="column" flex></list-items-waivers>'
-        })
-        .state('core.listItems.vaccinations', {
-            url: '/vaccinations',
-            template: '<list-items-vaccinations layout="column" flex></list-items-vaccinations>'
-        })
-        .state('core.listItems.breeds', {
-            url: '/breeds',
-            template: '<list-items-breeds layout="column" flex></list-items-breeds>'
-        })
-        .state('core.listItems.colors', {
-            url: '/colors',
-            template: '<list-items-colors layout="column" flex></list-items-colors>'
-        })
-        .state('core.listItems.selfServices', {
-            url: '/selfServices',
-            template: '<list-items-self-services layout="column" flex></list-items-self-services>'
-        })
-        .state('core.listItems.creditsPackages', {
-            url: '/creditsPackages',
-            template: `
+            .state('core.listItems', {
+                url: '/listItems',
+                template: '<list-items layour="column" flex></list-items>'
+            })
+            .state('core.listItems.inhouseOrders', {
+                url: '/inhouseOrders',
+                template: '<list-items-inhouse-orders layout="column" flex></list-items-inhouse-orders>'
+            })
+            .state('core.listItems.services', {
+                url: '/services',
+                template: '<list-items-services layout="column" flex></list-items-services>'
+            })
+            .state('core.listItems.serviceAddons', {
+                url: '/serviceAddons',
+                template: '<list-items-service-addons layout="column" flex></list-items-service-addons>'
+            })
+            .state('core.listItems.waivers', {
+                url: '/waivers',
+                template: '<list-items-waivers layout="column" flex></list-items-waivers>'
+            })
+            .state('core.listItems.vaccinations', {
+                url: '/vaccinations',
+                template: '<list-items-vaccinations layout="column" flex></list-items-vaccinations>'
+            })
+            .state('core.listItems.breeds', {
+                url: '/breeds',
+                template: '<list-items-breeds layout="column" flex></list-items-breeds>'
+            })
+            .state('core.listItems.colors', {
+                url: '/colors',
+                template: '<list-items-colors layout="column" flex></list-items-colors>'
+            })
+            .state('core.listItems.selfServices', {
+                url: '/selfServices',
+                template: '<list-items-self-services layout="column" flex></list-items-self-services>'
+            })
+            .state('core.listItems.creditsPackages', {
+                url: '/creditsPackages',
+                template: `
             <list-items-credits-packages layout="column" flex></list-items-credits-packages>
             `
-        })
-        ;
+            });
 
     })
     .name;

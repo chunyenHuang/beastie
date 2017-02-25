@@ -4,14 +4,32 @@
             <h3>Select One of the Following Services</h3>
         </div>
     </md-toolbar>
-    <md-dialog-content layout="row" flex layout-wrap layout-align="center center">
-        <md-button layout="column" layout-margin ng-repeat="service in $ctrl.services" flex="80" ng-show="service.isActivated && !service.isDeleted" class="md-raised" ng-class="{'md-primary':$ctrl.service==service}" ng-click="$ctrl.setService(service)">
-            <div class="md-headline">
-                {{service.name}}
-                {{service.zhName}}
-                {{service.price | currency}}
-            </div>
-        </md-button>
+    <md-dialog-content layout="row" flex>
+        <div layout="column" class="md-padding">
+            <h3>Service</h3>
+            <md-button 
+                layout="column" 
+                layout-align="center start"
+                ng-repeat="service in $ctrl.services" ng-show="service.isActivated && !service.isDeleted"
+                class="md-raised" ng-class="{'md-accent':$ctrl.newServices.keyID==service.keyID}" ng-click="$ctrl.setService(service)">
+                <div class="md-headline">
+                    {{service.price | currency}}
+                    {{service.name}} {{service.zhName}} 
+                </div>
+            </md-button>
+        </div>
+        <div layout="column" class="md-padding">
+            <h3>Addons</h3>
+            <md-button layout="column" 
+                layout-align="center start"
+                ng-repeat="addon in $ctrl.serviceAddons" ng-show="addon.isActivated && !addon.isDeleted"
+                class="md-raised" ng-class="{'md-primary': $ctrl.isAdded(addon)}" ng-click="$ctrl.toggleServiceAddon(addon)">
+                <div class="md-headline">
+                    {{addon.price | currency}}
+                    {{addon.name}} {{addon.zhName}} 
+                </div>
+            </md-button>
+        </div>
     </md-dialog-content>
     <md-dialog-actions>
         <div layout="row" layout-align="start center" flex="none">
@@ -20,7 +38,7 @@
             </md-button>
             <div class="" flex></div>
             <md-button ng-click="$ctrl.submit()">
-                confirm
+                {{$ctrl.getTotal()|currency}} confirm
             </md-button>
         </div>
     </md-dialog-actions>
