@@ -122,7 +122,7 @@ const ordersListComponent = {
                 if (this.$stateParams['#']) {
                     this.$timeout(() => {
                         this.scrollToId(this.$stateParams['#']);
-                    }, 500);
+                    }, 300);
                 }
             }
         }
@@ -211,15 +211,15 @@ const ordersListComponent = {
 
         getOrders(date) {
             this.Orders.getCache(date).then((orders) => {
-                this.orders = [];
-                for (let prop in orders) {
-                    this.orders.push(orders[prop]);
-                }
                 this.$timeout(() => {
-                    this.orders = this.orders;
+                    this.orders = [];
+                    for (let prop in orders) {
+                        this.orders.push(orders[prop]);
+                    }
+                    this.countOrderType();
+                    this.followStateParams();
                 }, 20);
-                this.countOrderType();
-                this.followStateParams();
+
             });
         }
 
@@ -370,9 +370,13 @@ const ordersListComponent = {
             this.TransactionsDialog({
                 order_id: order._id
             }).then(
-                (res) => {
-                    this.Orders.updateCache(res, () => {
-                        this.changeDate(0, new Date());
+                () => {
+                    this.Orders.get({
+                        id: order._id
+                    }).$promise.then((res) => {
+                        this.Orders.updateCache(res, () => {
+                            this.changeDate(0, new Date());
+                        });
                     });
                 }, () => {}
             );

@@ -93,7 +93,6 @@ class ordersService {
         for (let prop in Orders) {
             this[prop] = Orders[prop];
         }
-        console.log(this)
     }
 
     _getCache(date) {
@@ -142,23 +141,18 @@ class ordersService {
         if (!order) {
             return;
         } else {
-            this.get({
-                id: order._id
-            }).$promise.then((res) => {
-                order = res;
-                let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
-                if (this.orders && this.orders[scheduleAt.toDateString()]) {
-                    this._setOrderType(order);
-                    this.orders[scheduleAt.toDateString()][order._id] = order;
-                    if (callback) {
-                        return callback();
-                    }
-                }
+            let scheduleAt = this.SharedUtil._parseDate(order.scheduleAt);
+            if (this.orders && this.orders[scheduleAt.toDateString()]) {
+                this._setOrderType(order);
+                this.orders[scheduleAt.toDateString()][order._id] = order;
                 if (callback) {
                     return callback();
                 }
-                return;
-            });
+            }
+            if (callback) {
+                return callback();
+            }
+            return;
         }
     }
 

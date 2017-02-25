@@ -13,20 +13,13 @@
         </md-button>
     </div> -->
     <div class="" layout="row" flex>
-        <calendar
-            goto-date="$ctrl.order.scheduleAt"
-            on-update="$ctrl.updateDate(date)"
-            default-view="month"
-            select-date="true"
-            select-event="false"
+        <calendar goto-date="$ctrl.order.scheduleAt" on-update="$ctrl.updateDate(date)" default-view="month" select-date="true" select-event="false"
             layout="column" flex="80"></calendar>
         <div class="" layout="column">
             <div class="" layout="row" flex="none">
                 <md-button ng-click="$ctrl.setOrder()" class="md-raised">reset</md-button>
                 <div flex></div>
-                <md-button
-                    ng-disabled="!$ctrl.validateForm()"
-                    ng-click="$ctrl.submitOrder()" class="md-primary md-raised">
+                <md-button ng-disabled="!$ctrl.validateForm()" ng-click="$ctrl.submitOrder()" class="md-primary md-raised">
                     submit
                 </md-button>
             </div>
@@ -40,14 +33,8 @@
                     {{$ctrl.order.scheduleAt | date:'MMMM d, y'}}
                 </h3>
             </div>
-            <time-date-picker
-                ng-model="$ctrl.order.scheduleAt"
-                display-mode="full"
-                default-date="$ctrl.defaultDate"
-                mindate="{{$ctrl.scheduleDate.min}}"
-                maxdate="{{$ctrl.scheduleDate.max}}"
-                autosave
-                >
+            <time-date-picker ng-model="$ctrl.order.scheduleAt" display-mode="full" default-date="$ctrl.defaultDate" mindate="{{$ctrl.scheduleDate.min}}"
+                maxdate="{{$ctrl.scheduleDate.max}}" autosave>
             </time-date-picker>
             <md-content layout="column" class="pet-select">
                 <md-subheader>Customer</md-subheader>
@@ -65,11 +52,24 @@
                 <md-subheader>Pets</md-subheader>
                 <div class="customer-field">
                     <div layout="row" ng-repeat="pet in $ctrl.pets" ng-click="($ctrl.pets.length>1)?($ctrl.candidates[pet._id] = !$ctrl.candidates[pet._id]):false">
-                        <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}" >
+                        <md-checkbox ng-model="$ctrl.candidates[pet._id]" aria-label="include-{{pet._id}}">
                             <strong>{{pet.name}}</strong>
                         </md-checkbox>
                     </div>
                 </div>
+            </md-content>
+            <md-content layout="column" flex="none">
+                <md-input-container>
+                    <label>Service</label>
+                    <md-select ng-model="$ctrl.order.services">
+                        <md-option><em>None</em></md-option>
+                        <md-option ng-repeat="service in $ctrl.services"
+                            ng-show="service.isActivated && !service.isDeleted" 
+                            ng-value="service" ng-disabled="$index === 1">
+                            {{service.name}} {{service.zhName}} {{service.price | currency}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
             </md-content>
             <!-- <md-input-container class="md-block" flex>
                 <label>Notes</label>
@@ -81,4 +81,4 @@
         <day-schedule orders="$ctrl.selectedDateOrders">
         </day-schedule>
     </div> -->
-</md-content\>
+    </md-content\>

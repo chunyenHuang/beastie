@@ -56,6 +56,7 @@ class OrdersController extends AbstractController {
             isRush: false,
             // select services
             services: null,
+            serviceAddons: [],
             total: null,
             // select inhouseOrders
             inhouseOrders: null,

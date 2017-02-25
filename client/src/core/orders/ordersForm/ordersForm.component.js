@@ -236,6 +236,16 @@ const ordersFormComponent = {
                     break;
                 }
             }
+            let hasCandidate = false;
+            for (let prop in this.candidates) {
+                if (this.candidates[prop]) {
+                    hasCandidate = true;
+                }
+            }
+            if (!hasCandidate) {
+                return false;
+            }
+
             if (selectedDay && (scheduleAt < selectedDay.from)) {
                 return false;
             } else if (selectedDay && (scheduleAt >= selectedDay.to)) {
