@@ -211,14 +211,15 @@ const ordersListComponent = {
 
         getOrders(date) {
             this.Orders.getCache(date).then((orders) => {
+                this.orders = [];
+                for (let prop in orders) {
+                    this.orders.push(orders[prop]);
+                }
                 this.$timeout(() => {
-                    this.orders = [];
-                    for (let prop in orders) {
-                        this.orders.push(orders[prop]);
-                    }
-                    this.countOrderType();
-                    this.followStateParams();
+                    this.orders = this.orders;
                 }, 20);
+                this.countOrderType();
+                this.followStateParams();
             });
         }
 
