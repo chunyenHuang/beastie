@@ -77,19 +77,27 @@ const customersFormComponent = {
             if (!this.customer) {
                 return false;
             }
-            if (!this.customer.firstname ||
-                this.customer.firstname == '' ||
-                !this.customer.lastname ||
-                this.customer.lastname == ''
-            ) {
-                return false;
-            }
-            for (let prop in this.customer.address) {
-                if (!this.customer.address[prop] ||
-                    this.customer.address[prop] == ''
-                ) {
-                    return false;
-                }
+            switch (this.currentFormState) {
+                case 'name':
+                    if (!this.customer.firstname ||
+                        this.customer.firstname == '' ||
+                        !this.customer.lastname ||
+                        this.customer.lastname == ''
+                    ) {
+                        return false;
+                    }
+                    break;
+                case 'address':
+                    for (let prop in this.customer.address) {
+                        if (!this.customer.address[prop] ||
+                            this.customer.address[prop] == ''
+                        ) {
+                            return false;
+                        }
+                    }
+                    break;
+                default:
+
             }
             return true;
         }

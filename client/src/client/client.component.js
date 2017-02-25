@@ -49,6 +49,10 @@ const clientComponent = {
         }
 
         $onInit() {
+            // this.checkUser();
+        }
+
+        checkUser() {
             this.UserAuth
                 .get({}).$promise
                 .then((res) => {
