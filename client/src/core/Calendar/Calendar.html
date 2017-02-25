@@ -1,13 +1,9 @@
 <div class="" layout="column" flex>
     <div id="beastie-calendar" layout="column" flex></div>
 </div>
-<div
-    id="view-order"
-    ng-style="{
+<div id="view-order" ng-style="{
         'max-height': (collapse)?'40px':'300px'
-    }"
-    class=""
-    ng-show="$ctrl.selected && $ctrl.selectEvent">
+    }" class="" ng-show="$ctrl.selected && $ctrl.selectEvent">
     <div class="collapse-button" layout="row" layout-align="center center">
         <md-button ng-show="collapse" ng-click="collapse = !collapse" flex>
             <md-icon md-svg-icon="arrow-up-drop-circle-outline"></md-icon>
@@ -23,21 +19,30 @@
     <div class="" ng-show="!collapse" layout="column" flex layout-align="center center">
         <div class="info" layout="column" flex layout-align="center center">
             <div class="">
-                {{$ctrl.selected.scheduleAt | date:'EEEE h:mma'}}
+                <small>
+                    {{$ctrl.selected.scheduleAt | date:'EEEE h:mma'}}
+                </small>
             </div>
             <div class="">
-                {{$ctrl.selected.scheduleAt | date:'MMMM d, y'}}
+                <small>
+                    {{$ctrl.selected.scheduleAt | date:'MMMM d, y'}}
+                </small>
             </div>
             <div class="">
-                {{$ctrl.selected.customers[0].firstname}}
-                {{$ctrl.selected.customers[0].lastname}}
+                {{$ctrl.selected.customers[0].firstname}} {{$ctrl.selected.customers[0].lastname}}
             </div>
             <div class="">
-                {{$ctrl.selected.customers[0].phone | tel}}
+                <small>
+                    {{$ctrl.selected.customers[0].phone | tel}}
+                </small>
             </div>
             <div class="">
-                pet:
-                {{$ctrl.selected.pets[0].name}}
+                pet: {{$ctrl.selected.pets[0].name}}
+            </div>
+            <div class="">
+                <small>
+                    {{$ctrl.selected.services.name}}
+                </small>
             </div>
         </div>
         <md-button ng-click="$ctrl.editOrder()" flex>

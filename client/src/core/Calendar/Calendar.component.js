@@ -71,7 +71,7 @@ const calendarComponent = {
                     header: {
                         left: 'prev,next today myCustomButton',
                         center: ((!this.hideTitle) ? 'title' : ''),
-                        right: 'month,agendaWeek,agendaDay'
+                        right: 'month,agendaDay' // agendaWeek
                     },
                     defaultView: this.defaultView || 'month' || 'agendaWeek',
                     navLinks: true,
@@ -123,13 +123,11 @@ const calendarComponent = {
                         console.log(this);
                         $(this).toggleClass('selected-hover');
                     },
-                    businessHours: [
-                        {
-                            dow: [0, 1, 3, 4, 5, 6], // Monday==1
-                            start: '10:00',
-                            end: '21:00'
-                        }
-                    ],
+                    businessHours: [{
+                        dow: [0, 1, 3, 4, 5, 6], // Monday==1
+                        start: '10:00',
+                        end: '21:00'
+                    }],
                     dayRender: (function (ctrl) {
                         return function (date, cell) {
                             if (!ctrl.gotoDate) {
@@ -161,13 +159,11 @@ const calendarComponent = {
 
         parseEvent(order) {
             return {
-                events: [
-                    {
-                        id: order._id,
-                        title: this.getCustomerInfo(order.customers[0]),
-                        start: new Date(order.scheduleAt)
-                    }
-                ],
+                events: [{
+                    id: order._id,
+                    title: this.getOrderInfo(order),
+                    start: new Date(order.scheduleAt)
+                }],
                 // color: '#258a82'
                 backgroundColor: '#f9f9f9',
                 borderColor: this.getRandomColor(),
@@ -175,13 +171,19 @@ const calendarComponent = {
             };
         }
 
-        getCustomerInfo(customer) {
-            if (!customer) {
+        getOrderInfo(order) {
+            if (!order) {
                 return 'no info';
+            }
+            const customer = order.customers[0];
+            const pet = order.pets[0];
+            if (!customer || !pet) {
+                return 'no customer or no pet';
             }
             const fullname = `${customer.firstname} ${customer.lastname}`;
             const phone = customer.phone;
-            return `${fullname} \n (${phone[0]}${phone[1]}${phone[2]})${phone[3]}${phone[4]}${phone[5]}-${phone[6]}${phone[7]}${phone[8]}${phone[9]}`;
+            return `${fullname} (${phone[0]}${phone[1]}${phone[2]}) ${phone[3]}${phone[4]}${phone[5]}-${phone[6]}${phone[7]}${phone[8]}${phone[9]} \n ` +
+                `${pet.name} - ${(order.services)?order.services.name:''}`;
         }
 
         getRandomColor() {
