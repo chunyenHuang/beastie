@@ -49,7 +49,7 @@ const clientComponent = {
         }
 
         $onInit() {
-            // this.checkUser();
+            this.checkUser();
         }
 
         checkUser() {
