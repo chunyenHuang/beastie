@@ -1,51 +1,42 @@
-<div
-    class="md-padding" layout="row" flex layout-align="center center"
-    >
+<div class="md-padding" layout="row" flex layout-align="center center">
+    <div class="" flex="5">
+    </div>
     <div class="" flex="10">
-
-    </div>
-    <div class="" flex="20">
-        Schedula At
-    </div>
-    <div class="" flex="20">
-        Finished At
-    </div>
-    <div class="" flex="20">
-        Pet
-    </div>
-    <div class="" flex="20">
-        Service
+        Date
     </div>
     <div class="" flex="10">
         $total
     </div>
-</div>
-<div
-    class="md-padding" layout="row" flex layout-align="center center"
-    ng-repeat="history in $ctrl.history | orderBy:'scheduleAt':true"
-    >
     <div class="" flex="10">
+        Pet
+    </div>
+    <div class="" flex="10">
+        Service
+    </div>
+    <div class="" flex="20">
+        Service Addons
+    </div>
+
+</div>
+<div class="md-padding" layout="row" flex layout-align="center center" ng-repeat="history in $ctrl.history | orderBy:'scheduleAt':true">
+    <div class="" flex="5">
         {{$index+1}}
     </div>
-    <div class="" flex="20">
-        {{history.scheduleAt | date:'mediumDate'}}
-    </div>
-    <div class="" flex="20">
-        <!-- <div class="" ng-if="history.checkInAt">
-            {{history.checkInAt | date:'mediumDate'}}
-        </div> -->
-        <div class="" ng-if="!history.checkInAt">
-            <span ng-show="history.isCanceled">canceled</span>
-            <span ng-show="history.notShowup">not showup</span>
-        </div>
-    </div>
-    <div class="" flex="20">
-        {{history.pets[0].name}}
-    </div>
-    <div class="" flex="20">
-        {{history.services.name}}
+    <div class="" flex="10">
+        {{history.createdAt | date:'mediumDate'}}
     </div>
     <div class="" flex="10">
-        {{history.transactions[0].total | currency}}
+        {{history.total | currency}}
+    </div>
+    <div class="" flex="10">
+        {{$ctrl.findOrder(history).pets[0].name}}
+    </div>
+    <div class="" flex="10">
+        {{$ctrl.findOrder(history).services.name}}
+    </div>
+    <div class="" flex="20">
+        <span ng-repeat="addon in $ctrl.findOrder(history).serviceAddons">
+            {{addon.name}}
+        </span>
     </div>
 </div>
