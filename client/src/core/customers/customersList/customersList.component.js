@@ -25,6 +25,10 @@ const customersListComponent = {
 
         $onInit() {
             this.Task.on();
+            this.getCustomers();
+        }
+
+        getCustomers() {
             this.Customers.query({}, (customers) => {
                 this.Task.off();
                 this.customers = customers;
@@ -35,9 +39,22 @@ const customersListComponent = {
             this.CustomerDetailDialog({
                 customer_id: customer._id,
                 tab: 'customer'
-            }, () => {
-
+            }).then(() => {
+                this.$state.reload();
+            }).catch(() => {
+                this.$state.reload();
             });
+        }
+
+        updateCustomer(customer) {
+            this.Customers.get({
+                id: customer._id
+            }).$promise.then((res) => {
+                const pos = this.customers.findIndex((element) => {
+                    return (element._id === res._id);
+                });
+                this.customers.splice(pos, 1, res);
+            }, () => {});
         }
     }
 };
