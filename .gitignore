@@ -1,6 +1,6 @@
 .git
 .DS_Store
-*.log
+*.log*
 /.env.file
 
 node_modules/
