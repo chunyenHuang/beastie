@@ -15,13 +15,6 @@ dropbox/
 tmp/
 files/
 app/
-
-uploads/
-images/
-backups/
-dropbox/
-tmp/
-files/
-app/
+ss/
 
 test*
