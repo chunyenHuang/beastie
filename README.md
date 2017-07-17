@@ -1,4 +1,6 @@
 # Beastie
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/chunyenHuang/beastie.svg)](https://greenkeeper.io/)
 Customer Management System for Pet shop
 
 # GetStarted
