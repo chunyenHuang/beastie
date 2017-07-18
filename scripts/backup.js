@@ -1,10 +1,10 @@
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const path = require('path');
-const dotenv = require('dotenv');
-dotenv.load({
-    path: '.env.file'
-});
+//const dotenv = require('dotenv');
+//dotenv.load({
+//    path: '.env.file'
+//});
 const mongodb = require('mongodb');
 const dbClient = mongodb.MongoClient;
 const dbUrl = process.env.MONGODB_URI || process.env.MONGOLAB_URI;
