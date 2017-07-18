@@ -1,7 +1,7 @@
 const AbstractController = require('../../abstract/AbstractController.js');
 const ObjectId = require('mongodb').ObjectID;
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 class PetsController extends AbstractController {
     constructor() {
@@ -255,6 +255,7 @@ class PetsController extends AbstractController {
 
     _getPetsPicturesPath(pet_id, callback) {
         const petsImagesPath = path.join(global.images, 'pets');
+        fs.ensureDirSync(petsImagesPath);
         const filenames = [];
         fs.readdirSync(petsImagesPath).forEach((filename) => {
             if (filename.indexOf(pet_id) > -1) {
