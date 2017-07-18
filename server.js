@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const errorHandler = require('errorhandler');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -16,9 +16,9 @@ const ServerMiddlewares = require('./serverMiddlewares');
 /*
     Configuration
 */
-dotenv.load({
-    path: '.env.file'
-});
+//dotenv.load({
+//    path: '.env.file'
+//});
 const port = process.env.PORT || 3000;
 const dbClient = mongodb.MongoClient;
 var DB;
