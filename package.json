@@ -12,8 +12,8 @@
   "scripts": {
     "----------Installation-----------": "",
     "install:all": "npm i && npm run global",
-    "preinstall": "",
-    "postinstall": "cd client && npm i",
+    "preinstall": "cd client && npm i",
+    "postinstall": "npm run build",
     "reinstall": "npm cache clean && rm -rf node_modules && npm run global && npm install",
     "global": "npm install -g gulp webpack eslint",
     "init": "node scipts/init && gulp init",
