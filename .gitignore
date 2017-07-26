@@ -7,6 +7,7 @@ node_modules/
 data/
 dist/
 test_practice/
+test-db/
 
 uploads/
 images/
