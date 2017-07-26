@@ -1,6 +1,12 @@
 # Beastie
 Customer Management System for Pet shop
 
+[Demo @ Heroku](https://goldax-beastie.herokuapp.com/)
+```bash
+ID: admin
+PW: admin
+```
+
 # GetStarted
 ##### Requirement
 node
